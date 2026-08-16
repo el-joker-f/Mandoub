@@ -3,7 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>مندوب | نوصل طلبك.. بسرعة وأمان</title>
 
@@ -31,11 +35,17 @@
 
     <div class="nav-actions">
 
-      <button type="button" class="login">
+      <button
+        type="button"
+        class="login"
+      >
         تسجيل الدخول
       </button>
 
-      <button type="button" class="cart">
+      <button
+        type="button"
+        class="cart"
+      >
         🛒
         <span id="cartCount">0</span>
       </button>
@@ -89,8 +99,10 @@
 
         </div>
 
-        <p id="locationMsg" class="location-msg"></p>
-
+        <p
+          id="locationMsg"
+          class="location-msg"
+        ></p>
 
         <div class="benefits">
 
@@ -180,7 +192,10 @@
 
     <!-- ================= RESTAURANTS ================= -->
 
-    <section id="restaurants" class="section">
+    <section
+      id="restaurants"
+      class="section"
+    >
 
       <div class="section-head">
 
@@ -197,6 +212,8 @@
 
       <div class="cards">
 
+
+        <!-- برجر -->
 
         <article class="restaurant">
 
@@ -238,6 +255,8 @@
         </article>
 
 
+        <!-- بيتزا -->
+
         <article class="restaurant">
 
           <div class="food">
@@ -278,6 +297,8 @@
         </article>
 
 
+        <!-- كنتاكي -->
+
         <article class="restaurant">
 
           <div class="food">
@@ -317,6 +338,8 @@
 
         </article>
 
+
+        <!-- حلويات -->
 
         <article class="restaurant">
 
@@ -364,10 +387,17 @@
 
     <!-- ================= OFFERS ================= -->
 
-    <section id="offers" class="section">
+    <section
+      id="offers"
+      class="section"
+    >
 
       <div class="section-head">
-        <h2>العروض</h2>
+
+        <h2>
+          العروض
+        </h2>
+
       </div>
 
       <div class="offers-box">
@@ -387,7 +417,10 @@
 
     <!-- ================= ABOUT ================= -->
 
-    <section id="about" class="section">
+    <section
+      id="about"
+      class="section"
+    >
 
       <div class="about-box">
 
@@ -412,7 +445,10 @@
 
     <!-- ================= TRACK ================= -->
 
-    <section id="track" class="track">
+    <section
+      id="track"
+      class="track"
+    >
 
       <div>
 
@@ -429,7 +465,6 @@
         </p>
 
       </div>
-
 
       <div class="track-form">
 
@@ -475,57 +510,63 @@
   </footer>
 
 
-  <!-- ================= FIREBASE + SCRIPT ================= -->
+  <!-- ================================================= -->
+  <!-- FIREBASE + SCRIPT.JS                              -->
+  <!-- ================================================= -->
 
   <script type="module">
 
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
     import {
       getFirestore,
       collection,
       addDoc,
       serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+    }
+      from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
     // ================= Firebase Configuration =================
 
     const firebaseConfig = {
 
-      apiKey: "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+      apiKey:
+        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
-      authDomain: "mandoub-dv.firebaseapp.com",
+      authDomain:
+        "mandoub-dv.firebaseapp.com",
 
-      projectId: "mandoub-dv",
+      projectId:
+        "mandoub-dv",
 
-      storageBucket: "mandoub-dv.firebasestorage.app",
+      storageBucket:
+        "mandoub-dv.firebasestorage.app",
 
-      messagingSenderId: "311140400335",
+      messagingSenderId:
+        "311140400335",
 
-      appId: "1:311140400335:web:db198b7c53259c53594bba",
+      appId:
+        "1:311140400335:web:db198b7c53259c53594bba",
 
-      measurementId: "G-7V1LJQYYXD"
+      measurementId:
+        "G-7V1LJQYYXD"
 
     };
 
 
-    // ================= Initialize Firebase =================
+    // ================= تشغيل Firebase =================
 
     const app =
       initializeApp(firebaseConfig);
 
 
-    // ================= Initialize Firestore =================
-
     const db =
       getFirestore(app);
 
 
-    // ================= Make Firebase available to script.js =================
+    // ================= ربط Firebase بـ script.js =================
 
     window.firebaseDB =
       db;
@@ -541,16 +582,33 @@
 
 
     console.log(
-      "Firebase + Firestore متصلين بنجاح ✅"
+      "Firebase متصل بنجاح ✅"
     );
 
 
-    // ================= Load script.js =================
+    // ================= تشغيل كود الموقع =================
 
     const script =
       document.createElement("script");
 
-    script.src = "script.js";
+    script.src =
+      "script.js";
+
+    script.onload = function () {
+
+      console.log(
+        "script.js اشتغل بنجاح ✅"
+      );
+
+    };
+
+    script.onerror = function () {
+
+      console.error(
+        "فشل تحميل script.js ❌"
+      );
+
+    };
 
     document.body.appendChild(script);
 
