@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>مندوب | نوصل طلبك.. بسرعة وأمان</title>
@@ -92,6 +91,7 @@
 
         <p id="locationMsg" class="location-msg"></p>
 
+
         <div class="benefits">
 
           <div>
@@ -116,8 +116,6 @@
 
       </div>
 
-
-      <!-- DELIVERY IMAGE -->
 
       <div class="hero-art">
 
@@ -199,7 +197,6 @@
 
       <div class="cards">
 
-        <!-- برجر -->
 
         <article class="restaurant">
 
@@ -241,8 +238,6 @@
         </article>
 
 
-        <!-- بيتزا -->
-
         <article class="restaurant">
 
           <div class="food">
@@ -283,8 +278,6 @@
         </article>
 
 
-        <!-- كنتاكي -->
-
         <article class="restaurant">
 
           <div class="food">
@@ -324,8 +317,6 @@
 
         </article>
 
-
-        <!-- حلويات -->
 
         <article class="restaurant">
 
@@ -376,11 +367,7 @@
     <section id="offers" class="section">
 
       <div class="section-head">
-
-        <h2>
-          العروض
-        </h2>
-
+        <h2>العروض</h2>
       </div>
 
       <div class="offers-box">
@@ -443,6 +430,7 @@
 
       </div>
 
+
       <div class="track-form">
 
         <input
@@ -487,12 +475,7 @@
   </footer>
 
 
-  <!-- ================= JAVASCRIPT ================= -->
-
-  <script src="script.js"></script>
-
-
-  <!-- ================= FIREBASE ================= -->
+  <!-- ================= FIREBASE + SCRIPT ================= -->
 
   <script type="module">
 
@@ -509,11 +492,11 @@
     } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-    // ================= FIREBASE CONFIG =================
+    // ================= Firebase Configuration =================
 
     const firebaseConfig = {
 
-      apiKey: "AIzaSyB6-RVH7-8NrN-AaOOv6Qj9APDeyj7oIU",
+      apiKey: "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
       authDomain: "mandoub-dv.firebaseapp.com",
 
@@ -523,37 +506,55 @@
 
       messagingSenderId: "311140400335",
 
-      appId: "1:311140400335:web:db198b7c53259c53594bba"
+      appId: "1:311140400335:web:db198b7c53259c53594bba",
+
+      measurementId: "G-7V1LJQYYXD"
 
     };
 
 
-    // ================= INITIALIZE FIREBASE =================
+    // ================= Initialize Firebase =================
 
-    const app = initializeApp(firebaseConfig);
-
-
-    // ================= INITIALIZE FIRESTORE =================
-
-    const db = getFirestore(app);
+    const app =
+      initializeApp(firebaseConfig);
 
 
-    // ================= MAKE FIRESTORE AVAILABLE =================
-    // script.js سيستخدم هذه المتغيرات عند إتمام الطلب
+    // ================= Initialize Firestore =================
 
-    window.firebaseDB = db;
-
-    window.firebaseCollection = collection;
-
-    window.firebaseAddDoc = addDoc;
-
-    window.firebaseServerTimestamp = serverTimestamp;
+    const db =
+      getFirestore(app);
 
 
-    console.log("Firebase connected successfully ✅");
+    // ================= Make Firebase available to script.js =================
+
+    window.firebaseDB =
+      db;
+
+    window.firebaseCollection =
+      collection;
+
+    window.firebaseAddDoc =
+      addDoc;
+
+    window.firebaseServerTimestamp =
+      serverTimestamp;
+
+
+    console.log(
+      "Firebase + Firestore متصلين بنجاح ✅"
+    );
+
+
+    // ================= Load script.js =================
+
+    const script =
+      document.createElement("script");
+
+    script.src = "script.js";
+
+    document.body.appendChild(script);
 
   </script>
-
 
 </body>
 
