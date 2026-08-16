@@ -16,7 +16,12 @@ function addToCart(productName, price) {
 
   updateCartCount();
 
-  showMessage("تمت إضافة " + productName + " إلى السلة 🛒");
+  showMessage(
+    "تمت إضافة " +
+    productName +
+    " إلى السلة 🛒"
+  );
+
 }
 
 
@@ -28,8 +33,12 @@ function updateCartCount() {
     document.getElementById("cartCount");
 
   if (cartCount) {
-    cartCount.textContent = cart.length;
+
+    cartCount.textContent =
+      cart.length;
+
   }
+
 }
 
 
@@ -41,7 +50,9 @@ function openCart() {
     document.getElementById("cartModal");
 
   if (oldCart) {
+
     oldCart.remove();
+
   }
 
 
@@ -57,43 +68,66 @@ function openCart() {
   if (cart.length === 0) {
 
     itemsHTML = `
+
       <div class="empty-cart">
+
         🛒
-        <h3>السلة فارغة</h3>
-        <p>لم تقم بإضافة أي طلب حتى الآن.</p>
+
+        <h3>
+          السلة فارغة
+        </h3>
+
+        <p>
+          لم تقم بإضافة أي طلب حتى الآن.
+        </p>
+
       </div>
+
     `;
 
   } else {
 
-    cart.forEach((item, index) => {
+    cart.forEach(
+      (item, index) => {
 
-      itemsHTML += `
-        <div class="cart-item">
+        itemsHTML += `
 
-          <div>
-            <strong>${item.name}</strong>
-            <p>${item.price} جنيه</p>
+          <div class="cart-item">
+
+            <div>
+
+              <strong>
+                ${item.name}
+              </strong>
+
+              <p>
+                ${item.price} جنيه
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              onclick="removeFromCart(${index})"
+            >
+              حذف
+            </button>
+
           </div>
 
-          <button
-            type="button"
-            onclick="removeFromCart(${index})"
-          >
-            حذف
-          </button>
+        `;
 
-        </div>
-      `;
-
-    });
+      }
+    );
 
   }
 
 
   const total =
     cart.reduce(
-      (sum, item) => sum + item.price,
+      (sum, item) =>
+        sum + item.price,
       0
     );
 
@@ -105,11 +139,16 @@ function openCart() {
       onclick="closeCart()"
     ></div>
 
+
     <div class="cart-box">
+
 
       <div class="cart-header">
 
-        <h2>🛒 سلة الطلبات</h2>
+        <h2>
+          🛒 سلة الطلبات
+        </h2>
+
 
         <button
           type="button"
@@ -130,7 +169,9 @@ function openCart() {
 
       ${
         cart.length > 0
+
         ? `
+
           <div class="cart-total">
 
             <span>
@@ -143,6 +184,7 @@ function openCart() {
 
           </div>
 
+
           <button
             type="button"
             class="checkout-button"
@@ -150,9 +192,13 @@ function openCart() {
           >
             إتمام الطلب
           </button>
+
         `
+
         : ""
+
       }
+
 
     </div>
 
@@ -160,6 +206,7 @@ function openCart() {
 
 
   document.body.appendChild(modal);
+
 }
 
 
@@ -168,10 +215,14 @@ function openCart() {
 function closeCart() {
 
   const modal =
-    document.getElementById("cartModal");
+    document.getElementById(
+      "cartModal"
+    );
 
   if (modal) {
+
     modal.remove();
+
   }
 
 }
@@ -190,22 +241,22 @@ function removeFromCart(index) {
 }
 
 
-// ================= إتمام الطلب =================
+// ================= إتمام الطلب وحفظه في Firebase =================
 
 async function checkout() {
 
-  // التأكد أن السلة ليست فارغة
-
   if (cart.length === 0) {
 
-    showMessage("السلة فارغة.");
+    showMessage(
+      "السلة فارغة."
+    );
 
     return;
 
   }
 
 
-  // التأكد أن Firebase متصل
+  // التأكد من اتصال Firebase
 
   if (
     !window.firebaseDB ||
@@ -215,7 +266,7 @@ async function checkout() {
   ) {
 
     showMessage(
-      "Firebase لم يتم الاتصال به بعد ❌"
+      "Firebase غير متصل ❌"
     );
 
     console.error(
@@ -230,7 +281,9 @@ async function checkout() {
   // الحصول على عنوان التوصيل
 
   const locationInput =
-    document.getElementById("locationInput");
+    document.getElementById(
+      "locationInput"
+    );
 
 
   const location =
@@ -246,7 +299,9 @@ async function checkout() {
     );
 
     if (locationInput) {
+
       locationInput.focus();
+
     }
 
     return;
@@ -254,31 +309,47 @@ async function checkout() {
   }
 
 
-  // حساب إجمالي الطلب
+  // حساب الإجمالي
 
   const total =
     cart.reduce(
-      (sum, item) => sum + item.price,
+      (sum, item) =>
+        sum + item.price,
       0
     );
 
 
   try {
 
-    // إنشاء الطلب
+    // بيانات الطلب
 
     const order = {
 
-      items: cart.map(item => ({
-        name: item.name,
-        price: item.price
-      })),
+      items:
+        cart.map(
+          item => ({
 
-      total: total,
+            name:
+              item.name,
 
-      location: location,
+            price:
+              item.price
 
-      status: "جديد",
+          })
+        ),
+
+
+      total:
+        total,
+
+
+      location:
+        location,
+
+
+      status:
+        "جديد",
+
 
       createdAt:
         window.firebaseServerTimestamp()
@@ -307,8 +378,7 @@ async function checkout() {
       docRef.id;
 
 
-    // حفظ رقم الطلب في المتصفح
-    // عشان نقدر نستخدمه في التتبع
+    // حفظ رقم آخر طلب في الهاتف
 
     localStorage.setItem(
       "lastOrderId",
@@ -316,11 +386,14 @@ async function checkout() {
     );
 
 
-    // رسالة نجاح
+    // رسالة النجاح
 
     showMessage(
-      "تم تسجيل الطلب بنجاح ✅ رقم الطلب: " +
+
+      "تم تسجيل الطلب بنجاح ✅ " +
+      "رقم الطلب: " +
       orderId
+
     );
 
 
@@ -331,23 +404,32 @@ async function checkout() {
     updateCartCount();
 
 
-    // إغلاق السلة
-
-    setTimeout(() => {
-
-      closeCart();
-
-    }, 2000);
-
-
     // وضع رقم الطلب تلقائيًا في خانة التتبع
 
     const orderNumber =
-      document.getElementById("orderNumber");
+      document.getElementById(
+        "orderNumber"
+      );
+
 
     if (orderNumber) {
-      orderNumber.value = orderId;
+
+      orderNumber.value =
+        orderId;
+
     }
+
+
+    // إغلاق السلة
+
+    setTimeout(
+      () => {
+
+        closeCart();
+
+      },
+      2000
+    );
 
 
   } catch (error) {
@@ -357,8 +439,6 @@ async function checkout() {
       error
     );
 
-
-    // في حالة وجود مشكلة في صلاحيات Firestore
 
     if (
       error.code ===
@@ -387,26 +467,40 @@ async function checkout() {
 function showMessage(text) {
 
   const oldMessage =
-    document.getElementById("cartMessage");
+    document.getElementById(
+      "cartMessage"
+    );
+
 
   if (oldMessage) {
+
     oldMessage.remove();
+
   }
 
 
   const message =
-    document.createElement("div");
-
-  message.id = "cartMessage";
-
-  message.textContent = text;
+    document.createElement(
+      "div"
+    );
 
 
-  message.style.position = "fixed";
+  message.id =
+    "cartMessage";
 
-  message.style.bottom = "25px";
 
-  message.style.left = "50%";
+  message.textContent =
+    text;
+
+
+  message.style.position =
+    "fixed";
+
+  message.style.bottom =
+    "25px";
+
+  message.style.left =
+    "50%";
 
   message.style.transform =
     "translateX(-50%)";
@@ -433,16 +527,23 @@ function showMessage(text) {
     "0 8px 25px rgba(0,0,0,.3)";
 
 
-  document.body.appendChild(message);
+  document.body.appendChild(
+    message
+  );
 
 
-  setTimeout(() => {
+  setTimeout(
+    () => {
 
-    if (message) {
-      message.remove();
-    }
+      if (message) {
 
-  }, 3000);
+        message.remove();
+
+      }
+
+    },
+    3000
+  );
 
 }
 
@@ -452,16 +553,32 @@ function showMessage(text) {
 function setLocation() {
 
   const input =
-    document.getElementById("locationInput");
+    document.getElementById(
+      "locationInput"
+    );
+
 
   const msg =
-    document.getElementById("locationMsg");
+    document.getElementById(
+      "locationMsg"
+    );
+
+
+  if (!input) {
+
+    return;
+
+  }
 
 
   if (!input.value.trim()) {
 
-    msg.textContent =
-      "اكتب عنوان التوصيل أولاً.";
+    if (msg) {
+
+      msg.textContent =
+        "اكتب عنوان التوصيل أولاً.";
+
+    }
 
     return;
 
@@ -472,7 +589,7 @@ function setLocation() {
     input.value.trim();
 
 
-  // حفظ العنوان في المتصفح
+  // حفظ العنوان في الهاتف
 
   localStorage.setItem(
     "deliveryLocation",
@@ -480,9 +597,13 @@ function setLocation() {
   );
 
 
-  msg.textContent =
-    "تم حفظ عنوان التوصيل: " +
-    location;
+  if (msg) {
+
+    msg.textContent =
+      "تم حفظ عنوان التوصيل: " +
+      location;
+
+  }
 
 }
 
@@ -525,10 +646,18 @@ async function trackOrder() {
       "orderNumber"
     );
 
+
   const msg =
     document.getElementById(
       "trackMsg"
     );
+
+
+  if (!input || !msg) {
+
+    return;
+
+  }
 
 
   const number =
@@ -545,12 +674,9 @@ async function trackOrder() {
   }
 
 
-  // التأكد أن Firebase متصل
+  // التأكد من Firebase
 
-  if (
-    !window.firebaseDB ||
-    !window.firebaseCollection
-  ) {
+  if (!window.firebaseDB) {
 
     msg.textContent =
       "Firebase غير متصل.";
@@ -562,7 +688,7 @@ async function trackOrder() {
 
   try {
 
-    // استيراد دوال Firestore
+    // استيراد Firestore
 
     const {
       doc,
@@ -573,7 +699,7 @@ async function trackOrder() {
       );
 
 
-    // البحث عن الطلب
+    // تحديد الطلب
 
     const orderRef =
       doc(
@@ -583,11 +709,17 @@ async function trackOrder() {
       );
 
 
+    // جلب الطلب
+
     const orderSnapshot =
-      await getDoc(orderRef);
+      await getDoc(
+        orderRef
+      );
 
 
-    if (!orderSnapshot.exists()) {
+    if (
+      !orderSnapshot.exists()
+    ) {
 
       msg.textContent =
         "لم يتم العثور على الطلب.";
@@ -602,13 +734,23 @@ async function trackOrder() {
 
 
     msg.innerHTML = `
+
       <strong>
         حالة الطلب:
         ${order.status || "جديد"}
       </strong>
+
       <br>
+
       الإجمالي:
-      ${order.total || 0} جنيه
+      ${order.total || 0}
+      جنيه
+
+      <br>
+
+      عنوان التوصيل:
+      ${order.location || "غير محدد"}
+
     `;
 
 
@@ -628,11 +770,13 @@ async function trackOrder() {
 }
 
 
-// ================= زر السلة =================
+// ================= تشغيل الموقع =================
 
 document.addEventListener(
   "DOMContentLoaded",
   function () {
+
+    // زر السلة
 
     const cartButton =
       document.querySelector(
@@ -650,7 +794,7 @@ document.addEventListener(
     }
 
 
-    // تحميل العنوان المحفوظ
+    // تحميل العنوان
 
     loadSavedLocation();
 
