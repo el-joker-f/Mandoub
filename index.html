@@ -7,383 +7,598 @@
 
   <title>مندوب | نوصل طلبك بسرعة وأمان</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
-<header class="navbar">
-
-  <a class="brand" href="#">
-    <img src="assets/logo.png" alt="مندوب">
-  </a>
-
-  <nav>
-    <a class="active" href="#">الرئيسية</a>
-    <a href="#restaurants">المطاعم</a>
-    <a href="#offers">العروض</a>
-    <a href="#track">تتبع الطلب</a>
-    <a href="#about">عن مندوب</a>
-    <a href="#contact">تواصل معنا</a>
-  </nav>
-
-  <div class="nav-actions">
-
-    <button
-      type="button"
-      class="login"
-      onclick="showMessage('تسجيل الدخول قريبًا 👤')">
-      تسجيل الدخول
-    </button>
-
-    <!-- مهم جدًا: فتح السلة مباشرة -->
-    <button
-      type="button"
-      class="cart"
-      id="cartButton"
-      onclick="openCart()">
-
-      🛒
-
-      <span id="cartCount">0</span>
-
-    </button>
-
-  </div>
-
-</header>
-
-
-<main>
-
-  <!-- HERO -->
-
-  <section class="hero">
-
-    <div class="hero-content">
-
-      <p class="eyebrow">
-        مندوب — توصيل داخل مدينتك
-      </p>
-
-      <h1>
-        اطلب من مطعمك المفضل
-        <br>
-        <span>ونوصلك بسرعة وأمان</span>
-      </h1>
-
-      <p class="hero-text">
-        اطلب أكلك، مشترياتك أو احتياجاتك اليومية
-        من أفضل المطاعم والمحلات.
-      </p>
-
-      <div class="location-box">
-
-        <span>📍</span>
-
-        <input
-          type="text"
-          id="locationInput"
-          placeholder="أين تريد التوصيل؟">
-
-        <button
-          type="button"
-          onclick="setLocation()">
-          تحديد موقعي
-        </button>
-
-      </div>
-
-      <p id="locationMsg" class="location-msg"></p>
-
-      <div class="benefits">
-
-        <div>
-          <b>🛡️</b>
-          <strong>آمن وموثوق</strong>
-          <small>خدمة مضمونة</small>
-        </div>
-
-        <div>
-          <b>🛵</b>
-          <strong>توصيل سريع</strong>
-          <small>في أسرع وقت</small>
-        </div>
-
-        <div>
-          <b>🎧</b>
-          <strong>دعم العملاء</strong>
-          <small>متاح لمساعدتك</small>
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="hero-art">
-
-      <img
-        class="delivery-image"
-        src="assets/delivery.png"
-        alt="مندوب دليفري">
-
-    </div>
-
-  </section>
-
-
-  <!-- CATEGORIES -->
-
-  <section class="categories">
-
-    <h2>الأقسام</h2>
-
-    <div class="category-grid">
-
-      <button type="button">🍔 <span>برجر</span></button>
-      <button type="button">🍕 <span>بيتزا</span></button>
-      <button type="button">🍗 <span>فراخ</span></button>
-      <button type="button">🍰 <span>حلويات</span></button>
-      <button type="button">🛒 <span>سوبر ماركت</span></button>
-      <button type="button">💊 <span>صيدليات</span></button>
-      <button type="button">••• <span>المزيد</span></button>
-
-    </div>
-
-  </section>
-
-
-  <!-- RESTAURANTS -->
-
-  <section id="restaurants" class="section">
-
-    <div class="section-head">
-
-      <h2>المطاعم الأكثر طلبًا</h2>
-
-      <a href="#">عرض الكل ←</a>
-
-    </div>
-
-
-    <div class="cards">
-
-      <article class="restaurant">
-
-        <div class="food">🍔</div>
-
-        <div class="card-body">
-
-          <h3>برجر كنج</h3>
-
-          <p>برجر • أمريكي</p>
-
-          <div class="restaurant-info">
-
-            <span>⭐ 4.5</span>
-            <span>توصيل من 25ج</span>
-
-          </div>
-
-          <button
-            type="button"
-            onclick="addToCart('برجر كنج', 100)">
-            اطلب الآن
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <article class="restaurant">
-
-        <div class="food">🍕</div>
-
-        <div class="card-body">
-
-          <h3>بيتزا هت</h3>
-
-          <p>بيتزا • إيطالي</p>
-
-          <div class="restaurant-info">
-
-            <span>⭐ 4.3</span>
-            <span>توصيل من 25ج</span>
-
-          </div>
-
-          <button
-            type="button"
-            onclick="addToCart('بيتزا هت', 150)">
-            اطلب الآن
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <article class="restaurant">
-
-        <div class="food">🍗</div>
-
-        <div class="card-body">
-
-          <h3>دجاج كنتاكي</h3>
-
-          <p>فراخ • وجبات</p>
-
-          <div class="restaurant-info">
-
-            <span>⭐ 4.6</span>
-            <span>توصيل من 25ج</span>
-
-          </div>
-
-          <button
-            type="button"
-            onclick="addToCart('دجاج كنتاكي', 130)">
-            اطلب الآن
-          </button>
-
-        </div>
-
-      </article>
-
-
-      <article class="restaurant">
-
-        <div class="food">🍫</div>
-
-        <div class="card-body">
-
-          <h3>حلويات</h3>
-
-          <p>حلويات • شرقي</p>
-
-          <div class="restaurant-info">
-
-            <span>⭐ 4.4</span>
-            <span>توصيل من 25ج</span>
-
-          </div>
-
-          <button
-            type="button"
-            onclick="addToCart('حلويات', 80)">
-            اطلب الآن
-          </button>
-
-        </div>
-
-      </article>
-
-    </div>
-
-  </section>
-
-
-  <!-- OFFERS -->
-
-  <section id="offers" class="section">
-
-    <div class="section-head">
-      <h2>العروض</h2>
-    </div>
-
-    <div class="offers-box">
-
-      <h3>عروض مندوب قريبًا 🎉</h3>
-
-      <p>
-        تابعنا للحصول على أحدث العروض والخصومات.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- ABOUT -->
-
-  <section id="about" class="section">
-
-    <div class="about-box">
-
-      <p class="eyebrow">عن مندوب</p>
-
-      <h2>توصيل سريع داخل مدينتك</h2>
-
-      <p>
-        مندوب هي خدمة توصيل تساعدك في طلب الأكل
-        والمشتريات والاحتياجات اليومية بسهولة
-        وسرعة وأمان.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- TRACK -->
-
-  <section id="track" class="track">
-
-    <div>
-
-      <p class="eyebrow">تتبع طلبك</p>
-
-      <h2>اعرف طلبك وصل لفين</h2>
-
-      <p>
-        أدخل رقم الطلب لمتابعة حالته.
-      </p>
-
-    </div>
-
-
-    <div class="track-form">
-
-      <input
-        type="text"
-        id="orderNumber"
-        placeholder="رقم الطلب">
+  <!-- ================= NAVBAR ================= -->
+
+  <header class="navbar">
+
+    <a class="brand" href="#">
+      <img src="assets/logo.png" alt="مندوب">
+    </a>
+
+    <nav>
+      <a class="active" href="#">الرئيسية</a>
+      <a href="#restaurants">المطاعم</a>
+      <a href="#offers">العروض</a>
+      <a href="#track">تتبع الطلب</a>
+      <a href="#about">عن مندوب</a>
+      <a href="#contact">تواصل معنا</a>
+    </nav>
+
+    <div class="nav-actions">
 
       <button
         type="button"
-        onclick="trackOrder()">
-        تتبع الطلب
+        class="login"
+        onclick="showMessage('تسجيل الدخول قريبًا 👤')">
+        تسجيل الدخول
+      </button>
+
+      <button
+        type="button"
+        class="cart"
+        id="cartButton"
+        onclick="openCart()">
+
+        🛒
+
+        <span id="cartCount">0</span>
+
       </button>
 
     </div>
 
-    <p id="trackMsg"></p>
-
-  </section>
-
-</main>
+  </header>
 
 
-<footer id="contact">
+  <!-- ================= MAIN ================= -->
 
-  <img
-    src="assets/logo.png"
-    alt="مندوب">
+  <main>
 
-  <p>
-    نوصل طلبك.. بسرعة وأمان
-  </p>
+    <!-- ================= HERO ================= -->
 
-  <small>
-    © 2026 مندوب — جميع الحقوق محفوظة
-  </small>
+    <section class="hero">
 
-</footer>
+      <div class="hero-content">
+
+        <p class="eyebrow">
+          مندوب — توصيل داخل مدينتك
+        </p>
+
+        <h1>
+          اطلب من مطعمك المفضل
+          <br>
+          <span>ونوصلك بسرعة وأمان</span>
+        </h1>
+
+        <p class="hero-text">
+          اطلب أكلك، مشترياتك أو احتياجاتك اليومية
+          من أفضل المطاعم والمحلات.
+        </p>
+
+        <div class="location-box">
+
+          <span>📍</span>
+
+          <input
+            type="text"
+            id="locationInput"
+            placeholder="أين تريد التوصيل؟">
+
+          <button
+            type="button"
+            onclick="setLocation()">
+            تحديد موقعي
+          </button>
+
+        </div>
+
+        <p id="locationMsg" class="location-msg"></p>
+
+        <div class="benefits">
+
+          <div>
+            <b>🛡️</b>
+            <strong>آمن وموثوق</strong>
+            <small>خدمة مضمونة</small>
+          </div>
+
+          <div>
+            <b>🛵</b>
+            <strong>توصيل سريع</strong>
+            <small>في أسرع وقت</small>
+          </div>
+
+          <div>
+            <b>🎧</b>
+            <strong>دعم العملاء</strong>
+            <small>متاح لمساعدتك</small>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="hero-art">
+
+        <img
+          class="delivery-image"
+          src="assets/delivery.png"
+          alt="مندوب دليفري">
+
+      </div>
+
+    </section>
 
 
-<!-- مهم: script.js في آخر الصفحة -->
-<script src="./script.js"></script>
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="categories">
+
+      <h2>الأقسام</h2>
+
+      <div class="category-grid">
+
+        <button type="button">
+          🍔
+          <span>برجر</span>
+        </button>
+
+        <button type="button">
+          🍕
+          <span>بيتزا</span>
+        </button>
+
+        <button type="button">
+          🍗
+          <span>فراخ</span>
+        </button>
+
+        <button type="button">
+          🍰
+          <span>حلويات</span>
+        </button>
+
+        <button type="button">
+          🛒
+          <span>سوبر ماركت</span>
+        </button>
+
+        <button type="button">
+          💊
+          <span>صيدليات</span>
+        </button>
+
+        <button type="button">
+          •••
+          <span>المزيد</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= RESTAURANTS ================= -->
+
+    <section id="restaurants" class="section">
+
+      <div class="section-head">
+
+        <h2>
+          المطاعم الأكثر طلبًا
+        </h2>
+
+        <a href="#">
+          عرض الكل ←
+        </a>
+
+      </div>
+
+
+      <div class="cards">
+
+
+        <!-- برجر -->
+
+        <article class="restaurant">
+
+          <div class="food">
+            🍔
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              برجر كنج
+            </h3>
+
+            <p>
+              برجر • أمريكي
+            </p>
+
+            <div class="restaurant-info">
+
+              <span>
+                ⭐ 4.5
+              </span>
+
+              <span>
+                توصيل من 25ج
+              </span>
+
+            </div>
+
+            <button
+              type="button"
+              onclick="addToCart('برجر كنج', 100)">
+              اطلب الآن
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- بيتزا -->
+
+        <article class="restaurant">
+
+          <div class="food">
+            🍕
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              بيتزا هت
+            </h3>
+
+            <p>
+              بيتزا • إيطالي
+            </p>
+
+            <div class="restaurant-info">
+
+              <span>
+                ⭐ 4.3
+              </span>
+
+              <span>
+                توصيل من 25ج
+              </span>
+
+            </div>
+
+            <button
+              type="button"
+              onclick="addToCart('بيتزا هت', 150)">
+              اطلب الآن
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- كنتاكي -->
+
+        <article class="restaurant">
+
+          <div class="food">
+            🍗
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              دجاج كنتاكي
+            </h3>
+
+            <p>
+              فراخ • وجبات
+            </p>
+
+            <div class="restaurant-info">
+
+              <span>
+                ⭐ 4.6
+              </span>
+
+              <span>
+                توصيل من 25ج
+              </span>
+
+            </div>
+
+            <button
+              type="button"
+              onclick="addToCart('دجاج كنتاكي', 130)">
+              اطلب الآن
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- حلويات -->
+
+        <article class="restaurant">
+
+          <div class="food">
+            🍫
+          </div>
+
+          <div class="card-body">
+
+            <h3>
+              حلويات
+            </h3>
+
+            <p>
+              حلويات • شرقي
+            </p>
+
+            <div class="restaurant-info">
+
+              <span>
+                ⭐ 4.4
+              </span>
+
+              <span>
+                توصيل من 25ج
+              </span>
+
+            </div>
+
+            <button
+              type="button"
+              onclick="addToCart('حلويات', 80)">
+              اطلب الآن
+            </button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= OFFERS ================= -->
+
+    <section id="offers" class="section">
+
+      <div class="section-head">
+
+        <h2>
+          العروض
+        </h2>
+
+      </div>
+
+      <div class="offers-box">
+
+        <h3>
+          عروض مندوب قريبًا 🎉
+        </h3>
+
+        <p>
+          تابعنا للحصول على أحدث العروض والخصومات.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT ================= -->
+
+    <section id="about" class="section">
+
+      <div class="about-box">
+
+        <p class="eyebrow">
+          عن مندوب
+        </p>
+
+        <h2>
+          توصيل سريع داخل مدينتك
+        </h2>
+
+        <p>
+          مندوب هي خدمة توصيل تساعدك في طلب الأكل
+          والمشتريات والاحتياجات اليومية بسهولة
+          وسرعة وأمان.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= TRACK ================= -->
+
+    <section id="track" class="track">
+
+      <div>
+
+        <p class="eyebrow">
+          تتبع طلبك
+        </p>
+
+        <h2>
+          اعرف طلبك وصل لفين
+        </h2>
+
+        <p>
+          أدخل رقم الطلب لمتابعة حالته.
+        </p>
+
+      </div>
+
+      <div class="track-form">
+
+        <input
+          type="text"
+          id="orderNumber"
+          placeholder="رقم الطلب">
+
+        <button
+          type="button"
+          onclick="trackOrder()">
+          تتبع الطلب
+        </button>
+
+      </div>
+
+      <p id="trackMsg"></p>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer id="contact">
+
+    <img
+      src="assets/logo.png"
+      alt="مندوب">
+
+    <p>
+      نوصل طلبك.. بسرعة وأمان
+    </p>
+
+    <small>
+      © 2026 مندوب — جميع الحقوق محفوظة
+    </small>
+
+  </footer>
+
+
+  <!-- ================================================= -->
+  <!-- FIREBASE -->
+  <!-- ================================================= -->
+
+  <script type="module">
+
+    import {
+      initializeApp
+    } from
+    "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp
+    } from
+    "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+
+      authDomain:
+        "mandoub-dv.firebaseapp.com",
+
+      projectId:
+        "mandoub-dv",
+
+      storageBucket:
+        "mandoub-dv.firebasestorage.app",
+
+      messagingSenderId:
+        "311140400335",
+
+      appId:
+        "1:311140400335:web:db198b7c53259c53594bba",
+
+      measurementId:
+        "G-7V1LJQYYXD"
+
+    };
+
+
+    try {
+
+      const app =
+        initializeApp(firebaseConfig);
+
+
+      const db =
+        getFirestore(app);
+
+
+      // جعل Firebase متاحًا لـ script.js
+
+      window.firebaseDB =
+        db;
+
+
+      window.firebaseCollection =
+        collection;
+
+
+      window.firebaseAddDoc =
+        addDoc;
+
+
+      window.firebaseServerTimestamp =
+        serverTimestamp;
+
+
+      window.firebaseReady =
+        true;
+
+
+      console.log(
+        "Firebase متصل بنجاح ✅"
+      );
+
+
+    }
+
+    catch (error) {
+
+      window.firebaseReady =
+        false;
+
+
+      console.error(
+        "Firebase Error:",
+        error
+      );
+
+    }
+
+
+    // تشغيل script.js بعد Firebase
+
+    const script =
+      document.createElement("script");
+
+
+    script.src =
+      "./script.js";
+
+
+    document.body.appendChild(
+      script
+    );
+
+  </script>
 
 </body>
 </html>
