@@ -94,13 +94,10 @@ body{
 
 .hero{
   min-height:590px;
-
   display:flex;
   align-items:center;
   justify-content:space-between;
-
   padding:55px 8%;
-
   overflow:hidden;
 
   background:
@@ -129,15 +126,15 @@ body{
 }
 
 .hero h1 span{
-  background:linear-gradient(
-    90deg,
-    var(--cyan),
-    var(--pink)
-  );
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--pink)
+    );
 
   -webkit-background-clip:text;
   background-clip:text;
-
   color:transparent;
 }
 
@@ -179,7 +176,6 @@ body{
   color:white;
 
   font-family:inherit;
-
   padding:13px;
 }
 
@@ -233,6 +229,7 @@ body{
   padding:13px 18px;
 
   display:grid;
+
   grid-template-columns:35px 1fr;
 }
 
@@ -251,15 +248,6 @@ body{
 
 
 /* ================= DELIVERY IMAGE ================= */
-
-/*
-  صورة الدليفري:
-  assets/delivery.png
-
-  الحجم الأساسي:
-  390px عرض
-  340px ارتفاع كحد أقصى
-*/
 
 .hero-art{
   width:42%;
@@ -291,9 +279,6 @@ body{
       0 18px 35px rgba(0,0,0,.45)
     );
 }
-
-
-/* الإضاءة خلف الصورة */
 
 .hero-art::before{
   content:"";
@@ -383,13 +368,11 @@ body{
   display:flex;
 
   justify-content:space-between;
-
   align-items:center;
 }
 
 .section-head a{
   color:var(--cyan);
-
   text-decoration:none;
 }
 
@@ -418,7 +401,6 @@ body{
   display:flex;
 
   align-items:center;
-
   justify-content:center;
 
   font-size:90px;
@@ -441,7 +423,6 @@ body{
 
 .card-body p{
   color:var(--muted);
-
   font-size:13px;
 }
 
@@ -459,7 +440,6 @@ body{
   width:100%;
 
   margin-top:14px;
-
   padding:10px;
 
   border:0;
@@ -471,7 +451,6 @@ body{
   color:white;
 
   font-family:inherit;
-
   font-weight:700;
 
   cursor:pointer;
@@ -581,7 +560,7 @@ footer small{
 
 /* ================= TABLET ================= */
 
-@media(max-width:900px){
+@media (min-width:561px) and (max-width:900px){
 
   .navbar nav{
     display:none;
@@ -589,29 +568,29 @@ footer small{
 
   .hero{
     padding:45px 6%;
-
-    gap:25px;
+    gap:20px;
   }
 
   .hero h1{
     font-size:36px;
   }
 
-  .hero-art{
-    width:38%;
+  /* تصغير صورة الدليفري على التابلت */
 
-    min-height:300px;
+  .hero-art{
+    width:35%;
+    min-height:280px;
   }
 
   .hero-art img{
-    width:300px;
-
-    height:270px;
+    width:230px;
+    height:210px;
+    max-width:100%;
   }
 
   .hero-art::before{
-    width:280px;
-    height:280px;
+    width:230px;
+    height:230px;
   }
 
   .category-grid{
@@ -632,7 +611,6 @@ footer small{
 
   .navbar{
     padding:0 4%;
-
     height:70px;
   }
 
@@ -656,7 +634,6 @@ footer small{
 
   .hero-content{
     width:100%;
-
     max-width:none;
   }
 
@@ -670,7 +647,6 @@ footer small{
 
   .location-box{
     flex-wrap:wrap;
-
     text-align:right;
   }
 
@@ -680,21 +656,18 @@ footer small{
 
   .location-box button{
     width:100%;
-
     margin-top:5px;
   }
 
   .benefits{
     flex-direction:column;
-
     text-align:right;
   }
 
-  /* صورة الدليفري في الموبايل */
+  /* صورة الدليفري على الموبايل */
 
   .hero-art{
     width:100%;
-
     min-height:220px;
 
     display:flex;
@@ -704,13 +677,11 @@ footer small{
 
   .hero-art img{
     width:280px;
-
     height:220px;
   }
 
   .hero-art::before{
     width:220px;
-
     height:220px;
   }
 
@@ -725,7 +696,6 @@ footer small{
 
   .track{
     margin:10px 5% 40px;
-
     padding:25px;
   }
 
@@ -735,7 +705,6 @@ footer small{
 
   .track-form input{
     max-width:none;
-
     width:100%;
   }
 
