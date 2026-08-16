@@ -3,7 +3,6 @@
 :root{
   --bg:#020d1d;
   --panel:#07182c;
-  --panel2:#0b2038;
   --cyan:#00e0ff;
   --blue:#00b8d9;
   --pink:#ff2e63;
@@ -129,12 +128,11 @@ body{
 }
 
 .hero h1 span{
-  background:
-    linear-gradient(
-      90deg,
-      var(--cyan),
-      var(--pink)
-    );
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--pink)
+  );
 
   -webkit-background-clip:text;
   background-clip:text;
@@ -182,20 +180,15 @@ body{
   padding:13px;
 }
 
-.location-box input::placeholder{
-  color:#8293a6;
-}
-
 .location-box button,
 .track-form button{
   border:0;
 
-  background:
-    linear-gradient(
-      90deg,
-      var(--cyan),
-      var(--blue)
-    );
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--blue)
+  );
 
   color:#00121d;
 
@@ -249,37 +242,45 @@ body{
 }
 
 
-/* ================= DELIVERY IMAGE ================= */
+/* ================= DELIVERY ================= */
 
 .hero-art{
   width:42%;
-  min-height:400px;
 
-  position:relative;
+  min-height:400px;
 
   display:flex;
   align-items:center;
   justify-content:center;
+
+  position:relative;
 }
 
-.hero-art img{
+
+/* الصورة نفسها */
+
+.delivery-image{
+  display:block !important;
+
+  width:390px !important;
+  height:340px !important;
+
+  max-width:100% !important;
+  max-height:100% !important;
+
+  object-fit:contain !important;
+
   position:relative;
+
   z-index:2;
 
-  width:390px;
-  height:340px;
-
-  max-width:100%;
-
-  object-fit:contain;
-
-  display:block;
-
-  filter:
-    drop-shadow(
-      0 18px 35px rgba(0,0,0,.45)
-    );
+  filter:drop-shadow(
+    0 18px 35px rgba(0,0,0,.45)
+  );
 }
+
+
+/* الإضاءة */
 
 .hero-art::before{
   content:"";
@@ -347,15 +348,12 @@ body{
 
 .category-grid span{
   display:block;
-
   font-size:13px;
-
   margin-top:7px;
 }
 
 .category-grid button:hover{
   border-color:var(--cyan);
-
   transform:translateY(-3px);
 }
 
@@ -418,8 +416,9 @@ body{
   font-size:13px;
 }
 
-.card-body > div{
+.restaurant-info{
   display:flex;
+
   justify-content:space-between;
 
   font-size:12px;
@@ -442,14 +441,28 @@ body{
   color:white;
 
   font-family:inherit;
-
   font-weight:700;
 
   cursor:pointer;
 }
 
-.card-body button:hover{
-  background:var(--coral);
+
+/* ================= OFFERS ================= */
+
+.offers-box,
+.about-box{
+  background:var(--panel);
+
+  border:1px solid #18344f;
+
+  border-radius:18px;
+
+  padding:25px;
+}
+
+.offers-box p,
+.about-box p{
+  color:var(--muted);
 }
 
 
@@ -498,12 +511,6 @@ body{
   color:white;
 
   font-family:inherit;
-
-  outline:none;
-}
-
-.track-form input::placeholder{
-  color:#8293a6;
 }
 
 .track-form button{
@@ -535,7 +542,6 @@ footer{
 footer img{
   width:160px;
   height:70px;
-
   object-fit:contain;
 }
 
@@ -568,16 +574,23 @@ footer small{
     height:55px;
   }
 
+
+  /* HERO */
+
   .hero{
     min-height:auto;
 
-    padding:45px 7% 35px;
+    padding:40px 7% 30px;
+
+    display:flex;
 
     flex-direction:column;
 
+    align-items:center;
+
     text-align:center;
 
-    gap:10px;
+    gap:0;
   }
 
   .hero-content{
@@ -602,29 +615,49 @@ footer small{
     justify-content:center;
   }
 
-  /* صورة الدليفري في التابلت */
+
+  /* ===================================
+     الصورة على التابلت
+     ثابتة مهما كان حجم الصورة الأصلية
+     =================================== */
 
   .hero-art{
-    width:100%;
+    width:100% !important;
 
-    min-height:190px;
-    height:190px;
+    height:170px !important;
 
-    margin-top:0;
+    min-height:170px !important;
+
+    max-height:170px !important;
+
+    margin:5px 0 0;
+
+    overflow:hidden;
   }
 
-  .hero-art img{
-    width:220px;
-    height:180px;
+  .delivery-image{
+    width:200px !important;
 
-    max-width:220px;
-    max-height:180px;
+    height:160px !important;
+
+    max-width:200px !important;
+
+    max-height:160px !important;
+
+    min-width:200px !important;
+
+    min-height:160px !important;
+
+    object-fit:contain !important;
   }
 
   .hero-art::before{
-    width:190px;
-    height:190px;
+    width:170px;
+    height:170px;
   }
+
+
+  /* باقي التابلت */
 
   .category-grid{
     grid-template-columns:repeat(4,1fr);
@@ -656,6 +689,7 @@ footer small{
     display:none;
   }
 
+
   .hero{
     min-height:auto;
 
@@ -681,7 +715,6 @@ footer small{
 
   .location-box{
     flex-wrap:wrap;
-
     text-align:right;
   }
 
@@ -699,31 +732,44 @@ footer small{
     text-align:right;
   }
 
-  /* صورة الدليفري في الموبايل */
+
+  /* صورة الموبايل */
 
   .hero-art{
     width:100%;
 
-    min-height:220px;
     height:220px;
 
-    display:flex;
+    min-height:220px;
+
+    max-height:220px;
 
     margin-top:5px;
+
+    overflow:hidden;
   }
 
-  .hero-art img{
-    width:280px;
-    height:220px;
+  .delivery-image{
+    width:280px !important;
 
-    max-width:280px;
-    max-height:220px;
+    height:220px !important;
+
+    max-width:280px !important;
+
+    max-height:220px !important;
+
+    min-width:280px !important;
+
+    min-height:220px !important;
+
+    object-fit:contain !important;
   }
 
   .hero-art::before{
     width:220px;
     height:220px;
   }
+
 
   .category-grid{
     grid-template-columns:repeat(3,1fr);
