@@ -97,6 +97,7 @@ body{
   justify-content:space-between;
   padding:55px 8%;
   overflow:hidden;
+
   background:
     radial-gradient(
       circle at 85% 45%,
@@ -123,7 +124,12 @@ body{
 }
 
 .hero h1 span{
-  background:linear-gradient(90deg,var(--cyan),var(--pink));
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--pink)
+  );
+
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
@@ -134,7 +140,7 @@ body{
   font-size:18px;
 }
 
-/* LOCATION */
+/* ================= LOCATION ================= */
 
 .location-box{
   display:flex;
@@ -147,7 +153,7 @@ body{
   width:min(600px,100%);
 }
 
-.location-box span{
+.location-box > span{
   font-size:22px;
   padding:0 10px;
 }
@@ -162,10 +168,19 @@ body{
   padding:13px;
 }
 
+.location-box input::placeholder{
+  color:#8293a6;
+}
+
 .location-box button,
 .track-form button{
   border:0;
-  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  background:linear-gradient(
+    90deg,
+    var(--cyan),
+    var(--blue)
+  );
+
   color:#00121d;
   font-weight:800;
   border-radius:12px;
@@ -179,7 +194,7 @@ body{
   min-height:25px;
 }
 
-/* BENEFITS */
+/* ================= BENEFITS ================= */
 
 .benefits{
   display:flex;
@@ -191,6 +206,7 @@ body{
   border:1px solid #16324d;
   border-radius:14px;
   padding:13px 18px;
+
   display:grid;
   grid-template-columns:35px 1fr;
 }
@@ -208,29 +224,57 @@ body{
   color:var(--muted);
 }
 
-/* ================= HERO IMAGE ================= */
+/* ================= DELIVERY IMAGE ================= */
 
 /*
-  الصورة المستخدمة هنا هي:
-  assets/logo.png
+  الصورة الكبيرة:
+  assets/delivery.png
 
-  وبكده مش محتاج تغير index.html.
+  اللوجو logo.png يفضل خاص بالـNavbar والـFooter.
 */
 
 .hero-art{
   width:42%;
   min-height:400px;
+
   position:relative;
+
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.glow{
+/* الصورة الجديدة */
+
+.hero-art img{
+  position:relative;
+  z-index:2;
+
+  width:100%;
+  max-width:500px;
+  max-height:430px;
+
+  object-fit:contain;
+
+  display:block;
+
+  filter:drop-shadow(
+    0 18px 35px rgba(0,0,0,.45)
+  );
+}
+
+/* تأثير إضاءة خلف الصورة */
+
+.hero-art::before{
+  content:"";
+
   position:absolute;
+
   width:390px;
   height:390px;
+
   border-radius:50%;
+
   background:
     radial-gradient(
       circle,
@@ -238,44 +282,8 @@ body{
       #ff2e6322,
       transparent 70%
     );
-}
 
-/* نستبدل الإيموجي 🛵 بالصورة */
-
-.scooter{
-  width:430px;
-  height:300px;
-
-  background-image:url("assets/logo.png");
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:contain;
-
-  font-size:0;
-
-  position:relative;
-  z-index:2;
-
-  filter:drop-shadow(0 15px 30px #000);
-}
-
-/* الكلمة الموجودة بجانب الصورة */
-
-.delivery-box{
-  position:absolute;
-  right:5%;
-  top:22%;
-
-  background:#07182c;
-  border:2px solid var(--cyan);
-
-  padding:10px 15px;
-  border-radius:10px;
-
-  color:var(--cyan);
-  font-weight:800;
-
-  z-index:3;
+  z-index:1;
 }
 
 /* ================= CATEGORIES ================= */
@@ -306,9 +314,11 @@ body{
   border-radius:16px;
   color:white;
   padding:18px 8px;
+
   font-family:inherit;
   cursor:pointer;
   font-size:30px;
+
   transition:.2s;
 }
 
@@ -351,11 +361,19 @@ body{
 
 .food{
   height:150px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
   font-size:90px;
-  background:linear-gradient(135deg,#132f4a,#07192d);
+
+  background:
+    linear-gradient(
+      135deg,
+      #132f4a,
+      #07192d
+    );
 }
 
 .card-body{
@@ -371,24 +389,34 @@ body{
   font-size:13px;
 }
 
-.card-body>div{
+.card-body > div{
   display:flex;
   justify-content:space-between;
+
   font-size:12px;
   color:#cbd6e1;
 }
 
 .card-body button{
   width:100%;
+
   margin-top:14px;
   padding:10px;
+
   border:0;
   border-radius:10px;
+
   background:var(--pink);
   color:white;
+
   font-family:inherit;
   font-weight:700;
+
   cursor:pointer;
+}
+
+.card-body button:hover{
+  background:var(--coral);
 }
 
 /* ================= TRACK ================= */
@@ -396,9 +424,16 @@ body{
 .track{
   margin:20px 7% 60px;
   padding:35px;
+
   border:1px solid #193650;
   border-radius:22px;
-  background:linear-gradient(100deg,#071c31,#0b162a);
+
+  background:
+    linear-gradient(
+      100deg,
+      #071c31,
+      #0b162a
+    );
 }
 
 .track h2{
@@ -414,16 +449,31 @@ body{
 .track-form input{
   flex:1;
   max-width:500px;
+
   background:#031124;
+
   border:1px solid #29445d;
   border-radius:12px;
+
   padding:13px;
+
   color:white;
   font-family:inherit;
+  outline:none;
+}
+
+.track-form input::placeholder{
+  color:#8293a6;
 }
 
 .track-form button{
-  background:linear-gradient(90deg,var(--pink),var(--coral));
+  background:
+    linear-gradient(
+      90deg,
+      var(--pink),
+      var(--coral)
+    );
+
   color:white;
 }
 
@@ -431,9 +481,13 @@ body{
 
 footer{
   text-align:center;
+
   padding:40px;
+
   background:#010916;
+
   border-top:1px solid #15304c;
+
   color:var(--muted);
 }
 
@@ -468,28 +522,21 @@ footer small{
     font-size:36px;
   }
 
-  /*
-    الصورة تفضل ظاهرة على الموبايل
-  */
-
   .hero-art{
     display:flex;
     width:38%;
     min-height:300px;
   }
 
-  .scooter{
-    width:330px;
-    height:250px;
+  .hero-art img{
+    width:100%;
+    max-width:350px;
+    max-height:330px;
   }
 
-  .glow{
+  .hero-art::before{
     width:300px;
     height:300px;
-  }
-
-  .delivery-box{
-    display:none;
   }
 
   .category-grid{
@@ -518,16 +565,13 @@ footer small{
     display:none;
   }
 
-  /*
-    ترتيب الـHero على الموبايل:
-    الكلام فوق
-    اللوجو تحت
-  */
-
   .hero{
     min-height:auto;
+
     padding:35px 6% 45px;
+
     flex-direction:column;
+
     text-align:center;
   }
 
@@ -563,24 +607,24 @@ footer small{
     text-align:right;
   }
 
-  /*
-    اللوجو يظهر هنا على الموبايل
-  */
+  /* صورة delivery على الموبايل */
 
   .hero-art{
     width:100%;
     min-height:240px;
+
     display:flex;
+
     margin-top:5px;
   }
 
-  .scooter{
+  .hero-art img{
     width:100%;
     max-width:340px;
-    height:230px;
+    max-height:240px;
   }
 
-  .glow{
+  .hero-art::before{
     width:250px;
     height:250px;
   }
@@ -609,5 +653,13 @@ footer small{
 
   .track-form button{
     width:100%;
+  }
+
+  footer{
+    padding:30px 20px;
+  }
+
+  footer img{
+    width:140px;
   }
 }
