@@ -93,13 +93,10 @@ body{
 
 .hero{
   min-height:590px;
-
   display:flex;
   align-items:center;
   justify-content:space-between;
-
   padding:55px 8%;
-
   overflow:hidden;
 
   background:
@@ -152,7 +149,6 @@ body{
   align-items:center;
 
   background:#091d32;
-
   border:1px solid #25415c;
   border-radius:16px;
 
@@ -169,13 +165,10 @@ body{
 
 .location-box input{
   flex:1;
-
   background:transparent;
   border:0;
   outline:0;
-
   color:white;
-
   font-family:inherit;
   padding:13px;
 }
@@ -184,22 +177,18 @@ body{
 .track-form button{
   border:0;
 
-  background:linear-gradient(
-    90deg,
-    var(--cyan),
-    var(--blue)
-  );
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--blue)
+    );
 
   color:#00121d;
-
   font-weight:800;
-
   border-radius:12px;
-
   padding:12px 18px;
-
   font-family:inherit;
-
   cursor:pointer;
 }
 
@@ -218,10 +207,8 @@ body{
 
 .benefits div{
   background:#06172a;
-
   border:1px solid #16324d;
   border-radius:14px;
-
   padding:13px 18px;
 
   display:grid;
@@ -242,11 +229,10 @@ body{
 }
 
 
-/* ================= DELIVERY ================= */
+/* ================= DELIVERY IMAGE ================= */
 
 .hero-art{
   width:42%;
-
   min-height:400px;
 
   display:flex;
@@ -255,9 +241,6 @@ body{
 
   position:relative;
 }
-
-
-/* الصورة نفسها */
 
 .delivery-image{
   display:block !important;
@@ -271,16 +254,12 @@ body{
   object-fit:contain !important;
 
   position:relative;
-
   z-index:2;
 
   filter:drop-shadow(
     0 18px 35px rgba(0,0,0,.45)
   );
 }
-
-
-/* الإضاءة */
 
 .hero-art::before{
   content:"";
@@ -328,21 +307,13 @@ body{
 
 .category-grid button{
   background:#071a2e;
-
   border:1px solid #193650;
-
   border-radius:16px;
-
   color:white;
-
   padding:18px 8px;
-
   font-family:inherit;
-
   cursor:pointer;
-
   font-size:30px;
-
   transition:.2s;
 }
 
@@ -379,10 +350,8 @@ body{
 
 .restaurant{
   background:var(--panel);
-
   border:1px solid #18344f;
   border-radius:18px;
-
   overflow:hidden;
 }
 
@@ -418,45 +387,39 @@ body{
 
 .restaurant-info{
   display:flex;
-
   justify-content:space-between;
-
   font-size:12px;
-
   color:#cbd6e1;
 }
 
 .card-body button{
   width:100%;
-
   margin-top:14px;
-
   padding:10px;
 
   border:0;
   border-radius:10px;
 
   background:var(--pink);
-
   color:white;
 
   font-family:inherit;
   font-weight:700;
-
   cursor:pointer;
 }
 
+.card-body button:hover{
+  background:var(--coral);
+}
 
-/* ================= OFFERS ================= */
+
+/* ================= OFFERS / ABOUT ================= */
 
 .offers-box,
 .about-box{
   background:var(--panel);
-
   border:1px solid #18344f;
-
   border-radius:18px;
-
   padding:25px;
 }
 
@@ -474,7 +437,6 @@ body{
   padding:35px;
 
   border:1px solid #193650;
-
   border-radius:22px;
 
   background:
@@ -497,19 +459,15 @@ body{
 
 .track-form input{
   flex:1;
-
   max-width:500px;
 
   background:#031124;
-
   border:1px solid #29445d;
-
   border-radius:12px;
 
   padding:13px;
 
   color:white;
-
   font-family:inherit;
 }
 
@@ -555,6 +513,191 @@ footer small{
 
 
 /* ================================================= */
+/* ================= CART ========================== */
+/* ================================================= */
+
+#cartModal{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+}
+
+.cart-overlay{
+  position:absolute;
+  inset:0;
+
+  background:rgba(0,0,0,.72);
+
+  backdrop-filter:blur(4px);
+}
+
+.cart-box{
+  position:absolute;
+
+  top:50%;
+  left:50%;
+
+  transform:translate(-50%,-50%);
+
+  width:min(500px,92%);
+
+  max-height:85vh;
+
+  overflow:auto;
+
+  background:#07182c;
+
+  border:1px solid #24415e;
+
+  border-radius:20px;
+
+  padding:20px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.5);
+}
+
+.cart-header{
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+
+  border-bottom:1px solid #193650;
+
+  padding-bottom:15px;
+
+  margin-bottom:15px;
+}
+
+.cart-header h2{
+  margin:0;
+}
+
+.cart-header button{
+  width:38px;
+  height:38px;
+
+  border:0;
+  border-radius:10px;
+
+  background:#102a43;
+
+  color:white;
+
+  cursor:pointer;
+
+  font-size:18px;
+}
+
+.cart-item{
+  display:flex;
+
+  justify-content:space-between;
+  align-items:center;
+
+  background:#0b2038;
+
+  border:1px solid #193650;
+
+  border-radius:14px;
+
+  padding:13px;
+
+  margin-bottom:10px;
+}
+
+.cart-item strong{
+  color:white;
+}
+
+.cart-item p{
+  margin:5px 0 0;
+
+  color:var(--cyan);
+}
+
+.cart-item button{
+  border:0;
+
+  border-radius:8px;
+
+  padding:8px 12px;
+
+  background:#ff2e63;
+
+  color:white;
+
+  font-family:inherit;
+
+  cursor:pointer;
+}
+
+.empty-cart{
+  text-align:center;
+
+  padding:40px 10px;
+
+  color:var(--muted);
+}
+
+.empty-cart h3{
+  color:white;
+}
+
+.empty-cart:first-letter{
+  font-size:40px;
+}
+
+.cart-total{
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  border-top:1px solid #193650;
+
+  margin-top:15px;
+
+  padding-top:15px;
+
+  font-size:18px;
+}
+
+.cart-total strong{
+  color:var(--cyan);
+}
+
+.checkout-button{
+  width:100%;
+
+  border:0;
+
+  margin-top:15px;
+
+  padding:13px;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--cyan),
+      var(--blue)
+    );
+
+  color:#00121d;
+
+  font-family:inherit;
+
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+
+/* ================================================= */
 /* ================= TABLET ======================== */
 /* ================================================= */
 
@@ -574,15 +717,10 @@ footer small{
     height:55px;
   }
 
-
-  /* HERO */
-
   .hero{
     min-height:auto;
 
     padding:40px 7% 30px;
-
-    display:flex;
 
     flex-direction:column;
 
@@ -616,37 +754,32 @@ footer small{
   }
 
 
-  /* ===================================
-     الصورة على التابلت
-     ثابتة مهما كان حجم الصورة الأصلية
-     =================================== */
+  /* صورة الدليفري - التابلت */
 
   .hero-art{
     width:100% !important;
 
-    height:170px !important;
+    height:180px !important;
 
-    min-height:170px !important;
+    min-height:180px !important;
 
-    max-height:170px !important;
-
-    margin:5px 0 0;
+    max-height:180px !important;
 
     overflow:hidden;
   }
 
   .delivery-image{
-    width:200px !important;
+    width:150px !important;
 
-    height:160px !important;
+    height:150px !important;
 
-    max-width:200px !important;
+    min-width:150px !important;
 
-    max-height:160px !important;
+    min-height:150px !important;
 
-    min-width:200px !important;
+    max-width:150px !important;
 
-    min-height:160px !important;
+    max-height:150px !important;
 
     object-fit:contain !important;
   }
@@ -656,8 +789,6 @@ footer small{
     height:170px;
   }
 
-
-  /* باقي التابلت */
 
   .category-grid{
     grid-template-columns:repeat(4,1fr);
@@ -688,7 +819,6 @@ footer small{
   .login{
     display:none;
   }
-
 
   .hero{
     min-height:auto;
@@ -733,7 +863,7 @@ footer small{
   }
 
 
-  /* صورة الموبايل */
+  /* صورة الدليفري - الموبايل */
 
   .hero-art{
     width:100%;
@@ -754,13 +884,13 @@ footer small{
 
     height:220px !important;
 
-    max-width:280px !important;
-
-    max-height:220px !important;
-
     min-width:280px !important;
 
     min-height:220px !important;
+
+    max-width:280px !important;
+
+    max-height:220px !important;
 
     object-fit:contain !important;
   }
@@ -804,4 +934,18 @@ footer small{
   footer img{
     width:140px;
   }
+
+
+  /* السلة على الموبايل */
+
+  .cart-box{
+    width:94%;
+    max-height:88vh;
+    padding:15px;
+  }
+
+  .cart-item{
+    padding:11px;
+  }
+
 }
