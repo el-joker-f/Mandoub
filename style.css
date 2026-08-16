@@ -1,17 +1,613 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
-:root{--bg:#020d1d;--panel:#07182c;--panel2:#0b2038;--cyan:#00e0ff;--blue:#00b8d9;--pink:#ff2e63;--coral:#ff5a6e;--white:#fff;--muted:#a9b7c8}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font-family:Cairo,Arial,sans-serif}
-.navbar{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:1px solid #15304c;background:#031124;position:sticky;top:0;z-index:10}
-.brand img{width:145px;height:62px;object-fit:contain}.navbar nav{display:flex;gap:25px}.navbar nav a{color:#d9e3ed;text-decoration:none;font-size:14px}.navbar nav a.active,.navbar nav a:hover{color:var(--cyan)}
-.nav-actions{display:flex;gap:10px}.nav-actions button{border:1px solid #24415e;border-radius:12px;padding:11px 17px;font-family:inherit;cursor:pointer}.login{background:#0b1c31;color:white}.cart{background:var(--cyan);color:#00121d;font-weight:800}
-.hero{min-height:590px;display:flex;align-items:center;justify-content:space-between;padding:55px 8%;overflow:hidden;background:radial-gradient(circle at 85% 45%,#143653 0,#06172b 36%,#020d1d 70%)}
-.hero-content{max-width:620px}.eyebrow{color:var(--cyan);font-weight:700;margin:0 0 10px}.hero h1{font-size:48px;line-height:1.35;margin:0 0 15px}.hero h1 span{background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;color:transparent}.hero-text{color:var(--muted);font-size:18px}
-.location-box{display:flex;align-items:center;background:#091d32;border:1px solid #25415c;border-radius:16px;padding:7px;margin:25px 0;width:min(600px,100%)}.location-box span{font-size:22px;padding:0 10px}.location-box input{flex:1;background:transparent;border:0;outline:0;color:white;font-family:inherit;padding:13px}.location-box button,.track-form button{border:0;background:linear-gradient(90deg,var(--cyan),var(--blue));color:#00121d;font-weight:800;border-radius:12px;padding:12px 18px;font-family:inherit;cursor:pointer}.location-msg{color:var(--cyan);min-height:25px}
-.benefits{display:flex;gap:15px}.benefits div{background:#06172a;border:1px solid #16324d;border-radius:14px;padding:13px 18px;display:grid;grid-template-columns:35px 1fr}.benefits b{grid-row:span 2;font-size:23px}.benefits strong{font-size:13px}.benefits small{color:var(--muted)}
-.hero-art{width:42%;min-height:400px;position:relative;display:flex;align-items:center;justify-content:center}.glow{position:absolute;width:390px;height:390px;border-radius:50%;background:radial-gradient(circle,#00dffb44,#ff2e6322,transparent 70%)}.scooter{font-size:210px;filter:drop-shadow(0 15px 30px #000);position:relative;z-index:2;transform:scaleX(-1)}.delivery-box{position:absolute;right:10%;top:28%;background:#07182c;border:2px solid var(--cyan);padding:10px 15px;border-radius:10px;color:var(--cyan);font-weight:800}
-.categories,.section{padding:45px 7%}.categories{background:#041326}.categories h2,.section h2{margin-top:0}.category-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:14px}.category-grid button{background:#071a2e;border:1px solid #193650;border-radius:16px;color:white;padding:18px 8px;font-family:inherit;cursor:pointer;font-size:30px}.category-grid span{display:block;font-size:13px;margin-top:7px}.category-grid button:hover{border-color:var(--cyan);transform:translateY(-3px)}
-.section-head{display:flex;justify-content:space-between;align-items:center}.section-head a{color:var(--cyan);text-decoration:none}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.restaurant{background:var(--panel);border:1px solid #18344f;border-radius:18px;overflow:hidden}.food{height:150px;display:flex;align-items:center;justify-content:center;font-size:90px;background:linear-gradient(135deg,#132f4a,#07192d)}.card-body{padding:15px}.card-body h3{margin:0}.card-body p{color:var(--muted);font-size:13px}.card-body>div{display:flex;justify-content:space-between;font-size:12px;color:#cbd6e1}.card-body button{width:100%;margin-top:14px;padding:10px;border:0;border-radius:10px;background:var(--pink);color:white;font-family:inherit;font-weight:700;cursor:pointer}
-.track{margin:20px 7% 60px;padding:35px;border:1px solid #193650;border-radius:22px;background:linear-gradient(100deg,#071c31,#0b162a)}.track h2{margin:0}.track-form{display:flex;gap:10px;margin-top:15px}.track-form input{flex:1;max-width:500px;background:#031124;border:1px solid #29445d;border-radius:12px;padding:13px;color:white;font-family:inherit}.track-form button{background:linear-gradient(90deg,var(--pink),var(--coral));color:white}
-footer{text-align:center;padding:40px;background:#010916;border-top:1px solid #15304c;color:var(--muted)}footer img{width:160px;height:70px;object-fit:contain}footer p{color:white}footer small{font-size:11px}
-@media(max-width:900px){.navbar nav{display:none}.hero{padding:40px 6%;}.hero h1{font-size:36px}.hero-art{display:none}.category-grid{grid-template-columns:repeat(4,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.navbar{padding:0 4%;height:70px}.brand img{width:120px}.login{display:none}.hero{min-height:auto;padding:45px 6%}.hero h1{font-size:30px}.benefits{flex-direction:column}.location-box{flex-wrap:wrap}.location-box button{width:100%}.category-grid{grid-template-columns:repeat(3,1fr)}.cards{grid-template-columns:1fr}.track{margin:10px 5% 40px;padding:25px}.track-form{flex-direction:column}}
+
+:root{
+  --bg:#020d1d;
+  --panel:#07182c;
+  --panel2:#0b2038;
+  --cyan:#00e0ff;
+  --blue:#00b8d9;
+  --pink:#ff2e63;
+  --coral:#ff5a6e;
+  --white:#fff;
+  --muted:#a9b7c8;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--white);
+  font-family:Cairo,Arial,sans-serif;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+  height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  border-bottom:1px solid #15304c;
+  background:#031124;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.brand img{
+  width:145px;
+  height:62px;
+  object-fit:contain;
+}
+
+.navbar nav{
+  display:flex;
+  gap:25px;
+}
+
+.navbar nav a{
+  color:#d9e3ed;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.navbar nav a.active,
+.navbar nav a:hover{
+  color:var(--cyan);
+}
+
+.nav-actions{
+  display:flex;
+  gap:10px;
+}
+
+.nav-actions button{
+  border:1px solid #24415e;
+  border-radius:12px;
+  padding:11px 17px;
+  font-family:inherit;
+  cursor:pointer;
+}
+
+.login{
+  background:#0b1c31;
+  color:white;
+}
+
+.cart{
+  background:var(--cyan);
+  color:#00121d;
+  font-weight:800;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  min-height:590px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:55px 8%;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 85% 45%,
+      #143653 0,
+      #06172b 36%,
+      #020d1d 70%
+    );
+}
+
+.hero-content{
+  max-width:620px;
+}
+
+.eyebrow{
+  color:var(--cyan);
+  font-weight:700;
+  margin:0 0 10px;
+}
+
+.hero h1{
+  font-size:48px;
+  line-height:1.35;
+  margin:0 0 15px;
+}
+
+.hero h1 span{
+  background:linear-gradient(90deg,var(--cyan),var(--pink));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.hero-text{
+  color:var(--muted);
+  font-size:18px;
+}
+
+/* LOCATION */
+
+.location-box{
+  display:flex;
+  align-items:center;
+  background:#091d32;
+  border:1px solid #25415c;
+  border-radius:16px;
+  padding:7px;
+  margin:25px 0;
+  width:min(600px,100%);
+}
+
+.location-box span{
+  font-size:22px;
+  padding:0 10px;
+}
+
+.location-box input{
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:white;
+  font-family:inherit;
+  padding:13px;
+}
+
+.location-box button,
+.track-form button{
+  border:0;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  color:#00121d;
+  font-weight:800;
+  border-radius:12px;
+  padding:12px 18px;
+  font-family:inherit;
+  cursor:pointer;
+}
+
+.location-msg{
+  color:var(--cyan);
+  min-height:25px;
+}
+
+/* BENEFITS */
+
+.benefits{
+  display:flex;
+  gap:15px;
+}
+
+.benefits div{
+  background:#06172a;
+  border:1px solid #16324d;
+  border-radius:14px;
+  padding:13px 18px;
+  display:grid;
+  grid-template-columns:35px 1fr;
+}
+
+.benefits b{
+  grid-row:span 2;
+  font-size:23px;
+}
+
+.benefits strong{
+  font-size:13px;
+}
+
+.benefits small{
+  color:var(--muted);
+}
+
+/* ================= HERO IMAGE ================= */
+
+/*
+  الصورة المستخدمة هنا هي:
+  assets/logo.png
+
+  وبكده مش محتاج تغير index.html.
+*/
+
+.hero-art{
+  width:42%;
+  min-height:400px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.glow{
+  position:absolute;
+  width:390px;
+  height:390px;
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      #00dffb44,
+      #ff2e6322,
+      transparent 70%
+    );
+}
+
+/* نستبدل الإيموجي 🛵 بالصورة */
+
+.scooter{
+  width:430px;
+  height:300px;
+
+  background-image:url("assets/logo.png");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+
+  font-size:0;
+
+  position:relative;
+  z-index:2;
+
+  filter:drop-shadow(0 15px 30px #000);
+}
+
+/* الكلمة الموجودة بجانب الصورة */
+
+.delivery-box{
+  position:absolute;
+  right:5%;
+  top:22%;
+
+  background:#07182c;
+  border:2px solid var(--cyan);
+
+  padding:10px 15px;
+  border-radius:10px;
+
+  color:var(--cyan);
+  font-weight:800;
+
+  z-index:3;
+}
+
+/* ================= CATEGORIES ================= */
+
+.categories,
+.section{
+  padding:45px 7%;
+}
+
+.categories{
+  background:#041326;
+}
+
+.categories h2,
+.section h2{
+  margin-top:0;
+}
+
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:14px;
+}
+
+.category-grid button{
+  background:#071a2e;
+  border:1px solid #193650;
+  border-radius:16px;
+  color:white;
+  padding:18px 8px;
+  font-family:inherit;
+  cursor:pointer;
+  font-size:30px;
+  transition:.2s;
+}
+
+.category-grid span{
+  display:block;
+  font-size:13px;
+  margin-top:7px;
+}
+
+.category-grid button:hover{
+  border-color:var(--cyan);
+  transform:translateY(-3px);
+}
+
+/* ================= RESTAURANTS ================= */
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.section-head a{
+  color:var(--cyan);
+  text-decoration:none;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.restaurant{
+  background:var(--panel);
+  border:1px solid #18344f;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.food{
+  height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:90px;
+  background:linear-gradient(135deg,#132f4a,#07192d);
+}
+
+.card-body{
+  padding:15px;
+}
+
+.card-body h3{
+  margin:0;
+}
+
+.card-body p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.card-body>div{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:#cbd6e1;
+}
+
+.card-body button{
+  width:100%;
+  margin-top:14px;
+  padding:10px;
+  border:0;
+  border-radius:10px;
+  background:var(--pink);
+  color:white;
+  font-family:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ================= TRACK ================= */
+
+.track{
+  margin:20px 7% 60px;
+  padding:35px;
+  border:1px solid #193650;
+  border-radius:22px;
+  background:linear-gradient(100deg,#071c31,#0b162a);
+}
+
+.track h2{
+  margin:0;
+}
+
+.track-form{
+  display:flex;
+  gap:10px;
+  margin-top:15px;
+}
+
+.track-form input{
+  flex:1;
+  max-width:500px;
+  background:#031124;
+  border:1px solid #29445d;
+  border-radius:12px;
+  padding:13px;
+  color:white;
+  font-family:inherit;
+}
+
+.track-form button{
+  background:linear-gradient(90deg,var(--pink),var(--coral));
+  color:white;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  text-align:center;
+  padding:40px;
+  background:#010916;
+  border-top:1px solid #15304c;
+  color:var(--muted);
+}
+
+footer img{
+  width:160px;
+  height:70px;
+  object-fit:contain;
+}
+
+footer p{
+  color:white;
+}
+
+footer small{
+  font-size:11px;
+}
+
+/* ================= TABLET ================= */
+
+@media(max-width:900px){
+
+  .navbar nav{
+    display:none;
+  }
+
+  .hero{
+    padding:45px 6%;
+    gap:25px;
+  }
+
+  .hero h1{
+    font-size:36px;
+  }
+
+  /*
+    الصورة تفضل ظاهرة على الموبايل
+  */
+
+  .hero-art{
+    display:flex;
+    width:38%;
+    min-height:300px;
+  }
+
+  .scooter{
+    width:330px;
+    height:250px;
+  }
+
+  .glow{
+    width:300px;
+    height:300px;
+  }
+
+  .delivery-box{
+    display:none;
+  }
+
+  .category-grid{
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:560px){
+
+  .navbar{
+    padding:0 4%;
+    height:70px;
+  }
+
+  .brand img{
+    width:120px;
+  }
+
+  .login{
+    display:none;
+  }
+
+  /*
+    ترتيب الـHero على الموبايل:
+    الكلام فوق
+    اللوجو تحت
+  */
+
+  .hero{
+    min-height:auto;
+    padding:35px 6% 45px;
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .hero-content{
+    width:100%;
+    max-width:none;
+  }
+
+  .hero h1{
+    font-size:30px;
+  }
+
+  .hero-text{
+    font-size:15px;
+  }
+
+  .location-box{
+    flex-wrap:wrap;
+    text-align:right;
+  }
+
+  .location-box input{
+    min-width:0;
+  }
+
+  .location-box button{
+    width:100%;
+    margin-top:5px;
+  }
+
+  .benefits{
+    flex-direction:column;
+    text-align:right;
+  }
+
+  /*
+    اللوجو يظهر هنا على الموبايل
+  */
+
+  .hero-art{
+    width:100%;
+    min-height:240px;
+    display:flex;
+    margin-top:5px;
+  }
+
+  .scooter{
+    width:100%;
+    max-width:340px;
+    height:230px;
+  }
+
+  .glow{
+    width:250px;
+    height:250px;
+  }
+
+  .category-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .track{
+    margin:10px 5% 40px;
+    padding:25px;
+  }
+
+  .track-form{
+    flex-direction:column;
+  }
+
+  .track-form input{
+    max-width:none;
+    width:100%;
+  }
+
+  .track-form button{
+    width:100%;
+  }
+}
