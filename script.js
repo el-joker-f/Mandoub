@@ -3,7 +3,8 @@
 let cart = [];
 
 
-// إضافة منتج للسلة
+// ================= إضافة منتج للسلة =================
+
 function addToCart(productName, price) {
 
   const product = {
@@ -19,13 +20,16 @@ function addToCart(productName, price) {
 }
 
 
-// تحديث رقم السلة
+// ================= تحديث رقم السلة =================
+
 function updateCartCount() {
 
   const cartCount =
     document.getElementById("cartCount");
 
-  cartCount.textContent = cart.length;
+  if (cartCount) {
+    cartCount.textContent = cart.length;
+  }
 }
 
 
@@ -48,6 +52,7 @@ function openCart() {
 
 
   let itemsHTML = "";
+
 
   if (cart.length === 0) {
 
@@ -95,7 +100,10 @@ function openCart() {
 
   modal.innerHTML = `
 
-    <div class="cart-overlay" onclick="closeCart()"></div>
+    <div
+      class="cart-overlay"
+      onclick="closeCart()"
+    ></div>
 
     <div class="cart-box">
 
@@ -184,7 +192,9 @@ function removeFromCart(index) {
 
 // ================= إتمام الطلب =================
 
-function checkout() {
+async function checkout() {
+
+  // التأكد أن السلة ليست فارغة
 
   if (cart.length === 0) {
 
@@ -194,19 +204,180 @@ function checkout() {
 
   }
 
-  showMessage(
-    "تم تجهيز طلبك بنجاح ✅"
-  );
 
-  cart = [];
+  // التأكد أن Firebase متصل
 
-  updateCartCount();
+  if (
+    !window.firebaseDB ||
+    !window.firebaseCollection ||
+    !window.firebaseAddDoc ||
+    !window.firebaseServerTimestamp
+  ) {
 
-  setTimeout(() => {
+    showMessage(
+      "Firebase لم يتم الاتصال به بعد ❌"
+    );
 
-    closeCart();
+    console.error(
+      "Firebase غير متاح."
+    );
 
-  }, 1200);
+    return;
+
+  }
+
+
+  // الحصول على عنوان التوصيل
+
+  const locationInput =
+    document.getElementById("locationInput");
+
+
+  const location =
+    locationInput
+      ? locationInput.value.trim()
+      : "";
+
+
+  if (!location) {
+
+    showMessage(
+      "اكتب عنوان التوصيل أولاً 📍"
+    );
+
+    if (locationInput) {
+      locationInput.focus();
+    }
+
+    return;
+
+  }
+
+
+  // حساب إجمالي الطلب
+
+  const total =
+    cart.reduce(
+      (sum, item) => sum + item.price,
+      0
+    );
+
+
+  try {
+
+    // إنشاء الطلب
+
+    const order = {
+
+      items: cart.map(item => ({
+        name: item.name,
+        price: item.price
+      })),
+
+      total: total,
+
+      location: location,
+
+      status: "جديد",
+
+      createdAt:
+        window.firebaseServerTimestamp()
+
+    };
+
+
+    // حفظ الطلب في Firestore
+
+    const docRef =
+      await window.firebaseAddDoc(
+
+        window.firebaseCollection(
+          window.firebaseDB,
+          "orders"
+        ),
+
+        order
+
+      );
+
+
+    // رقم الطلب
+
+    const orderId =
+      docRef.id;
+
+
+    // حفظ رقم الطلب في المتصفح
+    // عشان نقدر نستخدمه في التتبع
+
+    localStorage.setItem(
+      "lastOrderId",
+      orderId
+    );
+
+
+    // رسالة نجاح
+
+    showMessage(
+      "تم تسجيل الطلب بنجاح ✅ رقم الطلب: " +
+      orderId
+    );
+
+
+    // تفريغ السلة
+
+    cart = [];
+
+    updateCartCount();
+
+
+    // إغلاق السلة
+
+    setTimeout(() => {
+
+      closeCart();
+
+    }, 2000);
+
+
+    // وضع رقم الطلب تلقائيًا في خانة التتبع
+
+    const orderNumber =
+      document.getElementById("orderNumber");
+
+    if (orderNumber) {
+      orderNumber.value = orderId;
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Firebase Error:",
+      error
+    );
+
+
+    // في حالة وجود مشكلة في صلاحيات Firestore
+
+    if (
+      error.code ===
+      "permission-denied"
+    ) {
+
+      showMessage(
+        "Firestore رفض حفظ الطلب ❌"
+      );
+
+    } else {
+
+      showMessage(
+        "حصل خطأ أثناء تسجيل الطلب ❌"
+      );
+
+    }
+
+  }
 
 }
 
@@ -232,15 +403,32 @@ function showMessage(text) {
 
 
   message.style.position = "fixed";
+
   message.style.bottom = "25px";
+
   message.style.left = "50%";
-  message.style.transform = "translateX(-50%)";
-  message.style.background = "#00e0ff";
-  message.style.color = "#00121d";
-  message.style.padding = "12px 22px";
-  message.style.borderRadius = "12px";
-  message.style.fontWeight = "800";
-  message.style.zIndex = "99999";
+
+  message.style.transform =
+    "translateX(-50%)";
+
+  message.style.background =
+    "#00e0ff";
+
+  message.style.color =
+    "#00121d";
+
+  message.style.padding =
+    "12px 22px";
+
+  message.style.borderRadius =
+    "12px";
+
+  message.style.fontWeight =
+    "800";
+
+  message.style.zIndex =
+    "99999";
+
   message.style.boxShadow =
     "0 8px 25px rgba(0,0,0,.3)";
 
@@ -254,7 +442,7 @@ function showMessage(text) {
       message.remove();
     }
 
-  }, 2000);
+  }, 3000);
 
 }
 
@@ -280,22 +468,67 @@ function setLocation() {
   }
 
 
+  const location =
+    input.value.trim();
+
+
+  // حفظ العنوان في المتصفح
+
+  localStorage.setItem(
+    "deliveryLocation",
+    location
+  );
+
+
   msg.textContent =
     "تم حفظ عنوان التوصيل: " +
-    input.value;
+    location;
+
+}
+
+
+// ================= تحميل العنوان المحفوظ =================
+
+function loadSavedLocation() {
+
+  const savedLocation =
+    localStorage.getItem(
+      "deliveryLocation"
+    );
+
+
+  const input =
+    document.getElementById(
+      "locationInput"
+    );
+
+
+  if (
+    savedLocation &&
+    input
+  ) {
+
+    input.value =
+      savedLocation;
+
+  }
 
 }
 
 
 // ================= تتبع الطلب =================
 
-function trackOrder() {
+async function trackOrder() {
 
   const input =
-    document.getElementById("orderNumber");
+    document.getElementById(
+      "orderNumber"
+    );
 
   const msg =
-    document.getElementById("trackMsg");
+    document.getElementById(
+      "trackMsg"
+    );
 
 
   const number =
@@ -312,10 +545,85 @@ function trackOrder() {
   }
 
 
-  msg.textContent =
-    "تم استلام رقم الطلب " +
-    number +
-    " — نظام التتبع سيتم ربطه بقاعدة البيانات لاحقًا.";
+  // التأكد أن Firebase متصل
+
+  if (
+    !window.firebaseDB ||
+    !window.firebaseCollection
+  ) {
+
+    msg.textContent =
+      "Firebase غير متصل.";
+
+    return;
+
+  }
+
+
+  try {
+
+    // استيراد دوال Firestore
+
+    const {
+      doc,
+      getDoc
+    } =
+      await import(
+        "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+      );
+
+
+    // البحث عن الطلب
+
+    const orderRef =
+      doc(
+        window.firebaseDB,
+        "orders",
+        number
+      );
+
+
+    const orderSnapshot =
+      await getDoc(orderRef);
+
+
+    if (!orderSnapshot.exists()) {
+
+      msg.textContent =
+        "لم يتم العثور على الطلب.";
+
+      return;
+
+    }
+
+
+    const order =
+      orderSnapshot.data();
+
+
+    msg.innerHTML = `
+      <strong>
+        حالة الطلب:
+        ${order.status || "جديد"}
+      </strong>
+      <br>
+      الإجمالي:
+      ${order.total || 0} جنيه
+    `;
+
+
+  } catch (error) {
+
+    console.error(
+      "Track Error:",
+      error
+    );
+
+
+    msg.textContent =
+      "حدث خطأ أثناء تتبع الطلب.";
+
+  }
 
 }
 
@@ -327,7 +635,10 @@ document.addEventListener(
   function () {
 
     const cartButton =
-      document.querySelector(".cart");
+      document.querySelector(
+        ".cart"
+      );
+
 
     if (cartButton) {
 
@@ -337,6 +648,16 @@ document.addEventListener(
       );
 
     }
+
+
+    // تحميل العنوان المحفوظ
+
+    loadSavedLocation();
+
+
+    // تحديث السلة
+
+    updateCartCount();
 
   }
 );
