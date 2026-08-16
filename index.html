@@ -13,7 +13,7 @@
 
 <body>
 
-  <!-- NAVBAR -->
+  <!-- ================= NAVBAR ================= -->
 
   <header class="navbar">
 
@@ -46,11 +46,11 @@
   </header>
 
 
-  <!-- MAIN -->
+  <!-- ================= MAIN ================= -->
 
   <main>
 
-    <!-- HERO -->
+    <!-- ================= HERO ================= -->
 
     <section class="hero">
 
@@ -117,7 +117,7 @@
       </div>
 
 
-      <!-- صورة الدليفري -->
+      <!-- DELIVERY IMAGE -->
 
       <div class="hero-art">
 
@@ -132,7 +132,7 @@
     </section>
 
 
-    <!-- CATEGORIES -->
+    <!-- ================= CATEGORIES ================= -->
 
     <section class="categories">
 
@@ -180,13 +180,15 @@
     </section>
 
 
-    <!-- RESTAURANTS -->
+    <!-- ================= RESTAURANTS ================= -->
 
     <section id="restaurants" class="section">
 
       <div class="section-head">
 
-        <h2>المطاعم الأكثر طلبًا</h2>
+        <h2>
+          المطاعم الأكثر طلبًا
+        </h2>
 
         <a href="#">
           عرض الكل ←
@@ -197,27 +199,40 @@
 
       <div class="cards">
 
+
+        <!-- برجر -->
+
         <article class="restaurant">
 
-          <div class="food">🍔</div>
+          <div class="food">
+            🍔
+          </div>
 
           <div class="card-body">
 
-            <h3>برجر كنج</h3>
+            <h3>
+              برجر كنج
+            </h3>
 
-            <p>برجر • أمريكي</p>
+            <p>
+              برجر • أمريكي
+            </p>
 
             <div class="restaurant-info">
 
-              <span>⭐ 4.5</span>
+              <span>
+                ⭐ 4.5
+              </span>
 
-              <span>توصيل من 25ج</span>
+              <span>
+                توصيل من 25ج
+              </span>
 
             </div>
 
             <button
               type="button"
-              onclick="addToCart()"
+              onclick="addToCart('برجر كنج', 100)"
             >
               اطلب الآن
             </button>
@@ -227,27 +242,39 @@
         </article>
 
 
+        <!-- بيتزا -->
+
         <article class="restaurant">
 
-          <div class="food">🍕</div>
+          <div class="food">
+            🍕
+          </div>
 
           <div class="card-body">
 
-            <h3>بيتزا هت</h3>
+            <h3>
+              بيتزا هت
+            </h3>
 
-            <p>بيتزا • إيطالي</p>
+            <p>
+              بيتزا • إيطالي
+            </p>
 
             <div class="restaurant-info">
 
-              <span>⭐ 4.3</span>
+              <span>
+                ⭐ 4.3
+              </span>
 
-              <span>توصيل من 25ج</span>
+              <span>
+                توصيل من 25ج
+              </span>
 
             </div>
 
             <button
               type="button"
-              onclick="addToCart()"
+              onclick="addToCart('بيتزا هت', 150)"
             >
               اطلب الآن
             </button>
@@ -257,27 +284,39 @@
         </article>
 
 
+        <!-- كنتاكي -->
+
         <article class="restaurant">
 
-          <div class="food">🍗</div>
+          <div class="food">
+            🍗
+          </div>
 
           <div class="card-body">
 
-            <h3>دجاج كنتاكي</h3>
+            <h3>
+              دجاج كنتاكي
+            </h3>
 
-            <p>فراخ • وجبات</p>
+            <p>
+              فراخ • وجبات
+            </p>
 
             <div class="restaurant-info">
 
-              <span>⭐ 4.6</span>
+              <span>
+                ⭐ 4.6
+              </span>
 
-              <span>توصيل من 25ج</span>
+              <span>
+                توصيل من 25ج
+              </span>
 
             </div>
 
             <button
               type="button"
-              onclick="addToCart()"
+              onclick="addToCart('دجاج كنتاكي', 130)"
             >
               اطلب الآن
             </button>
@@ -287,27 +326,39 @@
         </article>
 
 
+        <!-- حلويات -->
+
         <article class="restaurant">
 
-          <div class="food">🍫</div>
+          <div class="food">
+            🍫
+          </div>
 
           <div class="card-body">
 
-            <h3>حلويات</h3>
+            <h3>
+              حلويات
+            </h3>
 
-            <p>حلويات • شرقي</p>
+            <p>
+              حلويات • شرقي
+            </p>
 
             <div class="restaurant-info">
 
-              <span>⭐ 4.4</span>
+              <span>
+                ⭐ 4.4
+              </span>
 
-              <span>توصيل من 25ج</span>
+              <span>
+                توصيل من 25ج
+              </span>
 
             </div>
 
             <button
               type="button"
-              onclick="addToCart()"
+              onclick="addToCart('حلويات', 80)"
             >
               اطلب الآن
             </button>
@@ -321,17 +372,23 @@
     </section>
 
 
-    <!-- OFFERS -->
+    <!-- ================= OFFERS ================= -->
 
     <section id="offers" class="section">
 
       <div class="section-head">
-        <h2>العروض</h2>
+
+        <h2>
+          العروض
+        </h2>
+
       </div>
 
       <div class="offers-box">
 
-        <h3>عروض مندوب قريبًا 🎉</h3>
+        <h3>
+          عروض مندوب قريبًا 🎉
+        </h3>
 
         <p>
           تابعنا للحصول على أحدث العروض والخصومات.
@@ -342,15 +399,19 @@
     </section>
 
 
-    <!-- ABOUT -->
+    <!-- ================= ABOUT ================= -->
 
     <section id="about" class="section">
 
       <div class="about-box">
 
-        <p class="eyebrow">عن مندوب</p>
+        <p class="eyebrow">
+          عن مندوب
+        </p>
 
-        <h2>توصيل سريع داخل مدينتك</h2>
+        <h2>
+          توصيل سريع داخل مدينتك
+        </h2>
 
         <p>
           مندوب هي خدمة توصيل تساعدك في طلب الأكل
@@ -363,7 +424,7 @@
     </section>
 
 
-    <!-- TRACK -->
+    <!-- ================= TRACK ================= -->
 
     <section id="track" class="track">
 
@@ -407,7 +468,7 @@
   </main>
 
 
-  <!-- FOOTER -->
+  <!-- ================= FOOTER ================= -->
 
   <footer id="contact">
 
@@ -426,6 +487,8 @@
 
   </footer>
 
+
+  <!-- ================= JAVASCRIPT ================= -->
 
   <script src="script.js"></script>
 
