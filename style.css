@@ -94,10 +94,13 @@ body{
 
 .hero{
   min-height:590px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   padding:55px 8%;
+
   overflow:hidden;
 
   background:
@@ -229,7 +232,6 @@ body{
   padding:13px 18px;
 
   display:grid;
-
   grid-template-columns:35px 1fr;
 }
 
@@ -262,7 +264,6 @@ body{
 
 .hero-art img{
   position:relative;
-
   z-index:2;
 
   width:390px;
@@ -320,10 +321,7 @@ body{
 
 .category-grid{
   display:grid;
-
-  grid-template-columns:
-    repeat(7,1fr);
-
+  grid-template-columns:repeat(7,1fr);
   gap:14px;
 }
 
@@ -366,7 +364,6 @@ body{
 
 .section-head{
   display:flex;
-
   justify-content:space-between;
   align-items:center;
 }
@@ -378,10 +375,7 @@ body{
 
 .cards{
   display:grid;
-
-  grid-template-columns:
-    repeat(4,1fr);
-
+  grid-template-columns:repeat(4,1fr);
   gap:18px;
 }
 
@@ -389,7 +383,6 @@ body{
   background:var(--panel);
 
   border:1px solid #18344f;
-
   border-radius:18px;
 
   overflow:hidden;
@@ -399,7 +392,6 @@ body{
   height:150px;
 
   display:flex;
-
   align-items:center;
   justify-content:center;
 
@@ -428,7 +420,6 @@ body{
 
 .card-body > div{
   display:flex;
-
   justify-content:space-between;
 
   font-size:12px;
@@ -440,10 +431,10 @@ body{
   width:100%;
 
   margin-top:14px;
+
   padding:10px;
 
   border:0;
-
   border-radius:10px;
 
   background:var(--pink);
@@ -451,6 +442,7 @@ body{
   color:white;
 
   font-family:inherit;
+
   font-weight:700;
 
   cursor:pointer;
@@ -486,9 +478,7 @@ body{
 
 .track-form{
   display:flex;
-
   gap:10px;
-
   margin-top:15px;
 }
 
@@ -558,54 +548,97 @@ footer small{
 }
 
 
-/* ================= TABLET ================= */
+/* ================================================= */
+/* ================= TABLET ======================== */
+/* ================================================= */
 
 @media (min-width:561px) and (max-width:900px){
+
+  .navbar{
+    height:75px;
+    padding:0 4%;
+  }
 
   .navbar nav{
     display:none;
   }
 
+  .brand img{
+    width:125px;
+    height:55px;
+  }
+
   .hero{
-    padding:45px 6%;
-    gap:20px;
+    min-height:auto;
+
+    padding:45px 7% 35px;
+
+    flex-direction:column;
+
+    text-align:center;
+
+    gap:10px;
+  }
+
+  .hero-content{
+    width:100%;
+    max-width:700px;
   }
 
   .hero h1{
-    font-size:36px;
+    font-size:38px;
   }
 
-  /* تصغير صورة الدليفري على التابلت */
+  .hero-text{
+    font-size:16px;
+  }
+
+  .location-box{
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .benefits{
+    justify-content:center;
+  }
+
+  /* صورة الدليفري في التابلت */
 
   .hero-art{
-    width:35%;
-    min-height:280px;
+    width:100%;
+
+    min-height:190px;
+    height:190px;
+
+    margin-top:0;
   }
 
   .hero-art img{
-    width:230px;
-    height:210px;
-    max-width:100%;
+    width:220px;
+    height:180px;
+
+    max-width:220px;
+    max-height:180px;
   }
 
   .hero-art::before{
-    width:230px;
-    height:230px;
+    width:190px;
+    height:190px;
   }
 
   .category-grid{
-    grid-template-columns:
-      repeat(4,1fr);
+    grid-template-columns:repeat(4,1fr);
   }
 
   .cards{
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
   }
 }
 
 
-/* ================= MOBILE ================= */
+/* ================================================= */
+/* ================= MOBILE ======================== */
+/* ================================================= */
 
 @media(max-width:560px){
 
@@ -616,6 +649,7 @@ footer small{
 
   .brand img{
     width:120px;
+    height:55px;
   }
 
   .login{
@@ -647,6 +681,7 @@ footer small{
 
   .location-box{
     flex-wrap:wrap;
+
     text-align:right;
   }
 
@@ -664,11 +699,13 @@ footer small{
     text-align:right;
   }
 
-  /* صورة الدليفري على الموبايل */
+  /* صورة الدليفري في الموبايل */
 
   .hero-art{
     width:100%;
+
     min-height:220px;
+    height:220px;
 
     display:flex;
 
@@ -678,6 +715,9 @@ footer small{
   .hero-art img{
     width:280px;
     height:220px;
+
+    max-width:280px;
+    max-height:220px;
   }
 
   .hero-art::before{
@@ -686,8 +726,7 @@ footer small{
   }
 
   .category-grid{
-    grid-template-columns:
-      repeat(3,1fr);
+    grid-template-columns:repeat(3,1fr);
   }
 
   .cards{
