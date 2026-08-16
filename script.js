@@ -1,43 +1,47 @@
 // =====================================================
-// مندوب
-// نظام السلة + الطلبات + العنوان + التتبع
+// مندوب - script.js
 // =====================================================
 
 
-// =====================================================
-// السلة
-// =====================================================
+// ================= السلة =================
 
 let cart = [];
 
 
-// =====================================================
-// إضافة منتج للسلة
-// =====================================================
+// ================= إضافة للسلة =================
 
 function addToCart(productName, price) {
 
   cart.push({
+
     name: productName,
+
     price: Number(price)
+
   });
+
 
   updateCartCount();
 
+
   showMessage(
-    "تمت إضافة " + productName + " إلى السلة 🛒"
+    "تمت إضافة " +
+    productName +
+    " إلى السلة 🛒"
   );
+
 }
 
 
-// =====================================================
-// تحديث رقم السلة
-// =====================================================
+// ================= تحديث السلة =================
 
 function updateCartCount() {
 
   const cartCount =
-    document.getElementById("cartCount");
+    document.getElementById(
+      "cartCount"
+    );
+
 
   if (cartCount) {
 
@@ -45,35 +49,39 @@ function updateCartCount() {
       cart.length;
 
   }
+
 }
 
 
-// =====================================================
-// فتح السلة
-// =====================================================
+// ================= فتح السلة =================
 
 function openCart() {
 
-  console.log("تم الضغط على السلة");
-
   const oldModal =
-    document.getElementById("cartModal");
+    document.getElementById(
+      "cartModal"
+    );
+
 
   if (oldModal) {
+
     oldModal.remove();
+
   }
 
 
   const modal =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  modal.id = "cartModal";
+
+  modal.id =
+    "cartModal";
 
 
   let itemsHTML = "";
 
-
-  // السلة فارغة
 
   if (cart.length === 0) {
 
@@ -90,7 +98,7 @@ function openCart() {
         </h3>
 
         <p>
-          لم تقم بإضافة أي طلب حتى الآن.
+          أضف منتجًا من المطاعم أولًا.
         </p>
 
       </div>
@@ -99,54 +107,52 @@ function openCart() {
 
   }
 
-
-  // السلة فيها منتجات
-
   else {
 
-    cart.forEach(function(item, index) {
+    cart.forEach(
+      function(item, index) {
 
-      itemsHTML += `
+        itemsHTML += `
 
-        <div class="cart-item">
+          <div class="cart-item">
 
-          <div>
+            <div>
 
-            <strong>
-              ${escapeHTML(item.name)}
-            </strong>
+              <strong>
+                ${item.name}
+              </strong>
 
-            <p>
-              ${item.price} جنيه
-            </p>
+              <p>
+                ${item.price} جنيه
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              onclick="removeFromCart(${index})">
+
+              حذف
+
+            </button>
 
           </div>
 
+        `;
 
-          <button
-            type="button"
-            onclick="removeFromCart(${index})">
-
-            حذف
-
-          </button>
-
-        </div>
-
-      `;
-
-    });
+      }
+    );
 
   }
 
-
-  // حساب الإجمالي
 
   const total =
     cart.reduce(
       function(sum, item) {
 
-        return sum + Number(item.price);
+        return sum +
+          Number(item.price);
 
       },
       0
@@ -191,6 +197,7 @@ function openCart() {
       ${
         cart.length > 0
         ?
+
         `
 
           <div class="cart-total">
@@ -216,8 +223,11 @@ function openCart() {
           </button>
 
         `
+
         :
+
         ""
+
       }
 
     </div>
@@ -225,19 +235,22 @@ function openCart() {
   `;
 
 
-  document.body.appendChild(modal);
+  document.body.appendChild(
+    modal
+  );
 
 }
 
 
-// =====================================================
-// إغلاق السلة
-// =====================================================
+// ================= إغلاق السلة =================
 
 function closeCart() {
 
   const modal =
-    document.getElementById("cartModal");
+    document.getElementById(
+      "cartModal"
+    );
+
 
   if (modal) {
 
@@ -248,23 +261,15 @@ function closeCart() {
 }
 
 
-// =====================================================
-// حذف منتج
-// =====================================================
+// ================= حذف =================
 
 function removeFromCart(index) {
 
-  if (
-    index < 0 ||
-    index >= cart.length
-  ) {
+  cart.splice(
+    index,
+    1
+  );
 
-    return;
-
-  }
-
-
-  cart.splice(index, 1);
 
   updateCartCount();
 
@@ -273,9 +278,7 @@ function removeFromCart(index) {
 }
 
 
-// =====================================================
-// إتمام الطلب
-// =====================================================
+// ================= إتمام الطلب =================
 
 async function checkout() {
 
@@ -310,22 +313,15 @@ async function checkout() {
       "اكتب عنوان التوصيل أولاً 📍"
     );
 
-    if (locationInput) {
-
-      locationInput.focus();
-
-    }
-
     return;
 
   }
 
 
-  // ===================================================
-  // لو Firebase موجود نحفظ الطلب فيه
-  // ===================================================
+  // ================= Firebase =================
 
   if (
+    window.firebaseReady &&
     window.firebaseDB &&
     window.firebaseCollection &&
     window.firebaseAddDoc
@@ -337,7 +333,8 @@ async function checkout() {
         cart.reduce(
           function(sum, item) {
 
-            return sum + Number(item.price);
+            return sum +
+              Number(item.price);
 
           },
           0
@@ -347,37 +344,42 @@ async function checkout() {
       const order = {
 
         items:
-          cart.map(function(item) {
+          cart.map(
+            function(item) {
 
-            return {
+              return {
 
-              name: item.name,
+                name:
+                  item.name,
 
-              price: Number(item.price)
+                price:
+                  Number(item.price)
 
-            };
+              };
 
-          }),
+            }
+          ),
 
 
-        total: total,
+        total:
+          total,
 
-        location: location,
 
-        status: "جديد",
+        location:
+          location,
+
+
+        status:
+          "جديد",
 
 
         createdAt:
-          window.firebaseServerTimestamp
-          ?
           window.firebaseServerTimestamp()
-          :
-          new Date().toISOString()
 
       };
 
 
-      const collection =
+      const ordersCollection =
         window.firebaseCollection(
           window.firebaseDB,
           "orders"
@@ -386,7 +388,7 @@ async function checkout() {
 
       const docRef =
         await window.firebaseAddDoc(
-          collection,
+          ordersCollection,
           order
         );
 
@@ -401,10 +403,18 @@ async function checkout() {
       );
 
 
+      localStorage.setItem(
+        "lastOrder",
+        JSON.stringify({
+          id: orderId,
+          ...order
+        })
+      );
+
+
       cart = [];
 
       updateCartCount();
-
 
       closeCart();
 
@@ -429,10 +439,7 @@ async function checkout() {
       }
 
 
-      return;
-
     }
-
 
     catch (error) {
 
@@ -443,99 +450,27 @@ async function checkout() {
 
 
       showMessage(
-        "حدث خطأ في Firebase ❌"
+        "Firebase رفض تسجيل الطلب ❌"
       );
-
-      return;
 
     }
 
+
+    return;
+
   }
 
 
-  // ===================================================
-  // لو Firebase مش متصل
-  // نحفظ الطلب مؤقتًا على الجهاز
-  // ===================================================
-
-  const localOrderId =
-    "ORD-" +
-    Date.now();
-
-
-  const total =
-    cart.reduce(
-      function(sum, item) {
-
-        return sum + Number(item.price);
-
-      },
-      0
-    );
-
-
-  const localOrder = {
-
-    id: localOrderId,
-
-    items: cart,
-
-    total: total,
-
-    location: location,
-
-    status: "جديد",
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  localStorage.setItem(
-    "lastOrder",
-    JSON.stringify(localOrder)
-  );
-
-
-  localStorage.setItem(
-    "lastOrderId",
-    localOrderId
-  );
-
-
-  cart = [];
-
-  updateCartCount();
-
-  closeCart();
-
+  // ================= Firebase غير متصل =================
 
   showMessage(
-    "تم حفظ الطلب مؤقتًا ✅ رقم الطلب: " +
-    localOrderId
+    "Firebase غير متصل ❌"
   );
-
-
-  const orderNumber =
-    document.getElementById(
-      "orderNumber"
-    );
-
-
-  if (orderNumber) {
-
-    orderNumber.value =
-      localOrderId;
-
-  }
 
 }
 
 
-// =====================================================
-// تحديد الموقع
-// =====================================================
+// ================= الموقع =================
 
 function setLocation() {
 
@@ -591,13 +526,11 @@ function setLocation() {
 }
 
 
-// =====================================================
-// تحميل العنوان
-// =====================================================
+// ================= تحميل الموقع =================
 
 function loadSavedLocation() {
 
-  const savedLocation =
+  const saved =
     localStorage.getItem(
       "deliveryLocation"
     );
@@ -610,21 +543,19 @@ function loadSavedLocation() {
 
 
   if (
-    savedLocation &&
+    saved &&
     input
   ) {
 
     input.value =
-      savedLocation;
+      saved;
 
   }
 
 }
 
 
-// =====================================================
-// تتبع الطلب
-// =====================================================
+// ================= تتبع الطلب =================
 
 async function trackOrder() {
 
@@ -659,11 +590,8 @@ async function trackOrder() {
   }
 
 
-  // ===================================================
-  // البحث في Firebase
-  // ===================================================
-
   if (
+    window.firebaseReady &&
     window.firebaseDB
   ) {
 
@@ -689,7 +617,9 @@ async function trackOrder() {
         );
 
 
-      if (snapshot.exists()) {
+      if (
+        snapshot.exists()
+      ) {
 
         const order =
           snapshot.data();
@@ -699,80 +629,33 @@ async function trackOrder() {
 
           <strong>
             حالة الطلب:
-            ${escapeHTML(
-              order.status || "جديد"
-            )}
+            ${order.status || "جديد"}
           </strong>
 
           <br>
 
           الإجمالي:
-          ${Number(order.total || 0)}
+          ${order.total || 0}
           جنيه
 
         `;
 
+
         return;
 
       }
+
 
     }
 
     catch (error) {
 
       console.error(
-        "Track Firebase Error:",
+        "Track Error:",
         error
       );
 
     }
-
-  }
-
-
-  // ===================================================
-  // البحث في الطلب المحلي
-  // ===================================================
-
-  const savedOrder =
-    localStorage.getItem(
-      "lastOrder"
-    );
-
-
-  const savedOrderId =
-    localStorage.getItem(
-      "lastOrderId"
-    );
-
-
-  if (
-    savedOrder &&
-    savedOrderId === number
-  ) {
-
-    const order =
-      JSON.parse(savedOrder);
-
-
-    msg.innerHTML = `
-
-      <strong>
-        حالة الطلب:
-        ${escapeHTML(
-          order.status || "جديد"
-        )}
-      </strong>
-
-      <br>
-
-      الإجمالي:
-      ${Number(order.total || 0)}
-      جنيه
-
-    `;
-
-    return;
 
   }
 
@@ -783,21 +666,19 @@ async function trackOrder() {
 }
 
 
-// =====================================================
-// الرسائل
-// =====================================================
+// ================= رسالة =================
 
 function showMessage(text) {
 
-  const oldMessage =
+  const old =
     document.getElementById(
       "cartMessage"
     );
 
 
-  if (oldMessage) {
+  if (old) {
 
-    oldMessage.remove();
+    old.remove();
 
   }
 
@@ -819,41 +700,45 @@ function showMessage(text) {
   message.style.position =
     "fixed";
 
+
   message.style.bottom =
     "25px";
+
 
   message.style.left =
     "50%";
 
+
   message.style.transform =
     "translateX(-50%)";
+
 
   message.style.background =
     "#00e0ff";
 
+
   message.style.color =
     "#00121d";
+
 
   message.style.padding =
     "13px 22px";
 
+
   message.style.borderRadius =
     "14px";
+
 
   message.style.fontWeight =
     "800";
 
+
   message.style.zIndex =
     "999999";
 
+
   message.style.boxShadow =
     "0 8px 30px rgba(0,0,0,.4)";
-
-  message.style.maxWidth =
-    "90%";
-
-  message.style.textAlign =
-    "center";
 
 
   document.body.appendChild(
@@ -877,65 +762,28 @@ function showMessage(text) {
 }
 
 
-// =====================================================
-// حماية النصوص
-// =====================================================
-
-function escapeHTML(text) {
-
-  const div =
-    document.createElement(
-      "div"
-    );
-
-
-  div.textContent =
-    String(text);
-
-
-  return div.innerHTML;
-
-}
-
-
-// =====================================================
-// تشغيل الموقع
-// =====================================================
+// ================= التشغيل =================
 
 document.addEventListener(
   "DOMContentLoaded",
   function() {
 
-    console.log(
-      "مندوب: JavaScript يعمل بنجاح ✅"
-    );
-
-
     updateCartCount();
 
     loadSavedLocation();
 
+    console.log(
+      "مندوب يعمل ✅"
+    );
 
-    // تأكيد ربط زر السلة
-
-    const cartButton =
-      document.getElementById(
-        "cartButton"
-      );
-
-
-    if (cartButton) {
-
-      cartButton.onclick =
-        function(event) {
-
-          event.preventDefault();
-
-          openCart();
-
-        };
-
-    }
+    console.log(
+      "Firebase:",
+      window.firebaseReady
+        ?
+        "متصل ✅"
+        :
+        "غير متصل ❌"
+    );
 
   }
 );
