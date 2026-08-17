@@ -3,11 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>مندوب | توصيل سريع</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>مندوب | توصيل سريع وآمن</title>
 
   <style>
+
+    /* =====================================================
+       RESET
+    ===================================================== */
 
     * {
       box-sizing: border-box;
@@ -15,34 +23,69 @@
       padding: 0;
     }
 
-    body {
-      font-family: Arial, Tahoma, sans-serif;
-      background: #020d1c;
-      color: white;
-      min-height: 100vh;
+    html {
+      scroll-behavior: smooth;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    body {
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+      overflow-x: hidden;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+      background: #020d1c;
+      color: #fff;
+
+      direction: rtl;
+    }
+
+    button,
+    input {
+      font-family: inherit;
     }
 
     button {
-      font-family: inherit;
-      border: 0;
       cursor: pointer;
+      border: 0;
     }
 
-    /* ================= NAVBAR ================= */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+
+    /* =====================================================
+       NAVBAR
+       نفس الشكل القديم + تسجيل الدخول ظاهر
+    ===================================================== */
 
     .navbar {
-      height: 65px;
       width: 100%;
+      min-height: 70px;
+
+      padding: 8px 15px;
 
       display: flex;
       align-items: center;
+      justify-content: space-between;
 
-      padding: 7px 10px;
       gap: 10px;
 
       background: #031326;
@@ -51,19 +94,29 @@
 
       position: sticky;
       top: 0;
-
-      z-index: 1000;
+      z-index: 5000;
     }
 
+
+    /* LOGO */
+
     .brand {
-      flex-shrink: 0;
+      width: 58px;
+      min-width: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .brand img {
-      width: 48px;
-      height: 48px;
+      width: 54px;
+      height: 54px;
       object-fit: contain;
     }
+
+
+    /* NAV */
 
     .navbar nav {
       flex: 1;
@@ -72,9 +125,11 @@
       align-items: center;
       justify-content: center;
 
-      gap: 13px;
+      gap: 18px;
 
       overflow-x: auto;
+      white-space: nowrap;
+
       scrollbar-width: none;
     }
 
@@ -83,185 +138,306 @@
     }
 
     .navbar nav a {
-      flex-shrink: 0;
+      color: #e2e8ef;
 
-      color: #d5dce3;
-
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 600;
 
       white-space: nowrap;
 
-      padding: 7px 2px;
+      padding: 9px 4px;
+
+      transition: .2s;
+    }
+
+    .navbar nav a:hover {
+      color: #00dfff;
     }
 
     .navbar nav a.active {
-      color: #00d9ff;
-      font-weight: bold;
+      color: #00dfff;
+      font-weight: 800;
     }
 
-    .cart {
-      flex-shrink: 0;
 
-      width: 47px;
-      height: 47px;
+    /* ACTIONS */
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+
+      gap: 8px;
+
+      flex-shrink: 0;
+    }
+
+
+    /* LOGIN */
+
+    .login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 105px;
+      height: 44px;
+
+      padding: 0 13px;
+
+      border-radius: 11px;
+
+      border: 1px solid rgba(0, 224, 255, .28);
+
+      background: #061d33;
+
+      color: #fff;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+    .login:hover {
+      background: #092944;
+    }
+
+
+    /* CART */
+
+    .cart {
+      position: relative;
+
+      width: 50px;
+      height: 50px;
 
       border-radius: 13px;
 
       background: #08d8f5;
 
-      font-size: 21px;
+      color: #00121d;
 
-      position: relative;
+      font-size: 22px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
     }
 
     #cartCount {
       position: absolute;
 
-      top: 2px;
-      left: 2px;
+      top: 3px;
+      left: 3px;
 
-      min-width: 18px;
-      height: 18px;
+      min-width: 19px;
+      height: 19px;
+
+      padding: 1px 5px;
 
       border-radius: 20px;
 
       background: #ff2364;
-      color: white;
+      color: #fff;
 
-      font-size: 10px;
-      font-weight: bold;
+      font-size: 11px;
+      font-weight: 900;
 
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* ================= HERO ================= */
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
+    main {
+      width: 100%;
+      max-width: 100%;
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
 
     .hero {
-      min-height: calc(100vh - 65px);
+      width: 100%;
 
-      padding: 45px 18px;
+      min-height: calc(100vh - 70px);
+
+      padding: 60px 25px 45px;
 
       display: flex;
-      flex-direction: column;
 
       align-items: center;
       justify-content: center;
 
-      text-align: center;
+      gap: 45px;
 
       background:
         radial-gradient(
-          circle at 50% 20%,
-          rgba(0, 217, 255, 0.12),
-          transparent 40%
+          circle at 80% 30%,
+          rgba(0, 210, 255, .12),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 20% 80%,
+          rgba(255, 0, 100, .08),
+          transparent 30%
         ),
         #020d1c;
     }
 
+
     .hero-content {
       width: 100%;
       max-width: 650px;
+
+      text-align: right;
     }
+
 
     .eyebrow {
       color: #00d9ff;
 
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 17px;
 
-      margin-bottom: 15px;
-    }
-
-    .hero h1 {
-      font-size: 32px;
-      line-height: 1.4;
+      font-weight: 800;
 
       margin-bottom: 18px;
     }
+
+
+    .hero h1 {
+      font-size: 48px;
+
+      line-height: 1.3;
+
+      font-weight: 900;
+
+      margin-bottom: 20px;
+    }
+
 
     .hero h1 span {
       background:
         linear-gradient(
           90deg,
           #00d9ff,
+          #55bde8,
           #ff3c88
         );
 
       -webkit-background-clip: text;
+      background-clip: text;
+
       color: transparent;
     }
+
 
     .hero-text {
       color: #aeb9c8;
 
-      font-size: 15px;
+      font-size: 18px;
 
       line-height: 1.9;
 
       margin-bottom: 25px;
     }
 
-    /* ================= LOCATION ================= */
+
+    /* =====================================================
+       LOCATION
+    ===================================================== */
 
     .location-box {
       width: 100%;
-
-      padding: 10px;
+      max-width: 620px;
 
       display: flex;
-      flex-direction: column;
+      align-items: center;
 
       gap: 10px;
+
+      padding: 10px;
 
       background: #061a30;
 
       border: 1px solid #23405d;
 
-      border-radius: 17px;
+      border-radius: 18px;
     }
+
+
+    .location-icon {
+      width: 40px;
+      min-width: 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 22px;
+    }
+
 
     .location-box input {
-      width: 100%;
+      flex: 1;
+
+      min-width: 0;
 
       height: 50px;
 
-      padding: 0 15px;
+      background: transparent;
 
-      border: 1px solid #23405d;
+      border: 0;
+      outline: 0;
 
-      border-radius: 11px;
+      color: #fff;
 
-      outline: none;
+      font-size: 16px;
 
-      background: #020d1c;
-
-      color: white;
-
-      font-size: 15px;
+      text-align: right;
     }
+
 
     .location-box input::placeholder {
-      color: #8291a2;
+      color: #8795a7;
     }
 
+
     .location-box button {
-      width: 100%;
       height: 50px;
 
-      border-radius: 11px;
+      padding: 0 20px;
+
+      border-radius: 12px;
 
       background: #08d8f5;
 
       color: #00121d;
 
-      font-weight: bold;
+      font-size: 14px;
 
-      font-size: 15px;
+      font-weight: 900;
+
+      white-space: nowrap;
     }
 
-    #locationMsg {
+
+    .location-box button:active {
+      transform: scale(.98);
+    }
+
+
+    .location-msg {
+      min-height: 20px;
+
       margin-top: 10px;
 
       color: #00d9ff;
@@ -269,155 +445,1130 @@
       font-size: 13px;
     }
 
-    /* ================= BENEFITS ================= */
+
+    /* =====================================================
+       BENEFITS
+    ===================================================== */
 
     .benefits {
-      width: 100%;
-
       display: grid;
 
-      grid-template-columns: 1fr;
+      grid-template-columns:
+        repeat(3, 1fr);
 
-      gap: 10px;
+      gap: 15px;
 
       margin-top: 25px;
     }
 
-    .benefit {
-      padding: 15px;
 
-      display: flex;
-      align-items: center;
-
-      gap: 13px;
-
-      text-align: right;
+    .benefits > div {
+      padding: 20px;
 
       background: #061a30;
 
       border: 1px solid #173854;
 
-      border-radius: 15px;
+      border-radius: 18px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 7px;
     }
 
-    .benefit-icon {
-      font-size: 26px;
+
+    .benefits b {
+      font-size: 25px;
     }
 
-    .benefit strong {
-      display: block;
 
-      font-size: 15px;
-
-      margin-bottom: 4px;
+    .benefits strong {
+      font-size: 17px;
     }
 
-    .benefit small {
+
+    .benefits small {
       color: #8998aa;
 
-      font-size: 12px;
+      font-size: 13px;
     }
 
-    /* ================= IMAGE ================= */
+
+    /* =====================================================
+       HERO IMAGE
+    ===================================================== */
 
     .hero-art {
-      margin-top: 25px;
-
       width: 100%;
-      max-width: 330px;
+      max-width: 450px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
     }
+
 
     .delivery-image {
       width: 100%;
+      max-width: 430px;
+
       height: auto;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 20px 35px
+          rgba(0, 224, 255, .14)
+        );
     }
 
-    /* ================= DESKTOP ================= */
 
-    @media (min-width: 800px) {
+    /* =====================================================
+       SECTIONS
+    ===================================================== */
 
-      .navbar {
-        padding: 8px 30px;
-      }
+    .section {
+      width: 100%;
+      max-width: 1200px;
 
-      .navbar nav {
+      margin: auto;
+
+      padding: 70px 20px;
+    }
+
+
+    .section-head {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 30px;
+    }
+
+
+    .section-head h2 {
+      font-size: 30px;
+    }
+
+
+    .section-head a {
+      color: #00d9ff;
+
+      font-size: 15px;
+
+      font-weight: 700;
+    }
+
+
+    /* =====================================================
+       RESTAURANTS
+    ===================================================== */
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 20px;
+    }
+
+
+    .restaurant {
+      overflow: hidden;
+
+      background: #061a30;
+
+      border: 1px solid #173854;
+
+      border-radius: 20px;
+
+      transition: .2s;
+    }
+
+
+    .restaurant:hover {
+      transform: translateY(-3px);
+
+      border-color: rgba(0, 217, 255, .4);
+    }
+
+
+    .food {
+      height: 160px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle,
+          #103a52,
+          #061725
+        );
+
+      font-size: 70px;
+    }
+
+
+    .restaurant-image {
+      width: 100%;
+      height: 160px;
+
+      object-fit: cover;
+    }
+
+
+    .card-body {
+      padding: 18px;
+    }
+
+
+    .card-body h3 {
+      font-size: 20px;
+
+      margin-bottom: 7px;
+    }
+
+
+    .card-body p {
+      color: #8f9daf;
+
+      font-size: 13px;
+
+      margin-bottom: 15px;
+    }
+
+
+    .restaurant-info {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 8px;
+
+      color: #00d9ff;
+
+      font-size: 13px;
+
+      margin-bottom: 15px;
+    }
+
+
+    .restaurant-info span:last-child {
+      color: #8f9daf;
+    }
+
+
+    .restaurant-button {
+      width: 100%;
+
+      height: 45px;
+
+      border-radius: 12px;
+
+      background: #08d8f5;
+
+      color: #00121d;
+
+      font-size: 14px;
+
+      font-weight: 900;
+    }
+
+
+    .empty-state {
+      grid-column: 1 / -1;
+
+      padding: 45px 20px;
+
+      border: 1px dashed #23405d;
+
+      border-radius: 20px;
+
+      text-align: center;
+
+      background: #061a30;
+    }
+
+
+    .empty-state .empty-icon {
+      font-size: 45px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .empty-state h3 {
+      font-size: 20px;
+
+      margin-bottom: 8px;
+    }
+
+
+    .empty-state p {
+      color: #8998aa;
+
+      font-size: 14px;
+    }
+
+
+    /* =====================================================
+       OFFERS
+    ===================================================== */
+
+    .offers-box {
+      padding: 35px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #082943,
+          #061827
+        );
+
+      border: 1px solid #173854;
+
+      border-radius: 20px;
+    }
+
+
+    .offers-list {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
+    }
+
+
+    .offer-card {
+      overflow: hidden;
+
+      background: #061a30;
+
+      border: 1px solid #173854;
+
+      border-radius: 17px;
+    }
+
+
+    .offer-card img {
+      width: 100%;
+      height: 150px;
+
+      object-fit: cover;
+    }
+
+
+    .offer-content {
+      padding: 18px;
+    }
+
+
+    .offer-content h3 {
+      margin-bottom: 8px;
+
+      font-size: 18px;
+    }
+
+
+    .offer-content p {
+      color: #9eabbc;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+    }
+
+
+    .no-offers {
+      text-align: center;
+
+      padding: 25px;
+
+      color: #8998aa;
+    }
+
+
+    /* =====================================================
+       ABOUT
+    ===================================================== */
+
+    .about-box {
+      padding: 35px;
+
+      background: #061a30;
+
+      border: 1px solid #173854;
+
+      border-radius: 20px;
+    }
+
+
+    .about-box h2 {
+      margin-bottom: 15px;
+
+      font-size: 27px;
+    }
+
+
+    .about-box p:last-child {
+      color: #9eabbc;
+
+      line-height: 1.9;
+
+      font-size: 15px;
+    }
+
+
+    /* =====================================================
+       TRACK
+    ===================================================== */
+
+    .track {
+      width: 100%;
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 60px 20px;
+
+      background: #061a30;
+
+      border-top: 1px solid #173854;
+
+      border-bottom: 1px solid #173854;
+    }
+
+
+    .track h2 {
+      font-size: 27px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .track p {
+      color: #9eabbc;
+
+      margin-bottom: 20px;
+    }
+
+
+    .track-form {
+      display: flex;
+
+      gap: 10px;
+
+      width: 100%;
+      max-width: 600px;
+    }
+
+
+    .track-form input {
+      flex: 1;
+
+      min-width: 0;
+
+      height: 50px;
+
+      padding: 0 15px;
+
+      border: 1px solid #23405d;
+
+      border-radius: 12px;
+
+      background: #020d1c;
+
+      color: #fff;
+
+      outline: 0;
+    }
+
+
+    .track-form button {
+      height: 50px;
+
+      padding: 0 22px;
+
+      border-radius: 12px;
+
+      background: #08d8f5;
+
+      color: #00121d;
+
+      font-weight: 900;
+    }
+
+
+    #trackMsg {
+      margin-top: 15px;
+
+      color: #00d9ff;
+
+      line-height: 1.8;
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    footer {
+      width: 100%;
+
+      padding: 40px 20px;
+
+      text-align: center;
+
+      background: #010813;
+
+      border-top: 1px solid #173854;
+    }
+
+
+    footer img {
+      width: 70px;
+
+      margin: 0 auto 10px;
+    }
+
+
+    footer p {
+      color: #aab5c5;
+
+      margin-bottom: 10px;
+    }
+
+
+    footer small {
+      color: #68788b;
+    }
+
+
+    /* =====================================================
+       CART
+    ===================================================== */
+
+    #cartModal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 99999;
+    }
+
+
+    .cart-overlay {
+      position: absolute;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, .75);
+
+      backdrop-filter: blur(5px);
+    }
+
+
+    .cart-box {
+      position: absolute;
+
+      width: calc(100% - 30px);
+
+      max-width: 500px;
+
+      max-height: 85vh;
+
+      overflow: auto;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      background: #061a30;
+
+      border: 1px solid #23405d;
+
+      border-radius: 22px;
+
+      padding: 20px;
+    }
+
+
+    .cart-header {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      padding-bottom: 15px;
+
+      border-bottom: 1px solid #173854;
+    }
+
+
+    .cart-header h2 {
+      font-size: 21px;
+    }
+
+
+    .cart-header button {
+      width: 42px;
+      height: 42px;
+
+      border-radius: 10px;
+
+      background: #12304d;
+
+      color: #fff;
+
+      font-size: 20px;
+    }
+
+
+    .cart-items {
+      padding: 15px 0;
+    }
+
+
+    .cart-item {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      padding: 15px;
+
+      margin-bottom: 10px;
+
+      background: #081f37;
+
+      border: 1px solid #173854;
+
+      border-radius: 14px;
+    }
+
+
+    .cart-item strong {
+      font-size: 15px;
+    }
+
+
+    .cart-item p {
+      color: #00d9ff;
+
+      margin-top: 5px;
+
+      font-size: 13px;
+    }
+
+
+    .cart-item button {
+      padding: 9px 14px;
+
+      background: #ff2364;
+
+      color: #fff;
+
+      border-radius: 9px;
+    }
+
+
+    .cart-total {
+      display: flex;
+
+      justify-content: space-between;
+
+      padding: 18px 0;
+
+      border-top: 1px solid #173854;
+
+      border-bottom: 1px solid #173854;
+
+      font-size: 18px;
+    }
+
+
+    .cart-total strong {
+      color: #00d9ff;
+    }
+
+
+    .checkout-button {
+      width: 100%;
+
+      height: 52px;
+
+      margin-top: 15px;
+
+      border-radius: 13px;
+
+      background: #08d8f5;
+
+      color: #00121d;
+
+      font-weight: 900;
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    #cartMessage {
+      position: fixed !important;
+
+      bottom: 25px !important;
+
+      left: 50% !important;
+
+      transform:
+        translateX(-50%) !important;
+
+      width: max-content;
+
+      max-width: calc(100% - 30px);
+
+      padding: 12px 20px;
+
+      border-radius: 12px;
+
+      background: #00d9ff;
+
+      color: #00121d;
+
+      font-weight: 800;
+
+      z-index: 100000 !important;
+
+      text-align: center;
+    }
+
+
+    /* =====================================================
+       TABLET
+    ===================================================== */
+
+    @media (max-width: 900px) {
+
+      .hero {
         gap: 25px;
       }
 
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .cards {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+      .offers-list {
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       الشكل القديم مع Login ظاهر
+    ===================================================== */
+
+    @media (max-width: 700px) {
+
+      .navbar {
+        min-height: 67px;
+
+        padding: 7px 9px;
+
+        gap: 6px;
+      }
+
+
+      .brand {
+        width: 48px;
+        min-width: 48px;
+      }
+
+
+      .brand img {
+        width: 46px;
+        height: 46px;
+      }
+
+
+      .navbar nav {
+        justify-content: flex-start;
+
+        gap: 10px;
+
+        overflow-x: auto;
+
+        margin: 0 2px;
+      }
+
+
       .navbar nav a {
+        font-size: 11px;
+
+        padding: 8px 2px;
+      }
+
+
+      /* تسجيل الدخول يظل ظاهر */
+
+      .login {
+        display: flex;
+
+        min-width: 78px;
+
+        height: 42px;
+
+        padding: 0 8px;
+
+        font-size: 11px;
+      }
+
+
+      .cart {
+        width: 46px;
+        height: 46px;
+
+        border-radius: 12px;
+
+        font-size: 20px;
+      }
+
+
+      #cartCount {
+        top: 2px;
+        left: 2px;
+      }
+
+
+      /* HERO */
+
+      .hero {
+        width: 100%;
+
+        min-height: auto;
+
+        padding: 48px 18px 35px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 30px;
+      }
+
+
+      .hero-content {
+        width: 100%;
+
+        text-align: center;
+      }
+
+
+      .eyebrow {
+        font-size: 15px;
+
+        margin-bottom: 17px;
+      }
+
+
+      .hero h1 {
+        font-size: 34px;
+
+        line-height: 1.35;
+      }
+
+
+      .hero-text {
+        font-size: 15px;
+
+        line-height: 1.9;
+      }
+
+
+      /* LOCATION */
+
+      .location-box {
+        width: 100%;
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        padding: 9px;
+
+        border-radius: 18px;
+      }
+
+
+      .location-icon {
+        width: 35px;
+        min-width: 35px;
+      }
+
+
+      .location-box input {
+        width: calc(100% - 45px);
+
+        flex: 1;
+
+        height: 50px;
+
+        font-size: 15px;
+      }
+
+
+      .location-box button {
+        width: 100%;
+
+        height: 52px;
+
         font-size: 14px;
       }
 
-      .hero {
-        max-width: 1200px;
 
-        margin: auto;
-
-        flex-direction: row;
-
-        text-align: right;
-
-        gap: 60px;
-
-        padding: 70px 30px;
-      }
-
-      .hero-content {
-        flex: 1;
-      }
-
-      .hero-art {
-        flex: 0 0 400px;
-
-        margin-top: 0;
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-
-      .location-box {
-        flex-direction: row;
-      }
-
-      .location-box input {
-        flex: 1;
-      }
-
-      .location-box button {
-        width: 150px;
-      }
+      /* BENEFITS */
 
       .benefits {
-        grid-template-columns: repeat(3, 1fr);
+        width: 100%;
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+        margin-top: 20px;
       }
 
-      .benefit {
-        flex-direction: column;
+
+      .benefits > div {
+        min-height: 105px;
+
+        padding: 17px;
+
+        display: grid;
+
+        grid-template-columns: 50px 1fr;
+
+        grid-template-rows:
+          auto auto;
+
+        align-items: center;
+
+        text-align: right;
+      }
+
+
+      .benefits b {
+        grid-row: 1 / 3;
+
         text-align: center;
+      }
+
+
+      .benefits strong {
+        font-size: 17px;
+      }
+
+
+      /* HERO IMAGE */
+
+      .hero-art {
+        width: 100%;
+
+        max-width: 330px;
+
+        margin: auto;
+      }
+
+
+      .delivery-image {
+        width: 100%;
+
+        max-width: 310px;
+      }
+
+
+      /* SECTIONS */
+
+      .section {
+        padding: 50px 16px;
+      }
+
+
+      .section-head {
+        margin-bottom: 20px;
+      }
+
+
+      .section-head h2 {
+        font-size: 25px;
+      }
+
+
+      .section-head a {
+        font-size: 13px;
+      }
+
+
+      /* RESTAURANTS */
+
+      .cards {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+      }
+
+
+      .restaurant {
+        width: 100%;
+      }
+
+
+      .food,
+      .restaurant-image {
+        height: 155px;
+      }
+
+
+      /* OFFERS */
+
+      .offers-box {
+        padding: 20px;
+      }
+
+
+      .offers-list {
+        grid-template-columns: 1fr;
+      }
+
+
+      /* TRACK */
+
+      .track {
+        padding: 45px 16px;
+      }
+
+
+      .track-form {
+        flex-direction: column;
+
+        max-width: 100%;
+      }
+
+
+      .track-form input,
+      .track-form button {
+        width: 100%;
+      }
+
+
+      /* ABOUT */
+
+      .about-box {
+        padding: 24px 20px;
+      }
+
+
+      /* CART */
+
+      .cart-box {
+        width: calc(100% - 24px);
+
+        max-height: 82vh;
+
+        padding: 16px;
+
+        border-radius: 20px;
+      }
+
+    }
+
+
+    /* =====================================================
+       SMALL IPHONE
+    ===================================================== */
+
+    @media (max-width: 400px) {
+
+      .navbar nav {
+        gap: 7px;
+      }
+
+
+      .navbar nav a {
+        font-size: 10px;
+      }
+
+
+      .login {
+        min-width: 70px;
+
+        font-size: 10px;
+      }
+
+
+      .cart {
+        width: 43px;
+        height: 43px;
+      }
+
+
+      .hero h1 {
+        font-size: 29px;
+      }
+
+
+      .hero-text {
+        font-size: 14px;
       }
 
     }
 
   </style>
-
 </head>
 
 
 <body>
 
 
-  <!-- ================= NAVBAR ================= -->
+  <!-- =====================================================
+       NAVBAR
+  ====================================================== -->
 
   <header class="navbar">
 
     <a
       class="brand"
-      href="index.html">
+      href="index.html"
+      aria-label="الرئيسية">
 
       <img
         src="assets/logo.png"
-        alt="مندوب">
+        alt="مندوب"
+      >
 
     </a>
 
@@ -430,7 +1581,6 @@
         الرئيسية
       </a>
 
-      <!-- أهم تعديل -->
       <a href="restaurants.html">
         المطاعم
       </a>
@@ -454,26 +1604,45 @@
     </nav>
 
 
-    <button
-      class="cart"
-      type="button"
-      onclick="alert('السلة سيتم تفعيلها مع المنيو 🛒')">
+    <div class="nav-actions">
 
-      🛒
+      <button
+        type="button"
+        class="login"
+        onclick="openLogin()">
 
-      <span id="cartCount">
-        0
-      </span>
+        تسجيل الدخول
 
-    </button>
+      </button>
+
+
+      <button
+        type="button"
+        class="cart"
+        onclick="openCart()"
+        aria-label="السلة">
+
+        🛒
+
+        <span id="cartCount">
+          0
+        </span>
+
+      </button>
+
+    </div>
 
   </header>
 
 
-  <!-- ================= MAIN ================= -->
+  <!-- =====================================================
+       MAIN
+  ====================================================== -->
 
   <main>
 
+
+    <!-- HERO -->
 
     <section class="hero">
 
@@ -501,7 +1670,7 @@
 
         <p class="hero-text">
 
-          اطلب أكلك ومشترياتك واحتياجاتك اليومية
+          اطلب أكلك، مشترياتك أو احتياجاتك اليومية
           من أفضل المطاعم والمحلات.
 
         </p>
@@ -511,23 +1680,33 @@
 
         <div class="location-box">
 
+          <span class="location-icon">
+            📍
+          </span>
+
+
           <input
-            id="locationInput"
             type="text"
-            placeholder="اكتب عنوان التوصيل">
+            id="locationInput"
+            placeholder="أين تريد التوصيل؟"
+          >
+
 
           <button
             type="button"
-            onclick="saveLocation()">
+            onclick="setLocation()">
 
-            حفظ عنوان التوصيل 📍
+            تحديد موقعي
 
           </button>
 
         </div>
 
 
-        <p id="locationMsg"></p>
+        <p
+          id="locationMsg"
+          class="location-msg">
+        </p>
 
 
         <!-- BENEFITS -->
@@ -535,65 +1714,53 @@
         <div class="benefits">
 
 
-          <div class="benefit">
+          <div>
 
-            <div class="benefit-icon">
+            <b>
               🛡️
-            </div>
+            </b>
 
-            <div>
+            <strong>
+              آمن وموثوق
+            </strong>
 
-              <strong>
-                آمن وموثوق
-              </strong>
-
-              <small>
-                خدمة مضمونة
-              </small>
-
-            </div>
+            <small>
+              خدمة مضمونة
+            </small>
 
           </div>
 
 
-          <div class="benefit">
+          <div>
 
-            <div class="benefit-icon">
+            <b>
               🛵
-            </div>
+            </b>
 
-            <div>
+            <strong>
+              توصيل سريع
+            </strong>
 
-              <strong>
-                توصيل سريع
-              </strong>
-
-              <small>
-                في أسرع وقت
-              </small>
-
-            </div>
+            <small>
+              في أسرع وقت
+            </small>
 
           </div>
 
 
-          <div class="benefit">
+          <div>
 
-            <div class="benefit-icon">
+            <b>
               🎧
-            </div>
+            </b>
 
-            <div>
+            <strong>
+              دعم العملاء
+            </strong>
 
-              <strong>
-                دعم العملاء
-              </strong>
-
-              <small>
-                متاح لمساعدتك
-              </small>
-
-            </div>
+            <small>
+              متاح لمساعدتك
+            </small>
 
           </div>
 
@@ -604,14 +1771,15 @@
       </div>
 
 
-      <!-- IMAGE -->
+      <!-- DELIVERY IMAGE -->
 
       <div class="hero-art">
 
         <img
           class="delivery-image"
           src="assets/delivery.png"
-          alt="مندوب توصيل">
+          alt="مندوب توصيل"
+        >
 
       </div>
 
@@ -619,98 +1787,178 @@
     </section>
 
 
-    <!-- ================= OFFERS ================= -->
+    <!-- =====================================================
+         RESTAURANTS
+    ====================================================== -->
 
     <section
-      id="offers"
-      style="
-        padding:50px 18px;
-        text-align:center;
-        background:#031326;
-      ">
+      id="restaurants"
+      class="section">
 
-      <p class="eyebrow">
-        العروض
-      </p>
 
-      <h2>
-        عروض مندوب قريبًا 🎉
-      </h2>
+      <div class="section-head">
 
-      <p
-        style="
-          color:#9eabbc;
-          margin-top:12px;
-        ">
+        <h2>
+          المطاعم
+        </h2>
 
-        تابعنا للحصول على أحدث العروض.
 
-      </p>
+        <a href="restaurants.html">
+          عرض الكل ←
+        </a>
+
+      </div>
+
+
+      <div
+        id="restaurantList"
+        class="cards">
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            🍽️
+          </div>
+
+          <h3>
+            جاري تحميل المطاعم...
+          </h3>
+
+          <p>
+            انتظر لحظة
+          </p>
+
+        </div>
+
+      </div>
+
 
     </section>
 
 
-    <!-- ================= TRACK ================= -->
+    <!-- =====================================================
+         OFFERS
+    ====================================================== -->
+
+    <section
+      id="offers"
+      class="section">
+
+
+      <div class="section-head">
+
+        <h2>
+          العروض
+        </h2>
+
+      </div>
+
+
+      <div class="offers-box">
+
+
+        <div
+          id="offersList"
+          class="offers-list">
+
+          <div class="no-offers">
+            جاري تحميل العروض...
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ABOUT
+    ====================================================== -->
+
+    <section
+      id="about"
+      class="section">
+
+
+      <div class="about-box">
+
+
+        <p class="eyebrow">
+          عن مندوب
+        </p>
+
+
+        <h2>
+          توصيل سريع داخل مدينتك
+        </h2>
+
+
+        <p>
+
+          مندوب هي خدمة توصيل تساعدك في طلب الأكل
+          والمشتريات والاحتياجات اليومية بسهولة
+          وسرعة وأمان.
+
+        </p>
+
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         TRACK
+    ====================================================== -->
 
     <section
       id="track"
-      style="
-        padding:50px 18px;
-        text-align:center;
-      ">
+      class="track">
+
 
       <p class="eyebrow">
         تتبع طلبك
       </p>
 
+
       <h2>
         اعرف طلبك وصل لفين
       </h2>
 
-      <p
-        style="
-          color:#9eabbc;
-          margin-top:12px;
-        ">
 
-        رقم الطلب هيظهر لك بعد إتمام الطلب.
-
+      <p>
+        أدخل رقم الطلب لمتابعة حالته.
       </p>
 
-    </section>
+
+      <div class="track-form">
 
 
-    <!-- ================= ABOUT ================= -->
+        <input
+          type="text"
+          id="orderNumber"
+          placeholder="رقم الطلب"
+        >
 
-    <section
-      id="about"
-      style="
-        padding:50px 18px;
-        text-align:center;
-        background:#031326;
-      ">
 
-      <p class="eyebrow">
-        عن مندوب
-      </p>
+        <button
+          type="button"
+          onclick="trackOrder()">
 
-      <h2>
-        توصيل سريع داخل مدينتك
-      </h2>
+          تتبع الطلب
 
-      <p
-        style="
-          max-width:600px;
-          margin:15px auto 0;
-          color:#9eabbc;
-          line-height:1.9;
-        ">
+        </button>
 
-        مندوب خدمة توصيل تساعدك في طلب
-        الأكل والمشتريات والاحتياجات اليومية
-        بسهولة وسرعة وأمان.
 
-      </p>
+      </div>
+
+
+      <p id="trackMsg"></p>
+
 
     </section>
 
@@ -718,105 +1966,1490 @@
   </main>
 
 
-  <!-- ================= FOOTER ================= -->
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
 
-  <footer
-    id="contact"
-    style="
-      padding:35px 15px;
-      text-align:center;
-      background:#010813;
-      border-top:1px solid #173854;
-    ">
+  <footer id="contact">
+
 
     <img
       src="assets/logo.png"
       alt="مندوب"
-      style="
-        width:65px;
-        margin:auto;
-      ">
+    >
 
-    <p
-      style="
-        color:#aab5c5;
-        margin-top:10px;
-      ">
 
+    <p>
       نوصل طلبك.. بسرعة وأمان
-
     </p>
 
-    <small
-      style="
-        display:block;
-        color:#68788b;
-        margin-top:10px;
-      ">
 
+    <small>
       © 2026 مندوب — جميع الحقوق محفوظة
-
     </small>
+
 
   </footer>
 
 
-  <script>
+  <!-- =====================================================
+       FIREBASE
+  ====================================================== -->
 
-    /* ================= LOCATION ================= */
+  <script type="module">
 
-    function saveLocation() {
-
-      const input =
-        document.getElementById("locationInput");
-
-      const msg =
-        document.getElementById("locationMsg");
-
-      const value =
-        input.value.trim();
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
-      if (!value) {
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc,
+      serverTimestamp,
+      doc,
+      getDoc
+    } from
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
-        msg.textContent =
-          "اكتب عنوان التوصيل أولاً 📍";
+
+    /* =====================================================
+       FIREBASE CONFIG
+    ===================================================== */
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+
+      authDomain:
+        "mandoub-dv.firebaseapp.com",
+
+      projectId:
+        "mandoub-dv",
+
+      storageBucket:
+        "mandoub-dv.firebasestorage.app",
+
+      messagingSenderId:
+        "311140400335",
+
+      appId:
+        "1:311140400335:web:db198b7c53259c53594bba",
+
+      measurementId:
+        "G-7V1LJQYYXD"
+
+    };
+
+
+    let app;
+    let db;
+
+    let firebaseReady = false;
+
+
+    try {
+
+      app =
+        initializeApp(firebaseConfig);
+
+      db =
+        getFirestore(app);
+
+      firebaseReady = true;
+
+      console.log(
+        "Firebase متصل بنجاح ✅"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Firebase Error:",
+        error
+      );
+
+      firebaseReady = false;
+
+    }
+
+
+    /* =====================================================
+       CART
+       السلة محفوظة في localStorage
+    ====================================================== */
+
+    let cart = [];
+
+
+    function loadCart() {
+
+      try {
+
+        const saved =
+          localStorage.getItem("mandoubCart");
+
+        if (saved) {
+
+          cart =
+            JSON.parse(saved);
+
+        }
+
+        if (!Array.isArray(cart)) {
+
+          cart = [];
+
+        }
+
+      } catch {
+
+        cart = [];
+
+      }
+
+      updateCartCount();
+
+    }
+
+
+    function saveCart() {
+
+      localStorage.setItem(
+        "mandoubCart",
+        JSON.stringify(cart)
+      );
+
+      updateCartCount();
+
+    }
+
+
+    function updateCartCount() {
+
+      const count =
+        document.getElementById(
+          "cartCount"
+        );
+
+      if (!count) return;
+
+
+      count.textContent =
+        cart.reduce(
+          (total, item) =>
+            total +
+            Number(item.quantity || 1),
+          0
+        );
+
+    }
+
+
+    function openCart() {
+
+      const old =
+        document.getElementById(
+          "cartModal"
+        );
+
+      if (old) {
+        old.remove();
+      }
+
+
+      let itemsHTML = "";
+
+
+      if (cart.length === 0) {
+
+        itemsHTML = `
+
+          <div
+            style="
+              text-align:center;
+              padding:35px 15px;
+            "
+          >
+
+            <div
+              style="
+                font-size:48px;
+                margin-bottom:10px;
+              "
+            >
+              🛒
+            </div>
+
+            <h3>
+              السلة فارغة
+            </h3>
+
+            <p
+              style="
+                color:#8998aa;
+                margin-top:8px;
+              "
+            >
+              اختار منتج من المطاعم لإضافته للسلة.
+            </p>
+
+          </div>
+
+        `;
+
+      } else {
+
+
+        cart.forEach(
+          (item, index) => {
+
+            const quantity =
+              Number(
+                item.quantity || 1
+              );
+
+
+            const price =
+              Number(
+                item.price || 0
+              );
+
+
+            itemsHTML += `
+
+              <div class="cart-item">
+
+                <div>
+
+                  <strong>
+                    ${escapeHTML(
+                      item.name || "منتج"
+                    )}
+                  </strong>
+
+                  <p>
+                    ${price * quantity} جنيه
+                    × ${quantity}
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  onclick="
+                    removeFromCart(${index})
+                  "
+                >
+                  حذف
+                </button>
+
+              </div>
+
+            `;
+
+          }
+        );
+
+      }
+
+
+      const total =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            (
+              Number(item.price || 0) *
+              Number(item.quantity || 1)
+            ),
+          0
+        );
+
+
+      const modal =
+        document.createElement("div");
+
+      modal.id =
+        "cartModal";
+
+
+      modal.innerHTML = `
+
+        <div
+          class="cart-overlay"
+          onclick="closeCart()"
+        ></div>
+
+
+        <div class="cart-box">
+
+
+          <div class="cart-header">
+
+            <h2>
+              🛒 سلة الطلبات
+            </h2>
+
+
+            <button
+              type="button"
+              onclick="closeCart()"
+            >
+              ✕
+            </button>
+
+          </div>
+
+
+          <div class="cart-items">
+
+            ${itemsHTML}
+
+          </div>
+
+
+          ${
+            cart.length > 0
+              ? `
+
+                <div class="cart-total">
+
+                  <span>
+                    الإجمالي
+                  </span>
+
+                  <strong>
+                    ${total} جنيه
+                  </strong>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="checkout-button"
+                  onclick="checkout()"
+                >
+                  إتمام الطلب
+                </button>
+
+              `
+              : ""
+          }
+
+
+        </div>
+
+      `;
+
+
+      document.body.appendChild(
+        modal
+      );
+
+    }
+
+
+    function closeCart() {
+
+      const modal =
+        document.getElementById(
+          "cartModal"
+        );
+
+      if (modal) {
+        modal.remove();
+      }
+
+    }
+
+
+    function removeFromCart(index) {
+
+      cart.splice(index, 1);
+
+      saveCart();
+
+      openCart();
+
+    }
+
+
+    /* =====================================================
+       CHECKOUT
+    ====================================================== */
+
+    async function checkout() {
+
+      if (cart.length === 0) {
+
+        showMessage(
+          "السلة فارغة."
+        );
 
         return;
 
       }
 
 
-      localStorage.setItem(
-        "deliveryLocation",
-        value
-      );
+      if (!firebaseReady) {
+
+        showMessage(
+          "Firebase غير متصل ❌"
+        );
+
+        return;
+
+      }
+
+
+      const locationInput =
+        document.getElementById(
+          "locationInput"
+        );
+
+
+      const location =
+        locationInput
+          ? locationInput.value.trim()
+          : "";
+
+
+      if (!location) {
+
+        showMessage(
+          "حدد عنوان التوصيل أولاً 📍"
+        );
+
+        closeCart();
+
+        locationInput?.focus();
+
+        return;
+
+      }
+
+
+      const total =
+        cart.reduce(
+          (sum, item) =>
+            sum +
+            (
+              Number(item.price || 0) *
+              Number(item.quantity || 1)
+            ),
+          0
+        );
+
+
+      try {
+
+
+        const order = {
+
+          items:
+            cart.map(item => ({
+
+              name:
+                item.name || "منتج",
+
+              price:
+                Number(item.price || 0),
+
+              quantity:
+                Number(
+                  item.quantity || 1
+                ),
+
+              restaurant:
+                item.restaurant || ""
+
+            })),
+
+
+          total:
+
+
+            total,
+
+
+          location:
+
+
+            location,
+
+
+          status:
+
+
+            "جديد",
+
+
+          driverName:
+
+
+            "",
+
+
+          customerName:
+
+
+            "",
+
+
+          phone:
+
+
+            "",
+
+
+          createdAt:
+
+
+            serverTimestamp()
+
+        };
+
+
+        const ref =
+          await addDoc(
+
+            collection(
+              db,
+              "orders"
+            ),
+
+            order
+
+          );
+
+
+        localStorage.setItem(
+          "lastOrderId",
+          ref.id
+        );
+
+
+        cart = [];
+
+        saveCart();
+
+
+        closeCart();
+
+
+        const orderNumber =
+          document.getElementById(
+            "orderNumber"
+          );
+
+
+        if (orderNumber) {
+
+          orderNumber.value =
+            ref.id;
+
+        }
+
+
+        showMessage(
+
+          "تم تسجيل الطلب ✅ رقم الطلب: " +
+          ref.id
+
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+        showMessage(
+          "حدث خطأ أثناء تسجيل الطلب ❌"
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOCATION
+    ====================================================== */
+
+    function setLocation() {
+
+      const input =
+        document.getElementById(
+          "locationInput"
+        );
+
+
+      const msg =
+        document.getElementById(
+          "locationMsg"
+        );
+
+
+      /*
+        لو المستخدم كتب العنوان بنفسه
+      */
+
+      if (
+        input &&
+        input.value.trim()
+      ) {
+
+        const value =
+          input.value.trim();
+
+
+        localStorage.setItem(
+          "deliveryLocation",
+          value
+        );
+
+
+        msg.textContent =
+          "تم حفظ عنوان التوصيل ✅";
+
+
+        return;
+
+      }
+
+
+      /*
+        محاولة الحصول على الموقع الحقيقي
+      */
+
+      if (
+        !navigator.geolocation
+      ) {
+
+        msg.textContent =
+          "اكتب عنوان التوصيل يدويًا.";
+
+        return;
+
+      }
 
 
       msg.textContent =
-        "تم حفظ عنوان التوصيل ✅";
+        "جاري تحديد موقعك 📍...";
+
+
+      navigator.geolocation.getCurrentPosition(
+
+        position => {
+
+          const lat =
+            position.coords.latitude;
+
+          const lng =
+            position.coords.longitude;
+
+
+          const location =
+            `موقعي الحالي: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+
+          input.value =
+            location;
+
+
+          localStorage.setItem(
+            "deliveryLocation",
+            location
+          );
+
+
+          msg.textContent =
+            "تم تحديد موقعك وحفظه ✅";
+
+        },
+
+
+        error => {
+
+          console.error(
+            error
+          );
+
+
+          msg.textContent =
+            "لم نتمكن من تحديد موقعك، اكتب العنوان يدويًا.";
+
+        },
+
+
+        {
+          enableHighAccuracy: true,
+
+          timeout: 10000,
+
+          maximumAge: 0
+
+        }
+
+      );
 
     }
 
 
-    /* تحميل العنوان المحفوظ */
+    function loadSavedLocation() {
 
-    const savedLocation =
-      localStorage.getItem(
-        "deliveryLocation"
+      const saved =
+        localStorage.getItem(
+          "deliveryLocation"
+        );
+
+
+      const input =
+        document.getElementById(
+          "locationInput"
+        );
+
+
+      if (
+        saved &&
+        input
+      ) {
+
+        input.value =
+          saved;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOAD RESTAURANTS
+       من Firebase
+    ====================================================== */
+
+    async function loadRestaurants() {
+
+      const container =
+        document.getElementById(
+          "restaurantList"
+        );
+
+
+      if (!container) return;
+
+
+      if (!firebaseReady) {
+
+        container.innerHTML = `
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              ⚠️
+            </div>
+
+            <h3>
+              تعذر الاتصال
+            </h3>
+
+            <p>
+              تأكد من إعدادات Firebase.
+            </p>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      try {
+
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "restaurants"
+            )
+          );
+
+
+        if (
+          snapshot.empty
+        ) {
+
+          container.innerHTML = `
+
+            <div class="empty-state">
+
+              <div class="empty-icon">
+                🍽️
+              </div>
+
+              <h3>
+                لا توجد مطاعم حاليًا
+              </h3>
+
+              <p>
+                المطاعم التي تضيفها من لوحة الأدمن ستظهر هنا.
+              </p>
+
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        let counter = 0;
+
+
+        snapshot.forEach(
+          restaurantDoc => {
+
+            if (counter >= 4) {
+              return;
+            }
+
+
+            const restaurant =
+              restaurantDoc.data();
+
+
+            const id =
+              restaurantDoc.id;
+
+
+            const name =
+              restaurant.name ||
+              restaurant.title ||
+              "مطعم";
+
+
+            const category =
+              restaurant.category ||
+              "مطاعم";
+
+
+            const rating =
+              restaurant.rating ||
+              "جديد";
+
+
+            const delivery =
+              restaurant.deliveryFee ??
+              restaurant.delivery ||
+              "حسب المنطقة";
+
+
+            const image =
+              restaurant.image ||
+              restaurant.imageUrl ||
+              "";
+
+
+            const card =
+              document.createElement(
+                "article"
+              );
+
+
+            card.className =
+              "restaurant";
+
+
+            const visual =
+              image
+
+                ? `
+
+                  <img
+                    class="restaurant-image"
+                    src="${escapeAttribute(image)}"
+                    alt="${escapeAttribute(name)}"
+                  >
+
+                `
+
+                : `
+
+                  <div class="food">
+                    🍽️
+                  </div>
+
+                `;
+
+
+            card.innerHTML = `
+
+              ${visual}
+
+
+              <div class="card-body">
+
+
+                <h3>
+                  ${escapeHTML(name)}
+                </h3>
+
+
+                <p>
+                  ${escapeHTML(category)}
+                </p>
+
+
+                <div
+                  class="restaurant-info"
+                >
+
+                  <span>
+                    ⭐ ${escapeHTML(String(rating))}
+                  </span>
+
+
+                  <span>
+                    توصيل ${escapeHTML(String(delivery))}
+                  </span>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  class="restaurant-button"
+                  onclick="
+                    openRestaurant('${escapeAttribute(id)}')
+                  "
+                >
+                  عرض المنيو
+                </button>
+
+
+              </div>
+
+            `;
+
+
+            container.appendChild(
+              card
+            );
+
+
+            counter++;
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Restaurants Error:",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div class="empty-state">
+
+            <div class="empty-icon">
+              ⚠️
+            </div>
+
+            <h3>
+              حدث خطأ
+            </h3>
+
+            <p>
+              لم نتمكن من تحميل المطاعم.
+            </p>
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       OPEN RESTAURANT
+    ====================================================== */
+
+    function openRestaurant(id) {
+
+      if (!id) return;
+
+
+      /*
+        صفحة المطاعم المنفصلة.
+        نرسل رقم المطعم في الرابط.
+      */
+
+      window.location.href =
+        "restaurants.html?id=" +
+        encodeURIComponent(id);
+
+    }
+
+
+    /* =====================================================
+       LOAD OFFERS
+       من Firebase
+    ====================================================== */
+
+    async function loadOffers() {
+
+      const container =
+        document.getElementById(
+          "offersList"
+        );
+
+
+      if (!container) return;
+
+
+      if (!firebaseReady) {
+
+        container.innerHTML = `
+
+          <div class="no-offers">
+            العروض غير متاحة حاليًا.
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      try {
+
+        const snapshot =
+          await getDocs(
+            collection(
+              db,
+              "offers"
+            )
+          );
+
+
+        if (
+          snapshot.empty
+        ) {
+
+          container.innerHTML = `
+
+            <div class="no-offers">
+              لا توجد عروض حاليًا 🎉
+            </div>
+
+          `;
+
+          return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        let counter = 0;
+
+
+        snapshot.forEach(
+          offerDoc => {
+
+            if (counter >= 6) {
+              return;
+            }
+
+
+            const offer =
+              offerDoc.data();
+
+
+            const title =
+              offer.title ||
+              offer.name ||
+              "عرض";
+
+
+            const description =
+              offer.description ||
+              offer.text ||
+              "";
+
+
+            const image =
+              offer.image ||
+              offer.imageUrl ||
+              "";
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+
+            card.className =
+              "offer-card";
+
+
+            card.innerHTML = `
+
+              ${
+                image
+                  ? `
+
+                    <img
+                      src="${escapeAttribute(image)}"
+                      alt="${escapeAttribute(title)}"
+                    >
+
+                  `
+                  : ""
+              }
+
+
+              <div class="offer-content">
+
+                <h3>
+                  ${escapeHTML(title)}
+                </h3>
+
+
+                <p>
+                  ${escapeHTML(description)}
+                </p>
+
+              </div>
+
+            `;
+
+
+            container.appendChild(
+              card
+            );
+
+
+            counter++;
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Offers Error:",
+          error
+        );
+
+
+        container.innerHTML = `
+
+          <div class="no-offers">
+            تعذر تحميل العروض.
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+    /* =====================================================
+       TRACK ORDER
+    ====================================================== */
+
+    async function trackOrder() {
+
+      const input =
+        document.getElementById(
+          "orderNumber"
+        );
+
+
+      const msg =
+        document.getElementById(
+          "trackMsg"
+        );
+
+
+      const id =
+        input.value.trim();
+
+
+      if (!id) {
+
+        msg.textContent =
+          "اكتب رقم الطلب.";
+
+        return;
+
+      }
+
+
+      if (!firebaseReady) {
+
+        msg.textContent =
+          "Firebase غير متصل.";
+
+        return;
+
+      }
+
+
+      msg.textContent =
+        "جاري البحث عن الطلب...";
+
+
+      try {
+
+
+        const reference =
+          doc(
+            db,
+            "orders",
+            id
+          );
+
+
+        const snapshot =
+          await getDoc(
+            reference
+          );
+
+
+        if (
+          !snapshot.exists()
+        ) {
+
+          msg.textContent =
+            "لم يتم العثور على الطلب.";
+
+          return;
+
+        }
+
+
+        const order =
+          snapshot.data();
+
+
+        const status =
+          order.status ||
+          "جديد";
+
+
+        const driver =
+          order.driverName ||
+          "لم يتم تحديد الطيار بعد";
+
+
+        const total =
+          order.total ||
+          0;
+
+
+        msg.innerHTML = `
+
+          <strong>
+            حالة الطلب:
+            ${escapeHTML(String(status))}
+          </strong>
+
+          <br>
+
+          الإجمالي:
+          ${escapeHTML(String(total))}
+          جنيه
+
+          <br>
+
+          الطيار:
+          ${escapeHTML(String(driver))}
+
+        `;
+
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        msg.textContent =
+          "حدث خطأ أثناء تتبع الطلب.";
+
+      }
+
+    }
+
+
+    /* =====================================================
+       LOGIN
+    ====================================================== */
+
+    function openLogin() {
+
+      showMessage(
+        "صفحة تسجيل الدخول سيتم تفعيلها قريبًا 👤"
+      );
+
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ====================================================== */
+
+    function showMessage(text) {
+
+      const old =
+        document.getElementById(
+          "cartMessage"
+        );
+
+
+      if (old) {
+        old.remove();
+      }
+
+
+      const message =
+        document.createElement(
+          "div"
+        );
+
+
+      message.id =
+        "cartMessage";
+
+
+      message.textContent =
+        text;
+
+
+      document.body.appendChild(
+        message
       );
 
 
-    if (savedLocation) {
+      setTimeout(
+        () => {
 
-      document.getElementById(
-        "locationInput"
-      ).value = savedLocation;
+          if (message) {
+            message.remove();
+          }
+
+        },
+        3500
+      );
 
     }
 
-  </script>
 
+    /* =====================================================
+       SECURITY / HTML HELPERS
+    ====================================================== */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    }
+
+
+    function escapeAttribute(value) {
+
+      return String(value)
+        .replaceAll("\\", "\\\\")
+        .replaceAll("'", "\\'");
+
+    }
+
+
+    /* =====================================================
+       GLOBAL FUNCTIONS
+    ====================================================== */
+
+    window.openCart =
+      openCart;
+
+    window.closeCart =
+      closeCart;
+
+    window.removeFromCart =
+      removeFromCart;
+
+    window.checkout =
+      checkout;
+
+    window.setLocation =
+      setLocation;
+
+    window.trackOrder =
+      trackOrder;
+
+    window.openLogin =
+      openLogin;
+
+    window.showMessage =
+      showMessage;
+
+    window.openRestaurant =
+      openRestaurant;
+
+
+    /* =====================================================
+       START
+    ====================================================== */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+
+        loadCart();
+
+        loadSavedLocation();
+
+        loadRestaurants();
+
+        loadOffers();
+
+      }
+    );
+
+  </script>
 
 </body>
 
