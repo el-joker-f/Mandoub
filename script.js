@@ -1,60 +1,89 @@
 /* =====================================================
    MANDOUB - SCRIPT.JS
-   السلة + تحديد الموقع + إرسال الطلب إلى Firebase
+   Firebase + Cart + Location + Tracking
 ===================================================== */
 
-let cart = [];
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-let selectedLocation = "";
-
-let firebaseReady = false;
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
 /* =====================================================
    FIREBASE
 ===================================================== */
 
-function waitForFirebase() {
+const firebaseConfig = {
 
-  return new Promise((resolve) => {
+  apiKey:
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
-    if (window.firebaseReady === true) {
-      firebaseReady = true;
-      resolve(true);
-      return;
-    }
+  authDomain:
+    "mandoub-dv.firebaseapp.com",
 
-    let tries = 0;
+  projectId:
+    "mandoub-dv",
 
-    const timer = setInterval(() => {
+  storageBucket:
+    "mandoub-dv.firebasestorage.app",
 
-      tries++;
+  messagingSenderId:
+    "311140400335",
 
-      if (window.firebaseReady === true) {
+  appId:
+    "1:311140400335:web:db198b7c53259c53594bba",
 
-        clearInterval(timer);
+  measurementId:
+    "G-7V1LJQYYXD"
 
-        firebaseReady = true;
+};
 
-        resolve(true);
 
-      }
+let db = null;
+let firebaseReady = false;
 
-      if (tries >= 50) {
 
-        clearInterval(timer);
+try {
 
-        firebaseReady = false;
+  const app =
+    initializeApp(firebaseConfig);
 
-        resolve(false);
+  db =
+    getFirestore(app);
 
-      }
+  firebaseReady = true;
 
-    }, 100);
+  console.log(
+    "Firebase متصل بنجاح ✅"
+  );
 
-  });
+} catch (error) {
+
+  console.error(
+    "Firebase Error:",
+    error
+  );
+
+  firebaseReady = false;
 
 }
+
+
+/* =====================================================
+   CART
+===================================================== */
+
+let cart = [];
+
+let selectedLocation = "";
 
 
 /* =====================================================
@@ -63,38 +92,62 @@ function waitForFirebase() {
 
 function showMessage(message) {
 
-  let old = document.getElementById("siteMessage");
+  const old =
+    document.getElementById("siteMessage");
 
   if (old) {
     old.remove();
   }
 
-  const box = document.createElement("div");
+  const box =
+    document.createElement("div");
 
-  box.id = "siteMessage";
+  box.id =
+    "siteMessage";
 
-  box.textContent = message;
+  box.textContent =
+    message;
 
-  box.style.position = "fixed";
-  box.style.left = "50%";
-  box.style.bottom = "25px";
-  box.style.transform = "translateX(-50%)";
-  box.style.zIndex = "99999";
-  box.style.width = "calc(100% - 30px)";
-  box.style.maxWidth = "430px";
-  box.style.padding = "15px 18px";
-  box.style.borderRadius = "15px";
-  box.style.background = "#00dfff";
-  box.style.color = "#00121d";
-  box.style.fontWeight = "900";
-  box.style.textAlign = "center";
-  box.style.boxShadow = "0 10px 35px rgba(0,0,0,.35)";
+  Object.assign(box.style, {
+
+    position: "fixed",
+
+    left: "50%",
+
+    bottom: "25px",
+
+    transform: "translateX(-50%)",
+
+    zIndex: "100000",
+
+    width: "calc(100% - 30px)",
+
+    maxWidth: "430px",
+
+    padding: "15px 18px",
+
+    borderRadius: "15px",
+
+    background: "#00dfff",
+
+    color: "#00121d",
+
+    fontWeight: "900",
+
+    textAlign: "center",
+
+    boxShadow:
+      "0 10px 35px rgba(0,0,0,.35)"
+
+  });
 
   document.body.appendChild(box);
 
   setTimeout(() => {
 
-    box.remove();
+    if (box) {
+      box.remove();
+    }
 
   }, 3000);
 
@@ -108,11 +161,14 @@ function showMessage(message) {
 function setLocation() {
 
   const input =
-    document.getElementById("locationInput");
+    document.getElementById(
+      "locationInput"
+    );
 
   const message =
-    document.getElementById("locationMsg");
-
+    document.getElementById(
+      "locationMsg"
+    );
 
   if (!navigator.geolocation) {
 
@@ -123,14 +179,12 @@ function setLocation() {
 
   }
 
-
   message.textContent =
     "📍 جاري تحديد موقعك...";
 
-
   navigator.geolocation.getCurrentPosition(
 
-    async function(position) {
+    async (position) => {
 
       const latitude =
         position.coords.latitude;
@@ -138,18 +192,14 @@ function setLocation() {
       const longitude =
         position.coords.longitude;
 
-
       selectedLocation =
         `${latitude}, ${longitude}`;
 
-
       input.value =
-        `تم تحديد موقعك 📍`;
-
+        "تم تحديد موقعك 📍";
 
       message.textContent =
         "✅ تم تحديد موقعك بنجاح";
-
 
       localStorage.setItem(
         "mandoub_location",
@@ -159,41 +209,36 @@ function setLocation() {
 
       try {
 
-        await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`,
-          {
-            headers: {
-              "Accept": "application/json"
-            }
-          }
-        )
-        .then(res => res.json())
-        .then(data => {
+        const response =
+          await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`
+          );
 
-          if (
-            data &&
-            data.display_name
-          ) {
+        const data =
+          await response.json();
 
-            input.value =
-              data.display_name;
+        if (
+          data &&
+          data.display_name
+        ) {
 
-            selectedLocation =
-              data.display_name;
+          selectedLocation =
+            data.display_name;
 
-            localStorage.setItem(
-              "mandoub_location",
-              selectedLocation
-            );
+          input.value =
+            data.display_name;
 
-          }
+          localStorage.setItem(
+            "mandoub_location",
+            selectedLocation
+          );
 
-        });
+        }
 
       } catch (error) {
 
         console.log(
-          "لم يتم جلب اسم العنوان",
+          "تعذر الحصول على اسم العنوان",
           error
         );
 
@@ -201,36 +246,29 @@ function setLocation() {
 
     },
 
-    function(error) {
+    (error) => {
 
       console.error(
         "Location Error:",
         error
       );
 
-
       if (error.code === 1) {
 
         message.textContent =
-          "❌ لازم تسمح للموقع بالوصول إلى موقعك";
+          "❌ اسمح للموقع بالوصول إلى موقعك";
 
-      }
-
-      else if (error.code === 2) {
+      } else if (error.code === 2) {
 
         message.textContent =
           "❌ تعذر تحديد موقعك";
 
-      }
-
-      else if (error.code === 3) {
+      } else if (error.code === 3) {
 
         message.textContent =
-          "❌ انتهى وقت تحديد الموقع، حاول مرة أخرى";
+          "❌ انتهى وقت تحديد الموقع";
 
-      }
-
-      else {
+      } else {
 
         message.textContent =
           "❌ حدث خطأ أثناء تحديد الموقع";
@@ -251,41 +289,6 @@ function setLocation() {
 
 
 /* =====================================================
-   LOAD SAVED LOCATION
-===================================================== */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-
-    const saved =
-      localStorage.getItem(
-        "mandoub_location"
-      );
-
-    if (!saved) {
-      return;
-    }
-
-    selectedLocation = saved;
-
-    const input =
-      document.getElementById(
-        "locationInput"
-      );
-
-    if (input) {
-
-      input.value =
-        saved;
-
-    }
-
-  }
-);
-
-
-/* =====================================================
    ADD TO CART
 ===================================================== */
 
@@ -296,18 +299,15 @@ function addToCart(name, price) {
       item => item.name === name
     );
 
-
   if (existing) {
 
     existing.quantity++;
 
-  }
-
-  else {
+  } else {
 
     cart.push({
 
-      name: name,
+      name,
 
       price: Number(price),
 
@@ -317,15 +317,11 @@ function addToCart(name, price) {
 
   }
 
-
   updateCartCount();
 
   showMessage(
     `✅ تم إضافة ${name} إلى السلة`
   );
-
-
-  openCart();
 
 }
 
@@ -336,16 +332,14 @@ function addToCart(name, price) {
 
 function updateCartCount() {
 
-  const countElement =
+  const element =
     document.getElementById(
       "cartCount"
     );
 
-
-  if (!countElement) {
+  if (!element) {
     return;
   }
-
 
   const count =
     cart.reduce(
@@ -354,8 +348,7 @@ function updateCartCount() {
       0
     );
 
-
-  countElement.textContent =
+  element.textContent =
     count;
 
 }
@@ -369,12 +362,9 @@ function getCartTotal() {
 
   return cart.reduce(
 
-    (total, item) => {
-
-      return total +
-        (item.price * item.quantity);
-
-    },
+    (total, item) =>
+      total +
+      item.price * item.quantity,
 
     0
 
@@ -394,7 +384,6 @@ function openCart() {
       "cartModal"
     );
 
-
   if (!modal) {
 
     createCartModal();
@@ -406,10 +395,8 @@ function openCart() {
 
   }
 
-
   modal.style.display =
     "block";
-
 
   renderCart();
 
@@ -417,7 +404,7 @@ function openCart() {
 
 
 /* =====================================================
-   CREATE CART MODAL
+   CREATE CART
 ===================================================== */
 
 function createCartModal() {
@@ -427,7 +414,6 @@ function createCartModal() {
 
   modal.id =
     "cartModal";
-
 
   modal.innerHTML = `
 
@@ -447,23 +433,22 @@ function createCartModal() {
         <button
           type="button"
           onclick="closeCart()">
+
           ✕
+
         </button>
 
       </div>
-
 
       <div
         id="cartItems"
         class="cart-items">
       </div>
 
-
       <div
         id="cartTotal"
         class="cart-total">
       </div>
-
 
       <button
         id="checkoutButton"
@@ -475,19 +460,18 @@ function createCartModal() {
 
       </button>
 
-
       <p
         id="cartMessage"
         style="
           margin-top:12px;
           color:#00dfff;
+          text-align:center;
         ">
       </p>
 
     </div>
 
   `;
-
 
   document.body.appendChild(
     modal
@@ -506,7 +490,6 @@ function closeCart() {
     document.getElementById(
       "cartModal"
     );
-
 
   if (modal) {
 
@@ -529,13 +512,12 @@ function renderCart() {
       "cartItems"
     );
 
-  const total =
+  const totalElement =
     document.getElementById(
       "cartTotal"
     );
 
-
-  if (!container || !total) {
+  if (!container || !totalElement) {
     return;
   }
 
@@ -562,8 +544,7 @@ function renderCart() {
 
     `;
 
-
-    total.innerHTML = "";
+    totalElement.innerHTML = "";
 
     return;
 
@@ -576,17 +557,13 @@ function renderCart() {
   cart.forEach(
     (item, index) => {
 
-      const itemElement =
-        document.createElement(
-          "div"
-        );
+      const element =
+        document.createElement("div");
 
-
-      itemElement.className =
+      element.className =
         "cart-item";
 
-
-      itemElement.innerHTML = `
+      element.innerHTML = `
 
         <div>
 
@@ -600,7 +577,6 @@ function renderCart() {
 
         </div>
 
-
         <div
           style="
             display:flex;
@@ -610,35 +586,23 @@ function renderCart() {
 
           <button
             type="button"
-            style="
-              background:#00dfff;
-              color:#00121d;
-              padding:7px 10px;
-            "
             onclick="increaseItem(${index})">
 
             +
 
           </button>
 
-
           <strong>
             ${item.quantity}
           </strong>
 
-
           <button
             type="button"
-            style="
-              background:#173b55;
-              padding:7px 10px;
-            "
             onclick="decreaseItem(${index})">
 
             −
 
           </button>
-
 
           <button
             type="button"
@@ -652,27 +616,22 @@ function renderCart() {
 
       `;
 
-
       container.appendChild(
-        itemElement
+        element
       );
 
     }
   );
 
 
-  const cartTotal =
-    getCartTotal();
-
-
-  total.innerHTML = `
+  totalElement.innerHTML = `
 
     <span>
       الإجمالي
     </span>
 
     <strong>
-      ${cartTotal} جنيه
+      ${getCartTotal()} جنيه
     </strong>
 
   `;
@@ -681,7 +640,7 @@ function renderCart() {
 
 
 /* =====================================================
-   INCREASE ITEM
+   QUANTITY
 ===================================================== */
 
 function increaseItem(index) {
@@ -699,19 +658,13 @@ function increaseItem(index) {
 }
 
 
-/* =====================================================
-   DECREASE ITEM
-===================================================== */
-
 function decreaseItem(index) {
 
   if (!cart[index]) {
     return;
   }
 
-
   cart[index].quantity--;
-
 
   if (
     cart[index].quantity <= 0
@@ -721,7 +674,6 @@ function decreaseItem(index) {
 
   }
 
-
   updateCartCount();
 
   renderCart();
@@ -729,19 +681,13 @@ function decreaseItem(index) {
 }
 
 
-/* =====================================================
-   REMOVE ITEM
-===================================================== */
-
 function removeItem(index) {
 
   if (!cart[index]) {
     return;
   }
 
-
   cart.splice(index, 1);
-
 
   updateCartCount();
 
@@ -761,7 +707,6 @@ async function submitOrder() {
       "cartMessage"
     );
 
-
   if (cart.length === 0) {
 
     message.textContent =
@@ -771,7 +716,6 @@ async function submitOrder() {
 
   }
 
-
   if (!selectedLocation) {
 
     message.textContent =
@@ -779,64 +723,47 @@ async function submitOrder() {
 
     closeCart();
 
-
-    const locationInput =
-      document.getElementById(
-        "locationInput"
-      );
-
-
-    if (locationInput) {
-
-      locationInput.scrollIntoView({
+    document
+      .getElementById("locationInput")
+      ?.scrollIntoView({
         behavior: "smooth",
         block: "center"
       });
 
-      locationInput.focus();
-
-    }
-
     return;
 
   }
 
-
-  message.textContent =
-    "⏳ جاري إرسال الطلب...";
-
-
-  const ready =
-    await waitForFirebase();
-
-
-  if (!ready) {
+  if (!firebaseReady || !db) {
 
     message.textContent =
       "❌ Firebase غير متصل";
 
-    console.error(
-      "Firebase is not ready"
-    );
-
     return;
 
   }
+
+  message.textContent =
+    "⏳ جاري إرسال الطلب...";
 
 
   try {
 
     const orderData = {
 
-      items: cart.map(item => ({
+      items:
+        cart.map(item => ({
 
-        name: item.name,
+          name:
+            item.name,
 
-        price: item.price,
+          price:
+            item.price,
 
-        quantity: item.quantity
+          quantity:
+            item.quantity
 
-      })),
+        })),
 
       total:
         getCartTotal(),
@@ -848,28 +775,24 @@ async function submitOrder() {
         "جديد",
 
       createdAt:
-        window.firebaseServerTimestamp()
+        serverTimestamp()
 
     };
 
 
-    const orders =
-      window.firebaseCollection(
-        window.firebaseDB,
-        "orders"
-      );
-
-
-    const result =
-      await window.firebaseAddDoc(
-        orders,
+    const reference =
+      await addDoc(
+        collection(
+          db,
+          "orders"
+        ),
         orderData
       );
 
 
-    console.log(
-      "Order ID:",
-      result.id
+    localStorage.setItem(
+      "lastOrderId",
+      reference.id
     );
 
 
@@ -877,9 +800,17 @@ async function submitOrder() {
       "✅ تم إرسال طلبك بنجاح";
 
 
-    showMessage(
-      "✅ تم إرسال الطلب بنجاح"
-    );
+    const orderNumber =
+      document.getElementById(
+        "orderNumber"
+      );
+
+    if (orderNumber) {
+
+      orderNumber.value =
+        reference.id;
+
+    }
 
 
     cart = [];
@@ -888,23 +819,23 @@ async function submitOrder() {
 
     renderCart();
 
-
-    setTimeout(() => {
-
-      closeCart();
-
-    }, 1800);
+    showMessage(
+      `✅ تم إرسال الطلب — رقم الطلب: ${reference.id}`
+    );
 
 
-  }
+    setTimeout(
+      closeCart,
+      1800
+    );
 
-  catch (error) {
+
+  } catch (error) {
 
     console.error(
       "ORDER ERROR:",
       error
     );
-
 
     message.textContent =
       "❌ حصل خطأ أثناء إرسال الطلب";
@@ -918,7 +849,7 @@ async function submitOrder() {
    TRACK ORDER
 ===================================================== */
 
-function trackOrder() {
+async function trackOrder() {
 
   const input =
     document.getElementById(
@@ -930,15 +861,12 @@ function trackOrder() {
       "trackMsg"
     );
 
-
   if (!input || !message) {
     return;
   }
 
-
   const orderNumber =
     input.value.trim();
-
 
   if (!orderNumber) {
 
@@ -949,77 +877,75 @@ function trackOrder() {
 
   }
 
+  if (!firebaseReady || !db) {
+
+    message.textContent =
+      "❌ Firebase غير متصل";
+
+    return;
+
+  }
 
   message.textContent =
     "🔎 جاري البحث عن الطلب...";
 
 
-  waitForFirebase()
-    .then(async ready => {
+  try {
 
-      if (!ready) {
+    const reference =
+      doc(
+        db,
+        "orders",
+        orderNumber
+      );
 
-        message.textContent =
-          "❌ Firebase غير متصل";
-
-        return;
-
-      }
-
-
-      try {
-
-        const {
-          doc,
-          getDoc
-        } = await import(
-          "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
-        );
+    const snapshot =
+      await getDoc(
+        reference
+      );
 
 
-        const orderRef =
-          doc(
-            window.firebaseDB,
-            "orders",
-            orderNumber
-          );
+    if (!snapshot.exists()) {
+
+      message.textContent =
+        "❌ الطلب غير موجود";
+
+      return;
+
+    }
 
 
-        const snapshot =
-          await getDoc(
-            orderRef
-          );
+    const data =
+      snapshot.data();
 
 
-        if (!snapshot.exists()) {
+    message.innerHTML = `
 
-          message.textContent =
-            "❌ الطلب غير موجود";
+      📦 حالة الطلب:
+      <strong>
+        ${escapeHTML(
+          data.status || "جديد"
+        )}
+      </strong>
 
-          return;
+      <br>
 
-        }
+      الإجمالي:
+      ${Number(data.total || 0)} جنيه
 
+    `;
 
-        const data =
-          snapshot.data();
+  } catch (error) {
 
+    console.error(
+      "TRACK ERROR:",
+      error
+    );
 
-        message.textContent =
-          `📦 حالة الطلب: ${data.status || "جديد"}`;
+    message.textContent =
+      "❌ تعذر البحث عن الطلب";
 
-      }
-
-      catch (error) {
-
-        console.error(error);
-
-        message.textContent =
-          "❌ تعذر البحث عن الطلب";
-
-      }
-
-    });
+  }
 
 }
 
@@ -1052,10 +978,48 @@ function escapeHTML(value) {
 function openLogin() {
 
   showMessage(
-    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
+    "👤 تسجيل الدخول قريبًا"
   );
 
 }
+
+
+/* =====================================================
+   LOAD LOCATION
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const saved =
+      localStorage.getItem(
+        "mandoub_location"
+      );
+
+    if (saved) {
+
+      selectedLocation =
+        saved;
+
+      const input =
+        document.getElementById(
+          "locationInput"
+        );
+
+      if (input) {
+
+        input.value =
+          saved;
+
+      }
+
+    }
+
+    updateCartCount();
+
+  }
+);
 
 
 /* =====================================================
@@ -1096,21 +1060,8 @@ window.openLogin =
   openLogin;
 
 
-/* =====================================================
-   START
-===================================================== */
-
 console.log(
-  "Mandoub Script Loaded ✅"
+  firebaseReady
+    ? "Mandoub + Firebase Ready ✅"
+    : "Mandoub Loaded — Firebase Error ❌"
 );
-
-waitForFirebase()
-  .then(ready => {
-
-    console.log(
-      ready
-        ? "Firebase Ready ✅"
-        : "Firebase Not Ready ❌"
-    );
-
-  });
