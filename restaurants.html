@@ -97,31 +97,21 @@
 
     <div class="section-head">
 
-      <div>
-
-        <p class="eyebrow">
-          مندوب
-        </p>
-
-        <h2>
-          المطاعم
-        </h2>
-
-      </div>
+      <h2>
+        المطاعم
+      </h2>
 
 
       <a href="index.html">
-        الرئيسية ←
+        ← الرئيسية
       </a>
 
     </div>
 
 
-
     <div
       id="restaurantsContainer"
       class="cards">
-
 
       <div
         id="restaurantsLoading"
@@ -130,7 +120,6 @@
         ⏳ جاري تحميل المطاعم...
 
       </div>
-
 
     </div>
 
@@ -233,7 +222,6 @@ import {
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-
 const firebaseConfig = {
 
   apiKey:
@@ -260,9 +248,7 @@ const firebaseConfig = {
 };
 
 
-
 try {
-
 
   const app =
     initializeApp(firebaseConfig);
@@ -307,7 +293,6 @@ try {
 
 } catch (error) {
 
-
   window.firebaseReady =
     false;
 
@@ -323,7 +308,7 @@ try {
 
 
 
-<!-- ================= SCRIPT ================= -->
+<!-- ================= MAIN SCRIPT ================= -->
 
 <script src="script.js"></script>
 
