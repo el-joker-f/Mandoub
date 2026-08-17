@@ -2,17 +2,12 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>منتجات المطعم | مندوب</title>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -20,13 +15,9 @@
     }
 
     body {
-
       min-height: 100vh;
-
       background: #020d1b;
-
-      color: white;
-
+      color: #fff;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -34,372 +25,362 @@
         Tahoma,
         Arial,
         sans-serif;
-
     }
 
-    button {
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    .navbar {
-
+    header {
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
 
-      min-height: 65px;
+      height: 70px;
+      padding: 10px 16px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 8px 14px;
-
-      background: #020d1b;
-
-      border-bottom:
-        1px solid rgba(0,224,255,.2);
-
+      background: rgba(2, 13, 27, .97);
+      border-bottom: 1px solid rgba(0, 224, 255, .2);
+      backdrop-filter: blur(12px);
     }
 
-    .logo img {
-
+    .logo {
       width: 50px;
       height: 50px;
-
       object-fit: contain;
-
     }
 
     .back {
-
-      border: 1px solid rgba(0,224,255,.25);
-
+      border: 1px solid rgba(0, 224, 255, .3);
+      background: #06233a;
+      color: white;
+      padding: 10px 15px;
       border-radius: 11px;
-
-      padding: 10px 14px;
-
-      background: #06233a;
-
-      color: white;
-
-      font-size: 13px;
-
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    .cart {
-
-      width: 48px;
-      height: 48px;
-
-      border: 1px solid rgba(0,224,255,.3);
-
-      border-radius: 13px;
-
-      background: #06233a;
-
-      color: white;
-
-      font-size: 21px;
-
-    }
-
-    .page {
-
+    main {
       width: 100%;
-
-      max-width: 900px;
-
+      max-width: 1000px;
       margin: auto;
-
-      padding: 25px 16px 60px;
-
+      padding: 25px 16px 50px;
     }
 
     .restaurant-header {
-
       text-align: center;
-
-      padding: 15px 0 30px;
-
+      padding: 20px 0 30px;
     }
 
-    .restaurant-header .icon {
-
-      width: 90px;
-      height: 90px;
-
+    .restaurant-image {
+      width: 100px;
+      height: 100px;
       margin: 0 auto 15px;
-
-      border-radius: 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #082943;
-
-      font-size: 48px;
-
-      overflow: hidden;
-
-    }
-
-    .restaurant-header .icon img {
-
-      width: 100%;
-      height: 100%;
 
       object-fit: cover;
 
+      border-radius: 25px;
+
+      border: 2px solid rgba(0, 224, 255, .3);
+
+      background: #09243a;
     }
 
     .restaurant-header h1 {
-
       font-size: 27px;
-
-      font-weight: 900;
-
+      margin-bottom: 7px;
     }
 
     .restaurant-header p {
-
-      color: #8fa2b2;
-
+      color: #91a4b3;
       font-size: 14px;
+      line-height: 1.8;
+    }
 
-      margin-top: 8px;
+    .rating {
+      margin-top: 10px;
+      color: #00dfff;
+      font-weight: 800;
+    }
 
+    .title {
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    #loading {
+      text-align: center;
+      color: #00dfff;
+      padding: 30px;
+    }
+
+    #error {
+      display: none;
+      text-align: center;
+      color: #ff557f;
+      padding: 25px;
     }
 
     .products {
-
       display: grid;
-
       grid-template-columns: 1fr;
-
-      gap: 14px;
-
+      gap: 15px;
     }
 
     .product {
+      overflow: hidden;
 
-      display: flex;
+      border-radius: 18px;
 
-      gap: 13px;
+      background: #061b2e;
 
-      padding: 13px;
+      border: 1px solid rgba(0, 224, 255, .14);
 
-      border-radius: 17px;
-
-      background: #061a2d;
-
-      border:
-        1px solid rgba(0,224,255,.14);
-
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.2);
     }
 
     .product-image {
-
-      width: 95px;
-      min-width: 95px;
-
-      height: 95px;
-
-      border-radius: 13px;
-
-      overflow: hidden;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      background: #082943;
-
-      font-size: 40px;
-
-    }
-
-    .product-image img {
-
       width: 100%;
-      height: 100%;
+      height: 170px;
 
       object-fit: cover;
 
+      background:
+        radial-gradient(
+          circle,
+          #123a50,
+          #061725
+        );
     }
 
     .product-body {
-
-      flex: 1;
-
-      display: flex;
-
-      flex-direction: column;
-
-      justify-content: space-between;
-
+      padding: 16px;
     }
 
     .product-body h2 {
-
-      font-size: 17px;
-
-      margin-bottom: 5px;
-
+      font-size: 19px;
+      margin-bottom: 7px;
     }
 
     .product-body p {
-
-      color: #899dac;
-
-      font-size: 12px;
-
-      line-height: 1.6;
-
+      color: #91a4b3;
+      font-size: 13px;
+      line-height: 1.8;
+      min-height: 45px;
+      margin-bottom: 12px;
     }
 
     .product-bottom {
-
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
-
-      gap: 8px;
-
-      margin-top: 10px;
-
+      gap: 10px;
     }
 
     .price {
-
       color: #00dfff;
-
-      font-size: 16px;
-
+      font-size: 18px;
       font-weight: 900;
-
     }
 
-    .add {
-
+    .add-button {
       border: 0;
+      border-radius: 10px;
 
-      border-radius: 9px;
-
-      padding: 9px 13px;
+      padding: 11px 15px;
 
       background: #00dfff;
-
       color: #00121d;
 
       font-weight: 900;
 
-      font-size: 12px;
-
+      cursor: pointer;
     }
 
-    .loading,
+    .add-button:active {
+      transform: scale(.96);
+    }
+
     .empty {
+      text-align: center;
+      padding: 50px 20px;
+      color: #91a4b3;
+    }
+
+    .empty-icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
+
+    .cart-bar {
+      position: fixed;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+
+      z-index: 500;
+
+      display: none;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 10px;
+
+      padding: 13px 15px;
+
+      border-radius: 16px;
+
+      background: #00dfff;
+      color: #00121d;
+
+      box-shadow:
+        0 10px 35px rgba(0,0,0,.4);
+    }
+
+    .cart-bar.show {
+      display: flex;
+    }
+
+    .cart-bar button {
+      border: 0;
+      border-radius: 9px;
+
+      padding: 9px 13px;
+
+      background: #00121d;
+      color: white;
+
+      font-weight: 800;
+    }
+
+    #message {
+      position: fixed;
+
+      left: 50%;
+      bottom: 85px;
+
+      transform: translateX(-50%);
+
+      z-index: 9999;
+
+      max-width: calc(100% - 30px);
+
+      display: none;
+
+      padding: 12px 18px;
+
+      border-radius: 12px;
+
+      background: #00dfff;
+      color: #00121d;
+
+      font-weight: 800;
 
       text-align: center;
-
-      padding: 50px 20px;
-
-      color: #8fa2b2;
-
     }
 
     @media (min-width: 600px) {
 
       .products {
-
         grid-template-columns:
           repeat(2, 1fr);
-
       }
 
     }
 
+    @media (min-width: 900px) {
+
+      .products {
+        grid-template-columns:
+          repeat(3, 1fr);
+      }
+
+    }
   </style>
-
 </head>
-
 
 <body>
 
+  <header>
 
-  <header class="navbar">
-
-    <button
-      class="back"
-      onclick="history.back()">
-
-      ← رجوع
-
-    </button>
-
-
-    <a
-      class="logo"
-      href="index.html">
-
+    <a href="index.html">
       <img
         src="assets/logo.png"
-        alt="مندوب">
-
+        class="logo"
+        alt="مندوب"
+      >
     </a>
 
-
-    <button
-      class="cart"
-      onclick="showCart()">
-
-      🛒
-
-    </button>
+    <a
+      href="restaurants.html"
+      class="back">
+      ← المطاعم
+    </a>
 
   </header>
 
 
-  <main class="page">
-
+  <main>
 
     <section
       id="restaurantHeader"
       class="restaurant-header">
 
-      <div class="loading">
+      <div id="loading">
         جاري تحميل المطعم...
       </div>
 
     </section>
 
 
+    <h2 class="title">
+      🍔 المنتجات
+    </h2>
+
+
+    <div id="error">
+      حصل خطأ أثناء تحميل المنتجات.
+    </div>
+
+
     <section
       id="products"
       class="products">
-
-      <div class="loading">
-        جاري تحميل المنتجات...
-      </div>
-
     </section>
-
 
   </main>
 
+
+  <div
+    id="cartBar"
+    class="cart-bar">
+
+    <strong>
+      🛒 السلة:
+      <span id="cartCount">0</span>
+    </strong>
+
+    <button
+      type="button"
+      onclick="goHome()">
+      متابعة الطلب
+    </button>
+
+  </div>
+
+
+  <div id="message"></div>
+
+
+  <!-- ================= FIREBASE ================= -->
 
   <script type="module">
 
     import {
       initializeApp
-    }
-    from
+    } from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
@@ -409,8 +390,7 @@
       getDoc,
       collection,
       getDocs
-    }
-    from
+    } from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
@@ -443,7 +423,6 @@
     const app =
       initializeApp(firebaseConfig);
 
-
     const db =
       getFirestore(app);
 
@@ -464,26 +443,132 @@
       );
 
 
-    const products =
+    const productsContainer =
       document.getElementById(
         "products"
       );
 
 
-    if (!restaurantId) {
+    const errorBox =
+      document.getElementById(
+        "error"
+      );
 
-      header.innerHTML = `
-        <div class="empty">
-          لم يتم تحديد المطعم
-        </div>
-      `;
 
-      products.innerHTML = "";
+    const cartBar =
+      document.getElementById(
+        "cartBar"
+      );
+
+
+    const cartCount =
+      document.getElementById(
+        "cartCount"
+      );
+
+
+    let cart = [];
+
+
+    function showMessage(text) {
+
+      const message =
+        document.getElementById(
+          "message"
+        );
+
+      message.textContent =
+        text;
+
+      message.style.display =
+        "block";
+
+
+      setTimeout(() => {
+
+        message.style.display =
+          "none";
+
+      }, 2200);
 
     }
 
 
+    function updateCart() {
+
+      cartCount.textContent =
+        cart.length;
+
+
+      if (cart.length > 0) {
+
+        cartBar.classList.add(
+          "show"
+        );
+
+      } else {
+
+        cartBar.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+
+
+    window.addProduct =
+      function (
+        name,
+        price
+      ) {
+
+        cart.push({
+          name: name,
+          price: price
+        });
+
+
+        updateCart();
+
+
+        showMessage(
+          "تمت إضافة " +
+          name +
+          " للسلة 🛒"
+        );
+
+      };
+
+
+    window.goHome =
+      function () {
+
+        window.location.href =
+          "index.html";
+
+      };
+
+
     async function loadRestaurant() {
+
+      if (!restaurantId) {
+
+        header.innerHTML = `
+          <div class="empty">
+            <div class="empty-icon">
+              ⚠️
+            </div>
+            <h2>
+              لم يتم تحديد المطعم
+            </h2>
+          </div>
+        `;
+
+        return;
+
+      }
+
 
       try {
 
@@ -495,21 +580,26 @@
           );
 
 
-        const restaurantSnap =
+        const restaurantSnapshot =
           await getDoc(
             restaurantRef
           );
 
 
-        if (!restaurantSnap.exists()) {
+        if (
+          !restaurantSnapshot.exists()
+        ) {
 
           header.innerHTML = `
             <div class="empty">
-              المطعم غير موجود
+              <div class="empty-icon">
+                😔
+              </div>
+              <h2>
+                المطعم غير موجود
+              </h2>
             </div>
           `;
-
-          products.innerHTML = "";
 
           return;
 
@@ -517,67 +607,67 @@
 
 
         const restaurant =
-          restaurantSnap.data();
+          restaurantSnapshot.data();
 
 
         const name =
-          restaurant.name
-          || "مطعم";
+          restaurant.name ||
+          "مطعم";
 
 
-        const category =
-          restaurant.category
-          || "مطعم";
+        const description =
+          restaurant.description ||
+          "";
+
+
+        const rating =
+          restaurant.rating ||
+          "4.5";
 
 
         const image =
-          restaurant.image
-          || "";
+          restaurant.image ||
+          "assets/logo.png";
 
 
         header.innerHTML = `
 
-          <div class="icon">
-
-            ${
-              image
-              ?
-              `<img
-                src="${image}"
-                alt="${name}">
-              `
-              :
-              `🍔`
-            }
-
-          </div>
+          <img
+            class="restaurant-image"
+            src="${image}"
+            alt="${name}"
+            onerror="this.src='assets/logo.png'"
+          >
 
           <h1>
             ${name}
           </h1>
 
           <p>
-            ${category}
+            ${description}
           </p>
+
+          <div class="rating">
+            ⭐ ${rating}
+          </div>
 
         `;
 
 
         await loadProducts();
 
-      }
 
-      catch (error) {
+      } catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
-        header.innerHTML = `
-          <div class="empty">
-            حصل خطأ في تحميل المطعم
-          </div>
-        `;
+        header.innerHTML =
+          "<h2>حدث خطأ أثناء تحميل المطعم ❌</h2>";
 
-        products.innerHTML = "";
+        errorBox.style.display =
+          "block";
 
       }
 
@@ -586,261 +676,179 @@
 
     async function loadProducts() {
 
-      const productsRef =
-        collection(
-          db,
-          "restaurants",
-          restaurantId,
-          "products"
-        );
+      try {
 
-
-      const snapshot =
-        await getDocs(
-          productsRef
-        );
-
-
-      if (snapshot.empty) {
-
-        products.innerHTML = `
-
-          <div class="empty">
-
-            <div>
-              🍽️
-            </div>
-
-            لا توجد منتجات في هذا المطعم حاليًا
-
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      products.innerHTML = "";
-
-
-      snapshot.forEach(productDoc => {
-
-        const product =
-          productDoc.data();
-
-
-        if (
-          product.active === false
-        ) {
-          return;
-        }
-
-
-        const name =
-          product.name
-          || "منتج";
-
-
-        const description =
-          product.description
-          || "";
-
-
-        const price =
-          Number(product.price || 0);
-
-
-        const image =
-          product.image
-          || "";
-
-
-        const card =
-          document.createElement(
-            "article"
+        const productsRef =
+          collection(
+            db,
+            "restaurants",
+            restaurantId,
+            "products"
           );
 
 
-        card.className =
-          "product";
+        const snapshot =
+          await getDocs(
+            productsRef
+          );
 
 
-        card.innerHTML = `
-
-          <div class="product-image">
-
-            ${
-              image
-              ?
-              `<img
-                src="${image}"
-                alt="${name}">
-              `
-              :
-              `🍔`
-            }
-
-          </div>
+        document.getElementById(
+          "loading"
+        )?.remove();
 
 
-          <div class="product-body">
+        if (snapshot.empty) {
 
-            <div>
+          productsContainer.innerHTML = `
+
+            <div class="empty">
+
+              <div class="empty-icon">
+                🍔
+              </div>
 
               <h2>
-                ${name}
+                لا توجد منتجات حاليًا
               </h2>
 
               <p>
-                ${description}
+                المنتجات التي تضيفها من لوحة الأدمن
+                ستظهر هنا.
               </p>
 
             </div>
 
-
-            <div class="product-bottom">
-
-              <span class="price">
-                ${price} جنيه
-              </span>
-
-              <button
-                class="add"
-                onclick="addProduct(
-                  '${productDoc.id}',
-                  '${escapeText(name)}',
-                  ${price}
-                )">
-
-                + أضف للسلة
-
-              </button>
-
-            </div>
-
-          </div>
-
-        `;
-
-
-        products.appendChild(card);
-
-      });
-
-    }
-
-
-    function escapeText(text) {
-
-      return String(text)
-        .replace(/'/g, "\\'");
-
-    }
-
-
-    window.addProduct =
-      function(
-        id,
-        name,
-        price
-      ) {
-
-        let cart =
-          JSON.parse(
-            localStorage.getItem(
-              "mandoubCart"
-            )
-            || "[]"
-          );
-
-
-        cart.push({
-
-          id:
-            id,
-
-          name:
-            name,
-
-          price:
-            price,
-
-          restaurantId:
-            restaurantId
-
-        });
-
-
-        localStorage.setItem(
-          "mandoubCart",
-          JSON.stringify(cart)
-        );
-
-
-        alert(
-          "تمت إضافة المنتج للسلة 🛒"
-        );
-
-      };
-
-
-    window.showCart =
-      function() {
-
-        const cart =
-          JSON.parse(
-            localStorage.getItem(
-              "mandoubCart"
-            )
-            || "[]"
-          );
-
-
-        if (!cart.length) {
-
-          alert(
-            "السلة فارغة 🛒"
-          );
+          `;
 
           return;
 
         }
 
 
-        let total = 0;
+        snapshot.forEach(
+          (productDoc) => {
 
-        let text =
-          "السلة:\\n\\n";
-
-
-        cart.forEach(item => {
-
-          total +=
-            Number(item.price);
+            const product =
+              productDoc.data();
 
 
-          text +=
-            `${item.name} - ${item.price} جنيه\\n`;
-
-        });
-
-
-        text +=
-          `\\nالإجمالي: ${total} جنيه`;
+            const name =
+              product.name ||
+              "منتج";
 
 
-        alert(text);
+            const description =
+              product.description ||
+              "منتج لذيذ من المطعم";
 
-      };
+
+            const price =
+              Number(
+                product.price || 0
+              );
 
 
-    if (restaurantId) {
+            const image =
+              product.image ||
+              "assets/logo.png";
 
-      loadRestaurant();
+
+            const card =
+              document.createElement(
+                "article"
+              );
+
+
+            card.className =
+              "product";
+
+
+            card.innerHTML = `
+
+              <img
+                class="product-image"
+                src="${image}"
+                alt="${name}"
+                onerror="this.src='assets/logo.png'"
+              >
+
+              <div class="product-body">
+
+                <h2>
+                  ${name}
+                </h2>
+
+                <p>
+                  ${description}
+                </p>
+
+                <div class="product-bottom">
+
+                  <span class="price">
+                    ${price} جنيه
+                  </span>
+
+                  <button
+                    class="add-button"
+                    type="button"
+                  >
+                    + إضافة
+                  </button>
+
+                </div>
+
+              </div>
+
+            `;
+
+
+            const button =
+              card.querySelector(
+                ".add-button"
+              );
+
+
+            button.addEventListener(
+              "click",
+              function () {
+
+                addProduct(
+                  name,
+                  price
+                );
+
+              }
+            );
+
+
+            productsContainer.appendChild(
+              card
+            );
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Products Error:",
+          error
+        );
+
+        errorBox.style.display =
+          "block";
+
+        errorBox.textContent =
+          "حصل خطأ أثناء تحميل المنتجات ❌";
+
+      }
 
     }
+
+
+    loadRestaurant();
 
   </script>
 
