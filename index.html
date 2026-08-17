@@ -3,7 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>مندوب | نوصل طلبك بسرعة وأمان</title>
 
@@ -87,7 +91,8 @@
           <input
             type="text"
             id="locationInput"
-            placeholder="أين تريد التوصيل؟">
+            placeholder="أين تريد التوصيل؟"
+          >
 
           <button
             type="button"
@@ -97,7 +102,10 @@
 
         </div>
 
-        <p id="locationMsg" class="location-msg"></p>
+        <p
+          id="locationMsg"
+          class="location-msg">
+        </p>
 
         <div class="benefits">
 
@@ -122,6 +130,7 @@
         </div>
 
       </div>
+
 
       <div class="hero-art">
 
@@ -185,7 +194,9 @@
 
     <!-- ================= RESTAURANTS ================= -->
 
-    <section id="restaurants" class="section">
+    <section
+      id="restaurants"
+      class="section">
 
       <div class="section-head">
 
@@ -373,7 +384,9 @@
 
     <!-- ================= OFFERS ================= -->
 
-    <section id="offers" class="section">
+    <section
+      id="offers"
+      class="section">
 
       <div class="section-head">
 
@@ -400,7 +413,9 @@
 
     <!-- ================= ABOUT ================= -->
 
-    <section id="about" class="section">
+    <section
+      id="about"
+      class="section">
 
       <div class="about-box">
 
@@ -425,7 +440,9 @@
 
     <!-- ================= TRACK ================= -->
 
-    <section id="track" class="track">
+    <section
+      id="track"
+      class="track">
 
       <div>
 
@@ -443,12 +460,14 @@
 
       </div>
 
+
       <div class="track-form">
 
         <input
           type="text"
           id="orderNumber"
-          placeholder="رقم الطلب">
+          placeholder="رقم الطلب"
+        >
 
         <button
           type="button"
@@ -457,6 +476,7 @@
         </button>
 
       </div>
+
 
       <p id="trackMsg"></p>
 
@@ -484,121 +504,19 @@
   </footer>
 
 
-  <!-- ================================================= -->
-  <!-- FIREBASE -->
-  <!-- ================================================= -->
+  <!-- ================= FIREBASE ================= -->
 
-  <script type="module">
-
-    import {
-      initializeApp
-    } from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp
-    } from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-    const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-      authDomain:
-        "mandoub-dv.firebaseapp.com",
-
-      projectId:
-        "mandoub-dv",
-
-      storageBucket:
-        "mandoub-dv.firebasestorage.app",
-
-      messagingSenderId:
-        "311140400335",
-
-      appId:
-        "1:311140400335:web:db198b7c53259c53594bba",
-
-      measurementId:
-        "G-7V1LJQYYXD"
-
-    };
-
-
-    try {
-
-      const app =
-        initializeApp(firebaseConfig);
-
-
-      const db =
-        getFirestore(app);
-
-
-      // جعل Firebase متاحًا لـ script.js
-
-      window.firebaseDB =
-        db;
-
-
-      window.firebaseCollection =
-        collection;
-
-
-      window.firebaseAddDoc =
-        addDoc;
-
-
-      window.firebaseServerTimestamp =
-        serverTimestamp;
-
-
-      window.firebaseReady =
-        true;
-
-
-      console.log(
-        "Firebase متصل بنجاح ✅"
-      );
-
-
-    }
-
-    catch (error) {
-
-      window.firebaseReady =
-        false;
-
-
-      console.error(
-        "Firebase Error:",
-        error
-      );
-
-    }
-
-
-    // تشغيل script.js بعد Firebase
-
-    const script =
-      document.createElement("script");
-
-
-    script.src =
-      "./script.js";
-
-
-    document.body.appendChild(
-      script
-    );
-
+  <script
+    type="module"
+    src="./firebase.js">
   </script>
 
+
+  <!-- ================= WEBSITE JAVASCRIPT ================= -->
+
+  <script src="./script.js"></script>
+
+
 </body>
+
 </html>
