@@ -1,1 +1,849 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>منتجات المطعم | مندوب</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+
+      min-height: 100vh;
+
+      background: #020d1b;
+
+      color: white;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .navbar {
+
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      min-height: 65px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 8px 14px;
+
+      background: #020d1b;
+
+      border-bottom:
+        1px solid rgba(0,224,255,.2);
+
+    }
+
+    .logo img {
+
+      width: 50px;
+      height: 50px;
+
+      object-fit: contain;
+
+    }
+
+    .back {
+
+      border: 1px solid rgba(0,224,255,.25);
+
+      border-radius: 11px;
+
+      padding: 10px 14px;
+
+      background: #06233a;
+
+      color: white;
+
+      font-size: 13px;
+
+    }
+
+    .cart {
+
+      width: 48px;
+      height: 48px;
+
+      border: 1px solid rgba(0,224,255,.3);
+
+      border-radius: 13px;
+
+      background: #06233a;
+
+      color: white;
+
+      font-size: 21px;
+
+    }
+
+    .page {
+
+      width: 100%;
+
+      max-width: 900px;
+
+      margin: auto;
+
+      padding: 25px 16px 60px;
+
+    }
+
+    .restaurant-header {
+
+      text-align: center;
+
+      padding: 15px 0 30px;
+
+    }
+
+    .restaurant-header .icon {
+
+      width: 90px;
+      height: 90px;
+
+      margin: 0 auto 15px;
+
+      border-radius: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #082943;
+
+      font-size: 48px;
+
+      overflow: hidden;
+
+    }
+
+    .restaurant-header .icon img {
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+    .restaurant-header h1 {
+
+      font-size: 27px;
+
+      font-weight: 900;
+
+    }
+
+    .restaurant-header p {
+
+      color: #8fa2b2;
+
+      font-size: 14px;
+
+      margin-top: 8px;
+
+    }
+
+    .products {
+
+      display: grid;
+
+      grid-template-columns: 1fr;
+
+      gap: 14px;
+
+    }
+
+    .product {
+
+      display: flex;
+
+      gap: 13px;
+
+      padding: 13px;
+
+      border-radius: 17px;
+
+      background: #061a2d;
+
+      border:
+        1px solid rgba(0,224,255,.14);
+
+    }
+
+    .product-image {
+
+      width: 95px;
+      min-width: 95px;
+
+      height: 95px;
+
+      border-radius: 13px;
+
+      overflow: hidden;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      background: #082943;
+
+      font-size: 40px;
+
+    }
+
+    .product-image img {
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+    .product-body {
+
+      flex: 1;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+    }
+
+    .product-body h2 {
+
+      font-size: 17px;
+
+      margin-bottom: 5px;
+
+    }
+
+    .product-body p {
+
+      color: #899dac;
+
+      font-size: 12px;
+
+      line-height: 1.6;
+
+    }
+
+    .product-bottom {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 8px;
+
+      margin-top: 10px;
+
+    }
+
+    .price {
+
+      color: #00dfff;
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+    }
+
+    .add {
+
+      border: 0;
+
+      border-radius: 9px;
+
+      padding: 9px 13px;
+
+      background: #00dfff;
+
+      color: #00121d;
+
+      font-weight: 900;
+
+      font-size: 12px;
+
+    }
+
+    .loading,
+    .empty {
+
+      text-align: center;
+
+      padding: 50px 20px;
+
+      color: #8fa2b2;
+
+    }
+
+    @media (min-width: 600px) {
+
+      .products {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <header class="navbar">
+
+    <button
+      class="back"
+      onclick="history.back()">
+
+      ← رجوع
+
+    </button>
+
+
+    <a
+      class="logo"
+      href="index.html">
+
+      <img
+        src="assets/logo.png"
+        alt="مندوب">
+
+    </a>
+
+
+    <button
+      class="cart"
+      onclick="showCart()">
+
+      🛒
+
+    </button>
+
+  </header>
+
+
+  <main class="page">
+
+
+    <section
+      id="restaurantHeader"
+      class="restaurant-header">
+
+      <div class="loading">
+        جاري تحميل المطعم...
+      </div>
+
+    </section>
+
+
+    <section
+      id="products"
+      class="products">
+
+      <div class="loading">
+        جاري تحميل المنتجات...
+      </div>
+
+    </section>
+
+
+  </main>
+
+
+  <script type="module">
+
+    import {
+      initializeApp
+    }
+    from
+    "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      getDocs
+    }
+    from
+    "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+
+      authDomain:
+        "mandoub-dv.firebaseapp.com",
+
+      projectId:
+        "mandoub-dv",
+
+      storageBucket:
+        "mandoub-dv.firebasestorage.app",
+
+      messagingSenderId:
+        "311140400335",
+
+      appId:
+        "1:311140400335:web:db198b7c53259c53594bba",
+
+      measurementId:
+        "G-7V1LJQYYXD"
+
+    };
+
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const db =
+      getFirestore(app);
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const restaurantId =
+      params.get("id");
+
+
+    const header =
+      document.getElementById(
+        "restaurantHeader"
+      );
+
+
+    const products =
+      document.getElementById(
+        "products"
+      );
+
+
+    if (!restaurantId) {
+
+      header.innerHTML = `
+        <div class="empty">
+          لم يتم تحديد المطعم
+        </div>
+      `;
+
+      products.innerHTML = "";
+
+    }
+
+
+    async function loadRestaurant() {
+
+      try {
+
+        const restaurantRef =
+          doc(
+            db,
+            "restaurants",
+            restaurantId
+          );
+
+
+        const restaurantSnap =
+          await getDoc(
+            restaurantRef
+          );
+
+
+        if (!restaurantSnap.exists()) {
+
+          header.innerHTML = `
+            <div class="empty">
+              المطعم غير موجود
+            </div>
+          `;
+
+          products.innerHTML = "";
+
+          return;
+
+        }
+
+
+        const restaurant =
+          restaurantSnap.data();
+
+
+        const name =
+          restaurant.name
+          || "مطعم";
+
+
+        const category =
+          restaurant.category
+          || "مطعم";
+
+
+        const image =
+          restaurant.image
+          || "";
+
+
+        header.innerHTML = `
+
+          <div class="icon">
+
+            ${
+              image
+              ?
+              `<img
+                src="${image}"
+                alt="${name}">
+              `
+              :
+              `🍔`
+            }
+
+          </div>
+
+          <h1>
+            ${name}
+          </h1>
+
+          <p>
+            ${category}
+          </p>
+
+        `;
+
+
+        await loadProducts();
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        header.innerHTML = `
+          <div class="empty">
+            حصل خطأ في تحميل المطعم
+          </div>
+        `;
+
+        products.innerHTML = "";
+
+      }
+
+    }
+
+
+    async function loadProducts() {
+
+      const productsRef =
+        collection(
+          db,
+          "restaurants",
+          restaurantId,
+          "products"
+        );
+
+
+      const snapshot =
+        await getDocs(
+          productsRef
+        );
+
+
+      if (snapshot.empty) {
+
+        products.innerHTML = `
+
+          <div class="empty">
+
+            <div>
+              🍽️
+            </div>
+
+            لا توجد منتجات في هذا المطعم حاليًا
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      products.innerHTML = "";
+
+
+      snapshot.forEach(productDoc => {
+
+        const product =
+          productDoc.data();
+
+
+        if (
+          product.active === false
+        ) {
+          return;
+        }
+
+
+        const name =
+          product.name
+          || "منتج";
+
+
+        const description =
+          product.description
+          || "";
+
+
+        const price =
+          Number(product.price || 0);
+
+
+        const image =
+          product.image
+          || "";
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "product";
+
+
+        card.innerHTML = `
+
+          <div class="product-image">
+
+            ${
+              image
+              ?
+              `<img
+                src="${image}"
+                alt="${name}">
+              `
+              :
+              `🍔`
+            }
+
+          </div>
+
+
+          <div class="product-body">
+
+            <div>
+
+              <h2>
+                ${name}
+              </h2>
+
+              <p>
+                ${description}
+              </p>
+
+            </div>
+
+
+            <div class="product-bottom">
+
+              <span class="price">
+                ${price} جنيه
+              </span>
+
+              <button
+                class="add"
+                onclick="addProduct(
+                  '${productDoc.id}',
+                  '${escapeText(name)}',
+                  ${price}
+                )">
+
+                + أضف للسلة
+
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+
+        products.appendChild(card);
+
+      });
+
+    }
+
+
+    function escapeText(text) {
+
+      return String(text)
+        .replace(/'/g, "\\'");
+
+    }
+
+
+    window.addProduct =
+      function(
+        id,
+        name,
+        price
+      ) {
+
+        let cart =
+          JSON.parse(
+            localStorage.getItem(
+              "mandoubCart"
+            )
+            || "[]"
+          );
+
+
+        cart.push({
+
+          id:
+            id,
+
+          name:
+            name,
+
+          price:
+            price,
+
+          restaurantId:
+            restaurantId
+
+        });
+
+
+        localStorage.setItem(
+          "mandoubCart",
+          JSON.stringify(cart)
+        );
+
+
+        alert(
+          "تمت إضافة المنتج للسلة 🛒"
+        );
+
+      };
+
+
+    window.showCart =
+      function() {
+
+        const cart =
+          JSON.parse(
+            localStorage.getItem(
+              "mandoubCart"
+            )
+            || "[]"
+          );
+
+
+        if (!cart.length) {
+
+          alert(
+            "السلة فارغة 🛒"
+          );
+
+          return;
+
+        }
+
+
+        let total = 0;
+
+        let text =
+          "السلة:\\n\\n";
+
+
+        cart.forEach(item => {
+
+          total +=
+            Number(item.price);
+
+
+          text +=
+            `${item.name} - ${item.price} جنيه\\n`;
+
+        });
+
+
+        text +=
+          `\\nالإجمالي: ${total} جنيه`;
+
+
+        alert(text);
+
+      };
+
+
+    if (restaurantId) {
+
+      loadRestaurant();
+
+    }
+
+  </script>
+
+</body>
+
+</html>
