@@ -2,1954 +2,1363 @@
 <html lang="ar" dir="rtl">
 
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
+<title>مندوب | توصيل سريع وآمن</title>
 
-  <title>مندوب | توصيل سريع وآمن</title>
+<style>
 
-  <style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    /* =====================================================
-       RESET
-    ===================================================== */
+html,
+body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+body{
+  font-family:Arial, Tahoma, sans-serif;
+  background:#020d1c;
+  color:#fff;
+  min-height:100vh;
+}
 
-    html {
-      scroll-behavior: smooth;
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
+button,
+input{
+  font-family:inherit;
+}
 
-    body {
-      width: 100%;
-      max-width: 100%;
-      min-height: 100vh;
-      overflow-x: hidden;
+button{
+  cursor:pointer;
+  border:0;
+}
 
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
+a{
+  color:inherit;
+  text-decoration:none;
+}
 
-      background: #020d1c;
-      color: #fff;
 
-      direction: rtl;
-    }
+/* ================= NAVBAR ================= */
 
-    button,
-    input {
-      font-family: inherit;
-    }
+.navbar{
+  width:100%;
+  max-width:100%;
+  min-height:70px;
 
-    button {
-      cursor: pointer;
-      border: 0;
-    }
+  padding:10px 15px;
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
+  background:#031326;
 
+  border-bottom:1px solid #12304d;
 
-    /* =====================================================
-       NAVBAR
-       نفس الشكل القديم + تسجيل الدخول ظاهر
-    ===================================================== */
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
 
-    .navbar {
-      width: 100%;
-      min-height: 70px;
+.brand{
+  flex-shrink:0;
+}
 
-      padding: 8px 15px;
+.brand img{
+  width:55px;
+  height:55px;
+  object-fit:contain;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
 
-      gap: 10px;
+/* ================= NAV LINKS ================= */
 
-      background: #031326;
+.navbar nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-      border-bottom: 1px solid #12304d;
+  gap:18px;
 
-      position: sticky;
-      top: 0;
-      z-index: 5000;
-    }
+  flex:1;
 
+  overflow-x:auto;
+  scrollbar-width:none;
+}
 
-    /* LOGO */
+.navbar nav::-webkit-scrollbar{
+  display:none;
+}
 
-    .brand {
-      width: 58px;
-      min-width: 58px;
+.navbar nav a{
+  color:#ddd;
+  text-decoration:none;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  font-size:15px;
 
-    .brand img {
-      width: 54px;
-      height: 54px;
-      object-fit: contain;
-    }
+  white-space:nowrap;
+}
 
+.navbar nav a.active{
+  color:#00d9ff;
+  font-weight:bold;
+}
 
-    /* NAV */
 
-    .navbar nav {
-      flex: 1;
+/* ================= NAV ACTIONS ================= */
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.nav-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
 
-      gap: 18px;
+  flex-shrink:0;
+}
 
-      overflow-x: auto;
-      white-space: nowrap;
+.login{
+  display:block;
 
-      scrollbar-width: none;
-    }
+  background:transparent;
+  color:#fff;
 
-    .navbar nav::-webkit-scrollbar {
-      display: none;
-    }
+  font-size:14px;
 
-    .navbar nav a {
-      color: #e2e8ef;
+  white-space:nowrap;
+}
 
-      font-size: 14px;
-      font-weight: 600;
+.cart{
+  position:relative;
 
-      white-space: nowrap;
+  width:52px;
+  height:52px;
 
-      padding: 9px 4px;
+  flex-shrink:0;
 
-      transition: .2s;
-    }
+  border-radius:12px;
 
-    .navbar nav a:hover {
-      color: #00dfff;
-    }
+  background:#08d8f5;
 
-    .navbar nav a.active {
-      color: #00dfff;
-      font-weight: 800;
-    }
+  color:#00121d;
 
+  font-size:23px;
+}
 
-    /* ACTIONS */
+#cartCount{
+  position:absolute;
 
-    .nav-actions {
-      display: flex;
-      align-items: center;
+  top:3px;
+  left:3px;
 
-      gap: 8px;
+  min-width:18px;
+  height:18px;
 
-      flex-shrink: 0;
-    }
+  padding:2px 5px;
 
+  border-radius:20px;
 
-    /* LOGIN */
+  background:#ff2364;
 
-    .login {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  color:#fff;
 
-      min-width: 105px;
-      height: 44px;
+  font-size:11px;
+  font-weight:bold;
 
-      padding: 0 13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-      border-radius: 11px;
 
-      border: 1px solid rgba(0, 224, 255, .28);
+/* ================= MAIN ================= */
 
-      background: #061d33;
+main{
+  width:100%;
+  max-width:100%;
+}
 
-      color: #fff;
 
-      font-size: 13px;
-      font-weight: 700;
+/* ================= HERO ================= */
 
-      white-space: nowrap;
-    }
+.hero{
+  width:100%;
+  max-width:100%;
 
-    .login:hover {
-      background: #092944;
-    }
+  min-height:calc(100vh - 70px);
 
+  padding:55px 20px 30px;
 
-    /* CART */
+  display:flex;
 
-    .cart {
-      position: relative;
+  align-items:center;
+  justify-content:center;
 
-      width: 50px;
-      height: 50px;
+  gap:35px;
 
-      border-radius: 13px;
+  background:
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(0,210,255,.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(255,0,100,.08),
+      transparent 30%
+    ),
+    #020d1c;
+}
 
-      background: #08d8f5;
+.hero-content{
+  width:100%;
+  max-width:650px;
 
-      color: #00121d;
+  text-align:right;
+}
 
-      font-size: 22px;
+.eyebrow{
+  color:#00d9ff;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  font-weight:bold;
 
-      flex-shrink: 0;
-    }
+  font-size:17px;
 
-    #cartCount {
-      position: absolute;
+  margin-bottom:18px;
+}
 
-      top: 3px;
-      left: 3px;
+.hero h1{
+  font-size:48px;
 
-      min-width: 19px;
-      height: 19px;
+  line-height:1.25;
 
-      padding: 1px 5px;
+  margin-bottom:20px;
+}
 
-      border-radius: 20px;
+.hero h1 span{
+  background:
+    linear-gradient(
+      90deg,
+      #00d9ff,
+      #ff3c88
+    );
 
-      background: #ff2364;
-      color: #fff;
+  -webkit-background-clip:text;
 
-      font-size: 11px;
-      font-weight: 900;
+  background-clip:text;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  color:transparent;
+}
 
+.hero-text{
+  color:#aeb9c8;
 
-    /* =====================================================
-       MAIN
-    ===================================================== */
+  font-size:18px;
 
-    main {
-      width: 100%;
-      max-width: 100%;
-    }
+  line-height:1.8;
 
+  margin-bottom:25px;
+}
 
-    /* =====================================================
-       HERO
-    ===================================================== */
 
-    .hero {
-      width: 100%;
+/* ================= LOCATION ================= */
 
-      min-height: calc(100vh - 70px);
+.location-box{
+  width:100%;
+  max-width:620px;
 
-      padding: 60px 25px 45px;
+  display:flex;
 
-      display: flex;
+  align-items:center;
 
-      align-items: center;
-      justify-content: center;
+  gap:10px;
 
-      gap: 45px;
+  padding:10px;
 
-      background:
-        radial-gradient(
-          circle at 80% 30%,
-          rgba(0, 210, 255, .12),
-          transparent 35%
-        ),
-        radial-gradient(
-          circle at 20% 80%,
-          rgba(255, 0, 100, .08),
-          transparent 30%
-        ),
-        #020d1c;
-    }
+  background:#061a30;
 
+  border:1px solid #23405d;
 
-    .hero-content {
-      width: 100%;
-      max-width: 650px;
+  border-radius:18px;
+}
 
-      text-align: right;
-    }
+.location-box span{
+  font-size:22px;
+}
 
+.location-box input{
+  flex:1;
 
-    .eyebrow {
-      color: #00d9ff;
+  min-width:0;
 
-      font-size: 17px;
+  height:50px;
 
-      font-weight: 800;
+  background:transparent;
 
-      margin-bottom: 18px;
-    }
+  border:0;
 
+  outline:0;
 
-    .hero h1 {
-      font-size: 48px;
+  color:#fff;
 
-      line-height: 1.3;
+  font-size:16px;
+}
 
-      font-weight: 900;
+.location-box input::placeholder{
+  color:#8795a7;
+}
 
-      margin-bottom: 20px;
-    }
+.location-box button{
+  height:50px;
 
+  padding:0 20px;
 
-    .hero h1 span {
-      background:
-        linear-gradient(
-          90deg,
-          #00d9ff,
-          #55bde8,
-          #ff3c88
-        );
+  border-radius:12px;
 
-      -webkit-background-clip: text;
-      background-clip: text;
+  background:#08d8f5;
 
-      color: transparent;
-    }
+  color:#00121d;
 
+  font-weight:bold;
+}
 
-    .hero-text {
-      color: #aeb9c8;
+.location-msg{
+  margin-top:10px;
 
-      font-size: 18px;
+  color:#00d9ff;
+}
 
-      line-height: 1.9;
 
-      margin-bottom: 25px;
-    }
+/* ================= BENEFITS ================= */
 
+.benefits{
+  display:grid;
 
-    /* =====================================================
-       LOCATION
-    ===================================================== */
+  grid-template-columns:
+    repeat(3,1fr);
 
-    .location-box {
-      width: 100%;
-      max-width: 620px;
+  gap:15px;
 
-      display: flex;
-      align-items: center;
+  margin-top:35px;
+}
 
-      gap: 10px;
+.benefits div{
+  padding:20px;
 
-      padding: 10px;
+  background:#061a30;
 
-      background: #061a30;
+  border:1px solid #173854;
 
-      border: 1px solid #23405d;
+  border-radius:18px;
 
-      border-radius: 18px;
-    }
+  display:flex;
 
+  flex-direction:column;
 
-    .location-icon {
-      width: 40px;
-      min-width: 40px;
+  gap:7px;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.benefits b{
+  font-size:25px;
+}
 
-      font-size: 22px;
-    }
+.benefits strong{
+  font-size:17px;
+}
 
+.benefits small{
+  color:#8998aa;
+}
 
-    .location-box input {
-      flex: 1;
 
-      min-width: 0;
+/* ================= HERO IMAGE ================= */
 
-      height: 50px;
+.hero-art{
+  width:100%;
 
-      background: transparent;
+  max-width:450px;
 
-      border: 0;
-      outline: 0;
+  display:flex;
 
-      color: #fff;
+  justify-content:center;
 
-      font-size: 16px;
+  align-items:center;
+}
 
-      text-align: right;
-    }
+.delivery-image{
+  width:100%;
 
+  max-width:430px;
 
-    .location-box input::placeholder {
-      color: #8795a7;
-    }
+  height:auto;
 
+  display:block;
+}
 
-    .location-box button {
-      height: 50px;
 
-      padding: 0 20px;
+/* ================= SECTIONS ================= */
 
-      border-radius: 12px;
+.section{
+  width:100%;
 
-      background: #08d8f5;
+  max-width:1200px;
 
-      color: #00121d;
+  margin:auto;
 
-      font-size: 14px;
+  padding:70px 20px;
+}
 
-      font-weight: 900;
+.section-head{
+  display:flex;
 
-      white-space: nowrap;
-    }
+  justify-content:space-between;
 
+  align-items:center;
 
-    .location-box button:active {
-      transform: scale(.98);
-    }
+  margin-bottom:30px;
+}
 
+.section-head h2{
+  font-size:30px;
+}
 
-    .location-msg {
-      min-height: 20px;
+.section-head a{
+  color:#00d9ff;
 
-      margin-top: 10px;
+  text-decoration:none;
+}
 
-      color: #00d9ff;
 
-      font-size: 13px;
-    }
+/* ================= CARDS ================= */
 
+.cards{
+  display:grid;
 
-    /* =====================================================
-       BENEFITS
-    ===================================================== */
+  grid-template-columns:
+    repeat(4,1fr);
 
-    .benefits {
-      display: grid;
+  gap:20px;
+}
 
-      grid-template-columns:
-        repeat(3, 1fr);
+.restaurant{
+  overflow:hidden;
 
-      gap: 15px;
+  background:#061a30;
 
-      margin-top: 25px;
-    }
+  border:1px solid #173854;
 
+  border-radius:20px;
+}
 
-    .benefits > div {
-      padding: 20px;
+.food{
+  height:150px;
 
-      background: #061a30;
+  display:flex;
 
-      border: 1px solid #173854;
+  justify-content:center;
 
-      border-radius: 18px;
+  align-items:center;
 
-      display: flex;
-      flex-direction: column;
+  background:#0a2037;
 
-      gap: 7px;
-    }
+  font-size:65px;
+}
 
+.card-body{
+  padding:18px;
+}
 
-    .benefits b {
-      font-size: 25px;
-    }
+.card-body h3{
+  margin-bottom:7px;
+}
 
+.card-body p{
+  color:#8f9daf;
 
-    .benefits strong {
-      font-size: 17px;
-    }
+  margin-bottom:15px;
+}
 
+.restaurant-info{
+  display:flex;
 
-    .benefits small {
-      color: #8998aa;
+  justify-content:space-between;
 
-      font-size: 13px;
-    }
+  gap:8px;
 
+  color:#00d9ff;
 
-    /* =====================================================
-       HERO IMAGE
-    ===================================================== */
+  font-size:13px;
 
-    .hero-art {
-      width: 100%;
-      max-width: 450px;
+  margin-bottom:15px;
+}
 
-      display: flex;
+.card-body button{
+  width:100%;
 
-      align-items: center;
-      justify-content: center;
-    }
+  height:45px;
 
+  border-radius:12px;
 
-    .delivery-image {
-      width: 100%;
-      max-width: 430px;
+  background:#08d8f5;
 
-      height: auto;
+  color:#00121d;
 
-      object-fit: contain;
+  font-weight:bold;
+}
 
-      filter:
-        drop-shadow(
-          0 20px 35px
-          rgba(0, 224, 255, .14)
-        );
-    }
 
+/* ================= OFFERS ================= */
 
-    /* =====================================================
-       SECTIONS
-    ===================================================== */
+.offers-box,
+.about-box{
+  padding:35px;
 
-    .section {
-      width: 100%;
-      max-width: 1200px;
+  background:#061a30;
 
-      margin: auto;
+  border:1px solid #173854;
 
-      padding: 70px 20px;
-    }
+  border-radius:20px;
+}
 
+.offers-box h3,
+.about-box h2{
+  margin-bottom:15px;
+}
 
-    .section-head {
-      display: flex;
+.offers-box p,
+.about-box p{
+  color:#9eabbc;
 
-      align-items: center;
-      justify-content: space-between;
+  line-height:1.8;
+}
 
-      gap: 15px;
 
-      margin-bottom: 30px;
-    }
+/* ================= TRACK ================= */
 
+.track{
+  width:100%;
 
-    .section-head h2 {
-      font-size: 30px;
-    }
+  max-width:1200px;
 
+  margin:auto;
 
-    .section-head a {
-      color: #00d9ff;
+  padding:60px 20px;
 
-      font-size: 15px;
+  background:#061a30;
 
-      font-weight: 700;
-    }
+  border-top:1px solid #173854;
 
+  border-bottom:1px solid #173854;
+}
 
-    /* =====================================================
-       RESTAURANTS
-    ===================================================== */
+.track h2{
+  margin-bottom:10px;
+}
 
-    .cards {
-      display: grid;
+.track p{
+  color:#9eabbc;
 
-      grid-template-columns:
-        repeat(4, 1fr);
+  margin-bottom:20px;
+}
 
-      gap: 20px;
-    }
+.track-form{
+  display:flex;
 
+  gap:10px;
 
-    .restaurant {
-      overflow: hidden;
+  max-width:600px;
+}
 
-      background: #061a30;
+.track-form input{
+  flex:1;
 
-      border: 1px solid #173854;
+  min-width:0;
 
-      border-radius: 20px;
+  height:50px;
 
-      transition: .2s;
-    }
+  padding:0 15px;
 
+  border:1px solid #23405d;
 
-    .restaurant:hover {
-      transform: translateY(-3px);
+  border-radius:12px;
 
-      border-color: rgba(0, 217, 255, .4);
-    }
+  background:#020d1c;
 
+  color:#fff;
 
-    .food {
-      height: 160px;
+  outline:0;
+}
 
-      display: flex;
+.track-form button{
+  padding:0 22px;
 
-      align-items: center;
-      justify-content: center;
+  border-radius:12px;
 
-      background:
-        radial-gradient(
-          circle,
-          #103a52,
-          #061725
-        );
+  background:#08d8f5;
 
-      font-size: 70px;
-    }
+  color:#00121d;
 
+  font-weight:bold;
+}
 
-    .restaurant-image {
-      width: 100%;
-      height: 160px;
 
-      object-fit: cover;
-    }
+/* ================= FOOTER ================= */
 
+footer{
+  width:100%;
 
-    .card-body {
-      padding: 18px;
-    }
+  padding:40px 20px;
 
+  text-align:center;
 
-    .card-body h3 {
-      font-size: 20px;
+  background:#010813;
 
-      margin-bottom: 7px;
-    }
+  border-top:1px solid #173854;
+}
 
+footer img{
+  width:70px;
 
-    .card-body p {
-      color: #8f9daf;
+  margin-bottom:10px;
+}
 
-      font-size: 13px;
+footer p{
+  color:#aab5c5;
 
-      margin-bottom: 15px;
-    }
+  margin-bottom:10px;
+}
 
+footer small{
+  color:#68788b;
+}
 
-    .restaurant-info {
-      display: flex;
 
-      align-items: center;
-      justify-content: space-between;
+/* ================= CART ================= */
 
-      gap: 8px;
+#cartModal{
+  position:fixed;
 
-      color: #00d9ff;
+  inset:0;
 
-      font-size: 13px;
+  z-index:99999;
+}
 
-      margin-bottom: 15px;
-    }
+.cart-overlay{
+  position:absolute;
 
+  inset:0;
 
-    .restaurant-info span:last-child {
-      color: #8f9daf;
-    }
+  background:rgba(0,0,0,.75);
 
+  backdrop-filter:blur(5px);
+}
 
-    .restaurant-button {
-      width: 100%;
+.cart-box{
+  position:absolute;
 
-      height: 45px;
+  width:calc(100% - 30px);
 
-      border-radius: 12px;
+  max-width:500px;
 
-      background: #08d8f5;
+  max-height:85vh;
 
-      color: #00121d;
+  overflow:auto;
 
-      font-size: 14px;
+  left:50%;
 
-      font-weight: 900;
-    }
+  top:50%;
 
+  transform:translate(-50%,-50%);
 
-    .empty-state {
-      grid-column: 1 / -1;
+  background:#061a30;
 
-      padding: 45px 20px;
+  border:1px solid #23405d;
 
-      border: 1px dashed #23405d;
+  border-radius:22px;
 
-      border-radius: 20px;
+  padding:20px;
+}
 
-      text-align: center;
+.cart-header{
+  display:flex;
 
-      background: #061a30;
-    }
+  align-items:center;
 
+  justify-content:space-between;
 
-    .empty-state .empty-icon {
-      font-size: 45px;
+  padding-bottom:15px;
 
-      margin-bottom: 12px;
-    }
+  border-bottom:1px solid #173854;
+}
 
+.cart-header button{
+  width:42px;
 
-    .empty-state h3 {
-      font-size: 20px;
+  height:42px;
 
-      margin-bottom: 8px;
-    }
+  border-radius:10px;
 
+  background:#12304d;
 
-    .empty-state p {
-      color: #8998aa;
+  color:#fff;
 
-      font-size: 14px;
-    }
+  font-size:20px;
+}
 
+.cart-items{
+  padding:15px 0;
+}
 
-    /* =====================================================
-       OFFERS
-    ===================================================== */
+.cart-item{
+  display:flex;
 
-    .offers-box {
-      padding: 35px;
+  align-items:center;
 
-      background:
-        linear-gradient(
-          135deg,
-          #082943,
-          #061827
-        );
+  justify-content:space-between;
 
-      border: 1px solid #173854;
+  padding:15px;
 
-      border-radius: 20px;
-    }
+  margin-bottom:10px;
 
+  background:#081f37;
 
-    .offers-list {
-      display: grid;
+  border:1px solid #173854;
 
-      grid-template-columns:
-        repeat(3, 1fr);
+  border-radius:14px;
+}
 
-      gap: 15px;
-    }
+.cart-item p{
+  color:#00d9ff;
 
+  margin-top:5px;
+}
 
-    .offer-card {
-      overflow: hidden;
+.cart-item button{
+  padding:9px 14px;
 
-      background: #061a30;
+  background:#ff2364;
 
-      border: 1px solid #173854;
+  color:#fff;
 
-      border-radius: 17px;
-    }
+  border-radius:9px;
+}
 
+.cart-total{
+  display:flex;
 
-    .offer-card img {
-      width: 100%;
-      height: 150px;
+  justify-content:space-between;
 
-      object-fit: cover;
-    }
+  padding:18px 0;
 
+  border-top:1px solid #173854;
 
-    .offer-content {
-      padding: 18px;
-    }
+  border-bottom:1px solid #173854;
 
+  font-size:18px;
+}
 
-    .offer-content h3 {
-      margin-bottom: 8px;
+.cart-total strong{
+  color:#00d9ff;
+}
 
-      font-size: 18px;
-    }
+.checkout-button{
+  width:100%;
 
+  height:52px;
 
-    .offer-content p {
-      color: #9eabbc;
+  margin-top:15px;
 
-      font-size: 13px;
+  border-radius:13px;
 
-      line-height: 1.7;
-    }
+  background:#08d8f5;
 
+  color:#00121d;
 
-    .no-offers {
-      text-align: center;
+  font-weight:bold;
+}
 
-      padding: 25px;
 
-      color: #8998aa;
-    }
+/* ================= MESSAGE ================= */
 
+#cartMessage{
+  position:fixed !important;
 
-    /* =====================================================
-       ABOUT
-    ===================================================== */
+  bottom:25px !important;
 
-    .about-box {
-      padding: 35px;
+  left:50% !important;
 
-      background: #061a30;
+  transform:translateX(-50%) !important;
 
-      border: 1px solid #173854;
+  width:max-content;
 
-      border-radius: 20px;
-    }
+  max-width:calc(100% - 30px);
 
+  padding:12px 20px;
 
-    .about-box h2 {
-      margin-bottom: 15px;
+  border-radius:12px;
 
-      font-size: 27px;
-    }
+  background:#00d9ff;
 
+  color:#00121d;
 
-    .about-box p:last-child {
-      color: #9eabbc;
+  font-weight:bold;
 
-      line-height: 1.9;
+  z-index:100000 !important;
 
-      font-size: 15px;
-    }
+  text-align:center;
+}
 
 
-    /* =====================================================
-       TRACK
-    ===================================================== */
+/* ================================================= */
+/* MOBILE */
+/* ================================================= */
 
-    .track {
-      width: 100%;
-      max-width: 1200px;
+@media(max-width:700px){
 
-      margin: auto;
+  html,
+  body{
+    width:100vw;
 
-      padding: 60px 20px;
+    max-width:100vw;
 
-      background: #061a30;
+    overflow-x:hidden;
+  }
 
-      border-top: 1px solid #173854;
+  .navbar{
+    min-height:65px;
 
-      border-bottom: 1px solid #173854;
-    }
+    padding:8px 10px;
 
+    gap:6px;
 
-    .track h2 {
-      font-size: 27px;
+    overflow:hidden;
+  }
 
-      margin-bottom: 10px;
-    }
+  .brand img{
+    width:48px;
 
+    height:48px;
+  }
 
-    .track p {
-      color: #9eabbc;
+  .navbar nav{
+    gap:9px;
 
-      margin-bottom: 20px;
-    }
+    overflow-x:auto;
 
+    overflow-y:hidden;
 
-    .track-form {
-      display: flex;
+    justify-content:flex-start;
 
-      gap: 10px;
+    min-width:0;
+  }
 
-      width: 100%;
-      max-width: 600px;
-    }
+  .navbar nav a{
+    font-size:11px;
+  }
 
+  /*
+    تسجيل الدخول كان مختفي في الموبايل.
+    تم إظهاره مرة أخرى.
+  */
 
-    .track-form input {
-      flex: 1;
+  .login{
+    display:block;
 
-      min-width: 0;
+    font-size:11px;
 
-      height: 50px;
+    white-space:nowrap;
 
-      padding: 0 15px;
+    padding:4px 2px;
+  }
 
-      border: 1px solid #23405d;
+  .cart{
+    width:48px;
 
-      border-radius: 12px;
+    height:48px;
+  }
 
-      background: #020d1c;
+  .hero{
+    width:100%;
 
-      color: #fff;
+    min-height:auto;
 
-      outline: 0;
-    }
+    padding:40px 16px 20px;
 
+    display:flex;
 
-    .track-form button {
-      height: 50px;
+    flex-direction:column;
 
-      padding: 0 22px;
+    gap:25px;
+  }
 
-      border-radius: 12px;
+  .hero-content{
+    width:100%;
 
-      background: #08d8f5;
+    max-width:100%;
 
-      color: #00121d;
+    text-align:center;
+  }
 
-      font-weight: 900;
-    }
+  .eyebrow{
+    font-size:14px;
+  }
 
+  .hero h1{
+    font-size:31px;
 
-    #trackMsg {
-      margin-top: 15px;
+    line-height:1.35;
+  }
 
-      color: #00d9ff;
+  .hero-text{
+    font-size:15px;
 
-      line-height: 1.8;
-    }
+    line-height:1.8;
+  }
 
+  .location-box{
+    width:100%;
 
-    /* =====================================================
-       FOOTER
-    ===================================================== */
+    max-width:100%;
 
-    footer {
-      width: 100%;
+    flex-wrap:wrap;
+  }
 
-      padding: 40px 20px;
+  .location-box input{
+    width:calc(100% - 45px);
 
-      text-align: center;
+    flex:none;
+  }
 
-      background: #010813;
+  .location-box button{
+    width:100%;
+  }
 
-      border-top: 1px solid #173854;
-    }
+  .benefits{
+    grid-template-columns:1fr;
 
+    gap:12px;
 
-    footer img {
-      width: 70px;
+    margin-top:25px;
+  }
 
-      margin: 0 auto 10px;
-    }
+  .benefits div{
+    padding:16px;
+  }
 
+  .hero-art{
+    width:100%;
 
-    footer p {
-      color: #aab5c5;
+    max-width:330px;
+  }
 
-      margin-bottom: 10px;
-    }
+  .delivery-image{
+    width:100%;
 
+    max-width:300px;
+  }
 
-    footer small {
-      color: #68788b;
-    }
+  .section{
+    padding:45px 15px;
+  }
 
+  .section-head h2{
+    font-size:23px;
+  }
 
-    /* =====================================================
-       CART
-    ===================================================== */
+  .cards{
+    grid-template-columns:1fr;
+  }
 
-    #cartModal {
-      position: fixed;
+  .restaurant{
+    width:100%;
+  }
 
-      inset: 0;
+  .track{
+    padding:45px 15px;
+  }
 
-      z-index: 99999;
-    }
+  .track-form{
+    width:100%;
 
+    flex-direction:column;
+  }
 
-    .cart-overlay {
-      position: absolute;
+  .track-form input,
+  .track-form button{
+    width:100%;
+  }
 
-      inset: 0;
+  .offers-box,
+  .about-box{
+    padding:22px;
+  }
 
-      background: rgba(0, 0, 0, .75);
+  .cart-box{
+    width:calc(100% - 24px);
 
-      backdrop-filter: blur(5px);
-    }
+    max-width:none;
 
+    max-height:80vh;
 
-    .cart-box {
-      position: absolute;
+    padding:16px;
+  }
 
-      width: calc(100% - 30px);
+}
 
-      max-width: 500px;
 
-      max-height: 85vh;
+/* ================================================= */
+/* SMALL IPHONE */
+/* ================================================= */
 
-      overflow: auto;
+@media(max-width:400px){
 
-      left: 50%;
-      top: 50%;
+  .navbar{
+    padding:7px 7px;
+  }
 
-      transform:
-        translate(-50%, -50%);
+  .navbar nav{
+    gap:6px;
+  }
 
-      background: #061a30;
+  .navbar nav a{
+    font-size:10px;
+  }
 
-      border: 1px solid #23405d;
+  .login{
+    font-size:10px;
 
-      border-radius: 22px;
+    padding:2px 1px;
+  }
 
-      padding: 20px;
-    }
+  .hero h1{
+    font-size:27px;
+  }
 
+  .hero-text{
+    font-size:14px;
+  }
 
-    .cart-header {
-      display: flex;
+}
 
-      align-items: center;
-      justify-content: space-between;
 
-      padding-bottom: 15px;
+/* ================================================= */
+/* DESKTOP */
+/* ================================================= */
 
-      border-bottom: 1px solid #173854;
-    }
+@media(min-width:701px){
 
+  .login{
+    display:block;
+  }
 
-    .cart-header h2 {
-      font-size: 21px;
-    }
+}
 
 
-    .cart-header button {
-      width: 42px;
-      height: 42px;
+/* ================================================= */
+/* SAFE AREA */
+/* ================================================= */
 
-      border-radius: 10px;
+@supports(padding:max(0px)){
 
-      background: #12304d;
+  body{
+    padding-bottom:
+      env(safe-area-inset-bottom);
+  }
 
-      color: #fff;
+}
 
-      font-size: 20px;
-    }
-
-
-    .cart-items {
-      padding: 15px 0;
-    }
-
-
-    .cart-item {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      padding: 15px;
-
-      margin-bottom: 10px;
-
-      background: #081f37;
-
-      border: 1px solid #173854;
-
-      border-radius: 14px;
-    }
-
-
-    .cart-item strong {
-      font-size: 15px;
-    }
-
-
-    .cart-item p {
-      color: #00d9ff;
-
-      margin-top: 5px;
-
-      font-size: 13px;
-    }
-
-
-    .cart-item button {
-      padding: 9px 14px;
-
-      background: #ff2364;
-
-      color: #fff;
-
-      border-radius: 9px;
-    }
-
-
-    .cart-total {
-      display: flex;
-
-      justify-content: space-between;
-
-      padding: 18px 0;
-
-      border-top: 1px solid #173854;
-
-      border-bottom: 1px solid #173854;
-
-      font-size: 18px;
-    }
-
-
-    .cart-total strong {
-      color: #00d9ff;
-    }
-
-
-    .checkout-button {
-      width: 100%;
-
-      height: 52px;
-
-      margin-top: 15px;
-
-      border-radius: 13px;
-
-      background: #08d8f5;
-
-      color: #00121d;
-
-      font-weight: 900;
-    }
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    #cartMessage {
-      position: fixed !important;
-
-      bottom: 25px !important;
-
-      left: 50% !important;
-
-      transform:
-        translateX(-50%) !important;
-
-      width: max-content;
-
-      max-width: calc(100% - 30px);
-
-      padding: 12px 20px;
-
-      border-radius: 12px;
-
-      background: #00d9ff;
-
-      color: #00121d;
-
-      font-weight: 800;
-
-      z-index: 100000 !important;
-
-      text-align: center;
-    }
-
-
-    /* =====================================================
-       TABLET
-    ===================================================== */
-
-    @media (max-width: 900px) {
-
-      .hero {
-        gap: 25px;
-      }
-
-      .hero h1 {
-        font-size: 40px;
-      }
-
-      .cards {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .offers-list {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-    }
-
-
-    /* =====================================================
-       MOBILE
-       الشكل القديم مع Login ظاهر
-    ===================================================== */
-
-    @media (max-width: 700px) {
-
-      .navbar {
-        min-height: 67px;
-
-        padding: 7px 9px;
-
-        gap: 6px;
-      }
-
-
-      .brand {
-        width: 48px;
-        min-width: 48px;
-      }
-
-
-      .brand img {
-        width: 46px;
-        height: 46px;
-      }
-
-
-      .navbar nav {
-        justify-content: flex-start;
-
-        gap: 10px;
-
-        overflow-x: auto;
-
-        margin: 0 2px;
-      }
-
-
-      .navbar nav a {
-        font-size: 11px;
-
-        padding: 8px 2px;
-      }
-
-
-      /* تسجيل الدخول يظل ظاهر */
-
-      .login {
-        display: flex;
-
-        min-width: 78px;
-
-        height: 42px;
-
-        padding: 0 8px;
-
-        font-size: 11px;
-      }
-
-
-      .cart {
-        width: 46px;
-        height: 46px;
-
-        border-radius: 12px;
-
-        font-size: 20px;
-      }
-
-
-      #cartCount {
-        top: 2px;
-        left: 2px;
-      }
-
-
-      /* HERO */
-
-      .hero {
-        width: 100%;
-
-        min-height: auto;
-
-        padding: 48px 18px 35px;
-
-        display: flex;
-
-        flex-direction: column;
-
-        gap: 30px;
-      }
-
-
-      .hero-content {
-        width: 100%;
-
-        text-align: center;
-      }
-
-
-      .eyebrow {
-        font-size: 15px;
-
-        margin-bottom: 17px;
-      }
-
-
-      .hero h1 {
-        font-size: 34px;
-
-        line-height: 1.35;
-      }
-
-
-      .hero-text {
-        font-size: 15px;
-
-        line-height: 1.9;
-      }
-
-
-      /* LOCATION */
-
-      .location-box {
-        width: 100%;
-
-        display: flex;
-
-        flex-wrap: wrap;
-
-        padding: 9px;
-
-        border-radius: 18px;
-      }
-
-
-      .location-icon {
-        width: 35px;
-        min-width: 35px;
-      }
-
-
-      .location-box input {
-        width: calc(100% - 45px);
-
-        flex: 1;
-
-        height: 50px;
-
-        font-size: 15px;
-      }
-
-
-      .location-box button {
-        width: 100%;
-
-        height: 52px;
-
-        font-size: 14px;
-      }
-
-
-      /* BENEFITS */
-
-      .benefits {
-        width: 100%;
-
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-
-        margin-top: 20px;
-      }
-
-
-      .benefits > div {
-        min-height: 105px;
-
-        padding: 17px;
-
-        display: grid;
-
-        grid-template-columns: 50px 1fr;
-
-        grid-template-rows:
-          auto auto;
-
-        align-items: center;
-
-        text-align: right;
-      }
-
-
-      .benefits b {
-        grid-row: 1 / 3;
-
-        text-align: center;
-      }
-
-
-      .benefits strong {
-        font-size: 17px;
-      }
-
-
-      /* HERO IMAGE */
-
-      .hero-art {
-        width: 100%;
-
-        max-width: 330px;
-
-        margin: auto;
-      }
-
-
-      .delivery-image {
-        width: 100%;
-
-        max-width: 310px;
-      }
-
-
-      /* SECTIONS */
-
-      .section {
-        padding: 50px 16px;
-      }
-
-
-      .section-head {
-        margin-bottom: 20px;
-      }
-
-
-      .section-head h2 {
-        font-size: 25px;
-      }
-
-
-      .section-head a {
-        font-size: 13px;
-      }
-
-
-      /* RESTAURANTS */
-
-      .cards {
-        grid-template-columns: 1fr;
-
-        gap: 15px;
-      }
-
-
-      .restaurant {
-        width: 100%;
-      }
-
-
-      .food,
-      .restaurant-image {
-        height: 155px;
-      }
-
-
-      /* OFFERS */
-
-      .offers-box {
-        padding: 20px;
-      }
-
-
-      .offers-list {
-        grid-template-columns: 1fr;
-      }
-
-
-      /* TRACK */
-
-      .track {
-        padding: 45px 16px;
-      }
-
-
-      .track-form {
-        flex-direction: column;
-
-        max-width: 100%;
-      }
-
-
-      .track-form input,
-      .track-form button {
-        width: 100%;
-      }
-
-
-      /* ABOUT */
-
-      .about-box {
-        padding: 24px 20px;
-      }
-
-
-      /* CART */
-
-      .cart-box {
-        width: calc(100% - 24px);
-
-        max-height: 82vh;
-
-        padding: 16px;
-
-        border-radius: 20px;
-      }
-
-    }
-
-
-    /* =====================================================
-       SMALL IPHONE
-    ===================================================== */
-
-    @media (max-width: 400px) {
-
-      .navbar nav {
-        gap: 7px;
-      }
-
-
-      .navbar nav a {
-        font-size: 10px;
-      }
-
-
-      .login {
-        min-width: 70px;
-
-        font-size: 10px;
-      }
-
-
-      .cart {
-        width: 43px;
-        height: 43px;
-      }
-
-
-      .hero h1 {
-        font-size: 29px;
-      }
-
-
-      .hero-text {
-        font-size: 14px;
-      }
-
-    }
-
-  </style>
+</style>
 </head>
 
 
 <body>
 
 
-  <!-- =====================================================
-       NAVBAR
-  ====================================================== -->
+<header class="navbar">
 
-  <header class="navbar">
+  <a class="brand" href="#">
+    <img
+      src="assets/logo.png"
+      alt="مندوب">
+  </a>
+
+
+  <nav>
 
     <a
-      class="brand"
-      href="index.html"
-      aria-label="الرئيسية">
-
-      <img
-        src="assets/logo.png"
-        alt="مندوب"
-      >
-
+      class="active"
+      href="#">
+      الرئيسية
     </a>
 
+    <a href="#restaurants">
+      المطاعم
+    </a>
 
-    <nav>
+    <a href="#offers">
+      العروض
+    </a>
 
-      <a
-        class="active"
-        href="index.html">
-        الرئيسية
-      </a>
+    <a href="#track">
+      تتبع
+    </a>
 
-      <a href="restaurants.html">
-        المطاعم
-      </a>
+    <a href="#about">
+      عن مندوب
+    </a>
 
-      <a href="#offers">
-        العروض
-      </a>
+    <a href="#contact">
+      تواصل
+    </a>
 
-      <a href="#track">
-        تتبع الطلب
-      </a>
-
-      <a href="#about">
-        عن مندوب
-      </a>
-
-      <a href="#contact">
-        تواصل معنا
-      </a>
-
-    </nav>
+  </nav>
 
 
-    <div class="nav-actions">
+  <div class="nav-actions">
+
+
+    <button
+      type="button"
+      class="login"
+      onclick="showMessage('تسجيل الدخول قريبًا 👤')">
+
+      تسجيل الدخول
+
+    </button>
+
+
+    <button
+      type="button"
+      class="cart"
+      id="cartButton"
+      onclick="openCart()">
+
+      🛒
+
+      <span id="cartCount">
+        0
+      </span>
+
+    </button>
+
+
+  </div>
+
+</header>
+
+
+
+<main>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+
+  <div class="hero-content">
+
+
+    <p class="eyebrow">
+      مندوب — توصيل داخل مدينتك
+    </p>
+
+
+    <h1>
+
+      اطلب من مطعمك المفضل
+
+      <br>
+
+      <span>
+        ونوصلك بسرعة وأمان
+      </span>
+
+    </h1>
+
+
+    <p class="hero-text">
+
+      اطلب أكلك، مشترياتك أو احتياجاتك اليومية
+      من أفضل المطاعم والمحلات.
+
+    </p>
+
+
+    <div class="location-box">
+
+
+      <span>
+        📍
+      </span>
+
+
+      <input
+        type="text"
+        id="locationInput"
+        placeholder="أين تريد التوصيل؟">
+
 
       <button
         type="button"
-        class="login"
-        onclick="openLogin()">
+        onclick="setLocation()">
 
-        تسجيل الدخول
-
-      </button>
-
-
-      <button
-        type="button"
-        class="cart"
-        onclick="openCart()"
-        aria-label="السلة">
-
-        🛒
-
-        <span id="cartCount">
-          0
-        </span>
+        حفظ عنوان التوصيل
 
       </button>
+
 
     </div>
 
-  </header>
+
+    <p
+      id="locationMsg"
+      class="location-msg">
+    </p>
 
 
-  <!-- =====================================================
-       MAIN
-  ====================================================== -->
-
-  <main>
+    <div class="benefits">
 
 
-    <!-- HERO -->
+      <div>
 
-    <section class="hero">
+        <b>
+          🛡️
+        </b>
 
+        <strong>
+          آمن وموثوق
+        </strong>
 
-      <div class="hero-content">
-
-
-        <p class="eyebrow">
-          مندوب — توصيل داخل مدينتك
-        </p>
-
-
-        <h1>
-
-          اطلب من مطعمك المفضل
-
-          <br>
-
-          <span>
-            ونوصلك بسرعة وأمان
-          </span>
-
-        </h1>
-
-
-        <p class="hero-text">
-
-          اطلب أكلك، مشترياتك أو احتياجاتك اليومية
-          من أفضل المطاعم والمحلات.
-
-        </p>
-
-
-        <!-- LOCATION -->
-
-        <div class="location-box">
-
-          <span class="location-icon">
-            📍
-          </span>
-
-
-          <input
-            type="text"
-            id="locationInput"
-            placeholder="أين تريد التوصيل؟"
-          >
-
-
-          <button
-            type="button"
-            onclick="setLocation()">
-
-            تحديد موقعي
-
-          </button>
-
-        </div>
-
-
-        <p
-          id="locationMsg"
-          class="location-msg">
-        </p>
-
-
-        <!-- BENEFITS -->
-
-        <div class="benefits">
-
-
-          <div>
-
-            <b>
-              🛡️
-            </b>
-
-            <strong>
-              آمن وموثوق
-            </strong>
-
-            <small>
-              خدمة مضمونة
-            </small>
-
-          </div>
-
-
-          <div>
-
-            <b>
-              🛵
-            </b>
-
-            <strong>
-              توصيل سريع
-            </strong>
-
-            <small>
-              في أسرع وقت
-            </small>
-
-          </div>
-
-
-          <div>
-
-            <b>
-              🎧
-            </b>
-
-            <strong>
-              دعم العملاء
-            </strong>
-
-            <small>
-              متاح لمساعدتك
-            </small>
-
-          </div>
-
-
-        </div>
-
+        <small>
+          خدمة مضمونة
+        </small>
 
       </div>
 
 
-      <!-- DELIVERY IMAGE -->
+      <div>
 
-      <div class="hero-art">
+        <b>
+          🛵
+        </b>
 
-        <img
-          class="delivery-image"
-          src="assets/delivery.png"
-          alt="مندوب توصيل"
-        >
+        <strong>
+          توصيل سريع
+        </strong>
 
-      </div>
-
-
-    </section>
-
-
-    <!-- =====================================================
-         RESTAURANTS
-    ====================================================== -->
-
-    <section
-      id="restaurants"
-      class="section">
-
-
-      <div class="section-head">
-
-        <h2>
-          المطاعم
-        </h2>
-
-
-        <a href="restaurants.html">
-          عرض الكل ←
-        </a>
+        <small>
+          في أسرع وقت
+        </small>
 
       </div>
 
 
-      <div
-        id="restaurantList"
-        class="cards">
+      <div>
 
-        <div class="empty-state">
+        <b>
+          🎧
+        </b>
 
-          <div class="empty-icon">
-            🍽️
-          </div>
+        <strong>
+          دعم العملاء
+        </strong>
 
-          <h3>
-            جاري تحميل المطاعم...
-          </h3>
-
-          <p>
-            انتظر لحظة
-          </p>
-
-        </div>
+        <small>
+          متاح لمساعدتك
+        </small>
 
       </div>
 
 
-    </section>
+    </div>
 
 
-    <!-- =====================================================
-         OFFERS
-    ====================================================== -->
-
-    <section
-      id="offers"
-      class="section">
+  </div>
 
 
-      <div class="section-head">
+  <div class="hero-art">
 
-        <h2>
-          العروض
-        </h2>
+    <img
+      class="delivery-image"
+      src="assets/delivery.png"
+      alt="مندوب دليفري">
 
+  </div>
+
+
+</section>
+
+
+
+<!-- ================= RESTAURANTS ================= -->
+
+<section
+  id="restaurants"
+  class="section">
+
+
+  <div class="section-head">
+
+    <h2>
+      المطاعم الأكثر طلبًا
+    </h2>
+
+    <a href="#">
+      عرض الكل ←
+    </a>
+
+  </div>
+
+
+  <div class="cards">
+
+
+    <article class="restaurant">
+
+
+      <div class="food">
+        🍔
       </div>
 
 
-      <div class="offers-box">
+      <div class="card-body">
 
 
-        <div
-          id="offersList"
-          class="offers-list">
-
-          <div class="no-offers">
-            جاري تحميل العروض...
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-    </section>
-
-
-    <!-- =====================================================
-         ABOUT
-    ====================================================== -->
-
-    <section
-      id="about"
-      class="section">
-
-
-      <div class="about-box">
-
-
-        <p class="eyebrow">
-          عن مندوب
-        </p>
-
-
-        <h2>
-          توصيل سريع داخل مدينتك
-        </h2>
+        <h3>
+          برجر كنج
+        </h3>
 
 
         <p>
-
-          مندوب هي خدمة توصيل تساعدك في طلب الأكل
-          والمشتريات والاحتياجات اليومية بسهولة
-          وسرعة وأمان.
-
+          برجر • أمريكي
         </p>
 
 
-      </div>
+        <div class="restaurant-info">
 
+          <span>
+            ⭐ 4.5
+          </span>
 
-    </section>
+          <span>
+            توصيل من 25ج
+          </span>
 
-
-    <!-- =====================================================
-         TRACK
-    ====================================================== -->
-
-    <section
-      id="track"
-      class="track">
-
-
-      <p class="eyebrow">
-        تتبع طلبك
-      </p>
-
-
-      <h2>
-        اعرف طلبك وصل لفين
-      </h2>
-
-
-      <p>
-        أدخل رقم الطلب لمتابعة حالته.
-      </p>
-
-
-      <div class="track-form">
-
-
-        <input
-          type="text"
-          id="orderNumber"
-          placeholder="رقم الطلب"
-        >
+        </div>
 
 
         <button
           type="button"
-          onclick="trackOrder()">
+          onclick="addToCart('برجر كنج',100)">
 
-          تتبع الطلب
+          اطلب الآن
 
         </button>
 
@@ -1957,1500 +1366,1205 @@
       </div>
 
 
-      <p id="trackMsg"></p>
+    </article>
 
 
-    </section>
 
+    <article class="restaurant">
 
-  </main>
 
+      <div class="food">
+        🍕
+      </div>
 
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
 
-  <footer id="contact">
+      <div class="card-body">
 
 
-    <img
-      src="assets/logo.png"
-      alt="مندوب"
-    >
+        <h3>
+          بيتزا هت
+        </h3>
 
 
-    <p>
-      نوصل طلبك.. بسرعة وأمان
-    </p>
+        <p>
+          بيتزا • إيطالي
+        </p>
 
 
-    <small>
-      © 2026 مندوب — جميع الحقوق محفوظة
-    </small>
+        <div class="restaurant-info">
 
+          <span>
+            ⭐ 4.3
+          </span>
 
-  </footer>
-
-
-  <!-- =====================================================
-       FIREBASE
-  ====================================================== -->
-
-  <script type="module">
-
-    import {
-      initializeApp
-    } from
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      addDoc,
-      serverTimestamp,
-      doc,
-      getDoc
-    } from
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-    /* =====================================================
-       FIREBASE CONFIG
-    ===================================================== */
-
-    const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-      authDomain:
-        "mandoub-dv.firebaseapp.com",
-
-      projectId:
-        "mandoub-dv",
-
-      storageBucket:
-        "mandoub-dv.firebasestorage.app",
-
-      messagingSenderId:
-        "311140400335",
-
-      appId:
-        "1:311140400335:web:db198b7c53259c53594bba",
-
-      measurementId:
-        "G-7V1LJQYYXD"
-
-    };
-
-
-    let app;
-    let db;
-
-    let firebaseReady = false;
-
-
-    try {
-
-      app =
-        initializeApp(firebaseConfig);
-
-      db =
-        getFirestore(app);
-
-      firebaseReady = true;
-
-      console.log(
-        "Firebase متصل بنجاح ✅"
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Firebase Error:",
-        error
-      );
-
-      firebaseReady = false;
-
-    }
-
-
-    /* =====================================================
-       CART
-       السلة محفوظة في localStorage
-    ====================================================== */
-
-    let cart = [];
-
-
-    function loadCart() {
-
-      try {
-
-        const saved =
-          localStorage.getItem("mandoubCart");
-
-        if (saved) {
-
-          cart =
-            JSON.parse(saved);
-
-        }
-
-        if (!Array.isArray(cart)) {
-
-          cart = [];
-
-        }
-
-      } catch {
-
-        cart = [];
-
-      }
-
-      updateCartCount();
-
-    }
-
-
-    function saveCart() {
-
-      localStorage.setItem(
-        "mandoubCart",
-        JSON.stringify(cart)
-      );
-
-      updateCartCount();
-
-    }
-
-
-    function updateCartCount() {
-
-      const count =
-        document.getElementById(
-          "cartCount"
-        );
-
-      if (!count) return;
-
-
-      count.textContent =
-        cart.reduce(
-          (total, item) =>
-            total +
-            Number(item.quantity || 1),
-          0
-        );
-
-    }
-
-
-    function openCart() {
-
-      const old =
-        document.getElementById(
-          "cartModal"
-        );
-
-      if (old) {
-        old.remove();
-      }
-
-
-      let itemsHTML = "";
-
-
-      if (cart.length === 0) {
-
-        itemsHTML = `
-
-          <div
-            style="
-              text-align:center;
-              padding:35px 15px;
-            "
-          >
-
-            <div
-              style="
-                font-size:48px;
-                margin-bottom:10px;
-              "
-            >
-              🛒
-            </div>
-
-            <h3>
-              السلة فارغة
-            </h3>
-
-            <p
-              style="
-                color:#8998aa;
-                margin-top:8px;
-              "
-            >
-              اختار منتج من المطاعم لإضافته للسلة.
-            </p>
-
-          </div>
-
-        `;
-
-      } else {
-
-
-        cart.forEach(
-          (item, index) => {
-
-            const quantity =
-              Number(
-                item.quantity || 1
-              );
-
-
-            const price =
-              Number(
-                item.price || 0
-              );
-
-
-            itemsHTML += `
-
-              <div class="cart-item">
-
-                <div>
-
-                  <strong>
-                    ${escapeHTML(
-                      item.name || "منتج"
-                    )}
-                  </strong>
-
-                  <p>
-                    ${price * quantity} جنيه
-                    × ${quantity}
-                  </p>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  onclick="
-                    removeFromCart(${index})
-                  "
-                >
-                  حذف
-                </button>
-
-              </div>
-
-            `;
-
-          }
-        );
-
-      }
-
-
-      const total =
-        cart.reduce(
-          (sum, item) =>
-            sum +
-            (
-              Number(item.price || 0) *
-              Number(item.quantity || 1)
-            ),
-          0
-        );
-
-
-      const modal =
-        document.createElement("div");
-
-      modal.id =
-        "cartModal";
-
-
-      modal.innerHTML = `
-
-        <div
-          class="cart-overlay"
-          onclick="closeCart()"
-        ></div>
-
-
-        <div class="cart-box">
-
-
-          <div class="cart-header">
-
-            <h2>
-              🛒 سلة الطلبات
-            </h2>
-
-
-            <button
-              type="button"
-              onclick="closeCart()"
-            >
-              ✕
-            </button>
-
-          </div>
-
-
-          <div class="cart-items">
-
-            ${itemsHTML}
-
-          </div>
-
-
-          ${
-            cart.length > 0
-              ? `
-
-                <div class="cart-total">
-
-                  <span>
-                    الإجمالي
-                  </span>
-
-                  <strong>
-                    ${total} جنيه
-                  </strong>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  class="checkout-button"
-                  onclick="checkout()"
-                >
-                  إتمام الطلب
-                </button>
-
-              `
-              : ""
-          }
-
+          <span>
+            توصيل من 25ج
+          </span>
 
         </div>
 
-      `;
 
+        <button
+          type="button"
+          onclick="addToCart('بيتزا هت',150)">
 
-      document.body.appendChild(
-        modal
-      );
+          اطلب الآن
 
-    }
+        </button>
 
 
-    function closeCart() {
+      </div>
 
-      const modal =
-        document.getElementById(
-          "cartModal"
-        );
 
-      if (modal) {
-        modal.remove();
-      }
+    </article>
 
-    }
 
 
-    function removeFromCart(index) {
+    <article class="restaurant">
 
-      cart.splice(index, 1);
 
-      saveCart();
+      <div class="food">
+        🍗
+      </div>
 
-      openCart();
 
-    }
+      <div class="card-body">
 
 
-    /* =====================================================
-       CHECKOUT
-    ====================================================== */
+        <h3>
+          دجاج كنتاكي
+        </h3>
 
-    async function checkout() {
 
-      if (cart.length === 0) {
+        <p>
+          فراخ • وجبات
+        </p>
 
-        showMessage(
-          "السلة فارغة."
-        );
 
-        return;
+        <div class="restaurant-info">
 
-      }
+          <span>
+            ⭐ 4.6
+          </span>
 
+          <span>
+            توصيل من 25ج
+          </span>
 
-      if (!firebaseReady) {
+        </div>
 
-        showMessage(
-          "Firebase غير متصل ❌"
-        );
 
-        return;
+        <button
+          type="button"
+          onclick="addToCart('دجاج كنتاكي',130)">
 
-      }
+          اطلب الآن
 
+        </button>
 
-      const locationInput =
-        document.getElementById(
-          "locationInput"
-        );
 
+      </div>
 
-      const location =
-        locationInput
-          ? locationInput.value.trim()
-          : "";
 
+    </article>
 
-      if (!location) {
 
-        showMessage(
-          "حدد عنوان التوصيل أولاً 📍"
-        );
 
-        closeCart();
+    <article class="restaurant">
 
-        locationInput?.focus();
 
-        return;
+      <div class="food">
+        🍫
+      </div>
 
-      }
 
+      <div class="card-body">
 
-      const total =
-        cart.reduce(
-          (sum, item) =>
-            sum +
-            (
-              Number(item.price || 0) *
-              Number(item.quantity || 1)
-            ),
-          0
-        );
 
+        <h3>
+          حلويات
+        </h3>
 
-      try {
 
+        <p>
+          حلويات • شرقي
+        </p>
 
-        const order = {
 
-          items:
-            cart.map(item => ({
+        <div class="restaurant-info">
 
-              name:
-                item.name || "منتج",
+          <span>
+            ⭐ 4.4
+          </span>
 
-              price:
-                Number(item.price || 0),
+          <span>
+            توصيل من 25ج
+          </span>
 
-              quantity:
-                Number(
-                  item.quantity || 1
-                ),
+        </div>
 
-              restaurant:
-                item.restaurant || ""
 
-            })),
+        <button
+          type="button"
+          onclick="addToCart('حلويات',80)">
 
+          اطلب الآن
 
-          total:
+        </button>
 
 
-            total,
+      </div>
 
 
-          location:
+    </article>
 
 
-            location,
+  </div>
 
 
-          status:
+</section>
 
 
-            "جديد",
 
+<!-- ================= OFFERS ================= -->
 
-          driverName:
+<section
+  id="offers"
+  class="section">
 
 
-            "",
+  <div class="section-head">
 
+    <h2>
+      العروض
+    </h2>
 
-          customerName:
+  </div>
 
 
-            "",
+  <div class="offers-box">
 
 
-          phone:
+    <h3>
+      عروض مندوب قريبًا 🎉
+    </h3>
 
 
-            "",
+    <p>
+      تابعنا للحصول على أحدث العروض والخصومات.
+    </p>
 
 
-          createdAt:
+  </div>
 
 
-            serverTimestamp()
+</section>
 
-        };
 
 
-        const ref =
-          await addDoc(
+<!-- ================= ABOUT ================= -->
 
-            collection(
-              db,
-              "orders"
-            ),
+<section
+  id="about"
+  class="section">
 
-            order
 
-          );
+  <div class="about-box">
 
 
-        localStorage.setItem(
-          "lastOrderId",
-          ref.id
-        );
+    <p class="eyebrow">
+      عن مندوب
+    </p>
 
 
-        cart = [];
+    <h2>
+      توصيل سريع داخل مدينتك
+    </h2>
 
-        saveCart();
 
+    <p>
 
-        closeCart();
+      مندوب هي خدمة توصيل تساعدك في طلب الأكل
+      والمشتريات والاحتياجات اليومية بسهولة
+      وسرعة وأمان.
 
+    </p>
 
-        const orderNumber =
-          document.getElementById(
-            "orderNumber"
-          );
 
+  </div>
 
-        if (orderNumber) {
 
-          orderNumber.value =
-            ref.id;
+</section>
 
-        }
 
 
-        showMessage(
+<!-- ================= TRACK ================= -->
 
-          "تم تسجيل الطلب ✅ رقم الطلب: " +
-          ref.id
+<section
+  id="track"
+  class="track">
 
-        );
 
+  <div>
 
-      } catch (error) {
 
-        console.error(
-          error
-        );
+    <p class="eyebrow">
+      تتبع طلبك
+    </p>
 
-        showMessage(
-          "حدث خطأ أثناء تسجيل الطلب ❌"
-        );
 
-      }
+    <h2>
+      اعرف طلبك وصل لفين
+    </h2>
 
-    }
 
+    <p>
+      أدخل رقم الطلب لمتابعة حالته.
+    </p>
 
-    /* =====================================================
-       LOCATION
-    ====================================================== */
 
-    function setLocation() {
+  </div>
 
-      const input =
-        document.getElementById(
-          "locationInput"
-        );
 
+  <div class="track-form">
 
-      const msg =
-        document.getElementById(
-          "locationMsg"
-        );
 
+    <input
+      type="text"
+      id="orderNumber"
+      placeholder="رقم الطلب">
 
-      /*
-        لو المستخدم كتب العنوان بنفسه
-      */
 
-      if (
-        input &&
-        input.value.trim()
-      ) {
+    <button
+      type="button"
+      onclick="trackOrder()">
 
-        const value =
-          input.value.trim();
+      تتبع الطلب
 
+    </button>
 
-        localStorage.setItem(
-          "deliveryLocation",
-          value
-        );
 
+  </div>
 
-        msg.textContent =
-          "تم حفظ عنوان التوصيل ✅";
 
+  <p id="trackMsg"></p>
 
-        return;
 
-      }
+</section>
 
 
-      /*
-        محاولة الحصول على الموقع الحقيقي
-      */
+</main>
 
-      if (
-        !navigator.geolocation
-      ) {
 
-        msg.textContent =
-          "اكتب عنوان التوصيل يدويًا.";
 
-        return;
+<!-- ================= FOOTER ================= -->
 
-      }
+<footer id="contact">
 
 
-      msg.textContent =
-        "جاري تحديد موقعك 📍...";
+  <img
+    src="assets/logo.png"
+    alt="مندوب">
 
 
-      navigator.geolocation.getCurrentPosition(
+  <p>
+    نوصل طلبك.. بسرعة وأمان
+  </p>
 
-        position => {
 
-          const lat =
-            position.coords.latitude;
+  <small>
+    © 2026 مندوب — جميع الحقوق محفوظة
+  </small>
 
-          const lng =
-            position.coords.longitude;
 
+</footer>
 
-          const location =
-            `موقعي الحالي: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
 
 
-          input.value =
-            location;
+<script type="module">
 
 
-          localStorage.setItem(
-            "deliveryLocation",
-            location
-          );
+/* =====================================================
+   FIREBASE
+===================================================== */
 
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-          msg.textContent =
-            "تم تحديد موقعك وحفظه ✅";
 
-        },
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-        error => {
+const firebaseConfig = {
 
-          console.error(
-            error
-          );
+  apiKey:
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
+  authDomain:
+    "mandoub-dv.firebaseapp.com",
 
-          msg.textContent =
-            "لم نتمكن من تحديد موقعك، اكتب العنوان يدويًا.";
+  projectId:
+    "mandoub-dv",
 
-        },
+  storageBucket:
+    "mandoub-dv.firebasestorage.app",
 
+  messagingSenderId:
+    "311140400335",
 
-        {
-          enableHighAccuracy: true,
+  appId:
+    "1:311140400335:web:db198b7c53259c53594bba",
 
-          timeout: 10000,
+  measurementId:
+    "G-7V1LJQYYXD"
 
-          maximumAge: 0
+};
 
-        }
 
-      );
+try{
 
-    }
 
+  const app =
+    initializeApp(firebaseConfig);
 
-    function loadSavedLocation() {
 
-      const saved =
-        localStorage.getItem(
-          "deliveryLocation"
-        );
+  const db =
+    getFirestore(app);
 
 
-      const input =
-        document.getElementById(
-          "locationInput"
-        );
+  window.firebaseDB =
+    db;
 
 
-      if (
-        saved &&
-        input
-      ) {
+  window.firebaseCollection =
+    collection;
 
-        input.value =
-          saved;
 
-      }
+  window.firebaseAddDoc =
+    addDoc;
 
-    }
 
+  window.firebaseServerTimestamp =
+    serverTimestamp;
 
-    /* =====================================================
-       LOAD RESTAURANTS
-       من Firebase
-    ====================================================== */
 
-    async function loadRestaurants() {
+  window.firebaseDoc =
+    doc;
 
-      const container =
-        document.getElementById(
-          "restaurantList"
-        );
 
+  window.firebaseGetDoc =
+    getDoc;
 
-      if (!container) return;
 
+  window.firebaseReady =
+    true;
 
-      if (!firebaseReady) {
 
-        container.innerHTML = `
+  console.log(
+    "Firebase متصل بنجاح ✅"
+  );
 
-          <div class="empty-state">
 
-            <div class="empty-icon">
-              ⚠️
-            </div>
+}catch(error){
 
-            <h3>
-              تعذر الاتصال
-            </h3>
 
-            <p>
-              تأكد من إعدادات Firebase.
-            </p>
+  window.firebaseReady =
+    false;
 
-          </div>
 
-        `;
+  console.error(
+    "Firebase Error:",
+    error
+  );
 
-        return;
 
-      }
+}
 
 
-      try {
 
-        const snapshot =
-          await getDocs(
-            collection(
-              db,
-              "restaurants"
-            )
-          );
+/* =====================================================
+   CART
+===================================================== */
 
+let cart = [];
 
-        if (
-          snapshot.empty
-        ) {
 
-          container.innerHTML = `
+function updateCartCount(){
 
-            <div class="empty-state">
 
-              <div class="empty-icon">
-                🍽️
-              </div>
+  const count =
+    document.getElementById(
+      "cartCount"
+    );
 
-              <h3>
-                لا توجد مطاعم حاليًا
-              </h3>
+
+  if(count){
+
+    count.textContent =
+      cart.length;
+
+  }
+
+}
+
+
+
+function addToCart(
+  name,
+  price
+){
+
+
+  cart.push({
+
+    name:name,
+
+    price:Number(price)
+
+  });
+
+
+  updateCartCount();
+
+
+  showMessage(
+    "تمت إضافة " +
+    name +
+    " إلى السلة 🛒"
+  );
+
+
+}
+
+
+
+function openCart(){
+
+
+  const old =
+    document.getElementById(
+      "cartModal"
+    );
+
+
+  if(old){
+
+    old.remove();
+
+  }
+
+
+  let items = "";
+
+
+  if(cart.length === 0){
+
+
+    items = `
+
+      <div
+        style="
+          text-align:center;
+          padding:30px;
+        ">
+
+        <div
+          style="
+            font-size:45px;
+          ">
+
+          🛒
+
+        </div>
+
+        <h3>
+          السلة فارغة
+        </h3>
+
+        <p
+          style="
+            color:#8998aa;
+            margin-top:8px;
+          ">
+
+          لم تقم بإضافة أي طلب حتى الآن.
+
+        </p>
+
+      </div>
+
+    `;
+
+
+  }else{
+
+
+    cart.forEach(
+      (item,index)=>{
+
+
+        items += `
+
+          <div class="cart-item">
+
+            <div>
+
+              <strong>
+                ${item.name}
+              </strong>
 
               <p>
-                المطاعم التي تضيفها من لوحة الأدمن ستظهر هنا.
+                ${item.price} جنيه
               </p>
 
             </div>
 
-          `;
 
-          return;
+            <button
+              type="button"
+              onclick="removeFromCart(${index})">
 
-        }
+              حذف
 
-
-        container.innerHTML = "";
-
-
-        let counter = 0;
-
-
-        snapshot.forEach(
-          restaurantDoc => {
-
-            if (counter >= 4) {
-              return;
-            }
-
-
-            const restaurant =
-              restaurantDoc.data();
-
-
-            const id =
-              restaurantDoc.id;
-
-
-            const name =
-              restaurant.name ||
-              restaurant.title ||
-              "مطعم";
-
-
-            const category =
-              restaurant.category ||
-              "مطاعم";
-
-
-            const rating =
-              restaurant.rating ||
-              "جديد";
-
-
-            const delivery =
-              restaurant.deliveryFee ??
-              restaurant.delivery ||
-              "حسب المنطقة";
-
-
-            const image =
-              restaurant.image ||
-              restaurant.imageUrl ||
-              "";
-
-
-            const card =
-              document.createElement(
-                "article"
-              );
-
-
-            card.className =
-              "restaurant";
-
-
-            const visual =
-              image
-
-                ? `
-
-                  <img
-                    class="restaurant-image"
-                    src="${escapeAttribute(image)}"
-                    alt="${escapeAttribute(name)}"
-                  >
-
-                `
-
-                : `
-
-                  <div class="food">
-                    🍽️
-                  </div>
-
-                `;
-
-
-            card.innerHTML = `
-
-              ${visual}
-
-
-              <div class="card-body">
-
-
-                <h3>
-                  ${escapeHTML(name)}
-                </h3>
-
-
-                <p>
-                  ${escapeHTML(category)}
-                </p>
-
-
-                <div
-                  class="restaurant-info"
-                >
-
-                  <span>
-                    ⭐ ${escapeHTML(String(rating))}
-                  </span>
-
-
-                  <span>
-                    توصيل ${escapeHTML(String(delivery))}
-                  </span>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  class="restaurant-button"
-                  onclick="
-                    openRestaurant('${escapeAttribute(id)}')
-                  "
-                >
-                  عرض المنيو
-                </button>
-
-
-              </div>
-
-            `;
-
-
-            container.appendChild(
-              card
-            );
-
-
-            counter++;
-
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Restaurants Error:",
-          error
-        );
-
-
-        container.innerHTML = `
-
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              ⚠️
-            </div>
-
-            <h3>
-              حدث خطأ
-            </h3>
-
-            <p>
-              لم نتمكن من تحميل المطاعم.
-            </p>
+            </button>
 
           </div>
 
         `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       OPEN RESTAURANT
-    ====================================================== */
-
-    function openRestaurant(id) {
-
-      if (!id) return;
-
-
-      /*
-        صفحة المطاعم المنفصلة.
-        نرسل رقم المطعم في الرابط.
-      */
-
-      window.location.href =
-        "restaurants.html?id=" +
-        encodeURIComponent(id);
-
-    }
-
-
-    /* =====================================================
-       LOAD OFFERS
-       من Firebase
-    ====================================================== */
-
-    async function loadOffers() {
-
-      const container =
-        document.getElementById(
-          "offersList"
-        );
-
-
-      if (!container) return;
-
-
-      if (!firebaseReady) {
-
-        container.innerHTML = `
-
-          <div class="no-offers">
-            العروض غير متاحة حاليًا.
-          </div>
-
-        `;
-
-        return;
-
-      }
-
-
-      try {
-
-        const snapshot =
-          await getDocs(
-            collection(
-              db,
-              "offers"
-            )
-          );
-
-
-        if (
-          snapshot.empty
-        ) {
-
-          container.innerHTML = `
-
-            <div class="no-offers">
-              لا توجد عروض حاليًا 🎉
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        container.innerHTML = "";
-
-
-        let counter = 0;
-
-
-        snapshot.forEach(
-          offerDoc => {
-
-            if (counter >= 6) {
-              return;
-            }
-
-
-            const offer =
-              offerDoc.data();
-
-
-            const title =
-              offer.title ||
-              offer.name ||
-              "عرض";
-
-
-            const description =
-              offer.description ||
-              offer.text ||
-              "";
-
-
-            const image =
-              offer.image ||
-              offer.imageUrl ||
-              "";
-
-
-            const card =
-              document.createElement(
-                "div"
-              );
-
-
-            card.className =
-              "offer-card";
-
-
-            card.innerHTML = `
-
-              ${
-                image
-                  ? `
-
-                    <img
-                      src="${escapeAttribute(image)}"
-                      alt="${escapeAttribute(title)}"
-                    >
-
-                  `
-                  : ""
-              }
-
-
-              <div class="offer-content">
-
-                <h3>
-                  ${escapeHTML(title)}
-                </h3>
-
-
-                <p>
-                  ${escapeHTML(description)}
-                </p>
-
-              </div>
-
-            `;
-
-
-            container.appendChild(
-              card
-            );
-
-
-            counter++;
-
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "Offers Error:",
-          error
-        );
-
-
-        container.innerHTML = `
-
-          <div class="no-offers">
-            تعذر تحميل العروض.
-          </div>
-
-        `;
-
-      }
-
-    }
-
-
-    /* =====================================================
-       TRACK ORDER
-    ====================================================== */
-
-    async function trackOrder() {
-
-      const input =
-        document.getElementById(
-          "orderNumber"
-        );
-
-
-      const msg =
-        document.getElementById(
-          "trackMsg"
-        );
-
-
-      const id =
-        input.value.trim();
-
-
-      if (!id) {
-
-        msg.textContent =
-          "اكتب رقم الطلب.";
-
-        return;
-
-      }
-
-
-      if (!firebaseReady) {
-
-        msg.textContent =
-          "Firebase غير متصل.";
-
-        return;
-
-      }
-
-
-      msg.textContent =
-        "جاري البحث عن الطلب...";
-
-
-      try {
-
-
-        const reference =
-          doc(
-            db,
-            "orders",
-            id
-          );
-
-
-        const snapshot =
-          await getDoc(
-            reference
-          );
-
-
-        if (
-          !snapshot.exists()
-        ) {
-
-          msg.textContent =
-            "لم يتم العثور على الطلب.";
-
-          return;
-
-        }
-
-
-        const order =
-          snapshot.data();
-
-
-        const status =
-          order.status ||
-          "جديد";
-
-
-        const driver =
-          order.driverName ||
-          "لم يتم تحديد الطيار بعد";
-
-
-        const total =
-          order.total ||
-          0;
-
-
-        msg.innerHTML = `
-
-          <strong>
-            حالة الطلب:
-            ${escapeHTML(String(status))}
-          </strong>
-
-          <br>
-
-          الإجمالي:
-          ${escapeHTML(String(total))}
-          جنيه
-
-          <br>
-
-          الطيار:
-          ${escapeHTML(String(driver))}
-
-        `;
-
-
-      } catch (error) {
-
-        console.error(
-          error
-        );
-
-
-        msg.textContent =
-          "حدث خطأ أثناء تتبع الطلب.";
-
-      }
-
-    }
-
-
-    /* =====================================================
-       LOGIN
-    ====================================================== */
-
-    function openLogin() {
-
-      showMessage(
-        "صفحة تسجيل الدخول سيتم تفعيلها قريبًا 👤"
-      );
-
-    }
-
-
-    /* =====================================================
-       MESSAGE
-    ====================================================== */
-
-    function showMessage(text) {
-
-      const old =
-        document.getElementById(
-          "cartMessage"
-        );
-
-
-      if (old) {
-        old.remove();
-      }
-
-
-      const message =
-        document.createElement(
-          "div"
-        );
-
-
-      message.id =
-        "cartMessage";
-
-
-      message.textContent =
-        text;
-
-
-      document.body.appendChild(
-        message
-      );
-
-
-      setTimeout(
-        () => {
-
-          if (message) {
-            message.remove();
-          }
-
-        },
-        3500
-      );
-
-    }
-
-
-    /* =====================================================
-       SECURITY / HTML HELPERS
-    ====================================================== */
-
-    function escapeHTML(value) {
-
-      return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-    }
-
-
-    function escapeAttribute(value) {
-
-      return String(value)
-        .replaceAll("\\", "\\\\")
-        .replaceAll("'", "\\'");
-
-    }
-
-
-    /* =====================================================
-       GLOBAL FUNCTIONS
-    ====================================================== */
-
-    window.openCart =
-      openCart;
-
-    window.closeCart =
-      closeCart;
-
-    window.removeFromCart =
-      removeFromCart;
-
-    window.checkout =
-      checkout;
-
-    window.setLocation =
-      setLocation;
-
-    window.trackOrder =
-      trackOrder;
-
-    window.openLogin =
-      openLogin;
-
-    window.showMessage =
-      showMessage;
-
-    window.openRestaurant =
-      openRestaurant;
-
-
-    /* =====================================================
-       START
-    ====================================================== */
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
-
-        loadCart();
-
-        loadSavedLocation();
-
-        loadRestaurants();
-
-        loadOffers();
 
       }
     );
 
-  </script>
+  }
+
+
+
+  const total =
+    cart.reduce(
+      (sum,item)=>
+        sum + item.price,
+      0
+    );
+
+
+
+  const modal =
+    document.createElement(
+      "div"
+    );
+
+
+  modal.id =
+    "cartModal";
+
+
+
+  modal.innerHTML = `
+
+    <div
+      class="cart-overlay"
+      onclick="closeCart()">
+    </div>
+
+
+    <div class="cart-box">
+
+
+      <div class="cart-header">
+
+
+        <h2>
+          🛒 سلة الطلبات
+        </h2>
+
+
+        <button
+          type="button"
+          onclick="closeCart()">
+
+          ✕
+
+        </button>
+
+
+      </div>
+
+
+      <div class="cart-items">
+
+        ${items}
+
+      </div>
+
+
+      ${
+        cart.length
+        ? `
+
+          <div class="cart-total">
+
+            <span>
+              الإجمالي
+            </span>
+
+            <strong>
+              ${total} جنيه
+            </strong>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="checkout-button"
+            onclick="checkout()">
+
+            إتمام الطلب
+
+          </button>
+
+        `
+        : ""
+      }
+
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(
+    modal
+  );
+
+}
+
+
+
+function closeCart(){
+
+
+  const modal =
+    document.getElementById(
+      "cartModal"
+    );
+
+
+  if(modal){
+
+    modal.remove();
+
+  }
+
+}
+
+
+
+function removeFromCart(
+  index
+){
+
+
+  cart.splice(
+    index,
+    1
+  );
+
+
+  updateCartCount();
+
+
+  openCart();
+
+}
+
+
+
+/* =====================================================
+   CHECKOUT
+===================================================== */
+
+async function checkout(){
+
+
+  if(cart.length === 0){
+
+    showMessage(
+      "السلة فارغة."
+    );
+
+    return;
+
+  }
+
+
+  if(!window.firebaseReady){
+
+    showMessage(
+      "Firebase غير متصل ❌"
+    );
+
+    return;
+
+  }
+
+
+  const locationInput =
+    document.getElementById(
+      "locationInput"
+    );
+
+
+  const location =
+    locationInput
+      ? locationInput.value.trim()
+      : "";
+
+
+  if(!location){
+
+    showMessage(
+      "اكتب عنوان التوصيل أولاً 📍"
+    );
+
+
+    if(locationInput){
+
+      locationInput.focus();
+
+    }
+
+
+    return;
+
+  }
+
+
+
+  const total =
+    cart.reduce(
+      (sum,item)=>
+        sum + item.price,
+      0
+    );
+
+
+
+  try{
+
+
+    const order = {
+
+      items:
+        cart.map(
+          item=>({
+
+            name:item.name,
+
+            price:item.price
+
+          })
+        ),
+
+      total:total,
+
+      location:location,
+
+      status:"جديد",
+
+      createdAt:
+        window.firebaseServerTimestamp()
+
+    };
+
+
+
+    const ref =
+      await window.firebaseAddDoc(
+
+        window.firebaseCollection(
+          window.firebaseDB,
+          "orders"
+        ),
+
+        order
+
+      );
+
+
+
+    localStorage.setItem(
+      "lastOrderId",
+      ref.id
+    );
+
+
+
+    showMessage(
+      "تم تسجيل الطلب ✅ رقم الطلب: " +
+      ref.id
+    );
+
+
+
+    cart = [];
+
+
+    updateCartCount();
+
+
+
+    const orderNumber =
+      document.getElementById(
+        "orderNumber"
+      );
+
+
+    if(orderNumber){
+
+      orderNumber.value =
+        ref.id;
+
+    }
+
+
+
+    setTimeout(
+      closeCart,
+      2000
+    );
+
+
+  }catch(error){
+
+
+    console.error(
+      "Firebase Error:",
+      error
+    );
+
+
+    showMessage(
+      "حصل خطأ أثناء تسجيل الطلب ❌"
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   LOCATION
+===================================================== */
+
+function setLocation(){
+
+
+  const input =
+    document.getElementById(
+      "locationInput"
+    );
+
+
+  const msg =
+    document.getElementById(
+      "locationMsg"
+    );
+
+
+  const value =
+    input.value.trim();
+
+
+  if(!value){
+
+    msg.textContent =
+      "اكتب عنوان التوصيل أولاً.";
+
+    return;
+
+  }
+
+
+
+  localStorage.setItem(
+    "deliveryLocation",
+    value
+  );
+
+
+
+  msg.textContent =
+    "تم حفظ عنوان التوصيل ✅";
+
+}
+
+
+
+function loadSavedLocation(){
+
+
+  const saved =
+    localStorage.getItem(
+      "deliveryLocation"
+    );
+
+
+  const input =
+    document.getElementById(
+      "locationInput"
+    );
+
+
+  if(saved && input){
+
+    input.value =
+      saved;
+
+  }
+
+}
+
+
+
+/* =====================================================
+   TRACK ORDER
+===================================================== */
+
+async function trackOrder(){
+
+
+  const input =
+    document.getElementById(
+      "orderNumber"
+    );
+
+
+  const msg =
+    document.getElementById(
+      "trackMsg"
+    );
+
+
+  const id =
+    input.value.trim();
+
+
+  if(!id){
+
+    msg.textContent =
+      "اكتب رقم الطلب.";
+
+    return;
+
+  }
+
+
+
+  if(!window.firebaseReady){
+
+    msg.textContent =
+      "Firebase غير متصل.";
+
+    return;
+
+  }
+
+
+
+  try{
+
+
+    const ref =
+      window.firebaseDoc(
+        window.firebaseDB,
+        "orders",
+        id
+      );
+
+
+
+    const snapshot =
+      await window.firebaseGetDoc(
+        ref
+      );
+
+
+
+    if(!snapshot.exists()){
+
+      msg.textContent =
+        "لم يتم العثور على الطلب.";
+
+      return;
+
+    }
+
+
+
+    const order =
+      snapshot.data();
+
+
+
+    msg.innerHTML = `
+
+      <strong>
+
+        حالة الطلب:
+        ${order.status || "جديد"}
+
+      </strong>
+
+      <br>
+
+      الإجمالي:
+      ${order.total || 0} جنيه
+
+    `;
+
+
+  }catch(error){
+
+
+    console.error(
+      error
+    );
+
+
+    msg.textContent =
+      "حدث خطأ أثناء تتبع الطلب.";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+function showMessage(
+  text
+){
+
+
+  const old =
+    document.getElementById(
+      "cartMessage"
+    );
+
+
+  if(old){
+
+    old.remove();
+
+  }
+
+
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+
+  message.id =
+    "cartMessage";
+
+
+  message.textContent =
+    text;
+
+
+
+  document.body.appendChild(
+    message
+  );
+
+
+
+  setTimeout(
+    ()=>{
+
+      if(message){
+
+        message.remove();
+
+      }
+
+    },
+    3000
+  );
+
+}
+
+
+
+/* =====================================================
+   GLOBAL FUNCTIONS
+===================================================== */
+
+window.addToCart =
+  addToCart;
+
+
+window.openCart =
+  openCart;
+
+
+window.closeCart =
+  closeCart;
+
+
+window.removeFromCart =
+  removeFromCart;
+
+
+window.checkout =
+  checkout;
+
+
+window.setLocation =
+  setLocation;
+
+
+window.trackOrder =
+  trackOrder;
+
+
+window.showMessage =
+  showMessage;
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+
+    loadSavedLocation();
+
+    updateCartCount();
+
+  }
+);
+
+</script>
+
 
 </body>
-
 </html>
