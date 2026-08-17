@@ -3,493 +3,663 @@
 
 <head>
 
-<meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-
-<title>مندوب | لوحة التحكم</title>
-
-<style>
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-body{
-  font-family:Arial,Tahoma,sans-serif;
-  background:#020b16;
-  color:#fff;
-  min-height:100vh;
-}
-
-button,
-input,
-select,
-textarea{
-  font-family:inherit;
-}
-
-button{
-  cursor:pointer;
-  border:0;
-}
-
-.app{
-  display:flex;
-  min-height:100vh;
-}
-
-
-/* ================= SIDEBAR ================= */
-
-.sidebar{
-  width:250px;
-  background:#061827;
-  border-left:1px solid #17344e;
-  padding:20px 15px;
-  position:fixed;
-  right:0;
-  top:0;
-  bottom:0;
-  z-index:1000;
-}
-
-.logo{
-  text-align:center;
-  padding-bottom:20px;
-  border-bottom:1px solid #17344e;
-  margin-bottom:20px;
-}
-
-.logo img{
-  width:70px;
-  height:70px;
-  object-fit:contain;
-  margin:auto;
-}
-
-.logo h2{
-  margin-top:8px;
-  color:#00dfff;
-  font-size:20px;
-}
-
-.menu{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.menu button{
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  background:transparent;
-  color:#b7c7d5;
-  text-align:right;
-  font-size:14px;
-}
-
-.menu button:hover,
-.menu button.active{
-  background:#0a3049;
-  color:#00dfff;
-}
-
-
-/* ================= MAIN ================= */
-
-.main{
-  width:calc(100% - 250px);
-  margin-right:250px;
-  padding:25px;
-}
-
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.topbar h1{
-  font-size:27px;
-}
-
-.status{
-  padding:9px 14px;
-  border-radius:20px;
-  background:#082f26;
-  color:#35e6a1;
-  font-size:12px;
-}
-
-
-/* ================= PAGES ================= */
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-
-/* ================= STATS ================= */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.stat{
-  background:#061a2d;
-  border:1px solid #173854;
-  border-radius:17px;
-  padding:20px;
-}
-
-.stat span{
-  color:#899aaa;
-  font-size:13px;
-}
-
-.stat strong{
-  display:block;
-  margin-top:10px;
-  color:#00dfff;
-  font-size:28px;
-}
-
-
-/* ================= BOX ================= */
-
-.box{
-  background:#061a2d;
-  border:1px solid #173854;
-  border-radius:18px;
-  padding:20px;
-  margin-bottom:20px;
-}
-
-.box h2{
-  font-size:20px;
-  margin-bottom:18px;
-}
-
-
-/* ================= FORM ================= */
-
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
-
-.field.full{
-  grid-column:1/-1;
-}
-
-.field label{
-  color:#9dafbe;
-  font-size:13px;
-}
-
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  background:#031321;
-  color:#fff;
-  border:1px solid #23425d;
-  border-radius:11px;
-  padding:13px;
-  outline:none;
-}
-
-.field textarea{
-  min-height:90px;
-  resize:vertical;
-}
-
-.primary{
-  background:#00dfff;
-  color:#00131e;
-  font-weight:bold;
-  padding:13px 20px;
-  border-radius:11px;
-}
-
-.danger{
-  background:#ff2868;
-  color:#fff;
-  padding:9px 13px;
-  border-radius:9px;
-}
-
-.secondary{
-  background:#12324b;
-  color:#fff;
-  padding:9px 13px;
-  border-radius:9px;
-}
-
-.success{
-  background:#0b8f68;
-  color:#fff;
-  padding:9px 13px;
-  border-radius:9px;
-}
-
-
-/* ================= LIST ================= */
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.item{
-  background:#081f35;
-  border:1px solid #173854;
-  border-radius:14px;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.item-info{
-  flex:1;
-}
-
-.item-info strong{
-  display:block;
-  margin-bottom:6px;
-}
-
-.item-info small{
-  color:#899aaa;
-}
-
-.item-actions{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-}
-
-
-/* ================= RESTAURANT IMAGE ================= */
-
-.restaurant-thumb{
-  width:70px;
-  height:70px;
-  border-radius:12px;
-  object-fit:cover;
-  background:#031321;
-  border:1px solid #23425d;
-  flex-shrink:0;
-}
-
-.restaurant-row{
-  display:flex;
-  align-items:center;
-  gap:13px;
-  flex:1;
-}
-
-.restaurant-placeholder{
-  width:70px;
-  height:70px;
-  border-radius:12px;
-  background:#123a50;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  flex-shrink:0;
-}
-
-
-/* ================= BADGE ================= */
-
-.badge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  background:#12334a;
-  color:#00dfff;
-  font-size:11px;
-}
-
-.badge.off{
-  background:#3b1b27;
-  color:#ff6d98;
-}
-
-
-/* ================= TABLE ================= */
-
-.table-wrap{
-  overflow-x:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-}
-
-th,
-td{
-  padding:13px;
-  border-bottom:1px solid #173854;
-  text-align:right;
-  font-size:13px;
-}
-
-th{
-  color:#00dfff;
-}
-
-td{
-  color:#d7e0e8;
-}
-
-
-/* ================= MESSAGE ================= */
-
-#message{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:99999;
-  background:#00dfff;
-  color:#00131e;
-  padding:13px 20px;
-  border-radius:12px;
-  font-weight:bold;
-  display:none;
-  max-width:90%;
-  text-align:center;
-}
-
-
-/* ================= MOBILE ================= */
-
-@media(max-width:800px){
-
-  .sidebar{
-    width:100%;
-    height:auto;
-    bottom:auto;
-    position:fixed;
-    padding:10px;
-    right:0;
-  }
-
-  .logo{
-    display:none;
-  }
-
-  .menu{
-    flex-direction:row;
-    overflow-x:auto;
-    scrollbar-width:none;
-  }
-
-  .menu::-webkit-scrollbar{
-    display:none;
-  }
-
-  .menu button{
-    width:auto;
-    min-width:max-content;
-    white-space:nowrap;
-    padding:10px 12px;
-    font-size:12px;
-  }
-
-  .main{
-    width:100%;
-    margin-right:0;
-    padding:15px;
-    padding-top:80px;
-  }
-
-  .topbar h1{
-    font-size:21px;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .stat strong{
-    font-size:23px;
-  }
-
-  .form-grid{
-    grid-template-columns:1fr;
-  }
-
-  .field.full{
-    grid-column:auto;
-  }
-
-  .item{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .item-actions{
-    width:100%;
-  }
-
-  .item-actions button{
-    flex:1;
-  }
-
-  .restaurant-row{
-    width:100%;
-  }
-
-}
-
-@media(max-width:400px){
-
-  .stats{
-    gap:8px;
-  }
-
-  .stat{
-    padding:14px;
-  }
-
-  .stat strong{
-    font-size:20px;
-  }
-
-}
-
-</style>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+  <title>مندوب | لوحة التحكم</title>
+
+  <style>
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial,Tahoma,sans-serif;
+      background:#020b16;
+      color:#fff;
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font-family:inherit;
+    }
+
+    button{
+      cursor:pointer;
+      border:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .app{
+      display:flex;
+      min-height:100vh;
+    }
+
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar{
+      width:250px;
+
+      background:#061827;
+
+      border-left:1px solid #17344e;
+
+      padding:20px 15px;
+
+      position:fixed;
+
+      right:0;
+      top:0;
+      bottom:0;
+
+      z-index:1000;
+    }
+
+
+    .logo{
+      text-align:center;
+
+      padding-bottom:20px;
+
+      border-bottom:1px solid #17344e;
+
+      margin-bottom:20px;
+    }
+
+
+    .logo img{
+      width:70px;
+      height:70px;
+
+      object-fit:contain;
+
+      margin:auto;
+    }
+
+
+    .logo h2{
+      margin-top:8px;
+
+      color:#00dfff;
+
+      font-size:20px;
+    }
+
+
+    .menu{
+      display:flex;
+
+      flex-direction:column;
+
+      gap:7px;
+    }
+
+
+    .menu button{
+      width:100%;
+
+      padding:14px;
+
+      border-radius:12px;
+
+      background:transparent;
+
+      color:#b7c7d5;
+
+      text-align:right;
+
+      font-size:14px;
+    }
+
+
+    .menu button:hover,
+    .menu button.active{
+      background:#0a3049;
+
+      color:#00dfff;
+    }
+
+
+    /* ================= MAIN ================= */
+
+    .main{
+      width:calc(100% - 250px);
+
+      margin-right:250px;
+
+      padding:25px;
+    }
+
+
+    .topbar{
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:15px;
+
+      margin-bottom:25px;
+    }
+
+
+    .topbar h1{
+      font-size:27px;
+    }
+
+
+    .status{
+      padding:9px 14px;
+
+      border-radius:20px;
+
+      background:#082f26;
+
+      color:#35e6a1;
+
+      font-size:12px;
+    }
+
+
+    /* ================= PAGES ================= */
+
+    .page{
+      display:none;
+    }
+
+
+    .page.active{
+      display:block;
+    }
+
+
+    /* ================= STATS ================= */
+
+    .stats{
+      display:grid;
+
+      grid-template-columns:
+        repeat(4,1fr);
+
+      gap:15px;
+
+      margin-bottom:25px;
+    }
+
+
+    .stat{
+      background:#061a2d;
+
+      border:1px solid #173854;
+
+      border-radius:17px;
+
+      padding:20px;
+    }
+
+
+    .stat span{
+      color:#899aaa;
+
+      font-size:13px;
+    }
+
+
+    .stat strong{
+      display:block;
+
+      margin-top:10px;
+
+      color:#00dfff;
+
+      font-size:28px;
+    }
+
+
+    /* ================= BOX ================= */
+
+    .box{
+      background:#061a2d;
+
+      border:1px solid #173854;
+
+      border-radius:18px;
+
+      padding:20px;
+
+      margin-bottom:20px;
+    }
+
+
+    .box h2{
+      font-size:20px;
+
+      margin-bottom:18px;
+    }
+
+
+    /* ================= FORM ================= */
+
+    .form-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap:12px;
+    }
+
+
+    .field{
+      display:flex;
+
+      flex-direction:column;
+
+      gap:7px;
+    }
+
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+
+    .field label{
+      color:#9dafbe;
+
+      font-size:13px;
+    }
+
+
+    .field input,
+    .field select,
+    .field textarea{
+
+      width:100%;
+
+      background:#031321;
+
+      color:#fff;
+
+      border:1px solid #23425d;
+
+      border-radius:11px;
+
+      padding:13px;
+
+      outline:none;
+
+    }
+
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+
+      border-color:#00dfff;
+
+      box-shadow:
+        0 0 0 2px
+        rgba(0,223,255,.08);
+
+    }
+
+
+    .field textarea{
+      min-height:90px;
+
+      resize:vertical;
+    }
+
+
+    .primary{
+
+      background:#00dfff;
+
+      color:#00131e;
+
+      font-weight:bold;
+
+      padding:13px 20px;
+
+      border-radius:11px;
+    }
+
+
+    .primary:hover{
+      opacity:.9;
+    }
+
+
+    .danger{
+
+      background:#ff2868;
+
+      color:#fff;
+
+      padding:9px 13px;
+
+      border-radius:9px;
+    }
+
+
+    .secondary{
+
+      background:#12324b;
+
+      color:#fff;
+
+      padding:9px 13px;
+
+      border-radius:9px;
+    }
+
+
+    /* ================= LIST ================= */
+
+    .list{
+
+      display:flex;
+
+      flex-direction:column;
+
+      gap:10px;
+    }
+
+
+    .item{
+
+      background:#081f35;
+
+      border:1px solid #173854;
+
+      border-radius:14px;
+
+      padding:15px;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:space-between;
+
+      gap:12px;
+    }
+
+
+    .item-info{
+      flex:1;
+
+      min-width:0;
+    }
+
+
+    .item-info strong{
+
+      display:block;
+
+      margin-bottom:6px;
+
+      word-break:break-word;
+    }
+
+
+    .item-info small{
+
+      color:#899aaa;
+
+      line-height:1.7;
+    }
+
+
+    .item-actions{
+
+      display:flex;
+
+      gap:7px;
+
+      flex-wrap:wrap;
+
+      flex-shrink:0;
+    }
+
+
+    /* ================= TABLE ================= */
+
+    .table-wrap{
+      overflow-x:auto;
+    }
+
+
+    table{
+
+      width:100%;
+
+      border-collapse:collapse;
+
+      min-width:700px;
+    }
+
+
+    th,
+    td{
+
+      padding:13px;
+
+      border-bottom:1px solid #173854;
+
+      text-align:right;
+
+      font-size:13px;
+    }
+
+
+    th{
+      color:#00dfff;
+    }
+
+
+    td{
+      color:#d7e0e8;
+    }
+
+
+    .badge{
+
+      display:inline-block;
+
+      padding:5px 9px;
+
+      border-radius:20px;
+
+      background:#12334a;
+
+      color:#00dfff;
+
+      font-size:11px;
+    }
+
+
+    /* ================= MESSAGE ================= */
+
+    #message{
+
+      position:fixed;
+
+      bottom:20px;
+
+      left:50%;
+
+      transform:translateX(-50%);
+
+      z-index:99999;
+
+      background:#00dfff;
+
+      color:#00131e;
+
+      padding:13px 20px;
+
+      border-radius:12px;
+
+      font-weight:bold;
+
+      display:none;
+
+      max-width:90%;
+
+      text-align:center;
+    }
+
+
+    /* ================= MOBILE ================= */
+
+    @media(max-width:800px){
+
+      .sidebar{
+
+        width:100%;
+
+        height:auto;
+
+        bottom:auto;
+
+        position:fixed;
+
+        padding:10px;
+
+        right:0;
+      }
+
+
+      .logo{
+        display:none;
+      }
+
+
+      .menu{
+
+        flex-direction:row;
+
+        overflow-x:auto;
+
+        scrollbar-width:none;
+      }
+
+
+      .menu::-webkit-scrollbar{
+        display:none;
+      }
+
+
+      .menu button{
+
+        width:auto;
+
+        min-width:max-content;
+
+        white-space:nowrap;
+
+        padding:10px 12px;
+
+        font-size:12px;
+      }
+
+
+      .main{
+
+        width:100%;
+
+        margin-right:0;
+
+        padding:15px;
+
+        padding-top:80px;
+      }
+
+
+      .topbar h1{
+        font-size:21px;
+      }
+
+
+      .stats{
+
+        grid-template-columns:
+          repeat(2,1fr);
+      }
+
+
+      .stat strong{
+        font-size:23px;
+      }
+
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+
+      .field.full{
+        grid-column:auto;
+      }
+
+
+      .item{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+      }
+
+
+      .item-actions{
+        width:100%;
+      }
+
+
+      .item-actions button{
+        flex:1;
+      }
+
+    }
+
+
+    @media(max-width:400px){
+
+      .stats{
+        gap:8px;
+      }
+
+
+      .stat{
+        padding:14px;
+      }
+
+
+      .stat strong{
+        font-size:20px;
+      }
+
+
+      .box{
+        padding:15px;
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -500,923 +670,959 @@ td{
 <div class="app">
 
 
-<!-- ================= SIDEBAR ================= -->
+  <!-- ================= SIDEBAR ================= -->
 
-<aside class="sidebar">
-
-  <div class="logo">
-
-    <img
-      src="assets/logo.png"
-      alt="مندوب">
-
-    <h2>
-      لوحة مندوب
-    </h2>
-
-  </div>
+  <aside class="sidebar">
 
 
-  <div class="menu">
+    <div class="logo">
 
-    <button
-      class="active"
-      onclick="showPage('dashboard',this)">
-      📊 الرئيسية
-    </button>
+      <img
+        src="assets/logo.png"
+        alt="مندوب">
 
-    <button
-      onclick="showPage('restaurants',this)">
-      🍔 المطاعم
-    </button>
+      <h2>
+        لوحة مندوب
+      </h2>
 
-    <button
-      onclick="showPage('products',this)">
-      🍟 المنتجات
-    </button>
-
-    <button
-      onclick="showPage('offers',this)">
-      🎁 العروض
-    </button>
-
-    <button
-      onclick="showPage('orders',this)">
-      📦 الطلبات
-    </button>
-
-    <button
-      onclick="showPage('drivers',this)">
-      🛵 الطيارين
-    </button>
-
-    <button
-      onclick="showPage('customers',this)">
-      👥 العملاء
-    </button>
-
-    <button
-      onclick="showPage('settings',this)">
-      ⚙️ الإعدادات
-    </button>
-
-  </div>
-
-</aside>
+    </div>
 
 
-
-<!-- ================= MAIN ================= -->
-
-<main class="main">
+    <div class="menu">
 
 
-<header class="topbar">
+      <button
+        class="active"
+        onclick="showPage('dashboard',this)">
 
-  <h1 id="pageTitle">
-    لوحة التحكم
-  </h1>
+        📊 الرئيسية
 
-  <span
-    class="status"
-    id="firebaseStatus">
-    جاري الاتصال...
-  </span>
-
-</header>
+      </button>
 
 
+      <button
+        onclick="showPage('restaurants',this)">
 
-<!-- ================= DASHBOARD ================= -->
+        🍔 المطاعم
 
-<section
-  id="dashboard"
-  class="page active">
+      </button>
 
-  <div class="stats">
 
-    <div class="stat">
+      <button
+        onclick="showPage('products',this)">
 
-      <span>
-        المطاعم
+        🍟 المنتجات
+
+      </button>
+
+
+      <button
+        onclick="showPage('offers',this)">
+
+        🎁 العروض
+
+      </button>
+
+
+      <button
+        onclick="showPage('orders',this)">
+
+        📦 الطلبات
+
+      </button>
+
+
+      <button
+        onclick="showPage('drivers',this)">
+
+        🛵 الطيارين
+
+      </button>
+
+
+      <button
+        onclick="showPage('customers',this)">
+
+        👥 العملاء
+
+      </button>
+
+
+      <button
+        onclick="showPage('settings',this)">
+
+        ⚙️ الإعدادات
+
+      </button>
+
+
+    </div>
+
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+
+  <main class="main">
+
+
+    <header class="topbar">
+
+
+      <h1 id="pageTitle">
+        لوحة التحكم
+      </h1>
+
+
+      <span
+        class="status"
+        id="firebaseStatus">
+
+        جاري الاتصال...
+
       </span>
 
-      <strong id="restaurantsCount">
-        0
-      </strong>
 
-    </div>
+    </header>
 
 
-    <div class="stat">
+    <!-- ================= DASHBOARD ================= -->
 
-      <span>
-        المنتجات
-      </span>
-
-      <strong id="productsCount">
-        0
-      </strong>
-
-    </div>
+    <section
+      id="dashboard"
+      class="page active">
 
 
-    <div class="stat">
-
-      <span>
-        الطلبات
-      </span>
-
-      <strong id="ordersCount">
-        0
-      </strong>
-
-    </div>
+      <div class="stats">
 
 
-    <div class="stat">
+        <div class="stat">
 
-      <span>
-        الطيارين
-      </span>
+          <span>
+            المطاعم
+          </span>
 
-      <strong id="driversCount">
-        0
-      </strong>
+          <strong id="restaurantsCount">
+            0
+          </strong>
 
-    </div>
-
-  </div>
+        </div>
 
 
-  <div class="box">
+        <div class="stat">
 
-    <h2>
-      مرحبًا بك في لوحة التحكم 👋
-    </h2>
+          <span>
+            المنتجات
+          </span>
 
-    <p
-      style="color:#91a4b4;line-height:2">
+          <strong id="productsCount">
+            0
+          </strong>
 
-      من هنا تقدر تدير المطاعم والمنتجات والعروض
-      والطلبات والطيارين والعملاء.
-
-    </p>
-
-  </div>
-
-</section>
+        </div>
 
 
+        <div class="stat">
 
-<!-- ================= RESTAURANTS ================= -->
+          <span>
+            الطلبات
+          </span>
 
-<section
-  id="restaurants"
-  class="page">
+          <strong id="ordersCount">
+            0
+          </strong>
 
-
-  <!-- ADD / EDIT -->
-
-  <div class="box">
-
-    <h2 id="restaurantFormTitle">
-      إضافة مطعم
-    </h2>
+        </div>
 
 
-    <div class="form-grid">
+        <div class="stat">
 
+          <span>
+            الطيارين
+          </span>
 
-      <div class="field">
+          <strong id="driversCount">
+            0
+          </strong>
 
-        <label>
-          اسم المطعم
-        </label>
+        </div>
 
-        <input
-          id="restaurantName"
-          placeholder="مثال: مطعم النيل">
 
       </div>
 
 
-      <div class="field">
+      <div class="box">
 
-        <label>
-          التصنيف
-        </label>
-
-        <input
-          id="restaurantCategory"
-          placeholder="مثال: برجر">
-
-      </div>
+        <h2>
+          مرحبًا بك في لوحة التحكم 👋
+        </h2>
 
 
-      <div class="field">
+        <p
+          style="
+            color:#91a4b4;
+            line-height:2
+          ">
 
-        <label>
-          التقييم
-        </label>
+          من هنا تقدر تدير المطاعم
+          والمنتجات والعروض
+          والطلبات والطيارين والعملاء.
 
-        <input
-          id="restaurantRating"
-          type="number"
-          min="0"
-          max="5"
-          step="0.1"
-          placeholder="4.5">
+        </p>
 
       </div>
 
 
-      <div class="field">
+    </section>
 
-        <label>
-          رسوم التوصيل
-        </label>
 
-        <input
-          id="restaurantDelivery"
-          type="number"
-          min="0"
-          placeholder="25">
+    <!-- ================= RESTAURANTS ================= -->
+
+    <section
+      id="restaurants"
+      class="page">
+
+
+      <div class="box">
+
+
+        <h2>
+          إضافة مطعم
+        </h2>
+
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label>
+              اسم المطعم
+            </label>
+
+            <input
+              id="restaurantName"
+              placeholder="مثال: مطعم النيل">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              التصنيف
+            </label>
+
+            <input
+              id="restaurantCategory"
+              placeholder="مثال: برجر">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              التقييم
+            </label>
+
+            <input
+              id="restaurantRating"
+              type="number"
+              step="0.1"
+              placeholder="4.5">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              رسوم التوصيل
+            </label>
+
+            <input
+              id="restaurantDelivery"
+              type="number"
+              placeholder="25">
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              وصف المطعم
+            </label>
+
+            <textarea
+              id="restaurantDescription"
+              placeholder="وصف مختصر للمطعم"></textarea>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              رابط صورة المطعم
+            </label>
+
+            <input
+              id="restaurantImage"
+              placeholder="https://...">
+
+          </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <button
+          class="primary"
+          onclick="addRestaurant()">
+
+          + إضافة المطعم
+
+        </button>
+
 
       </div>
 
 
-      <div class="field full">
+      <div class="box">
 
-        <label>
-          وصف المطعم
-        </label>
 
-        <textarea
-          id="restaurantDescription"
-          placeholder="وصف مختصر للمطعم"></textarea>
+        <h2>
+          المطاعم الموجودة
+        </h2>
+
+
+        <div
+          id="restaurantsList"
+          class="list">
+
+          جاري التحميل...
+
+        </div>
+
 
       </div>
 
 
-      <div class="field">
+    </section>
 
-        <label>
-          رابط صورة المطعم
-        </label>
 
-        <input
-          id="restaurantImage"
-          placeholder="https://...">
+    <!-- ================= PRODUCTS ================= -->
+
+    <section
+      id="products"
+      class="page">
+
+
+      <div class="box">
+
+
+        <h2>
+          إضافة منتج
+        </h2>
+
+
+        <div class="form-grid">
+
+
+          <div class="field">
+
+            <label>
+              المطعم
+            </label>
+
+            <select id="productRestaurant">
+
+              <option value="">
+                اختر المطعم
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              اسم المنتج
+            </label>
+
+            <input
+              id="productName"
+              placeholder="مثال: برجر لحم">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              السعر
+            </label>
+
+            <input
+              id="productPrice"
+              type="number"
+              placeholder="100">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              الصورة
+            </label>
+
+            <input
+              id="productImage"
+              placeholder="https://...">
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              الوصف
+            </label>
+
+            <textarea
+              id="productDescription"
+              placeholder="وصف المنتج"></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <button
+          class="primary"
+          onclick="addProduct()">
+
+          + إضافة المنتج
+
+        </button>
+
 
       </div>
 
 
-      <div class="field">
+      <div class="box">
 
-        <label>
-          حالة المطعم
-        </label>
 
-        <select id="restaurantActive">
+        <h2>
+          المنتجات
+        </h2>
 
-          <option value="true">
-            ظاهر ومتاح
-          </option>
 
-          <option value="false">
-            مخفي
-          </option>
+        <div
+          id="productsList"
+          class="list">
 
-        </select>
+          جاري التحميل...
+
+        </div>
+
 
       </div>
 
 
-    </div>
+    </section>
 
 
-    <br>
+    <!-- ================= OFFERS ================= -->
+
+    <section
+      id="offers"
+      class="page">
 
 
-    <button
-      class="primary"
-      id="restaurantSubmit"
-      onclick="saveRestaurant()">
-
-      + إضافة المطعم
-
-    </button>
+      <div class="box">
 
 
-    <button
-      class="secondary"
-      id="restaurantCancel"
-      onclick="cancelRestaurantEdit()"
-      style="display:none;margin-right:7px">
-
-      إلغاء التعديل
-
-    </button>
+        <h2>
+          إضافة عرض
+        </h2>
 
 
-  </div>
+        <div class="form-grid">
 
 
+          <div class="field">
 
-  <!-- LIST -->
+            <label>
+              عنوان العرض
+            </label>
 
-  <div class="box">
+            <input
+              id="offerTitle"
+              placeholder="خصم 20%">
 
-    <h2>
-      المطاعم الموجودة
-    </h2>
-
-
-    <div
-      id="restaurantsList"
-      class="list">
-
-      جاري التحميل...
-
-    </div>
-
-  </div>
-
-</section>
+          </div>
 
 
+          <div class="field">
 
-<!-- ================= PRODUCTS ================= -->
+            <label>
+              المطعم
+            </label>
 
-<section
-  id="products"
-  class="page">
+            <select id="offerRestaurant">
 
+              <option value="">
+                كل المطاعم
+              </option>
 
-  <div class="box">
+            </select>
 
-    <h2>
-      إضافة منتج
-    </h2>
-
-
-    <div class="form-grid">
+          </div>
 
 
-      <div class="field">
+          <div class="field">
 
-        <label>
-          المطعم
-        </label>
+            <label>
+              قيمة الخصم
+            </label>
 
-        <select id="productRestaurant">
+            <input
+              id="offerDiscount"
+              placeholder="20%">
 
-          <option value="">
-            اختر المطعم
-          </option>
+          </div>
 
-        </select>
+
+          <div class="field">
+
+            <label>
+              رابط صورة العرض
+            </label>
+
+            <input
+              id="offerImage"
+              placeholder="https://...">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              تاريخ البداية
+            </label>
+
+            <input
+              id="offerStart"
+              type="date">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              تاريخ النهاية
+            </label>
+
+            <input
+              id="offerEnd"
+              type="date">
+
+          </div>
+
+
+          <div class="field full">
+
+            <label>
+              وصف العرض
+            </label>
+
+            <textarea
+              id="offerDescription"></textarea>
+
+          </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <button
+          class="primary"
+          onclick="addOffer()">
+
+          + إضافة العرض
+
+        </button>
+
 
       </div>
 
 
-      <div class="field">
+      <div class="box">
 
-        <label>
-          اسم المنتج
-        </label>
 
-        <input
-          id="productName"
-          placeholder="مثال: برجر لحم">
+        <h2>
+          العروض
+        </h2>
+
+
+        <div
+          id="offersList"
+          class="list">
+
+          جاري التحميل...
+
+        </div>
+
 
       </div>
 
 
-      <div class="field">
+    </section>
 
-        <label>
-          السعر
-        </label>
 
-        <input
-          id="productPrice"
-          type="number"
-          placeholder="100">
+    <!-- ================= ORDERS ================= -->
+
+    <section
+      id="orders"
+      class="page">
+
+
+      <div class="box">
+
+
+        <h2>
+          الطلبات
+        </h2>
+
+
+        <div class="table-wrap">
+
+
+          <table>
+
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  رقم الطلب
+                </th>
+
+                <th>
+                  العميل
+                </th>
+
+                <th>
+                  العنوان
+                </th>
+
+                <th>
+                  الإجمالي
+                </th>
+
+                <th>
+                  الطيار
+                </th>
+
+                <th>
+                  الحالة
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody id="ordersTable">
+
+              <tr>
+
+                <td colspan="6">
+
+                  جاري تحميل الطلبات...
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
 
       </div>
 
 
-      <div class="field">
+    </section>
 
-        <label>
-          الصورة
-        </label>
 
-        <input
-          id="productImage"
-          placeholder="https://...">
+    <!-- ================= DRIVERS ================= -->
 
-      </div>
+    <section
+      id="drivers"
+      class="page">
 
 
-      <div class="field full">
+      <div class="box">
 
-        <label>
-          الوصف
-        </label>
 
-        <textarea
-          id="productDescription"
-          placeholder="وصف المنتج"></textarea>
+        <h2>
+          إضافة طيار
+        </h2>
 
-      </div>
 
+        <div class="form-grid">
 
-    </div>
 
+          <div class="field">
 
-    <br>
+            <label>
+              اسم الطيار
+            </label>
 
+            <input
+              id="driverName"
+              placeholder="اسم الطيار">
 
-    <button
-      class="primary"
-      onclick="addProduct()">
+          </div>
 
-      + إضافة المنتج
 
-    </button>
+          <div class="field">
 
-  </div>
+            <label>
+              رقم الهاتف
+            </label>
 
+            <input
+              id="driverPhone"
+              placeholder="01xxxxxxxxx">
 
-  <div class="box">
+          </div>
 
-    <h2>
-      المنتجات
-    </h2>
 
-    <div
-      id="productsList"
-      class="list">
+          <div class="field">
 
-      جاري التحميل...
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- ================= OFFERS ================= -->
-
-<section
-  id="offers"
-  class="page">
-
-  <div class="box">
-
-    <h2>
-      إضافة عرض
-    </h2>
-
-
-    <div class="form-grid">
-
-
-      <div class="field">
-
-        <label>
-          عنوان العرض
-        </label>
-
-        <input
-          id="offerTitle"
-          placeholder="خصم 20%">
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          المطعم
-        </label>
-
-        <select id="offerRestaurant">
-
-          <option value="">
-            كل المطاعم
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          قيمة الخصم
-        </label>
-
-        <input
-          id="offerDiscount"
-          placeholder="20%">
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          رابط صورة العرض
-        </label>
-
-        <input
-          id="offerImage"
-          placeholder="https://...">
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          تاريخ البداية
-        </label>
-
-        <input
-          id="offerStart"
-          type="date">
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          تاريخ النهاية
-        </label>
-
-        <input
-          id="offerEnd"
-          type="date">
-
-      </div>
-
-
-      <div class="field full">
-
-        <label>
-          وصف العرض
-        </label>
-
-        <textarea
-          id="offerDescription"></textarea>
-
-      </div>
-
-
-    </div>
-
-
-    <br>
-
-
-    <button
-      class="primary"
-      onclick="addOffer()">
-
-      + إضافة العرض
-
-    </button>
-
-  </div>
-
-
-  <div class="box">
-
-    <h2>
-      العروض
-    </h2>
-
-    <div
-      id="offersList"
-      class="list">
-
-      جاري التحميل...
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!-- ================= ORDERS ================= -->
-
-<section
-  id="orders"
-  class="page">
-
-  <div class="box">
-
-    <h2>
-      الطلبات
-    </h2>
-
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>
-              رقم الطلب
-            </th>
-
-            <th>
-              العميل
-            </th>
-
-            <th>
-              العنوان
-            </th>
-
-            <th>
-              الإجمالي
-            </th>
-
-            <th>
-              الطيار
-            </th>
-
-            <th>
+            <label>
               الحالة
-            </th>
+            </label>
 
-          </tr>
+            <select id="driverStatus">
 
-        </thead>
+              <option value="متاح">
+                متاح
+              </option>
 
+              <option value="غير متاح">
+                غير متاح
+              </option>
 
-        <tbody id="ordersTable">
+            </select>
 
-          <tr>
-
-            <td colspan="6">
-              جاري تحميل الطلبات...
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</section>
+          </div>
 
 
-
-<!-- ================= DRIVERS ================= -->
-
-<section
-  id="drivers"
-  class="page">
-
-  <div class="box">
-
-    <h2>
-      إضافة طيار
-    </h2>
+        </div>
 
 
-    <div class="form-grid">
+        <br>
 
 
-      <div class="field">
+        <button
+          class="primary"
+          onclick="addDriver()">
 
-        <label>
-          اسم الطيار
-        </label>
+          + إضافة الطيار
 
-        <input
-          id="driverName"
-          placeholder="اسم الطيار">
+        </button>
+
 
       </div>
 
 
-      <div class="field">
+      <div class="box">
 
-        <label>
-          رقم الهاتف
-        </label>
 
-        <input
-          id="driverPhone"
-          placeholder="01xxxxxxxxx">
+        <h2>
+          الطيارين
+        </h2>
+
+
+        <div
+          id="driversList"
+          class="list">
+
+          جاري التحميل...
+
+        </div>
+
 
       </div>
 
 
-      <div class="field">
+    </section>
 
-        <label>
-          الحالة
-        </label>
 
-        <select id="driverStatus">
+    <!-- ================= CUSTOMERS ================= -->
 
-          <option value="متاح">
-            متاح
-          </option>
+    <section
+      id="customers"
+      class="page">
 
-          <option value="غير متاح">
-            غير متاح
-          </option>
 
-        </select>
+      <div class="box">
+
+
+        <h2>
+          العملاء
+        </h2>
+
+
+        <div
+          id="customersList"
+          class="list">
+
+
+          <div style="color:#899aaa">
+
+            العملاء سيظهرون هنا عند ربط تسجيل الدخول.
+
+          </div>
+
+
+        </div>
+
 
       </div>
 
 
-    </div>
+    </section>
 
 
-    <br>
+    <!-- ================= SETTINGS ================= -->
+
+    <section
+      id="settings"
+      class="page">
 
 
-    <button
-      class="primary"
-      onclick="addDriver()">
-
-      + إضافة الطيار
-
-    </button>
-
-  </div>
+      <div class="box">
 
 
-  <div class="box">
-
-    <h2>
-      الطيارين
-    </h2>
-
-    <div
-      id="driversList"
-      class="list">
-
-      جاري التحميل...
-
-    </div>
-
-  </div>
-
-</section>
+        <h2>
+          إعدادات الموقع
+        </h2>
 
 
-
-<!-- ================= CUSTOMERS ================= -->
-
-<section
-  id="customers"
-  class="page">
-
-  <div class="box">
-
-    <h2>
-      العملاء
-    </h2>
-
-    <div
-      id="customersList"
-      class="list">
-
-      <div style="color:#899aaa">
-
-        العملاء سيظهرون هنا عند ربط تسجيل الدخول.
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
+        <div class="form-grid">
 
 
+          <div class="field">
 
-<!-- ================= SETTINGS ================= -->
+            <label>
+              اسم الموقع
+            </label>
 
-<section
-  id="settings"
-  class="page">
+            <input
+              id="siteName"
+              value="مندوب">
 
-  <div class="box">
-
-    <h2>
-      إعدادات الموقع
-    </h2>
-
-
-    <div class="form-grid">
+          </div>
 
 
-      <div class="field">
+          <div class="field">
 
-        <label>
-          اسم الموقع
-        </label>
+            <label>
+              رقم التواصل
+            </label>
 
-        <input
-          id="siteName"
-          value="مندوب">
+            <input
+              id="sitePhone"
+              placeholder="01xxxxxxxxx">
 
-      </div>
+          </div>
 
 
-      <div class="field">
+          <div class="field">
 
-        <label>
-          رقم التواصل
-        </label>
+            <label>
+              رسوم التوصيل الافتراضية
+            </label>
 
-        <input
-          id="sitePhone"
-          placeholder="01xxxxxxxxx">
+            <input
+              id="defaultDelivery"
+              type="number"
+              value="25">
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              حالة استقبال الطلبات
+            </label>
+
+            <select id="ordersEnabled">
+
+              <option value="true">
+                استقبال الطلبات
+              </option>
+
+              <option value="false">
+                إيقاف الطلبات
+              </option>
+
+            </select>
+
+          </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <button
+          class="primary"
+          onclick="saveSettings()">
+
+          حفظ الإعدادات
+
+        </button>
+
 
       </div>
 
 
-      <div class="field">
-
-        <label>
-          رسوم التوصيل الافتراضية
-        </label>
-
-        <input
-          id="defaultDelivery"
-          type="number"
-          value="25">
-
-      </div>
+    </section>
 
 
-      <div class="field">
+  </main>
 
-        <label>
-          حالة استقبال الطلبات
-        </label>
-
-        <select id="ordersEnabled">
-
-          <option value="true">
-            استقبال الطلبات
-          </option>
-
-          <option value="false">
-            إيقاف الطلبات
-          </option>
-
-        </select>
-
-      </div>
-
-
-    </div>
-
-
-    <br>
-
-
-    <button
-      class="primary"
-      onclick="saveSettings()">
-
-      حفظ الإعدادات
-
-    </button>
-
-  </div>
-
-</section>
-
-
-</main>
 
 </div>
 
@@ -1424,2124 +1630,11 @@ td{
 <div id="message"></div>
 
 
-
-<!-- ================= FIREBASE ================= -->
-
-<script type="module">
-
-import {
-  initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-  authDomain:
-    "mandoub-dv.firebaseapp.com",
-
-  projectId:
-    "mandoub-dv",
-
-  storageBucket:
-    "mandoub-dv.firebasestorage.app",
-
-  messagingSenderId:
-    "311140400335",
-
-  appId:
-    "1:311140400335:web:db198b7c53259c53594bba",
-
-  measurementId:
-    "G-7V1LJQYYXD"
-
-};
-
-
-let db = null;
-
-let restaurants = [];
-
-let editingRestaurantId = null;
-
-
-/* ================= FIREBASE ================= */
-
-try{
-
-  const app =
-    initializeApp(firebaseConfig);
-
-  db =
-    getFirestore(app);
-
-
-  document.getElementById(
-    "firebaseStatus"
-  ).textContent =
-    "Firebase متصل ✅";
-
-}catch(error){
-
-  console.error(error);
-
-  document.getElementById(
-    "firebaseStatus"
-  ).textContent =
-    "Firebase غير متصل ❌";
-
-}
-
-
-/* ================= NAVIGATION ================= */
-
-window.showPage =
-function(page,button){
-
-  document
-    .querySelectorAll(".page")
-    .forEach(p=>{
-      p.classList.remove("active");
-    });
-
-
-  const target =
-    document.getElementById(page);
-
-
-  if(target){
-    target.classList.add("active");
-  }
-
-
-  document
-    .querySelectorAll(".menu button")
-    .forEach(b=>{
-      b.classList.remove("active");
-    });
-
-
-  if(button){
-    button.classList.add("active");
-  }
-
-
-  const titles = {
-
-    dashboard:"لوحة التحكم",
-
-    restaurants:"إدارة المطاعم",
-
-    products:"إدارة المنتجات",
-
-    offers:"إدارة العروض",
-
-    orders:"إدارة الطلبات",
-
-    drivers:"إدارة الطيارين",
-
-    customers:"إدارة العملاء",
-
-    settings:"إعدادات الموقع"
-
-  };
-
-
-  document.getElementById(
-    "pageTitle"
-  ).textContent =
-    titles[page] || "لوحة التحكم";
-
-};
-
-
-/* ================= MESSAGE ================= */
-
-function message(text){
-
-  const box =
-    document.getElementById("message");
-
-
-  box.textContent =
-    text;
-
-
-  box.style.display =
-    "block";
-
-
-  setTimeout(()=>{
-
-    box.style.display =
-      "none";
-
-  },2500);
-
-}
-
-
-/* =====================================================
-   RESTAURANTS
-===================================================== */
-
-
-/* ================= SAVE RESTAURANT ================= */
-
-window.saveRestaurant =
-async function(){
-
-  if(!db){
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document.getElementById(
-      "restaurantName"
-    ).value.trim();
-
-
-  const category =
-    document.getElementById(
-      "restaurantCategory"
-    ).value.trim();
-
-
-  const rating =
-    document.getElementById(
-      "restaurantRating"
-    ).value;
-
-
-  const delivery =
-    document.getElementById(
-      "restaurantDelivery"
-    ).value;
-
-
-  const description =
-    document.getElementById(
-      "restaurantDescription"
-    ).value.trim();
-
-
-  const image =
-    document.getElementById(
-      "restaurantImage"
-    ).value.trim();
-
-
-  const active =
-    document.getElementById(
-      "restaurantActive"
-    ).value === "true";
-
-
-  if(!name){
-
-    message(
-      "اكتب اسم المطعم أولاً"
-    );
-
-    return;
-
-  }
-
-
-  const data = {
-
-    name:name,
-
-    category:category,
-
-    rating:Number(
-      rating || 0
-    ),
-
-    delivery:Number(
-      delivery || 0
-    ),
-
-    description:description,
-
-    image:image,
-
-    active:active
-
-  };
-
-
-  try{
-
-
-    /* EDIT */
-
-    if(editingRestaurantId){
-
-      await updateDoc(
-
-        doc(
-          db,
-          "restaurants",
-          editingRestaurantId
-        ),
-
-        data
-
-      );
-
-
-      message(
-        "تم تعديل المطعم ✅"
-      );
-
-
-    }
-
-
-    /* ADD */
-
-    else{
-
-      data.createdAt =
-        serverTimestamp();
-
-
-      await addDoc(
-
-        collection(
-          db,
-          "restaurants"
-        ),
-
-        data
-
-      );
-
-
-      message(
-        "تم إضافة المطعم ✅"
-      );
-
-    }
-
-
-    cancelRestaurantEdit();
-
-    await loadRestaurants();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "حدث خطأ أثناء حفظ المطعم ❌"
-    );
-
-  }
-
-};
-
-
-/* ================= EDIT ================= */
-
-window.editRestaurant =
-function(id){
-
-  const restaurant =
-    restaurants.find(
-      r=>r.id===id
-    );
-
-
-  if(!restaurant)
-    return;
-
-
-  editingRestaurantId =
-    id;
-
-
-  document.getElementById(
-    "restaurantName"
-  ).value =
-    restaurant.name || "";
-
-
-  document.getElementById(
-    "restaurantCategory"
-  ).value =
-    restaurant.category || "";
-
-
-  document.getElementById(
-    "restaurantRating"
-  ).value =
-    restaurant.rating ?? "";
-
-
-  document.getElementById(
-    "restaurantDelivery"
-  ).value =
-    restaurant.delivery ?? "";
-
-
-  document.getElementById(
-    "restaurantDescription"
-  ).value =
-    restaurant.description || "";
-
-
-  document.getElementById(
-    "restaurantImage"
-  ).value =
-    restaurant.image || "";
-
-
-  document.getElementById(
-    "restaurantActive"
-  ).value =
-    restaurant.active === false
-    ? "false"
-    : "true";
-
-
-  document.getElementById(
-    "restaurantFormTitle"
-  ).textContent =
-    "تعديل المطعم";
-
-
-  document.getElementById(
-    "restaurantSubmit"
-  ).textContent =
-    "حفظ التعديل";
-
-
-  document.getElementById(
-    "restaurantCancel"
-  ).style.display =
-    "inline-block";
-
-
-  document.getElementById(
-    "restaurantName"
-  ).focus();
-
-};
-
-
-/* ================= CANCEL EDIT ================= */
-
-window.cancelRestaurantEdit =
-function(){
-
-  editingRestaurantId =
-    null;
-
-
-  document.getElementById(
-    "restaurantFormTitle"
-  ).textContent =
-    "إضافة مطعم";
-
-
-  document.getElementById(
-    "restaurantSubmit"
-  ).textContent =
-    "+ إضافة المطعم";
-
-
-  document.getElementById(
-    "restaurantCancel"
-  ).style.display =
-    "none";
-
-
-  clearRestaurantForm();
-
-};
-
-
-/* ================= CLEAR ================= */
-
-function clearRestaurantForm(){
-
-  document.getElementById(
-    "restaurantName"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantCategory"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantRating"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantDelivery"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantDescription"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantImage"
-  ).value = "";
-
-
-  document.getElementById(
-    "restaurantActive"
-  ).value = "true";
-
-}
-
-
-/* ================= LOAD RESTAURANTS ================= */
-
-async function loadRestaurants(){
-
-  if(!db)
-    return;
-
-
-  const list =
-    document.getElementById(
-      "restaurantsList"
-    );
-
-
-  list.innerHTML =
-    "جاري التحميل...";
-
-
-  try{
-
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "restaurants"
-        )
-
-      );
-
-
-    restaurants = [];
-
-
-    snapshot.forEach(item=>{
-
-      restaurants.push({
-
-        id:item.id,
-
-        ...item.data()
-
-      });
-
-    });
-
-
-    document.getElementById(
-      "restaurantsCount"
-    ).textContent =
-      restaurants.length;
-
-
-    if(
-      restaurants.length === 0
-    ){
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد مطاعم حتى الآن.
-
-        </div>
-
-      `;
-
-    }
-
-
-    else{
-
-
-      list.innerHTML =
-
-        restaurants.map(
-          restaurant=>{
-
-            const image =
-              restaurant.image || "";
-
-
-            const active =
-              restaurant.active !== false;
-
-
-            return `
-
-              <div class="item">
-
-
-                <div class="restaurant-row">
-
-
-                  ${
-                    image
-
-                    ?
-
-                    `
-
-                    <img
-                      class="restaurant-thumb"
-                      src="${escapeHTML(image)}"
-                      alt="${escapeHTML(
-                        restaurant.name || "مطعم"
-                      )}"
-                      onerror="
-                        this.style.display='none';
-                        this.nextElementSibling.style.display='flex';
-                      ">
-
-                    <div
-                      class="restaurant-placeholder"
-                      style="display:none">
-
-                      🍔
-
-                    </div>
-
-                    `
-
-                    :
-
-                    `
-
-                    <div
-                      class="restaurant-placeholder">
-
-                      🍔
-
-                    </div>
-
-                    `
-                  }
-
-
-                  <div class="item-info">
-
-                    <strong>
-
-                      ${escapeHTML(
-                        restaurant.name || ""
-                      )}
-
-                    </strong>
-
-
-                    <small>
-
-                      ${escapeHTML(
-                        restaurant.category || "بدون تصنيف"
-                      )}
-
-                      • توصيل
-
-                      ${restaurant.delivery || 0}
-
-                      جنيه
-
-                      • تقييم
-
-                      ${restaurant.rating || 0}
-
-                    </small>
-
-
-                    <br>
-
-
-                    <span
-                      class="badge ${
-                        active ? "" : "off"
-                      }">
-
-                      ${
-                        active
-                        ? "متاح"
-                        : "مخفي"
-                      }
-
-                    </span>
-
-                  </div>
-
-
-                </div>
-
-
-                <div class="item-actions">
-
-
-                  <button
-                    class="secondary"
-                    onclick="
-                      editRestaurant(
-                        '${restaurant.id}'
-                      )
-                    ">
-
-                    تعديل
-
-                  </button>
-
-
-                  <button
-                    class="${
-                      active
-                      ? "secondary"
-                      : "success"
-                    }"
-                    onclick="
-                      toggleRestaurant(
-                        '${restaurant.id}',
-                        ${active}
-                      )
-                    ">
-
-                    ${
-                      active
-                      ? "إيقاف"
-                      : "تفعيل"
-                    }
-
-                  </button>
-
-
-                  <button
-                    class="danger"
-                    onclick="
-                      deleteRestaurant(
-                        '${restaurant.id}'
-                      )
-                    ">
-
-                    حذف
-
-                  </button>
-
-
-                </div>
-
-
-              </div>
-
-            `;
-
-          }
-
-        ).join("");
-
-    }
-
-
-    updateRestaurantSelects();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    list.innerHTML = `
-
-      <div style="color:#ff6d98">
-
-        حدث خطأ أثناء تحميل المطاعم.
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* ================= TOGGLE ================= */
-
-window.toggleRestaurant =
-async function(id,current){
-
-  if(!db)
-    return;
-
-
-  try{
-
-    await updateDoc(
-
-      doc(
-        db,
-        "restaurants",
-        id
-      ),
-
-      {
-        active:!current
-      }
-
-    );
-
-
-    message(
-      current
-      ? "تم إيقاف المطعم"
-      : "تم تفعيل المطعم"
-    );
-
-
-    await loadRestaurants();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر تغيير حالة المطعم"
-    );
-
-  }
-
-};
-
-
-/* ================= DELETE ================= */
-
-window.deleteRestaurant =
-async function(id){
-
-  if(
-    !confirm(
-      "هل تريد حذف المطعم نهائيًا؟"
-    )
-  )
-    return;
-
-
-  try{
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "restaurants",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف المطعم"
-    );
-
-
-    if(
-      editingRestaurantId === id
-    ){
-
-      cancelRestaurantEdit();
-
-    }
-
-
-    await loadRestaurants();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر حذف المطعم"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   PRODUCTS
-===================================================== */
-
-window.addProduct =
-async function(){
-
-  if(!db){
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const restaurantId =
-    document.getElementById(
-      "productRestaurant"
-    ).value;
-
-
-  const name =
-    document.getElementById(
-      "productName"
-    ).value.trim();
-
-
-  const price =
-    document.getElementById(
-      "productPrice"
-    ).value;
-
-
-  const image =
-    document.getElementById(
-      "productImage"
-    ).value.trim();
-
-
-  const description =
-    document.getElementById(
-      "productDescription"
-    ).value.trim();
-
-
-  if(
-    !restaurantId ||
-    !name ||
-    !price
-  ){
-
-    message(
-      "اختر المطعم واكتب اسم المنتج والسعر"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        "products"
-      ),
-
-      {
-
-        restaurantId,
-
-        name,
-
-        price:Number(price),
-
-        image,
-
-        description,
-
-        active:true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    message(
-      "تم إضافة المنتج ✅"
-    );
-
-
-    document.getElementById(
-      "productName"
-    ).value = "";
-
-
-    document.getElementById(
-      "productPrice"
-    ).value = "";
-
-
-    document.getElementById(
-      "productImage"
-    ).value = "";
-
-
-    document.getElementById(
-      "productDescription"
-    ).value = "";
-
-
-    loadProducts();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "حدث خطأ أثناء إضافة المنتج ❌"
-    );
-
-  }
-
-};
-
-
-async function loadProducts(){
-
-  if(!db)
-    return;
-
-
-  const list =
-    document.getElementById(
-      "productsList"
-    );
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "products"
-        )
-
-      );
-
-
-    document.getElementById(
-      "productsCount"
-    ).textContent =
-      snapshot.size;
-
-
-    if(snapshot.empty){
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-          لا توجد منتجات.
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-
-      snapshot.docs.map(
-        item=>{
-
-          const p =
-            item.data();
-
-
-          const restaurant =
-            restaurants.find(
-              r=>
-                r.id ===
-                p.restaurantId
-            );
-
-
-          return `
-
-            <div class="item">
-
-              <div class="item-info">
-
-                <strong>
-
-                  ${escapeHTML(
-                    p.name || ""
-                  )}
-
-                </strong>
-
-
-                <small>
-
-                  ${escapeHTML(
-                    restaurant?.name ||
-                    "مطعم غير معروف"
-                  )}
-
-                  •
-
-                  ${p.price || 0}
-
-                  جنيه
-
-                </small>
-
-              </div>
-
-
-              <div class="item-actions">
-
-                <button
-                  class="danger"
-                  onclick="
-                    deleteProduct(
-                      '${item.id}'
-                    )
-                  ">
-
-                  حذف
-
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      ).join("");
-
-
-  }catch(error){
-
-    console.error(error);
-
-    list.innerHTML =
-      "حدث خطأ أثناء تحميل المنتجات.";
-
-  }
-
-}
-
-
-window.deleteProduct =
-async function(id){
-
-  if(
-    !confirm(
-      "هل تريد حذف المنتج؟"
-    )
-  )
-    return;
-
-
-  try{
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "products",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف المنتج"
-    );
-
-
-    loadProducts();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر حذف المنتج"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   OFFERS
-===================================================== */
-
-window.addOffer =
-async function(){
-
-  if(!db){
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const title =
-    document.getElementById(
-      "offerTitle"
-    ).value.trim();
-
-
-  const restaurantId =
-    document.getElementById(
-      "offerRestaurant"
-    ).value;
-
-
-  const discount =
-    document.getElementById(
-      "offerDiscount"
-    ).value.trim();
-
-
-  const image =
-    document.getElementById(
-      "offerImage"
-    ).value.trim();
-
-
-  const start =
-    document.getElementById(
-      "offerStart"
-    ).value;
-
-
-  const end =
-    document.getElementById(
-      "offerEnd"
-    ).value;
-
-
-  const description =
-    document.getElementById(
-      "offerDescription"
-    ).value.trim();
-
-
-  if(!title){
-
-    message(
-      "اكتب عنوان العرض"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        "offers"
-      ),
-
-      {
-
-        title,
-
-        restaurantId:
-          restaurantId || null,
-
-        discount,
-
-        image,
-
-        start,
-
-        end,
-
-        description,
-
-        active:true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    message(
-      "تم إضافة العرض 🎁"
-    );
-
-
-    loadOffers();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "حدث خطأ أثناء إضافة العرض"
-    );
-
-  }
-
-};
-
-
-async function loadOffers(){
-
-  if(!db)
-    return;
-
-
-  const list =
-    document.getElementById(
-      "offersList"
-    );
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "offers"
-        )
-
-      );
-
-
-    if(snapshot.empty){
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-          لا توجد عروض.
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-
-      snapshot.docs.map(
-        item=>{
-
-          const o =
-            item.data();
-
-
-          return `
-
-            <div class="item">
-
-              <div class="item-info">
-
-                <strong>
-
-                  ${escapeHTML(
-                    o.title || ""
-                  )}
-
-                </strong>
-
-
-                <small>
-
-                  خصم:
-                  ${escapeHTML(
-                    o.discount || "-"
-                  )}
-
-                </small>
-
-              </div>
-
-
-              <div class="item-actions">
-
-                <button
-                  class="danger"
-                  onclick="
-                    deleteOffer(
-                      '${item.id}'
-                    )
-                  ">
-
-                  حذف
-
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      ).join("");
-
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-window.deleteOffer =
-async function(id){
-
-  if(
-    !confirm(
-      "هل تريد حذف العرض؟"
-    )
-  )
-    return;
-
-
-  try{
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "offers",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف العرض"
-    );
-
-
-    loadOffers();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر حذف العرض"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   DRIVERS
-===================================================== */
-
-window.addDriver =
-async function(){
-
-  if(!db){
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document.getElementById(
-      "driverName"
-    ).value.trim();
-
-
-  const phone =
-    document.getElementById(
-      "driverPhone"
-    ).value.trim();
-
-
-  const status =
-    document.getElementById(
-      "driverStatus"
-    ).value;
-
-
-  if(
-    !name ||
-    !phone
-  ){
-
-    message(
-      "اكتب اسم الطيار ورقم الهاتف"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    await addDoc(
-
-      collection(
-        db,
-        "drivers"
-      ),
-
-      {
-
-        name,
-
-        phone,
-
-        status,
-
-        active:true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    message(
-      "تم إضافة الطيار 🛵"
-    );
-
-
-    document.getElementById(
-      "driverName"
-    ).value = "";
-
-
-    document.getElementById(
-      "driverPhone"
-    ).value = "";
-
-
-    loadDrivers();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "حدث خطأ أثناء إضافة الطيار"
-    );
-
-  }
-
-};
-
-
-async function loadDrivers(){
-
-  if(!db)
-    return;
-
-
-  const list =
-    document.getElementById(
-      "driversList"
-    );
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "drivers"
-        )
-
-      );
-
-
-    document.getElementById(
-      "driversCount"
-    ).textContent =
-      snapshot.size;
-
-
-    if(snapshot.empty){
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-          لا يوجد طيارين.
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-
-      snapshot.docs.map(
-        item=>{
-
-          const d =
-            item.data();
-
-
-          return `
-
-            <div class="item">
-
-              <div class="item-info">
-
-                <strong>
-
-                  ${escapeHTML(
-                    d.name || ""
-                  )}
-
-                </strong>
-
-
-                <small>
-
-                  ${escapeHTML(
-                    d.phone || ""
-                  )}
-
-                  •
-
-                  ${escapeHTML(
-                    d.status || ""
-                  )}
-
-                </small>
-
-              </div>
-
-
-              <div class="item-actions">
-
-                <button
-                  class="danger"
-                  onclick="
-                    deleteDriver(
-                      '${item.id}'
-                    )
-                  ">
-
-                  حذف
-
-                </button>
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-
-      ).join("");
-
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-window.deleteDriver =
-async function(id){
-
-  if(
-    !confirm(
-      "هل تريد حذف الطيار؟"
-    )
-  )
-    return;
-
-
-  try{
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "drivers",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف الطيار"
-    );
-
-
-    loadDrivers();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر حذف الطيار"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   ORDERS
-===================================================== */
-
-async function loadOrders(){
-
-  if(!db)
-    return;
-
-
-  const table =
-    document.getElementById(
-      "ordersTable"
-    );
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "orders"
-        )
-
-      );
-
-
-    document.getElementById(
-      "ordersCount"
-    ).textContent =
-      snapshot.size;
-
-
-    if(snapshot.empty){
-
-      table.innerHTML = `
-
-        <tr>
-
-          <td colspan="6">
-
-            لا توجد طلبات حتى الآن.
-
-          </td>
-
-        </tr>
-
-      `;
-
-      return;
-
-    }
-
-
-    table.innerHTML =
-
-      snapshot.docs.map(
-        item=>{
-
-          const o =
-            item.data();
-
-
-          return `
-
-            <tr>
-
-              <td>
-                ${escapeHTML(
-                  item.id
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  o.customerName ||
-                  "غير محدد"
-                )}
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  o.location ||
-                  "غير محدد"
-                )}
-              </td>
-
-              <td>
-                ${o.total || 0}
-                جنيه
-              </td>
-
-              <td>
-                ${escapeHTML(
-                  o.driverName ||
-                  "لم يتم التعيين"
-                )}
-              </td>
-
-              <td>
-
-                <span class="badge">
-
-                  ${escapeHTML(
-                    o.status ||
-                    "جديد"
-                  )}
-
-                </span>
-
-              </td>
-
-            </tr>
-
-          `;
-
-        }
-
-      ).join("");
-
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-/* =====================================================
-   SELECTS
-===================================================== */
-
-function updateRestaurantSelects(){
-
-  const productSelect =
-    document.getElementById(
-      "productRestaurant"
-    );
-
-
-  const offerSelect =
-    document.getElementById(
-      "offerRestaurant"
-    );
-
-
-  if(productSelect){
-
-    productSelect.innerHTML = `
-
-      <option value="">
-        اختر المطعم
-      </option>
-
-      ${
-        restaurants.map(
-          r=>`
-
-            <option
-              value="${r.id}"
-              ${
-                r.active === false
-                ? "disabled"
-                : ""
-              }>
-
-              ${escapeHTML(
-                r.name || ""
-              )}
-
-              ${
-                r.active === false
-                ? " — مخفي"
-                : ""
-              }
-
-            </option>
-
-          `
-        ).join("")
-      }
-
-    `;
-
-  }
-
-
-  if(offerSelect){
-
-    offerSelect.innerHTML = `
-
-      <option value="">
-        كل المطاعم
-      </option>
-
-      ${
-        restaurants.map(
-          r=>`
-
-            <option value="${r.id}">
-
-              ${escapeHTML(
-                r.name || ""
-              )}
-
-            </option>
-
-          `
-        ).join("")
-      }
-
-    `;
-
-  }
-
-}
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-window.saveSettings =
-async function(){
-
-  if(!db){
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const settings = {
-
-    siteName:
-      document.getElementById(
-        "siteName"
-      ).value.trim(),
-
-    sitePhone:
-      document.getElementById(
-        "sitePhone"
-      ).value.trim(),
-
-    defaultDelivery:
-      Number(
-        document.getElementById(
-          "defaultDelivery"
-        ).value || 0
-      ),
-
-    ordersEnabled:
-      document.getElementById(
-        "ordersEnabled"
-      ).value === "true"
-
-  };
-
-
-  try{
-
-    await setDoc(
-
-      doc(
-        db,
-        "settings",
-        "site"
-      ),
-
-      settings,
-
-      {
-        merge:true
-      }
-
-    );
-
-
-    message(
-      "تم حفظ الإعدادات ✅"
-    );
-
-
-  }catch(error){
-
-    console.error(error);
-
-    message(
-      "تعذر حفظ الإعدادات"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   SECURITY
-===================================================== */
-
-function escapeHTML(value){
-
-  return String(
-    value ?? ""
-  )
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
-  .replaceAll(
-    "'",
-    "&#039;"
-  );
-
-}
-
-
-/* =====================================================
-   START
-===================================================== */
-
-async function start(){
-
-  if(!db)
-    return;
-
-
-  await loadRestaurants();
-
-  await loadProducts();
-
-  await loadOffers();
-
-  await loadDrivers();
-
-  await loadOrders();
-
-}
-
-
-start();
-
+<!-- ================= ADMIN JS ================= -->
+
+<script
+  type="module"
+  src="admin.js">
 </script>
 
 
