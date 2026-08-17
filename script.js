@@ -1,6 +1,7 @@
 /* =====================================================
    MANDOUB - SCRIPT.JS
-   السلة + الموقع + المطاعم من Firebase + الطلبات
+   السلة + تحديد الموقع + Firebase
+   + صفحة المطاعم المستقلة
 ===================================================== */
 
 
@@ -12,7 +13,7 @@ let firebaseReady = false;
 
 
 /* =====================================================
-   FIREBASE WAIT
+   FIREBASE
 ===================================================== */
 
 function waitForFirebase() {
@@ -80,16 +81,12 @@ function showMessage(message) {
 
 
   if (old) {
-
     old.remove();
-
   }
 
 
   const box =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
 
   box.id =
@@ -113,7 +110,7 @@ function showMessage(message) {
     "translateX(-50%)";
 
   box.style.zIndex =
-    "999999";
+    "99999";
 
   box.style.width =
     "calc(100% - 30px)";
@@ -143,17 +140,13 @@ function showMessage(message) {
     "0 10px 35px rgba(0,0,0,.35)";
 
 
-  document.body.appendChild(
-    box
-  );
+  document.body.appendChild(box);
 
 
   setTimeout(() => {
 
     if (box) {
-
       box.remove();
-
     }
 
   }, 3000);
@@ -180,9 +173,7 @@ function setLocation() {
 
 
   if (!input || !message) {
-
     return;
-
   }
 
 
@@ -234,7 +225,13 @@ function setLocation() {
 
         const response =
           await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`,
+            {
+              headers: {
+                "Accept":
+                  "application/json"
+              }
+            }
           );
 
 
@@ -262,7 +259,7 @@ function setLocation() {
 
         }
 
-      } catch(error) {
+      } catch (error) {
 
         console.log(
           "لم يتم جلب اسم العنوان",
@@ -328,371 +325,52 @@ function setLocation() {
    LOAD SAVED LOCATION
 ===================================================== */
 
-function loadSavedLocation() {
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
 
-  const saved =
-    localStorage.getItem(
-      "mandoub_location"
-    );
-
-
-  if (!saved) {
-
-    return;
-
-  }
+    const saved =
+      localStorage.getItem(
+        "mandoub_location"
+      );
 
 
-  selectedLocation =
-    saved;
+    if (!saved) {
+      return;
+    }
 
 
-  const input =
-    document.getElementById(
-      "locationInput"
-    );
-
-
-  if (input) {
-
-    input.value =
+    selectedLocation =
       saved;
 
-  }
 
-}
-
-
-/* =====================================================
-   GET RESTAURANTS FROM FIREBASE
-===================================================== */
-
-async function loadRestaurants() {
-
-  const container =
-    document.getElementById(
-      "restaurantsContainer"
-    );
-
-
-  if (!container) {
-
-    return;
-
-  }
-
-
-  container.innerHTML = `
-
-    <div class="restaurants-message">
-
-      ⏳ جاري تحميل المطاعم...
-
-    </div>
-
-  `;
-
-
-  const ready =
-    await waitForFirebase();
-
-
-  if (!ready) {
-
-    container.innerHTML = `
-
-      <div class="restaurants-message">
-
-        ❌ Firebase غير متصل
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  try {
-
-    const {
-      collection,
-      getDocs
-    } = await import(
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
-    );
-
-
-    /*
-      اسم المجموعة:
-      restaurants
-
-      صفحة الأدمن تضيف المطاعم داخلها.
-    */
-
-    const restaurantsRef =
-      collection(
-        window.firebaseDB,
-        "restaurants"
+    const input =
+      document.getElementById(
+        "locationInput"
       );
 
 
-    const snapshot =
-      await getDocs(
-        restaurantsRef
-      );
+    if (input) {
 
-
-    if (snapshot.empty) {
-
-      container.innerHTML = `
-
-        <div class="restaurants-message">
-
-          🍽️ لا توجد مطاعم حاليًا
-
-          <br>
-
-          <small>
-            سيتم عرض المطاعم هنا عند إضافتها من صفحة الأدمن.
-          </small>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    container.innerHTML = "";
-
-
-    let count = 0;
-
-
-    snapshot.forEach(
-      (docSnapshot) => {
-
-        const restaurant =
-          docSnapshot.data();
-
-
-        /*
-          دعم أكثر من اسم للحقل
-          عشان نقدر نتعامل مع بيانات الأدمن
-        */
-
-        const name =
-          restaurant.name ||
-          restaurant.title ||
-          restaurant.restaurantName ||
-          "مطعم";
-
-
-        const category =
-          restaurant.category ||
-          restaurant.type ||
-          "مطاعم";
-
-
-        const price =
-          Number(
-            restaurant.price ||
-            restaurant.deliveryPrice ||
-            0
-          );
-
-
-        const rating =
-          restaurant.rating ||
-          "جديد";
-
-
-        const image =
-          restaurant.image ||
-          restaurant.imageUrl ||
-          restaurant.photo ||
-          "";
-
-
-        const id =
-          docSnapshot.id;
-
-
-        const card =
-          document.createElement(
-            "article"
-          );
-
-
-        card.className =
-          "restaurant";
-
-
-        const imageHTML =
-          image
-
-          ? `
-
-            <div
-              class="food"
-              style="
-                padding:0;
-                overflow:hidden;
-              ">
-
-              <img
-                src="${escapeHTML(image)}"
-                alt="${escapeHTML(name)}"
-                style="
-                  width:100%;
-                  height:100%;
-                  object-fit:cover;
-                  display:block;
-                "
-                onerror="
-                  this.parentElement.innerHTML='🍽️';
-                  this.parentElement.style.fontSize='65px';
-                "
-              >
-
-            </div>
-
-          `
-
-          : `
-
-            <div class="food">
-              🍽️
-            </div>
-
-          `;
-
-
-        card.innerHTML = `
-
-          ${imageHTML}
-
-          <div class="card-body">
-
-            <h3>
-              ${escapeHTML(name)}
-            </h3>
-
-
-            <p>
-              ${escapeHTML(category)}
-            </p>
-
-
-            <div class="restaurant-info">
-
-              <span>
-                ⭐ ${escapeHTML(rating)}
-              </span>
-
-              <span>
-                ${
-                  price > 0
-                    ? `توصيل من ${price}ج`
-                    : "التوصيل حسب الطلب"
-                }
-              </span>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="addRestaurantToCart(
-                '${escapeJS(name)}',
-                ${price},
-                '${escapeJS(id)}'
-              )">
-
-              اطلب الآن
-
-            </button>
-
-          </div>
-
-        `;
-
-
-        container.appendChild(
-          card
-        );
-
-
-        count++;
-
-      }
-    );
-
-
-    if (count === 0) {
-
-      container.innerHTML = `
-
-        <div class="restaurants-message">
-
-          🍽️ لا توجد مطاعم حاليًا
-
-        </div>
-
-      `;
+      input.value =
+        saved;
 
     }
 
   }
-
-  catch(error) {
-
-    console.error(
-      "LOAD RESTAURANTS ERROR:",
-      error
-    );
-
-
-    container.innerHTML = `
-
-      <div class="restaurants-message">
-
-        ❌ تعذر تحميل المطاعم
-
-        <br>
-
-        <small>
-          حاول تحديث الصفحة.
-        </small>
-
-      </div>
-
-    `;
-
-  }
-
-}
+);
 
 
 /* =====================================================
-   ADD RESTAURANT TO CART
+   ADD TO CART
 ===================================================== */
 
-function addRestaurantToCart(
-  name,
-  price,
-  restaurantId
-) {
+function addToCart(name, price) {
 
   const existing =
     cart.find(
       item =>
-        item.name === name &&
-        item.restaurantId === restaurantId
+        item.name === name
     );
 
 
@@ -713,10 +391,7 @@ function addRestaurantToCart(
         Number(price) || 0,
 
       quantity:
-        1,
-
-      restaurantId:
-        restaurantId
+        1
 
     });
 
@@ -737,24 +412,6 @@ function addRestaurantToCart(
 
 
 /* =====================================================
-   ADD TO CART
-===================================================== */
-
-function addToCart(
-  name,
-  price
-) {
-
-  addRestaurantToCart(
-    name,
-    price,
-    ""
-  );
-
-}
-
-
-/* =====================================================
    CART COUNT
 ===================================================== */
 
@@ -767,9 +424,7 @@ function updateCartCount() {
 
 
   if (!countElement) {
-
     return;
-
   }
 
 
@@ -853,9 +508,7 @@ function openCart() {
 function createCartModal() {
 
   const modal =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
 
   modal.id =
@@ -877,7 +530,6 @@ function createCartModal() {
         <h2>
           🛒 سلة الطلبات
         </h2>
-
 
         <button
           type="button"
@@ -914,7 +566,11 @@ function createCartModal() {
 
 
       <p
-        id="cartMessage">
+        id="cartMessage"
+        style="
+          margin-top:12px;
+          color:#00dfff;
+        ">
       </p>
 
     </div>
@@ -970,9 +626,7 @@ function renderCart() {
 
 
   if (!container || !total) {
-
     return;
-
   }
 
 
@@ -999,7 +653,8 @@ function renderCart() {
     `;
 
 
-    total.innerHTML = "";
+    total.innerHTML =
+      "";
 
 
     return;
@@ -1012,7 +667,7 @@ function renderCart() {
 
 
   cart.forEach(
-    (item,index) => {
+    (item, index) => {
 
       const itemElement =
         document.createElement(
@@ -1033,7 +688,8 @@ function renderCart() {
           </strong>
 
           <p>
-            ${item.price} جنيه × ${item.quantity}
+            ${item.price} جنيه ×
+            ${item.quantity}
           </p>
 
         </div>
@@ -1046,14 +702,12 @@ function renderCart() {
             gap:6px;
           ">
 
-
           <button
             type="button"
             style="
               background:#00dfff;
               color:#00121d;
               padding:7px 10px;
-              border-radius:8px;
             "
             onclick="increaseItem(${index})">
 
@@ -1071,9 +725,7 @@ function renderCart() {
             type="button"
             style="
               background:#173b55;
-              color:#fff;
               padding:7px 10px;
-              border-radius:8px;
             "
             onclick="decreaseItem(${index})">
 
@@ -1129,9 +781,7 @@ function renderCart() {
 function increaseItem(index) {
 
   if (!cart[index]) {
-
     return;
-
   }
 
 
@@ -1153,9 +803,7 @@ function increaseItem(index) {
 function decreaseItem(index) {
 
   if (!cart[index]) {
-
     return;
-
   }
 
 
@@ -1166,10 +814,7 @@ function decreaseItem(index) {
     cart[index].quantity <= 0
   ) {
 
-    cart.splice(
-      index,
-      1
-    );
+    cart.splice(index, 1);
 
   }
 
@@ -1189,16 +834,11 @@ function decreaseItem(index) {
 function removeItem(index) {
 
   if (!cart[index]) {
-
     return;
-
   }
 
 
-  cart.splice(
-    index,
-    1
-  );
+  cart.splice(index, 1);
 
 
   updateCartCount();
@@ -1221,14 +861,15 @@ async function submitOrder() {
     );
 
 
+  if (!message) {
+    return;
+  }
+
+
   if (cart.length === 0) {
 
-    if (message) {
-
-      message.textContent =
-        "❌ السلة فارغة";
-
-    }
+    message.textContent =
+      "❌ السلة فارغة";
 
     return;
 
@@ -1237,12 +878,8 @@ async function submitOrder() {
 
   if (!selectedLocation) {
 
-    if (message) {
-
-      message.textContent =
-        "📍 حدد موقع التوصيل أولاً";
-
-    }
+    message.textContent =
+      "📍 حدد موقع التوصيل أولاً";
 
 
     closeCart();
@@ -1257,8 +894,11 @@ async function submitOrder() {
     if (locationInput) {
 
       locationInput.scrollIntoView({
-        behavior:"smooth",
-        block:"center"
+        behavior:
+          "smooth",
+
+        block:
+          "center"
       });
 
 
@@ -1272,12 +912,8 @@ async function submitOrder() {
   }
 
 
-  if (message) {
-
-    message.textContent =
-      "⏳ جاري إرسال الطلب...";
-
-  }
+  message.textContent =
+    "⏳ جاري إرسال الطلب...";
 
 
   const ready =
@@ -1286,12 +922,14 @@ async function submitOrder() {
 
   if (!ready) {
 
-    if (message) {
+    message.textContent =
+      "❌ Firebase غير متصل";
 
-      message.textContent =
-        "❌ Firebase غير متصل";
 
-    }
+    console.error(
+      "Firebase is not ready"
+    );
+
 
     return;
 
@@ -1313,10 +951,7 @@ async function submitOrder() {
               item.price,
 
             quantity:
-              item.quantity,
-
-            restaurantId:
-              item.restaurantId || ""
+              item.quantity
 
           })
         ),
@@ -1335,70 +970,38 @@ async function submitOrder() {
 
 
       createdAt:
-        new Date()
+        window.firebaseServerTimestamp()
 
     };
 
 
-    const {
-      collection,
-      addDoc,
-      serverTimestamp
-    } = await import(
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
-    );
-
-
-    orderData.createdAt =
-      serverTimestamp();
-
-
     const orders =
-      collection(
+      window.firebaseCollection(
         window.firebaseDB,
         "orders"
       );
 
 
     const result =
-      await addDoc(
+      await window.firebaseAddDoc(
         orders,
         orderData
       );
 
 
-    localStorage.setItem(
-      "lastOrderId",
+    console.log(
+      "Order ID:",
       result.id
     );
 
 
-    if (message) {
-
-      message.textContent =
-        "✅ تم إرسال طلبك بنجاح";
-
-    }
+    message.textContent =
+      "✅ تم إرسال طلبك بنجاح";
 
 
     showMessage(
-      "✅ تم إرسال الطلب بنجاح — رقم الطلب: " +
-      result.id
+      "✅ تم إرسال الطلب بنجاح"
     );
-
-
-    const orderNumber =
-      document.getElementById(
-        "orderNumber"
-      );
-
-
-    if (orderNumber) {
-
-      orderNumber.value =
-        result.id;
-
-    }
 
 
     cart = [];
@@ -1410,19 +1013,16 @@ async function submitOrder() {
     renderCart();
 
 
-    setTimeout(
-      () => {
+    setTimeout(() => {
 
-        closeCart();
+      closeCart();
 
-      },
-      1800
-    );
+    }, 1800);
+
 
   }
 
-
-  catch(error) {
+  catch (error) {
 
     console.error(
       "ORDER ERROR:",
@@ -1430,12 +1030,8 @@ async function submitOrder() {
     );
 
 
-    if (message) {
-
-      message.textContent =
-        "❌ حصل خطأ أثناء إرسال الطلب";
-
-    }
+    message.textContent =
+      "❌ حصل خطأ أثناء إرسال الطلب";
 
   }
 
@@ -1461,9 +1057,7 @@ async function trackOrder() {
 
 
   if (!input || !message) {
-
     return;
-
   }
 
 
@@ -1501,16 +1095,8 @@ async function trackOrder() {
 
   try {
 
-    const {
-      doc,
-      getDoc
-    } = await import(
-      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
-    );
-
-
     const orderRef =
-      doc(
+      window.firebaseDoc(
         window.firebaseDB,
         "orders",
         orderNumber
@@ -1518,7 +1104,7 @@ async function trackOrder() {
 
 
     const snapshot =
-      await getDoc(
+      await window.firebaseGetDoc(
         orderRef
       );
 
@@ -1537,27 +1123,14 @@ async function trackOrder() {
       snapshot.data();
 
 
-    message.innerHTML = `
-
-      📦 حالة الطلب:
-      <strong>
-        ${escapeHTML(
-          data.status || "جديد"
-        )}
-      </strong>
-
-      <br>
-
-      💰 الإجمالي:
-      <strong>
-        ${Number(data.total || 0)} جنيه
-      </strong>
-
-    `;
+    message.textContent =
+      `📦 حالة الطلب: ${
+        data.status || "جديد"
+      }`;
 
   }
 
-  catch(error) {
+  catch (error) {
 
     console.error(
       "TRACK ERROR:",
@@ -1574,14 +1147,313 @@ async function trackOrder() {
 
 
 /* =====================================================
-   LOGIN
+   RESTAURANTS
 ===================================================== */
 
-function openLogin() {
+async function loadRestaurants() {
 
-  showMessage(
-    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
-  );
+  const container =
+    document.getElementById(
+      "restaurantsContainer"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML = `
+
+    <div class="restaurants-message">
+
+      ⏳ جاري تحميل المطاعم...
+
+    </div>
+
+  `;
+
+
+  const ready =
+    await waitForFirebase();
+
+
+  if (!ready) {
+
+    container.innerHTML = `
+
+      <div class="restaurants-message">
+
+        ❌ Firebase غير متصل
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  try {
+
+    const restaurantsRef =
+      window.firebaseCollection(
+        window.firebaseDB,
+        "restaurants"
+      );
+
+
+    /*
+      ملاحظة:
+      Firebase لا يحتاج getDocs من الخارج
+      لذلك نستورده هنا عند الحاجة.
+    */
+
+    const {
+      getDocs
+    } = await import(
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+    );
+
+
+    const snapshot =
+      await getDocs(
+        restaurantsRef
+      );
+
+
+    if (snapshot.empty) {
+
+      container.innerHTML = `
+
+        <div class="restaurants-message">
+
+          🍽️ لا توجد مطاعم مضافة حاليًا
+
+          <br>
+
+          أضف المطاعم من صفحة الأدمن.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      "";
+
+
+    snapshot.forEach(
+      restaurantDoc => {
+
+        const restaurant =
+          restaurantDoc.data();
+
+
+        const card =
+          createRestaurantCard(
+            restaurant,
+            restaurantDoc.id
+          );
+
+
+        container.appendChild(
+          card
+        );
+
+      }
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "RESTAURANTS ERROR:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="restaurants-message">
+
+        ❌ حصل خطأ أثناء تحميل المطاعم
+
+        <br>
+
+        حاول تحديث الصفحة.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   CREATE RESTAURANT CARD
+===================================================== */
+
+function createRestaurantCard(
+  restaurant,
+  restaurantId
+) {
+
+  const card =
+    document.createElement(
+      "article"
+    );
+
+
+  card.className =
+    "restaurant";
+
+
+  const name =
+    restaurant.name ||
+    restaurant.restaurantName ||
+    restaurant.title ||
+    "مطعم";
+
+
+  const description =
+    restaurant.description ||
+    restaurant.desc ||
+    "مطعم متاح للطلب";
+
+
+  const category =
+    restaurant.category ||
+    restaurant.type ||
+    "مطاعم";
+
+
+  const image =
+    restaurant.image ||
+    restaurant.imageUrl ||
+    restaurant.photo ||
+    restaurant.logo ||
+    "";
+
+
+  const deliveryTime =
+    restaurant.deliveryTime ||
+    restaurant.time ||
+    "متاح للتوصيل";
+
+
+  const rating =
+    restaurant.rating ||
+    restaurant.rate ||
+    "";
+
+
+  const imageHTML =
+    image
+      ? `
+        <img
+          class="restaurant-image"
+          src="${escapeHTML(image)}"
+          alt="${escapeHTML(name)}"
+          loading="lazy">
+      `
+      : `
+        <div class="restaurant-image-placeholder">
+          🍔
+        </div>
+      `;
+
+
+  card.innerHTML = `
+
+    ${imageHTML}
+
+
+    <div class="card-body">
+
+      <span class="restaurant-status">
+        ${escapeHTML(category)}
+      </span>
+
+
+      <h3>
+        ${escapeHTML(name)}
+      </h3>
+
+
+      <p>
+        ${escapeHTML(description)}
+      </p>
+
+
+      <div class="restaurant-info">
+
+        <span>
+          🛵 ${escapeHTML(deliveryTime)}
+        </span>
+
+
+        ${
+          rating
+            ? `
+              <span>
+                ⭐ ${escapeHTML(rating)}
+              </span>
+            `
+            : ""
+        }
+
+      </div>
+
+
+      <button
+        type="button"
+        onclick="openRestaurant('${escapeHTML(restaurantId)}')">
+
+        عرض المطعم
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  return card;
+
+}
+
+
+/* =====================================================
+   OPEN RESTAURANT
+===================================================== */
+
+function openRestaurant(restaurantId) {
+
+  if (!restaurantId) {
+    return;
+  }
+
+
+  /*
+    الصفحة التالية للمينيو يمكن ربطها لاحقًا
+    بالـ restaurantId.
+
+    حاليًا نفتح صفحة المطعم إذا كانت موجودة.
+  */
+
+  window.location.href =
+    `restaurant.html?id=${encodeURIComponent(
+      restaurantId
+    )}`;
 
 }
 
@@ -1592,7 +1464,7 @@ function openLogin() {
 
 function escapeHTML(value) {
 
-  return String(value)
+  return String(value ?? "")
 
     .replaceAll(
       "&",
@@ -1623,46 +1495,24 @@ function escapeHTML(value) {
 
 
 /* =====================================================
-   ESCAPE JAVASCRIPT
+   LOGIN
 ===================================================== */
 
-function escapeJS(value) {
+function openLogin() {
 
-  return String(value)
-
-    .replaceAll(
-      "\\",
-      "\\\\"
-    )
-
-    .replaceAll(
-      "'",
-      "\\'"
-    )
-
-    .replaceAll(
-      "\n",
-      "\\n"
-    )
-
-    .replaceAll(
-      "\r",
-      "\\r"
-    );
+  showMessage(
+    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
+  );
 
 }
 
 
 /* =====================================================
-   GLOBAL FUNCTIONS
+   GLOBAL
 ===================================================== */
 
 window.addToCart =
   addToCart;
-
-
-window.addRestaurantToCart =
-  addRestaurantToCart;
 
 
 window.openCart =
@@ -1705,19 +1555,39 @@ window.openLogin =
   openLogin;
 
 
+window.loadRestaurants =
+  loadRestaurants;
+
+
+window.openRestaurant =
+  openRestaurant;
+
+
 /* =====================================================
    START
 ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
-  async function() {
-
-    loadSavedLocation();
+  function() {
 
     updateCartCount();
 
-    await loadRestaurants();
+
+    /*
+      لو الصفحة هي restaurants.html
+      حمّل المطاعم تلقائيًا.
+    */
+
+    if (
+      document.getElementById(
+        "restaurantsContainer"
+      )
+    ) {
+
+      loadRestaurants();
+
+    }
 
   }
 );
@@ -1726,3 +1596,17 @@ document.addEventListener(
 console.log(
   "Mandoub Script Loaded ✅"
 );
+
+
+waitForFirebase()
+  .then(
+    ready => {
+
+      console.log(
+        ready
+          ? "Firebase Ready ✅"
+          : "Firebase Not Ready ❌"
+      );
+
+    }
+  );
