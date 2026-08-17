@@ -2,21 +2,12 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-  >
-
-  <title>مندوب | توصيل سريع وآمن</title>
+  <title>مندوب | توصيل سريع</title>
 
   <style>
-
-    /* =====================================================
-       RESET
-    ===================================================== */
 
     * {
       box-sizing: border-box;
@@ -24,38 +15,11 @@
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
-      width: 100%;
+      font-family: Arial, Tahoma, sans-serif;
+      background: #020d1c;
+      color: white;
       min-height: 100vh;
-
-      overflow-x: hidden;
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
-
-      background: #020b16;
-      color: #ffffff;
-
-      direction: rtl;
-    }
-
-    button,
-    input {
-      font-family: inherit;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
     }
 
     a {
@@ -63,99 +27,55 @@
       color: inherit;
     }
 
-    img {
-      display: block;
-      max-width: 100%;
+    button {
+      font-family: inherit;
+      border: 0;
+      cursor: pointer;
     }
 
-
-    /* =====================================================
-       NAVBAR
-    ===================================================== */
+    /* ================= NAVBAR ================= */
 
     .navbar {
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 5000;
-
+      height: 65px;
       width: 100%;
 
-      min-height: 68px;
-
-      padding:
-        8px
-        max(12px, env(safe-area-inset-right))
-        8px
-        max(12px, env(safe-area-inset-left));
-
       display: flex;
-
       align-items: center;
 
-      gap: 9px;
+      padding: 7px 10px;
+      gap: 10px;
 
-      background:
-        rgba(2, 11, 22, 0.96);
+      background: #031326;
 
-      border-bottom:
-        1px solid
-        rgba(0, 217, 255, 0.16);
+      border-bottom: 1px solid #12304d;
 
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+
+      z-index: 1000;
     }
 
-
-    /* اللوجو */
-
     .brand {
-
-      width: 48px;
-      min-width: 48px;
-
-      height: 48px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 14px;
+      flex-shrink: 0;
     }
 
     .brand img {
-
-      width: 44px;
-      height: 44px;
-
+      width: 48px;
+      height: 48px;
       object-fit: contain;
     }
 
-
-    /* =====================================================
-       NAV LINKS
-    ===================================================== */
-
     .navbar nav {
-
       flex: 1;
 
-      min-width: 0;
-
       display: flex;
-
       align-items: center;
+      justify-content: center;
 
-      gap: 6px;
+      gap: 13px;
 
       overflow-x: auto;
-
       scrollbar-width: none;
-
-      padding: 3px 0;
     }
 
     .navbar nav::-webkit-scrollbar {
@@ -163,1211 +83,318 @@
     }
 
     .navbar nav a {
-
       flex-shrink: 0;
 
-      padding:
-        9px
-        9px;
-
-      border-radius: 10px;
-
-      color: #9eacbb;
+      color: #d5dce3;
 
       font-size: 12px;
-
-      font-weight: 600;
 
       white-space: nowrap;
 
-      transition: 0.2s;
-    }
-
-    .navbar nav a:hover {
-      color: #ffffff;
-      background: #071b2d;
+      padding: 7px 2px;
     }
 
     .navbar nav a.active {
-
       color: #00d9ff;
-
-      background:
-        rgba(0, 217, 255, 0.09);
+      font-weight: bold;
     }
-
-
-    /* =====================================================
-       NAV ACTIONS
-    ===================================================== */
-
-    .nav-actions {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      flex-shrink: 0;
-    }
-
-
-    /* تسجيل الدخول */
-
-    .login {
-
-      height: 44px;
-
-      padding: 0 13px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.25);
-
-      border-radius: 12px;
-
-      background: transparent;
-
-      color: #ffffff;
-
-      font-size: 12px;
-
-      font-weight: 700;
-    }
-
-    .login:active {
-      transform: scale(0.97);
-    }
-
-
-    /* السلة */
 
     .cart {
+      flex-shrink: 0;
 
-      position: relative;
-
-      width: 46px;
-      height: 46px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.3);
+      width: 47px;
+      height: 47px;
 
       border-radius: 13px;
 
-      background: #062239;
-
-      color: #ffffff;
+      background: #08d8f5;
 
       font-size: 21px;
 
-      transition: 0.2s;
-    }
-
-    .cart:active {
-      transform: scale(0.94);
+      position: relative;
     }
 
     #cartCount {
-
       position: absolute;
 
-      top: -4px;
-      left: -4px;
+      top: 2px;
+      left: 2px;
 
-      min-width: 19px;
-      height: 19px;
+      min-width: 18px;
+      height: 18px;
 
-      padding: 0 5px;
+      border-radius: 20px;
 
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: #ff2869;
-
-      color: #ffffff;
+      background: #ff2364;
+      color: white;
 
       font-size: 10px;
-
-      font-weight: 900;
-    }
-
-
-    /* =====================================================
-       HERO
-    ===================================================== */
-
-    .hero {
-
-      width: 100%;
-
-      min-height: calc(100vh - 68px);
-
-      padding:
-        55px
-        17px
-        35px;
+      font-weight: bold;
 
       display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
+    /* ================= HERO ================= */
+
+    .hero {
+      min-height: calc(100vh - 65px);
+
+      padding: 45px 18px;
+
+      display: flex;
       flex-direction: column;
 
       align-items: center;
-
       justify-content: center;
 
       text-align: center;
 
       background:
-
         radial-gradient(
-          circle at 50% 15%,
-          rgba(0, 217, 255, 0.13),
-          transparent 38%
+          circle at 50% 20%,
+          rgba(0, 217, 255, 0.12),
+          transparent 40%
         ),
-
-        radial-gradient(
-          circle at 90% 80%,
-          rgba(255, 40, 105, 0.08),
-          transparent 35%
-        ),
-
-        #020b16;
+        #020d1c;
     }
 
-
     .hero-content {
-
       width: 100%;
-
       max-width: 650px;
     }
 
-
     .eyebrow {
-
-      margin-bottom: 14px;
-
       color: #00d9ff;
 
       font-size: 14px;
+      font-weight: bold;
 
-      font-weight: 800;
+      margin-bottom: 15px;
     }
-
 
     .hero h1 {
+      font-size: 32px;
+      line-height: 1.4;
 
-      margin-bottom: 17px;
-
-      font-size:
-        clamp(31px, 9vw, 52px);
-
-      line-height: 1.35;
-
-      font-weight: 900;
+      margin-bottom: 18px;
     }
 
-
     .hero h1 span {
-
       background:
         linear-gradient(
           90deg,
           #00d9ff,
-          #ffffff,
           #ff3c88
         );
 
       -webkit-background-clip: text;
-      background-clip: text;
-
       color: transparent;
     }
 
-
     .hero-text {
-
-      max-width: 570px;
-
-      margin:
-        0
-        auto
-        25px;
-
-      color: #9eacbb;
+      color: #aeb9c8;
 
       font-size: 15px;
 
       line-height: 1.9;
+
+      margin-bottom: 25px;
     }
 
-
-    /* =====================================================
-       LOCATION
-    ===================================================== */
+    /* ================= LOCATION ================= */
 
     .location-box {
-
       width: 100%;
 
-      padding: 8px;
+      padding: 10px;
 
       display: flex;
-
       flex-direction: column;
 
-      gap: 8px;
+      gap: 10px;
 
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.2);
+      background: #061a30;
+
+      border: 1px solid #23405d;
 
       border-radius: 17px;
-
-      background: #061a2d;
-
-      box-shadow:
-        0 15px 45px
-        rgba(0, 0, 0, 0.22);
     }
-
-
-    .location-row {
-
-      width: 100%;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-    }
-
-
-    .location-icon {
-
-      width: 42px;
-      min-width: 42px;
-
-      height: 48px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 11px;
-
-      background: #08253d;
-
-      font-size: 20px;
-    }
-
 
     .location-box input {
-
       width: 100%;
 
-      height: 48px;
+      height: 50px;
 
-      padding: 0 10px;
+      padding: 0 15px;
 
-      border: 0;
-
-      outline: 0;
-
-      background: transparent;
-
-      color: #ffffff;
-
-      font-size: 14px;
-    }
-
-
-    .location-box input::placeholder {
-      color: #738598;
-    }
-
-
-    .location-box > button {
-
-      width: 100%;
-
-      height: 49px;
-
-      border-radius: 11px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #00d9ff,
-          #08b9d4
-        );
-
-      color: #00131d;
-
-      font-size: 14px;
-
-      font-weight: 900;
-    }
-
-
-    .location-msg {
-
-      min-height: 20px;
-
-      margin-top: 8px;
-
-      color: #00d9ff;
-
-      font-size: 12px;
-    }
-
-
-    /* =====================================================
-       QUICK ACTIONS
-    ===================================================== */
-
-    .quick-actions {
-
-      width: 100%;
-
-      margin-top: 22px;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 10px;
-    }
-
-
-    .quick-card {
-
-      min-height: 78px;
-
-      padding: 14px;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.13);
-
-      border-radius: 15px;
-
-      background: #061827;
-
-      text-align: right;
-
-      transition: 0.2s;
-    }
-
-
-    .quick-card:active {
-      transform: scale(0.97);
-    }
-
-
-    .quick-icon {
-
-      width: 38px;
-      min-width: 38px;
-
-      height: 38px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 10px;
-
-      background: #082943;
-
-      font-size: 20px;
-    }
-
-
-    .quick-card strong {
-
-      display: block;
-
-      margin-bottom: 3px;
-
-      font-size: 13px;
-    }
-
-
-    .quick-card small {
-
-      color: #718497;
-
-      font-size: 10px;
-    }
-
-
-    /* =====================================================
-       HERO IMAGE
-    ===================================================== */
-
-    .hero-art {
-
-      width: 100%;
-
-      max-width: 330px;
-
-      margin-top: 28px;
-    }
-
-
-    .delivery-image {
-
-      width: 100%;
-
-      object-fit: contain;
-
-      filter:
-        drop-shadow(
-          0 20px 40px
-          rgba(0, 217, 255, 0.17)
-        );
-    }
-
-
-    /* =====================================================
-       RESTAURANTS PREVIEW
-    ===================================================== */
-
-    .section {
-
-      width: 100%;
-
-      padding:
-        45px
-        16px;
-    }
-
-
-    .section-head {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 18px;
-    }
-
-
-    .section-head h2 {
-
-      font-size: 22px;
-
-      font-weight: 900;
-    }
-
-
-    .section-head a {
-
-      color: #00d9ff;
-
-      font-size: 12px;
-
-      font-weight: 700;
-    }
-
-
-    .restaurants-preview {
-
-      width: 100%;
-
-      padding: 22px 18px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.14);
-
-      border-radius: 18px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #07243a,
-          #061725
-        );
-
-      text-align: center;
-    }
-
-
-    .restaurants-preview-icon {
-
-      margin-bottom: 10px;
-
-      font-size: 42px;
-    }
-
-
-    .restaurants-preview h3 {
-
-      margin-bottom: 7px;
-
-      font-size: 19px;
-    }
-
-
-    .restaurants-preview p {
-
-      margin-bottom: 17px;
-
-      color: #8d9cac;
-
-      font-size: 13px;
-
-      line-height: 1.8;
-    }
-
-
-    .primary-button {
-
-      min-height: 46px;
-
-      padding: 0 22px;
-
-      border-radius: 11px;
-
-      background: #00d9ff;
-
-      color: #00131d;
-
-      font-size: 13px;
-
-      font-weight: 900;
-    }
-
-
-    /* =====================================================
-       TRACK
-    ===================================================== */
-
-    .track {
-
-      width: calc(100% - 32px);
-
-      margin:
-        0
-        auto
-        35px;
-
-      padding:
-        25px
-        17px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.17);
-
-      border-radius: 20px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #072941,
-          #061827
-        );
-
-      text-align: center;
-    }
-
-
-    .track h2 {
-
-      margin-bottom: 8px;
-
-      font-size: 22px;
-    }
-
-
-    .track-description {
-
-      margin-bottom: 18px;
-
-      color: #8c9aaa;
-
-      font-size: 13px;
-
-      line-height: 1.8;
-    }
-
-
-    .track-form {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 8px;
-    }
-
-
-    .track-form input {
-
-      width: 100%;
-
-      height: 49px;
-
-      padding: 0 14px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.17);
+      border: 1px solid #23405d;
 
       border-radius: 11px;
 
       outline: none;
 
-      background: #020b16;
+      background: #020d1c;
 
-      color: #ffffff;
+      color: white;
 
-      font-size: 13px;
+      font-size: 15px;
     }
 
+    .location-box input::placeholder {
+      color: #8291a2;
+    }
 
-    .track-form button {
-
+    .location-box button {
       width: 100%;
-
-      height: 49px;
+      height: 50px;
 
       border-radius: 11px;
 
-      background: #00d9ff;
+      background: #08d8f5;
 
-      color: #00131d;
+      color: #00121d;
 
-      font-weight: 900;
+      font-weight: bold;
+
+      font-size: 15px;
     }
 
-
-    #trackMsg {
-
-      margin-top: 13px;
+    #locationMsg {
+      margin-top: 10px;
 
       color: #00d9ff;
 
       font-size: 13px;
-
-      line-height: 1.8;
     }
 
+    /* ================= BENEFITS ================= */
 
-    /* =====================================================
-       FOOTER
-    ===================================================== */
-
-    footer {
-
+    .benefits {
       width: 100%;
 
-      padding:
-        35px
-        16px
-        45px;
+      display: grid;
 
-      text-align: center;
-
-      background: #010711;
-
-      border-top:
-        1px solid
-        rgba(0, 217, 255, 0.1);
-    }
-
-
-    footer img {
-
-      width: 58px;
-
-      margin:
-        0
-        auto
-        10px;
-    }
-
-
-    footer p {
-
-      margin-bottom: 8px;
-
-      color: #a7b5c3;
-
-      font-size: 13px;
-    }
-
-
-    footer small {
-
-      color: #627486;
-
-      font-size: 10px;
-    }
-
-
-    /* =====================================================
-       CART MODAL
-    ===================================================== */
-
-    #cartModal {
-
-      position: fixed;
-
-      inset: 0;
-
-      z-index: 10000;
-    }
-
-
-    .cart-overlay {
-
-      position: absolute;
-
-      inset: 0;
-
-      background:
-        rgba(0, 0, 0, 0.78);
-
-      backdrop-filter: blur(5px);
-    }
-
-
-    .cart-box {
-
-      position: absolute;
-
-      left: 50%;
-      bottom: 0;
-
-      transform:
-        translateX(-50%);
-
-      width: 100%;
-
-      max-width: 600px;
-
-      max-height: 86vh;
-
-      overflow-y: auto;
-
-      padding:
-        20px
-        16px
-        30px;
-
-      border-radius:
-        24px
-        24px
-        0
-        0;
-
-      background: #061a2d;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.2);
-
-      box-shadow:
-        0 -20px 60px
-        rgba(0, 0, 0, 0.5);
-    }
-
-
-    .cart-header {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding-bottom: 14px;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,0.08);
-
-      margin-bottom: 14px;
-    }
-
-
-    .cart-header h2 {
-      font-size: 20px;
-    }
-
-
-    .cart-header button {
-
-      width: 40px;
-      height: 40px;
-
-      border-radius: 10px;
-
-      background: #102e47;
-
-      color: #ffffff;
-
-      font-size: 18px;
-    }
-
-
-    .cart-items {
-
-      display: flex;
-
-      flex-direction: column;
-
-      gap: 9px;
-    }
-
-
-    .cart-item {
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
+      grid-template-columns: 1fr;
 
       gap: 10px;
 
-      padding: 14px;
-
-      border:
-        1px solid
-        rgba(0, 217, 255, 0.1);
-
-      border-radius: 13px;
-
-      background: #08243b;
+      margin-top: 25px;
     }
 
-
-    .cart-item strong {
-      font-size: 14px;
-    }
-
-
-    .cart-item p {
-
-      margin-top: 4px;
-
-      color: #00d9ff;
-
-      font-size: 12px;
-    }
-
-
-    .cart-item button {
-
-      padding:
-        8px
-        11px;
-
-      border-radius: 8px;
-
-      background: #ff2869;
-
-      color: #ffffff;
-
-      font-size: 11px;
-
-      font-weight: 800;
-    }
-
-
-    .cart-total {
+    .benefit {
+      padding: 15px;
 
       display: flex;
-
       align-items: center;
 
-      justify-content: space-between;
+      gap: 13px;
 
-      margin-top: 17px;
+      text-align: right;
 
-      padding-top: 14px;
+      background: #061a30;
 
-      border-top:
-        1px solid
-        rgba(255,255,255,0.08);
+      border: 1px solid #173854;
+
+      border-radius: 15px;
     }
 
-
-    .cart-total strong {
-
-      color: #00d9ff;
-
-      font-size: 19px;
+    .benefit-icon {
+      font-size: 26px;
     }
 
+    .benefit strong {
+      display: block;
 
-    .checkout-button {
+      font-size: 15px;
 
-      width: 100%;
-
-      height: 51px;
-
-      margin-top: 13px;
-
-      border-radius: 11px;
-
-      background: #00d9ff;
-
-      color: #00131d;
-
-      font-weight: 900;
+      margin-bottom: 4px;
     }
 
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    #cartMessage {
-
-      position: fixed !important;
-
-      z-index: 20000 !important;
-
-      left: 50% !important;
-
-      bottom:
-        calc(
-          20px +
-          env(safe-area-inset-bottom)
-        ) !important;
-
-      transform:
-        translateX(-50%) !important;
-
-      width: max-content;
-
-      max-width: calc(100% - 30px);
-
-      padding:
-        11px
-        17px;
-
-      border-radius: 11px;
-
-      background: #00d9ff;
-
-      color: #00131d;
+    .benefit small {
+      color: #8998aa;
 
       font-size: 12px;
-
-      font-weight: 900;
-
-      text-align: center;
-
-      box-shadow:
-        0 10px 35px
-        rgba(0,0,0,.35);
     }
 
+    /* ================= IMAGE ================= */
 
-    /* =====================================================
-       DESKTOP
-    ===================================================== */
+    .hero-art {
+      margin-top: 25px;
+
+      width: 100%;
+      max-width: 330px;
+    }
+
+    .delivery-image {
+      width: 100%;
+      height: auto;
+    }
+
+    /* ================= DESKTOP ================= */
 
     @media (min-width: 800px) {
 
       .navbar {
-
-        min-height: 76px;
-
-        padding:
-          10px
-          5%;
+        padding: 8px 30px;
       }
-
-
-      .brand,
-      .brand img {
-
-        width: 54px;
-        height: 54px;
-      }
-
 
       .navbar nav {
-
-        justify-content: center;
-
-        gap: 12px;
+        gap: 25px;
       }
 
-
       .navbar nav a {
-
-        padding:
-          10px
-          13px;
-
         font-size: 14px;
       }
 
-
       .hero {
-
-        min-height: 650px;
-
-        display: grid;
-
-        grid-template-columns:
-          1fr
-          0.8fr;
-
         max-width: 1200px;
 
         margin: auto;
 
-        padding:
-          70px
-          30px;
-
-        text-align: right;
-      }
-
-
-      .hero-content {
-        text-align: right;
-      }
-
-
-      .hero-text {
-        margin-left: 0;
-        margin-right: 0;
-      }
-
-
-      .location-box {
-
         flex-direction: row;
 
-        align-items: center;
+        text-align: right;
+
+        gap: 60px;
+
+        padding: 70px 30px;
       }
 
-
-      .location-row {
+      .hero-content {
         flex: 1;
       }
 
-
-      .location-box > button {
-        width: 145px;
-      }
-
-
-      .quick-actions {
-        grid-template-columns:
-          repeat(4, 1fr);
-      }
-
-
       .hero-art {
-        max-width: 440px;
-        margin: auto;
-      }
+        flex: 0 0 400px;
 
-
-      .section {
-
-        max-width: 1000px;
-
-        margin: auto;
-      }
-
-
-      .track {
-        max-width: 1000px;
-      }
-
-
-      .track-form {
-
-        max-width: 600px;
-
-        margin: auto;
-
-        flex-direction: row;
-      }
-
-
-      .track-form button {
-        width: 150px;
-      }
-
-
-      .login {
-        display: block;
-      }
-
-    }
-
-
-    /* =====================================================
-       VERY SMALL PHONES
-    ===================================================== */
-
-    @media (max-width: 380px) {
-
-      .navbar nav a {
-        font-size: 10px;
-        padding: 8px 6px;
-      }
-
-      .brand {
-        width: 42px;
-        min-width: 42px;
-      }
-
-      .brand img {
-        width: 40px;
-        height: 40px;
-      }
-
-      .cart {
-        width: 43px;
-        height: 43px;
+        margin-top: 0;
       }
 
       .hero h1 {
-        font-size: 28px;
+        font-size: 48px;
       }
 
-      .quick-card {
-        padding: 11px;
+      .location-box {
+        flex-direction: row;
+      }
+
+      .location-box input {
+        flex: 1;
+      }
+
+      .location-box button {
+        width: 150px;
+      }
+
+      .benefits {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .benefit {
+        flex-direction: column;
+        text-align: center;
       }
 
     }
@@ -1380,17 +407,13 @@
 <body>
 
 
-  <!-- =====================================================
-       NAVBAR
-  ===================================================== -->
+  <!-- ================= NAVBAR ================= -->
 
   <header class="navbar">
 
-
     <a
       class="brand"
-      href="index.html"
-      aria-label="الرئيسية">
+      href="index.html">
 
       <img
         src="assets/logo.png"
@@ -1407,65 +430,50 @@
         الرئيسية
       </a>
 
+      <!-- أهم تعديل -->
       <a href="restaurants.html">
         المطاعم
       </a>
 
+      <a href="#offers">
+        العروض
+      </a>
+
       <a href="#track">
-        تتبع
+        تتبع الطلب
       </a>
 
       <a href="#about">
         عن مندوب
       </a>
 
+      <a href="#contact">
+        تواصل معنا
+      </a>
+
     </nav>
 
 
-    <div class="nav-actions">
+    <button
+      class="cart"
+      type="button"
+      onclick="alert('السلة سيتم تفعيلها مع المنيو 🛒')">
 
+      🛒
 
-      <button
-        type="button"
-        class="login"
-        onclick="goToLogin()">
+      <span id="cartCount">
+        0
+      </span>
 
-        تسجيل الدخول
-
-      </button>
-
-
-      <button
-        type="button"
-        class="cart"
-        onclick="openCart()"
-        aria-label="السلة">
-
-        🛒
-
-        <span id="cartCount">
-          0
-        </span>
-
-      </button>
-
-
-    </div>
+    </button>
 
   </header>
 
 
-
-  <!-- =====================================================
-       MAIN
-  ===================================================== -->
+  <!-- ================= MAIN ================= -->
 
   <main>
 
-
-    <!-- =====================================================
-         HERO
-    ===================================================== -->
 
     <section class="hero">
 
@@ -1480,12 +488,12 @@
 
         <h1>
 
-          اطلب اللي محتاجه
+          اطلب من مطعمك المفضل
 
           <br>
 
           <span>
-            ونوصله لحد بابك
+            ونوصلك بسرعة وأمان
           </span>
 
         </h1>
@@ -1493,9 +501,8 @@
 
         <p class="hero-text">
 
-          اطلب من المطاعم والمحلات الموجودة
-          على مندوب، وتابع طلبك بسهولة من لحظة
-          الطلب لحد التوصيل.
+          اطلب أكلك ومشترياتك واحتياجاتك اليومية
+          من أفضل المطاعم والمحلات.
 
         </p>
 
@@ -1504,138 +511,91 @@
 
         <div class="location-box">
 
-
-          <div class="location-row">
-
-
-            <div class="location-icon">
-              📍
-            </div>
-
-
-            <input
-              id="locationInput"
-              type="text"
-              placeholder="اكتب عنوان التوصيل">
-
-          </div>
-
+          <input
+            id="locationInput"
+            type="text"
+            placeholder="اكتب عنوان التوصيل">
 
           <button
             type="button"
-            onclick="setLocation()">
+            onclick="saveLocation()">
 
-            حفظ عنوان التوصيل
+            حفظ عنوان التوصيل 📍
 
           </button>
-
 
         </div>
 
 
-        <p
-          id="locationMsg"
-          class="location-msg">
-        </p>
+        <p id="locationMsg"></p>
 
 
+        <!-- BENEFITS -->
 
-        <!-- QUICK ACTIONS -->
-
-        <div class="quick-actions">
+        <div class="benefits">
 
 
-          <a
-            class="quick-card"
-            href="restaurants.html">
+          <div class="benefit">
 
-            <div class="quick-icon">
-              🍔
+            <div class="benefit-icon">
+              🛡️
             </div>
 
             <div>
 
               <strong>
-                المطاعم
+                آمن وموثوق
               </strong>
 
               <small>
-                اختار مطعمك
+                خدمة مضمونة
               </small>
 
             </div>
 
-          </a>
+          </div>
 
 
-          <a
-            class="quick-card"
-            href="restaurants.html">
+          <div class="benefit">
 
-            <div class="quick-icon">
-              🛒
-            </div>
-
-            <div>
-
-              <strong>
-                اطلب الآن
-              </strong>
-
-              <small>
-                ابدأ طلبك
-              </small>
-
-            </div>
-
-          </a>
-
-
-          <a
-            class="quick-card"
-            href="#track">
-
-            <div class="quick-icon">
+            <div class="benefit-icon">
               🛵
             </div>
 
             <div>
 
               <strong>
-                تتبع الطلب
+                توصيل سريع
               </strong>
 
               <small>
-                اعرف طلبك فين
+                في أسرع وقت
               </small>
 
             </div>
 
-          </a>
+          </div>
 
 
-          <button
-            type="button"
-            class="quick-card"
-            onclick="goToLogin()">
+          <div class="benefit">
 
-            <div class="quick-icon">
-              👤
+            <div class="benefit-icon">
+              🎧
             </div>
 
             <div>
 
               <strong>
-                حسابي
+                دعم العملاء
               </strong>
 
               <small>
-                تسجيل الدخول
+                متاح لمساعدتك
               </small>
 
             </div>
 
-          </button>
+          </div>
 
 
         </div>
@@ -1644,7 +604,7 @@
       </div>
 
 
-      <!-- HERO IMAGE -->
+      <!-- IMAGE -->
 
       <div class="hero-art">
 
@@ -1659,152 +619,98 @@
     </section>
 
 
-
-    <!-- =====================================================
-         RESTAURANTS
-    ===================================================== -->
-
-    <section class="section">
-
-
-      <div class="section-head">
-
-        <h2>
-          المطاعم
-        </h2>
-
-
-        <a href="restaurants.html">
-          عرض الكل ←
-        </a>
-
-      </div>
-
-
-      <div class="restaurants-preview">
-
-
-        <div class="restaurants-preview-icon">
-          🍔
-        </div>
-
-
-        <h3>
-          اختار مطعمك وابدأ طلبك
-        </h3>
-
-
-        <p>
-
-          هتلاقي هنا المطاعم اللي بيضيفها
-          الأدمن، وبعد اختيار المطعم هتدخل
-          على المنيو والمنتجات.
-
-        </p>
-
-
-        <a
-          href="restaurants.html"
-          class="primary-button">
-
-          تصفح المطاعم
-
-        </a>
-
-
-      </div>
-
-
-    </section>
-
-
-
-    <!-- =====================================================
-         ABOUT
-    ===================================================== -->
+    <!-- ================= OFFERS ================= -->
 
     <section
-      id="about"
-      class="section">
+      id="offers"
+      style="
+        padding:50px 18px;
+        text-align:center;
+        background:#031326;
+      ">
 
+      <p class="eyebrow">
+        العروض
+      </p>
 
-      <div class="restaurants-preview">
+      <h2>
+        عروض مندوب قريبًا 🎉
+      </h2>
 
+      <p
+        style="
+          color:#9eabbc;
+          margin-top:12px;
+        ">
 
-        <p class="eyebrow">
-          عن مندوب
-        </p>
+        تابعنا للحصول على أحدث العروض.
 
-
-        <h3>
-          توصيل بسيط وسريع
-        </h3>
-
-
-        <p>
-
-          مندوب منصة لتوصيل الطلبات من المطاعم
-          والمحلات إلى العميل بسهولة وأمان.
-
-        </p>
-
-
-      </div>
-
+      </p>
 
     </section>
 
 
-
-    <!-- =====================================================
-         TRACK
-    ===================================================== -->
+    <!-- ================= TRACK ================= -->
 
     <section
       id="track"
-      class="track">
-
+      style="
+        padding:50px 18px;
+        text-align:center;
+      ">
 
       <p class="eyebrow">
         تتبع طلبك
       </p>
 
-
       <h2>
         اعرف طلبك وصل لفين
       </h2>
 
+      <p
+        style="
+          color:#9eabbc;
+          margin-top:12px;
+        ">
 
-      <p class="track-description">
-
-        اكتب رقم الطلب لمعرفة آخر حالة للطلب.
+        رقم الطلب هيظهر لك بعد إتمام الطلب.
 
       </p>
 
-
-      <div class="track-form">
-
-
-        <input
-          id="orderNumber"
-          type="text"
-          placeholder="رقم الطلب">
+    </section>
 
 
-        <button
-          type="button"
-          onclick="trackOrder()">
+    <!-- ================= ABOUT ================= -->
 
-          تتبع الطلب
+    <section
+      id="about"
+      style="
+        padding:50px 18px;
+        text-align:center;
+        background:#031326;
+      ">
 
-        </button>
+      <p class="eyebrow">
+        عن مندوب
+      </p>
 
+      <h2>
+        توصيل سريع داخل مدينتك
+      </h2>
 
-      </div>
+      <p
+        style="
+          max-width:600px;
+          margin:15px auto 0;
+          color:#9eabbc;
+          line-height:1.9;
+        ">
 
+        مندوب خدمة توصيل تساعدك في طلب
+        الأكل والمشتريات والاحتياجات اليومية
+        بسهولة وسرعة وأمان.
 
-      <p id="trackMsg"></p>
-
+      </p>
 
     </section>
 
@@ -1812,647 +718,69 @@
   </main>
 
 
+  <!-- ================= FOOTER ================= -->
 
-  <!-- =====================================================
-       FOOTER
-  ===================================================== -->
-
-  <footer>
-
+  <footer
+    id="contact"
+    style="
+      padding:35px 15px;
+      text-align:center;
+      background:#010813;
+      border-top:1px solid #173854;
+    ">
 
     <img
       src="assets/logo.png"
-      alt="مندوب">
+      alt="مندوب"
+      style="
+        width:65px;
+        margin:auto;
+      ">
 
+    <p
+      style="
+        color:#aab5c5;
+        margin-top:10px;
+      ">
 
-    <p>
       نوصل طلبك.. بسرعة وأمان
+
     </p>
 
+    <small
+      style="
+        display:block;
+        color:#68788b;
+        margin-top:10px;
+      ">
 
-    <small>
       © 2026 مندوب — جميع الحقوق محفوظة
-    </small>
 
+    </small>
 
   </footer>
 
 
+  <script>
 
-  <!-- =====================================================
-       FIREBASE + FUNCTIONS
-  ===================================================== -->
+    /* ================= LOCATION ================= */
 
-  <script type="module">
-
-
-    import {
-      initializeApp
-    }
-
-    from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-
-    import {
-      getFirestore,
-      collection,
-      addDoc,
-      serverTimestamp,
-      doc,
-      getDoc
-    }
-
-    from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-    /* =====================================================
-       FIREBASE CONFIG
-    ===================================================== */
-
-    const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-      authDomain:
-        "mandoub-dv.firebaseapp.com",
-
-      projectId:
-        "mandoub-dv",
-
-      storageBucket:
-        "mandoub-dv.firebasestorage.app",
-
-      messagingSenderId:
-        "311140400335",
-
-      appId:
-        "1:311140400335:web:db198b7c53259c53594bba",
-
-      measurementId:
-        "G-7V1LJQYYXD"
-
-    };
-
-
-    /* =====================================================
-       FIREBASE INITIALIZE
-    ===================================================== */
-
-    let db = null;
-
-    let firebaseReady = false;
-
-
-    try {
-
-
-      const app =
-        initializeApp(
-          firebaseConfig
-        );
-
-
-      db =
-        getFirestore(app);
-
-
-      firebaseReady = true;
-
-
-      window.firebaseDB = db;
-
-      window.firebaseReady = true;
-
-
-      console.log(
-        "Firebase متصل بنجاح ✅"
-      );
-
-
-    }
-
-    catch(error) {
-
-
-      firebaseReady = false;
-
-      window.firebaseReady = false;
-
-
-      console.error(
-        "Firebase Error:",
-        error
-      );
-
-    }
-
-
-
-    /* =====================================================
-       CART
-    ===================================================== */
-
-    let cart = [];
-
-
-    function updateCartCount() {
-
-
-      const element =
-        document.getElementById(
-          "cartCount"
-        );
-
-
-      if(element) {
-
-        element.textContent =
-          cart.length;
-
-      }
-
-    }
-
-
-    function addToCart(
-      name,
-      price
-    ) {
-
-
-      cart.push({
-
-        name: name,
-
-        price:
-          Number(price)
-
-      });
-
-
-      updateCartCount();
-
-
-      showMessage(
-        "تمت إضافة " +
-        name +
-        " إلى السلة 🛒"
-      );
-
-    }
-
-
-
-    function openCart() {
-
-
-      const oldModal =
-        document.getElementById(
-          "cartModal"
-        );
-
-
-      if(oldModal) {
-
-        oldModal.remove();
-
-      }
-
-
-      let itemsHTML = "";
-
-
-      if(cart.length === 0) {
-
-
-        itemsHTML = `
-
-          <div
-            style="
-              text-align:center;
-              padding:30px 10px;
-            "
-          >
-
-            <div
-              style="
-                font-size:45px;
-                margin-bottom:10px;
-              "
-            >
-              🛒
-            </div>
-
-            <h3>
-              السلة فارغة
-            </h3>
-
-            <p
-              style="
-                color:#8998aa;
-                margin-top:8px;
-                font-size:13px;
-              "
-            >
-              لم تقم بإضافة أي منتج.
-            </p>
-
-          </div>
-
-        `;
-
-      }
-
-      else {
-
-
-        cart.forEach(
-          (item, index) => {
-
-
-            itemsHTML += `
-
-              <div class="cart-item">
-
-                <div>
-
-                  <strong>
-                    ${escapeHTML(item.name)}
-                  </strong>
-
-                  <p>
-                    ${item.price} جنيه
-                  </p>
-
-                </div>
-
-                <button
-                  type="button"
-                  onclick="removeFromCart(${index})"
-                >
-                  حذف
-                </button>
-
-              </div>
-
-            `;
-
-          }
-        );
-
-      }
-
-
-      const total =
-        cart.reduce(
-          (sum, item) =>
-            sum + item.price,
-          0
-        );
-
-
-      const modal =
-        document.createElement(
-          "div"
-        );
-
-
-      modal.id =
-        "cartModal";
-
-
-      modal.innerHTML = `
-
-        <div
-          class="cart-overlay"
-          onclick="closeCart()"
-        ></div>
-
-
-        <div class="cart-box">
-
-
-          <div class="cart-header">
-
-            <h2>
-              🛒 سلة الطلبات
-            </h2>
-
-
-            <button
-              type="button"
-              onclick="closeCart()"
-            >
-              ✕
-            </button>
-
-          </div>
-
-
-          <div class="cart-items">
-
-            ${itemsHTML}
-
-          </div>
-
-
-          ${
-            cart.length > 0
-              ? `
-
-                <div class="cart-total">
-
-                  <span>
-                    الإجمالي
-                  </span>
-
-                  <strong>
-                    ${total} جنيه
-                  </strong>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  class="checkout-button"
-                  onclick="checkout()"
-                >
-                  إتمام الطلب
-                </button>
-
-              `
-              : ""
-          }
-
-
-        </div>
-
-      `;
-
-
-      document.body.appendChild(
-        modal
-      );
-
-    }
-
-
-
-    function closeCart() {
-
-
-      const modal =
-        document.getElementById(
-          "cartModal"
-        );
-
-
-      if(modal) {
-
-        modal.remove();
-
-      }
-
-    }
-
-
-
-    function removeFromCart(
-      index
-    ) {
-
-
-      if(
-        index < 0 ||
-        index >= cart.length
-      ) {
-
-        return;
-
-      }
-
-
-      cart.splice(
-        index,
-        1
-      );
-
-
-      updateCartCount();
-
-
-      openCart();
-
-    }
-
-
-
-    /* =====================================================
-       CHECKOUT
-    ===================================================== */
-
-    async function checkout() {
-
-
-      if(cart.length === 0) {
-
-        showMessage(
-          "السلة فارغة."
-        );
-
-        return;
-
-      }
-
-
-      const locationInput =
-        document.getElementById(
-          "locationInput"
-        );
-
-
-      const location =
-        locationInput
-          ? locationInput.value.trim()
-          : "";
-
-
-      if(!location) {
-
-        showMessage(
-          "اكتب عنوان التوصيل أولاً 📍"
-        );
-
-        if(locationInput) {
-
-          locationInput.focus();
-
-        }
-
-        return;
-
-      }
-
-
-      if(!firebaseReady) {
-
-        showMessage(
-          "Firebase غير متصل ❌"
-        );
-
-        return;
-
-      }
-
-
-      const total =
-        cart.reduce(
-          (sum, item) =>
-            sum + item.price,
-          0
-        );
-
-
-      try {
-
-
-        const order = {
-
-          items:
-            cart.map(
-              item => ({
-
-                name:
-                  item.name,
-
-                price:
-                  item.price
-
-              })
-            ),
-
-          total:
-            total,
-
-          location:
-            location,
-
-          status:
-            "جديد",
-
-          createdAt:
-            serverTimestamp()
-
-        };
-
-
-        const orderRef =
-          await addDoc(
-            collection(
-              db,
-              "orders"
-            ),
-            order
-          );
-
-
-        localStorage.setItem(
-          "lastOrderId",
-          orderRef.id
-        );
-
-
-        const orderNumber =
-          document.getElementById(
-            "orderNumber"
-          );
-
-
-        if(orderNumber) {
-
-          orderNumber.value =
-            orderRef.id;
-
-        }
-
-
-        cart = [];
-
-
-        updateCartCount();
-
-
-        closeCart();
-
-
-        showMessage(
-          "تم تسجيل الطلب ✅"
-        );
-
-
-      }
-
-      catch(error) {
-
-
-        console.error(
-          "Order Error:",
-          error
-        );
-
-
-        showMessage(
-          "حصل خطأ أثناء تسجيل الطلب ❌"
-        );
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       LOCATION
-    ===================================================== */
-
-    function setLocation() {
-
+    function saveLocation() {
 
       const input =
-        document.getElementById(
-          "locationInput"
-        );
-
+        document.getElementById("locationInput");
 
       const msg =
-        document.getElementById(
-          "locationMsg"
-        );
-
-
-      if(!input) {
-        return;
-      }
-
+        document.getElementById("locationMsg");
 
       const value =
         input.value.trim();
 
 
-      if(!value) {
+      if (!value) {
 
-
-        if(msg) {
-
-          msg.textContent =
-            "اكتب عنوان التوصيل أولاً.";
-
-        }
-
+        msg.textContent =
+          "اكتب عنوان التوصيل أولاً 📍";
 
         return;
 
@@ -2465,326 +793,27 @@
       );
 
 
-      if(msg) {
-
-        msg.textContent =
-          "تم حفظ عنوان التوصيل ✅";
-
-      }
-
-
-      showMessage(
-        "تم حفظ عنوان التوصيل 📍"
-      );
+      msg.textContent =
+        "تم حفظ عنوان التوصيل ✅";
 
     }
 
 
-
-    function loadLocation() {
-
-
-      const saved =
-        localStorage.getItem(
-          "deliveryLocation"
-        );
-
-
-      const input =
-        document.getElementById(
-          "locationInput"
-        );
-
-
-      if(
-        saved &&
-        input
-      ) {
-
-        input.value =
-          saved;
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       TRACK ORDER
-    ===================================================== */
-
-    async function trackOrder() {
-
-
-      const input =
-        document.getElementById(
-          "orderNumber"
-        );
-
-
-      const msg =
-        document.getElementById(
-          "trackMsg"
-        );
-
-
-      if(!input || !msg) {
-        return;
-      }
-
-
-      const id =
-        input.value.trim();
-
-
-      if(!id) {
-
-        msg.textContent =
-          "اكتب رقم الطلب.";
-
-        return;
-
-      }
-
-
-      if(!firebaseReady) {
-
-        msg.textContent =
-          "Firebase غير متصل.";
-
-        return;
-
-      }
-
-
-      try {
-
-
-        const orderRef =
-          doc(
-            db,
-            "orders",
-            id
-          );
-
-
-        const snapshot =
-          await getDoc(
-            orderRef
-          );
-
-
-        if(!snapshot.exists()) {
-
-          msg.textContent =
-            "لم يتم العثور على الطلب.";
-
-          return;
-
-        }
-
-
-        const order =
-          snapshot.data();
-
-
-        msg.innerHTML = `
-
-          <strong>
-            حالة الطلب:
-            ${escapeHTML(
-              order.status ||
-              "جديد"
-            )}
-          </strong>
-
-          <br>
-
-          الإجمالي:
-          ${Number(
-            order.total || 0
-          )}
-          جنيه
-
-        `;
-
-      }
-
-      catch(error) {
-
-
-        console.error(
-          "Tracking Error:",
-          error
-        );
-
-
-        msg.textContent =
-          "حدث خطأ أثناء تتبع الطلب.";
-
-      }
-
-    }
-
-
-
-    /* =====================================================
-       LOGIN
-    ===================================================== */
-
-    function goToLogin() {
-
-      /*
-        لما نعمل صفحة تسجيل الدخول
-        هنغير السطر ده إلى:
-
-        window.location.href =
-          "login.html";
-      */
-
-      showMessage(
-        "صفحة تسجيل الدخول هنجهزها في الخطوة الجاية 👤"
-      );
-
-    }
-
-
-
-    /* =====================================================
-       MESSAGE
-    ===================================================== */
-
-    function showMessage(
-      text
-    ) {
-
-
-      const old =
-        document.getElementById(
-          "cartMessage"
-        );
-
-
-      if(old) {
-
-        old.remove();
-
-      }
-
-
-      const message =
-        document.createElement(
-          "div"
-        );
-
-
-      message.id =
-        "cartMessage";
-
-
-      message.textContent =
-        text;
-
-
-      document.body.appendChild(
-        message
+    /* تحميل العنوان المحفوظ */
+
+    const savedLocation =
+      localStorage.getItem(
+        "deliveryLocation"
       );
 
 
-      setTimeout(
-        () => {
+    if (savedLocation) {
 
-          if(message) {
-
-            message.remove();
-
-          }
-
-        },
-        3000
-      );
+      document.getElementById(
+        "locationInput"
+      ).value = savedLocation;
 
     }
-
-
-
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
-
-    function escapeHTML(
-      value
-    ) {
-
-
-      return String(value)
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
-        );
-
-    }
-
-
-
-    /* =====================================================
-       GLOBAL FUNCTIONS
-    ===================================================== */
-
-    window.addToCart =
-      addToCart;
-
-    window.openCart =
-      openCart;
-
-    window.closeCart =
-      closeCart;
-
-    window.removeFromCart =
-      removeFromCart;
-
-    window.checkout =
-      checkout;
-
-    window.setLocation =
-      setLocation;
-
-    window.trackOrder =
-      trackOrder;
-
-    window.showMessage =
-      showMessage;
-
-    window.goToLogin =
-      goToLogin;
-
-
-
-    /* =====================================================
-       START
-    ===================================================== */
-
-    loadLocation();
-
-    updateCartCount();
-
 
   </script>
 
