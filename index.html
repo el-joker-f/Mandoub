@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <title>مندوب | توصيل سريع وآمن</title>
 
@@ -20,23 +22,38 @@
   </a>
 
   <nav>
-    <a class="active" href="#">الرئيسية</a>
-    <a href="#restaurants">المطاعم</a>
-    <a href="#offers">العروض</a>
-    <a href="#track">تتبع</a>
-    <a href="#about">عن مندوب</a>
-    <a href="#contact">تواصل</a>
+
+    <a class="active" href="#">
+      الرئيسية
+    </a>
+
+    <a href="#restaurants">
+      المطاعم
+    </a>
+
+    <a href="#track">
+      تتبع
+    </a>
+
+    <a href="#contact">
+      تواصل
+    </a>
+
   </nav>
 
   <div class="nav-actions">
 
+    <!-- تسجيل الدخول -->
     <button
       type="button"
       class="login"
       onclick="openLogin()">
+
       تسجيل الدخول
+
     </button>
 
+    <!-- السلة -->
     <button
       type="button"
       class="cart"
@@ -45,7 +62,9 @@
 
       🛒
 
-      <span id="cartCount">0</span>
+      <span id="cartCount">
+        0
+      </span>
 
     </button>
 
@@ -67,20 +86,32 @@
       </p>
 
       <h1>
+
         اطلب من مطعمك المفضل
+
         <br>
-        <span>ونوصلك بسرعة وأمان</span>
+
+        <span>
+          ونوصلك بسرعة وأمان
+        </span>
+
       </h1>
 
       <p class="hero-text">
+
         اطلب أكلك، مشترياتك أو احتياجاتك اليومية
         من أفضل المطاعم والمحلات.
+
       </p>
 
 
+      <!-- LOCATION -->
+
       <div class="location-box">
 
-        <span>📍</span>
+        <span>
+          📍
+        </span>
 
         <input
           type="text"
@@ -90,10 +121,13 @@
         <button
           type="button"
           onclick="setLocation()">
+
           تحديد موقعي
+
         </button>
 
       </div>
+
 
       <p
         id="locationMsg"
@@ -101,30 +135,66 @@
       </p>
 
 
+      <!-- BENEFITS -->
+
       <div class="benefits">
 
         <div>
-          <b>🛡️</b>
-          <strong>آمن وموثوق</strong>
-          <small>خدمة مضمونة</small>
+
+          <b>
+            🛡️
+          </b>
+
+          <strong>
+            آمن وموثوق
+          </strong>
+
+          <small>
+            خدمة مضمونة
+          </small>
+
         </div>
 
-        <div>
-          <b>🛵</b>
-          <strong>توصيل سريع</strong>
-          <small>في أسرع وقت</small>
-        </div>
 
         <div>
-          <b>🎧</b>
-          <strong>دعم العملاء</strong>
-          <small>متاح لمساعدتك</small>
+
+          <b>
+            🛵
+          </b>
+
+          <strong>
+            توصيل سريع
+          </strong>
+
+          <small>
+            في أسرع وقت
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <b>
+            🎧
+          </b>
+
+          <strong>
+            دعم العملاء
+          </strong>
+
+          <small>
+            متاح لمساعدتك
+          </small>
+
         </div>
 
       </div>
 
     </div>
 
+
+    <!-- HERO IMAGE -->
 
     <div class="hero-art">
 
@@ -158,10 +228,10 @@
 
 
     <!--
-      مهم:
-      مفيش أي مطاعم ثابتة هنا.
-      JavaScript هيجيب المطاعم من Firebase
-      اللي اتضافت من صفحة الأدمن.
+      لا توجد مطاعم ثابتة هنا.
+
+      المطاعم يتم تحميلها من Firebase
+      ويتم إضافتها من صفحة الأدمن.
     -->
 
     <div
@@ -227,9 +297,11 @@
       </h2>
 
       <p>
+
         مندوب هي خدمة توصيل تساعدك في طلب الأكل
         والمشتريات والاحتياجات اليومية بسهولة
         وسرعة وأمان.
+
       </p>
 
     </div>
@@ -304,16 +376,20 @@
 </footer>
 
 
+<!-- ================= FIREBASE ================= -->
+
 <script type="module">
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
 import {
   getFirestore
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
 const firebaseConfig = {
@@ -347,23 +423,31 @@ try {
   const app =
     initializeApp(firebaseConfig);
 
+
   const db =
     getFirestore(app);
+
 
   window.firebaseDB =
     db;
 
+
   window.firebaseReady =
     true;
+
 
   console.log(
     "Firebase متصل بنجاح ✅"
   );
 
-} catch(error) {
+
+}
+
+catch(error) {
 
   window.firebaseReady =
     false;
+
 
   console.error(
     "Firebase Error:",
@@ -375,7 +459,11 @@ try {
 </script>
 
 
+<!-- ================= SCRIPT ================= -->
+
 <script src="script.js"></script>
 
+
 </body>
+
 </html>
