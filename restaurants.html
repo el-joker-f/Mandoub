@@ -1,268 +1,45 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!-- ================= TRACK ================= -->
 
-<head>
+<section
+  id="track"
+  class="track">
 
-  <meta charset="UTF-8">
+  <div>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <p class="eyebrow">
+      تتبع طلبك
+    </p>
 
-  <title>المطاعم | مندوب</title>
+    <h2>
+      اعرف طلبك وصل لفين
+    </h2>
 
-  <link rel="stylesheet" href="style.css">
+    <p>
+      أدخل رقم الطلب لمتابعة حالته.
+    </p>
 
-</head>
-
-
-<body>
-
-
-<!-- ================= NAVBAR ================= -->
-
-<header class="navbar">
-
-  <a
-    class="brand"
-    href="index.html">
-
-    <img
-      src="assets/logo.png"
-      alt="مندوب">
-
-  </a>
+  </div>
 
 
-  <nav>
+  <div class="track-form">
 
-    <a href="index.html">
-      الرئيسية
-    </a>
-
-    <a
-      class="active"
-      href="restaurants.html">
-      المطاعم
-    </a>
-
-    <a href="index.html#track">
-      تتبع
-    </a>
-
-  </nav>
-
-
-  <div class="nav-actions">
-
-    <button
-      type="button"
-      class="login"
-      onclick="openLogin()">
-
-      تسجيل الدخول
-
-    </button>
+    <input
+      type="text"
+      id="orderNumber"
+      placeholder="رقم الطلب">
 
 
     <button
       type="button"
-      class="cart"
-      id="cartButton"
-      onclick="openCart()">
+      onclick="trackOrder()">
 
-      🛒
-
-      <span id="cartCount">
-        0
-      </span>
+      تتبع الطلب
 
     </button>
 
   </div>
 
-</header>
 
+  <p id="trackMsg"></p>
 
-
-<!-- ================= MAIN ================= -->
-
-<main>
-
-
-  <!-- ================= RESTAURANTS ================= -->
-
-  <section class="section">
-
-
-    <div class="section-head">
-
-      <h2>
-        المطاعم
-      </h2>
-
-
-      <a href="index.html">
-        ← الرئيسية
-      </a>
-
-    </div>
-
-
-    <div
-      id="restaurantsContainer"
-      class="cards">
-
-      <div
-        id="restaurantsLoading"
-        class="restaurants-message">
-
-        ⏳ جاري تحميل المطاعم...
-
-      </div>
-
-    </div>
-
-
-  </section>
-
-
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer id="contact">
-
-  <img
-    src="assets/logo.png"
-    alt="مندوب">
-
-
-  <p>
-    نوصل طلبك.. بسرعة وأمان
-  </p>
-
-
-  <small>
-    © 2026 مندوب — جميع الحقوق محفوظة
-  </small>
-
-</footer>
-
-
-
-<!-- ================= FIREBASE ================= -->
-
-<script type="module">
-
-import {
-  initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp,
-  doc,
-  getDoc
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-  authDomain:
-    "mandoub-dv.firebaseapp.com",
-
-  projectId:
-    "mandoub-dv",
-
-  storageBucket:
-    "mandoub-dv.firebasestorage.app",
-
-  messagingSenderId:
-    "311140400335",
-
-  appId:
-    "1:311140400335:web:db198b7c53259c53594bba",
-
-  measurementId:
-    "G-7V1LJQYYXD"
-
-};
-
-
-try {
-
-  const app =
-    initializeApp(firebaseConfig);
-
-
-  const db =
-    getFirestore(app);
-
-
-  window.firebaseDB =
-    db;
-
-
-  window.firebaseCollection =
-    collection;
-
-
-  window.firebaseAddDoc =
-    addDoc;
-
-
-  window.firebaseServerTimestamp =
-    serverTimestamp;
-
-
-  window.firebaseDoc =
-    doc;
-
-
-  window.firebaseGetDoc =
-    getDoc;
-
-
-  window.firebaseReady =
-    true;
-
-
-  console.log(
-    "Firebase متصل بنجاح ✅"
-  );
-
-
-} catch (error) {
-
-  window.firebaseReady =
-    false;
-
-
-  console.error(
-    "Firebase Error:",
-    error
-  );
-
-}
-
-</script>
-
-
-
-<!-- ================= MAIN SCRIPT ================= -->
-
-<script src="script.js"></script>
-
-
-</body>
-
-</html>
+</section>
