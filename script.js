@@ -1,89 +1,70 @@
 /* =====================================================
    MANDOUB - SCRIPT.JS
-   Firebase + Cart + Location + Tracking
+   السلة + الموقع + المطاعم من Firebase + الطلبات
 ===================================================== */
 
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  serverTimestamp,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
-
-  authDomain:
-    "mandoub-dv.firebaseapp.com",
-
-  projectId:
-    "mandoub-dv",
-
-  storageBucket:
-    "mandoub-dv.firebasestorage.app",
-
-  messagingSenderId:
-    "311140400335",
-
-  appId:
-    "1:311140400335:web:db198b7c53259c53594bba",
-
-  measurementId:
-    "G-7V1LJQYYXD"
-
-};
-
-
-let db = null;
-let firebaseReady = false;
-
-
-try {
-
-  const app =
-    initializeApp(firebaseConfig);
-
-  db =
-    getFirestore(app);
-
-  firebaseReady = true;
-
-  console.log(
-    "Firebase متصل بنجاح ✅"
-  );
-
-} catch (error) {
-
-  console.error(
-    "Firebase Error:",
-    error
-  );
-
-  firebaseReady = false;
-
-}
-
-
-/* =====================================================
-   CART
-===================================================== */
 
 let cart = [];
 
 let selectedLocation = "";
+
+let firebaseReady = false;
+
+
+/* =====================================================
+   FIREBASE WAIT
+===================================================== */
+
+function waitForFirebase() {
+
+  return new Promise((resolve) => {
+
+    if (window.firebaseReady === true) {
+
+      firebaseReady = true;
+
+      resolve(true);
+
+      return;
+    }
+
+
+    let tries = 0;
+
+
+    const timer =
+      setInterval(() => {
+
+        tries++;
+
+
+        if (window.firebaseReady === true) {
+
+          clearInterval(timer);
+
+          firebaseReady = true;
+
+          resolve(true);
+
+          return;
+        }
+
+
+        if (tries >= 50) {
+
+          clearInterval(timer);
+
+          firebaseReady = false;
+
+          resolve(false);
+
+        }
+
+      }, 100);
+
+  });
+
+}
 
 
 /* =====================================================
@@ -93,60 +74,86 @@ let selectedLocation = "";
 function showMessage(message) {
 
   const old =
-    document.getElementById("siteMessage");
+    document.getElementById(
+      "siteMessage"
+    );
+
 
   if (old) {
+
     old.remove();
+
   }
 
+
   const box =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   box.id =
     "siteMessage";
 
+
   box.textContent =
     message;
 
-  Object.assign(box.style, {
 
-    position: "fixed",
+  box.style.position =
+    "fixed";
 
-    left: "50%",
+  box.style.left =
+    "50%";
 
-    bottom: "25px",
+  box.style.bottom =
+    "25px";
 
-    transform: "translateX(-50%)",
+  box.style.transform =
+    "translateX(-50%)";
 
-    zIndex: "100000",
+  box.style.zIndex =
+    "999999";
 
-    width: "calc(100% - 30px)",
+  box.style.width =
+    "calc(100% - 30px)";
 
-    maxWidth: "430px",
+  box.style.maxWidth =
+    "430px";
 
-    padding: "15px 18px",
+  box.style.padding =
+    "15px 18px";
 
-    borderRadius: "15px",
+  box.style.borderRadius =
+    "15px";
 
-    background: "#00dfff",
+  box.style.background =
+    "#00dfff";
 
-    color: "#00121d",
+  box.style.color =
+    "#00121d";
 
-    fontWeight: "900",
+  box.style.fontWeight =
+    "900";
 
-    textAlign: "center",
+  box.style.textAlign =
+    "center";
 
-    boxShadow:
-      "0 10px 35px rgba(0,0,0,.35)"
+  box.style.boxShadow =
+    "0 10px 35px rgba(0,0,0,.35)";
 
-  });
 
-  document.body.appendChild(box);
+  document.body.appendChild(
+    box
+  );
+
 
   setTimeout(() => {
 
     if (box) {
+
       box.remove();
+
     }
 
   }, 3000);
@@ -165,10 +172,19 @@ function setLocation() {
       "locationInput"
     );
 
+
   const message =
     document.getElementById(
       "locationMsg"
     );
+
+
+  if (!input || !message) {
+
+    return;
+
+  }
+
 
   if (!navigator.geolocation) {
 
@@ -179,27 +195,34 @@ function setLocation() {
 
   }
 
+
   message.textContent =
     "📍 جاري تحديد موقعك...";
 
+
   navigator.geolocation.getCurrentPosition(
 
-    async (position) => {
+    async function(position) {
 
       const latitude =
         position.coords.latitude;
 
+
       const longitude =
         position.coords.longitude;
+
 
       selectedLocation =
         `${latitude}, ${longitude}`;
 
+
       input.value =
         "تم تحديد موقعك 📍";
 
+
       message.textContent =
         "✅ تم تحديد موقعك بنجاح";
+
 
       localStorage.setItem(
         "mandoub_location",
@@ -214,19 +237,23 @@ function setLocation() {
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`
           );
 
+
         const data =
           await response.json();
+
 
         if (
           data &&
           data.display_name
         ) {
 
+          input.value =
+            data.display_name;
+
+
           selectedLocation =
             data.display_name;
 
-          input.value =
-            data.display_name;
 
           localStorage.setItem(
             "mandoub_location",
@@ -235,10 +262,10 @@ function setLocation() {
 
         }
 
-      } catch (error) {
+      } catch(error) {
 
         console.log(
-          "تعذر الحصول على اسم العنوان",
+          "لم يتم جلب اسم العنوان",
           error
         );
 
@@ -246,29 +273,37 @@ function setLocation() {
 
     },
 
-    (error) => {
+
+    function(error) {
 
       console.error(
         "Location Error:",
         error
       );
 
+
       if (error.code === 1) {
 
         message.textContent =
-          "❌ اسمح للموقع بالوصول إلى موقعك";
+          "❌ لازم تسمح للموقع بالوصول إلى موقعك";
 
-      } else if (error.code === 2) {
+      }
+
+      else if (error.code === 2) {
 
         message.textContent =
           "❌ تعذر تحديد موقعك";
 
-      } else if (error.code === 3) {
+      }
+
+      else if (error.code === 3) {
 
         message.textContent =
-          "❌ انتهى وقت تحديد الموقع";
+          "❌ انتهى وقت تحديد الموقع، حاول مرة أخرى";
 
-      } else {
+      }
+
+      else {
 
         message.textContent =
           "❌ حدث خطأ أثناء تحديد الموقع";
@@ -276,6 +311,7 @@ function setLocation() {
       }
 
     },
+
 
     {
       enableHighAccuracy: true,
@@ -289,38 +325,430 @@ function setLocation() {
 
 
 /* =====================================================
-   ADD TO CART
+   LOAD SAVED LOCATION
 ===================================================== */
 
-function addToCart(name, price) {
+function loadSavedLocation() {
+
+  const saved =
+    localStorage.getItem(
+      "mandoub_location"
+    );
+
+
+  if (!saved) {
+
+    return;
+
+  }
+
+
+  selectedLocation =
+    saved;
+
+
+  const input =
+    document.getElementById(
+      "locationInput"
+    );
+
+
+  if (input) {
+
+    input.value =
+      saved;
+
+  }
+
+}
+
+
+/* =====================================================
+   GET RESTAURANTS FROM FIREBASE
+===================================================== */
+
+async function loadRestaurants() {
+
+  const container =
+    document.getElementById(
+      "restaurantsContainer"
+    );
+
+
+  if (!container) {
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="restaurants-message">
+
+      ⏳ جاري تحميل المطاعم...
+
+    </div>
+
+  `;
+
+
+  const ready =
+    await waitForFirebase();
+
+
+  if (!ready) {
+
+    container.innerHTML = `
+
+      <div class="restaurants-message">
+
+        ❌ Firebase غير متصل
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  try {
+
+    const {
+      collection,
+      getDocs
+    } = await import(
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+    );
+
+
+    /*
+      اسم المجموعة:
+      restaurants
+
+      صفحة الأدمن تضيف المطاعم داخلها.
+    */
+
+    const restaurantsRef =
+      collection(
+        window.firebaseDB,
+        "restaurants"
+      );
+
+
+    const snapshot =
+      await getDocs(
+        restaurantsRef
+      );
+
+
+    if (snapshot.empty) {
+
+      container.innerHTML = `
+
+        <div class="restaurants-message">
+
+          🍽️ لا توجد مطاعم حاليًا
+
+          <br>
+
+          <small>
+            سيتم عرض المطاعم هنا عند إضافتها من صفحة الأدمن.
+          </small>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    let count = 0;
+
+
+    snapshot.forEach(
+      (docSnapshot) => {
+
+        const restaurant =
+          docSnapshot.data();
+
+
+        /*
+          دعم أكثر من اسم للحقل
+          عشان نقدر نتعامل مع بيانات الأدمن
+        */
+
+        const name =
+          restaurant.name ||
+          restaurant.title ||
+          restaurant.restaurantName ||
+          "مطعم";
+
+
+        const category =
+          restaurant.category ||
+          restaurant.type ||
+          "مطاعم";
+
+
+        const price =
+          Number(
+            restaurant.price ||
+            restaurant.deliveryPrice ||
+            0
+          );
+
+
+        const rating =
+          restaurant.rating ||
+          "جديد";
+
+
+        const image =
+          restaurant.image ||
+          restaurant.imageUrl ||
+          restaurant.photo ||
+          "";
+
+
+        const id =
+          docSnapshot.id;
+
+
+        const card =
+          document.createElement(
+            "article"
+          );
+
+
+        card.className =
+          "restaurant";
+
+
+        const imageHTML =
+          image
+
+          ? `
+
+            <div
+              class="food"
+              style="
+                padding:0;
+                overflow:hidden;
+              ">
+
+              <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(name)}"
+                style="
+                  width:100%;
+                  height:100%;
+                  object-fit:cover;
+                  display:block;
+                "
+                onerror="
+                  this.parentElement.innerHTML='🍽️';
+                  this.parentElement.style.fontSize='65px';
+                "
+              >
+
+            </div>
+
+          `
+
+          : `
+
+            <div class="food">
+              🍽️
+            </div>
+
+          `;
+
+
+        card.innerHTML = `
+
+          ${imageHTML}
+
+          <div class="card-body">
+
+            <h3>
+              ${escapeHTML(name)}
+            </h3>
+
+
+            <p>
+              ${escapeHTML(category)}
+            </p>
+
+
+            <div class="restaurant-info">
+
+              <span>
+                ⭐ ${escapeHTML(rating)}
+              </span>
+
+              <span>
+                ${
+                  price > 0
+                    ? `توصيل من ${price}ج`
+                    : "التوصيل حسب الطلب"
+                }
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              onclick="addRestaurantToCart(
+                '${escapeJS(name)}',
+                ${price},
+                '${escapeJS(id)}'
+              )">
+
+              اطلب الآن
+
+            </button>
+
+          </div>
+
+        `;
+
+
+        container.appendChild(
+          card
+        );
+
+
+        count++;
+
+      }
+    );
+
+
+    if (count === 0) {
+
+      container.innerHTML = `
+
+        <div class="restaurants-message">
+
+          🍽️ لا توجد مطاعم حاليًا
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "LOAD RESTAURANTS ERROR:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="restaurants-message">
+
+        ❌ تعذر تحميل المطاعم
+
+        <br>
+
+        <small>
+          حاول تحديث الصفحة.
+        </small>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   ADD RESTAURANT TO CART
+===================================================== */
+
+function addRestaurantToCart(
+  name,
+  price,
+  restaurantId
+) {
 
   const existing =
     cart.find(
-      item => item.name === name
+      item =>
+        item.name === name &&
+        item.restaurantId === restaurantId
     );
+
 
   if (existing) {
 
     existing.quantity++;
 
-  } else {
+  }
+
+  else {
 
     cart.push({
 
-      name,
+      name:
+        name,
 
-      price: Number(price),
+      price:
+        Number(price) || 0,
 
-      quantity: 1
+      quantity:
+        1,
+
+      restaurantId:
+        restaurantId
 
     });
 
   }
 
+
   updateCartCount();
+
 
   showMessage(
     `✅ تم إضافة ${name} إلى السلة`
+  );
+
+
+  openCart();
+
+}
+
+
+/* =====================================================
+   ADD TO CART
+===================================================== */
+
+function addToCart(
+  name,
+  price
+) {
+
+  addRestaurantToCart(
+    name,
+    price,
+    ""
   );
 
 }
@@ -332,14 +760,18 @@ function addToCart(name, price) {
 
 function updateCartCount() {
 
-  const element =
+  const countElement =
     document.getElementById(
       "cartCount"
     );
 
-  if (!element) {
+
+  if (!countElement) {
+
     return;
+
   }
+
 
   const count =
     cart.reduce(
@@ -348,7 +780,8 @@ function updateCartCount() {
       0
     );
 
-  element.textContent =
+
+  countElement.textContent =
     count;
 
 }
@@ -362,9 +795,15 @@ function getCartTotal() {
 
   return cart.reduce(
 
-    (total, item) =>
-      total +
-      item.price * item.quantity,
+    (total, item) => {
+
+      return total +
+        (
+          item.price *
+          item.quantity
+        );
+
+    },
 
     0
 
@@ -384,9 +823,11 @@ function openCart() {
       "cartModal"
     );
 
+
   if (!modal) {
 
     createCartModal();
+
 
     modal =
       document.getElementById(
@@ -395,8 +836,10 @@ function openCart() {
 
   }
 
+
   modal.style.display =
     "block";
+
 
   renderCart();
 
@@ -404,16 +847,20 @@ function openCart() {
 
 
 /* =====================================================
-   CREATE CART
+   CREATE CART MODAL
 ===================================================== */
 
 function createCartModal() {
 
   const modal =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   modal.id =
     "cartModal";
+
 
   modal.innerHTML = `
 
@@ -422,6 +869,7 @@ function createCartModal() {
       onclick="closeCart()">
     </div>
 
+
     <div class="cart-box">
 
       <div class="cart-header">
@@ -429,6 +877,7 @@ function createCartModal() {
         <h2>
           🛒 سلة الطلبات
         </h2>
+
 
         <button
           type="button"
@@ -440,15 +889,18 @@ function createCartModal() {
 
       </div>
 
+
       <div
         id="cartItems"
         class="cart-items">
       </div>
 
+
       <div
         id="cartTotal"
         class="cart-total">
       </div>
+
 
       <button
         id="checkoutButton"
@@ -460,18 +912,15 @@ function createCartModal() {
 
       </button>
 
+
       <p
-        id="cartMessage"
-        style="
-          margin-top:12px;
-          color:#00dfff;
-          text-align:center;
-        ">
+        id="cartMessage">
       </p>
 
     </div>
 
   `;
+
 
   document.body.appendChild(
     modal
@@ -490,6 +939,7 @@ function closeCart() {
     document.getElementById(
       "cartModal"
     );
+
 
   if (modal) {
 
@@ -512,13 +962,17 @@ function renderCart() {
       "cartItems"
     );
 
-  const totalElement =
+
+  const total =
     document.getElementById(
       "cartTotal"
     );
 
-  if (!container || !totalElement) {
+
+  if (!container || !total) {
+
     return;
+
   }
 
 
@@ -544,26 +998,33 @@ function renderCart() {
 
     `;
 
-    totalElement.innerHTML = "";
+
+    total.innerHTML = "";
+
 
     return;
 
   }
 
 
-  container.innerHTML = "";
+  container.innerHTML =
+    "";
 
 
   cart.forEach(
-    (item, index) => {
+    (item,index) => {
 
-      const element =
-        document.createElement("div");
+      const itemElement =
+        document.createElement(
+          "div"
+        );
 
-      element.className =
+
+      itemElement.className =
         "cart-item";
 
-      element.innerHTML = `
+
+      itemElement.innerHTML = `
 
         <div>
 
@@ -577,6 +1038,7 @@ function renderCart() {
 
         </div>
 
+
         <div
           style="
             display:flex;
@@ -584,25 +1046,41 @@ function renderCart() {
             gap:6px;
           ">
 
+
           <button
             type="button"
+            style="
+              background:#00dfff;
+              color:#00121d;
+              padding:7px 10px;
+              border-radius:8px;
+            "
             onclick="increaseItem(${index})">
 
             +
 
           </button>
 
+
           <strong>
             ${item.quantity}
           </strong>
 
+
           <button
             type="button"
+            style="
+              background:#173b55;
+              color:#fff;
+              padding:7px 10px;
+              border-radius:8px;
+            "
             onclick="decreaseItem(${index})">
 
             −
 
           </button>
+
 
           <button
             type="button"
@@ -616,22 +1094,27 @@ function renderCart() {
 
       `;
 
+
       container.appendChild(
-        element
+        itemElement
       );
 
     }
   );
 
 
-  totalElement.innerHTML = `
+  const cartTotal =
+    getCartTotal();
+
+
+  total.innerHTML = `
 
     <span>
       الإجمالي
     </span>
 
     <strong>
-      ${getCartTotal()} جنيه
+      ${cartTotal} جنيه
     </strong>
 
   `;
@@ -640,56 +1123,86 @@ function renderCart() {
 
 
 /* =====================================================
-   QUANTITY
+   INCREASE ITEM
 ===================================================== */
 
 function increaseItem(index) {
 
   if (!cart[index]) {
+
     return;
+
   }
+
 
   cart[index].quantity++;
 
+
   updateCartCount();
+
 
   renderCart();
 
 }
 
 
+/* =====================================================
+   DECREASE ITEM
+===================================================== */
+
 function decreaseItem(index) {
 
   if (!cart[index]) {
+
     return;
+
   }
 
+
   cart[index].quantity--;
+
 
   if (
     cart[index].quantity <= 0
   ) {
 
-    cart.splice(index, 1);
+    cart.splice(
+      index,
+      1
+    );
 
   }
 
+
   updateCartCount();
+
 
   renderCart();
 
 }
 
 
+/* =====================================================
+   REMOVE ITEM
+===================================================== */
+
 function removeItem(index) {
 
   if (!cart[index]) {
+
     return;
+
   }
 
-  cart.splice(index, 1);
+
+  cart.splice(
+    index,
+    1
+  );
+
 
   updateCartCount();
+
 
   renderCart();
 
@@ -707,44 +1220,82 @@ async function submitOrder() {
       "cartMessage"
     );
 
+
   if (cart.length === 0) {
 
-    message.textContent =
-      "❌ السلة فارغة";
+    if (message) {
+
+      message.textContent =
+        "❌ السلة فارغة";
+
+    }
 
     return;
 
   }
+
 
   if (!selectedLocation) {
 
-    message.textContent =
-      "📍 حدد موقع التوصيل أولاً";
+    if (message) {
+
+      message.textContent =
+        "📍 حدد موقع التوصيل أولاً";
+
+    }
+
 
     closeCart();
 
-    document
-      .getElementById("locationInput")
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
+
+    const locationInput =
+      document.getElementById(
+        "locationInput"
+      );
+
+
+    if (locationInput) {
+
+      locationInput.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
       });
 
+
+      locationInput.focus();
+
+    }
+
+
     return;
 
   }
 
-  if (!firebaseReady || !db) {
+
+  if (message) {
 
     message.textContent =
-      "❌ Firebase غير متصل";
+      "⏳ جاري إرسال الطلب...";
+
+  }
+
+
+  const ready =
+    await waitForFirebase();
+
+
+  if (!ready) {
+
+    if (message) {
+
+      message.textContent =
+        "❌ Firebase غير متصل";
+
+    }
 
     return;
 
   }
-
-  message.textContent =
-    "⏳ جاري إرسال الطلب...";
 
 
   try {
@@ -752,52 +1303,88 @@ async function submitOrder() {
     const orderData = {
 
       items:
-        cart.map(item => ({
+        cart.map(
+          item => ({
 
-          name:
-            item.name,
+            name:
+              item.name,
 
-          price:
-            item.price,
+            price:
+              item.price,
 
-          quantity:
-            item.quantity
+            quantity:
+              item.quantity,
 
-        })),
+            restaurantId:
+              item.restaurantId || ""
+
+          })
+        ),
+
 
       total:
         getCartTotal(),
 
+
       location:
         selectedLocation,
+
 
       status:
         "جديد",
 
+
       createdAt:
-        serverTimestamp()
+        new Date()
 
     };
 
 
-    const reference =
+    const {
+      collection,
+      addDoc,
+      serverTimestamp
+    } = await import(
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+    );
+
+
+    orderData.createdAt =
+      serverTimestamp();
+
+
+    const orders =
+      collection(
+        window.firebaseDB,
+        "orders"
+      );
+
+
+    const result =
       await addDoc(
-        collection(
-          db,
-          "orders"
-        ),
+        orders,
         orderData
       );
 
 
     localStorage.setItem(
       "lastOrderId",
-      reference.id
+      result.id
     );
 
 
-    message.textContent =
-      "✅ تم إرسال طلبك بنجاح";
+    if (message) {
+
+      message.textContent =
+        "✅ تم إرسال طلبك بنجاح";
+
+    }
+
+
+    showMessage(
+      "✅ تم إرسال الطلب بنجاح — رقم الطلب: " +
+      result.id
+    );
 
 
     const orderNumber =
@@ -805,40 +1392,50 @@ async function submitOrder() {
         "orderNumber"
       );
 
+
     if (orderNumber) {
 
       orderNumber.value =
-        reference.id;
+        result.id;
 
     }
 
 
     cart = [];
 
+
     updateCartCount();
+
 
     renderCart();
 
-    showMessage(
-      `✅ تم إرسال الطلب — رقم الطلب: ${reference.id}`
-    );
-
 
     setTimeout(
-      closeCart,
+      () => {
+
+        closeCart();
+
+      },
       1800
     );
 
+  }
 
-  } catch (error) {
+
+  catch(error) {
 
     console.error(
       "ORDER ERROR:",
       error
     );
 
-    message.textContent =
-      "❌ حصل خطأ أثناء إرسال الطلب";
+
+    if (message) {
+
+      message.textContent =
+        "❌ حصل خطأ أثناء إرسال الطلب";
+
+    }
 
   }
 
@@ -856,17 +1453,23 @@ async function trackOrder() {
       "orderNumber"
     );
 
+
   const message =
     document.getElementById(
       "trackMsg"
     );
 
+
   if (!input || !message) {
+
     return;
+
   }
+
 
   const orderNumber =
     input.value.trim();
+
 
   if (!orderNumber) {
 
@@ -877,7 +1480,16 @@ async function trackOrder() {
 
   }
 
-  if (!firebaseReady || !db) {
+
+  message.textContent =
+    "🔎 جاري البحث عن الطلب...";
+
+
+  const ready =
+    await waitForFirebase();
+
+
+  if (!ready) {
 
     message.textContent =
       "❌ Firebase غير متصل";
@@ -886,22 +1498,28 @@ async function trackOrder() {
 
   }
 
-  message.textContent =
-    "🔎 جاري البحث عن الطلب...";
-
 
   try {
 
-    const reference =
+    const {
+      doc,
+      getDoc
+    } = await import(
+      "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+    );
+
+
+    const orderRef =
       doc(
-        db,
+        window.firebaseDB,
         "orders",
         orderNumber
       );
 
+
     const snapshot =
       await getDoc(
-        reference
+        orderRef
       );
 
 
@@ -930,22 +1548,40 @@ async function trackOrder() {
 
       <br>
 
-      الإجمالي:
-      ${Number(data.total || 0)} جنيه
+      💰 الإجمالي:
+      <strong>
+        ${Number(data.total || 0)} جنيه
+      </strong>
 
     `;
 
-  } catch (error) {
+  }
+
+  catch(error) {
 
     console.error(
       "TRACK ERROR:",
       error
     );
 
+
     message.textContent =
       "❌ تعذر البحث عن الطلب";
 
   }
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function openLogin() {
+
+  showMessage(
+    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
+  );
 
 }
 
@@ -958,110 +1594,135 @@ function escapeHTML(value) {
 
   return String(value)
 
-    .replaceAll("&", "&amp;")
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
 
-    .replaceAll("<", "&lt;")
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
 
-    .replaceAll(">", "&gt;")
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
 
-    .replaceAll('"', "&quot;")
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
 
-    .replaceAll("'", "&#039;");
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
 
 /* =====================================================
-   LOGIN
+   ESCAPE JAVASCRIPT
 ===================================================== */
 
-function openLogin() {
+function escapeJS(value) {
 
-  showMessage(
-    "👤 تسجيل الدخول قريبًا"
-  );
+  return String(value)
+
+    .replaceAll(
+      "\\",
+      "\\\\"
+    )
+
+    .replaceAll(
+      "'",
+      "\\'"
+    )
+
+    .replaceAll(
+      "\n",
+      "\\n"
+    )
+
+    .replaceAll(
+      "\r",
+      "\\r"
+    );
 
 }
 
 
 /* =====================================================
-   LOAD LOCATION
-===================================================== */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const saved =
-      localStorage.getItem(
-        "mandoub_location"
-      );
-
-    if (saved) {
-
-      selectedLocation =
-        saved;
-
-      const input =
-        document.getElementById(
-          "locationInput"
-        );
-
-      if (input) {
-
-        input.value =
-          saved;
-
-      }
-
-    }
-
-    updateCartCount();
-
-  }
-);
-
-
-/* =====================================================
-   GLOBAL
+   GLOBAL FUNCTIONS
 ===================================================== */
 
 window.addToCart =
   addToCart;
 
+
+window.addRestaurantToCart =
+  addRestaurantToCart;
+
+
 window.openCart =
   openCart;
+
 
 window.closeCart =
   closeCart;
 
+
 window.setLocation =
   setLocation;
+
 
 window.submitOrder =
   submitOrder;
 
+
 window.trackOrder =
   trackOrder;
+
 
 window.showMessage =
   showMessage;
 
+
 window.increaseItem =
   increaseItem;
+
 
 window.decreaseItem =
   decreaseItem;
 
+
 window.removeItem =
   removeItem;
+
 
 window.openLogin =
   openLogin;
 
 
+/* =====================================================
+   START
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async function() {
+
+    loadSavedLocation();
+
+    updateCartCount();
+
+    await loadRestaurants();
+
+  }
+);
+
+
 console.log(
-  firebaseReady
-    ? "Mandoub + Firebase Ready ✅"
-    : "Mandoub Loaded — Firebase Error ❌"
+  "Mandoub Script Loaded ✅"
 );
