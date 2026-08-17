@@ -1,54 +1,36 @@
-// =====================================================
-// مندوب - script.js
-// =====================================================
-
-
 // ================= السلة =================
 
 let cart = [];
 
 
-// ================= إضافة للسلة =================
+// ================= تحديث رقم السلة =================
 
-function addToCart(productName, price) {
+function updateCartCount() {
 
-  cart.push({
+  const count =
+    document.getElementById("cartCount");
 
-    name: productName,
-
-    price: Number(price)
-
-  });
-
-
-  updateCartCount();
-
-
-  showMessage(
-    "تمت إضافة " +
-    productName +
-    " إلى السلة 🛒"
-  );
+  if (count) {
+    count.textContent = cart.length;
+  }
 
 }
 
 
-// ================= تحديث السلة =================
+// ================= إضافة للسلة =================
 
-function updateCartCount() {
+function addToCart(name, price) {
 
-  const cartCount =
-    document.getElementById(
-      "cartCount"
-    );
+  cart.push({
+    name: name,
+    price: Number(price)
+  });
 
+  updateCartCount();
 
-  if (cartCount) {
-
-    cartCount.textContent =
-      cart.length;
-
-  }
+  showMessage(
+    "تمت إضافة " + name + " إلى السلة 🛒"
+  );
 
 }
 
@@ -57,39 +39,29 @@ function updateCartCount() {
 
 function openCart() {
 
-  const oldModal =
-    document.getElementById(
-      "cartModal"
-    );
+  const old =
+    document.getElementById("cartModal");
 
-
-  if (oldModal) {
-
-    oldModal.remove();
-
+  if (old) {
+    old.remove();
   }
 
 
   const modal =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
+
+  modal.id = "cartModal";
 
 
-  modal.id =
-    "cartModal";
-
-
-  let itemsHTML = "";
+  let items = "";
 
 
   if (cart.length === 0) {
 
-    itemsHTML = `
-
+    items = `
       <div class="empty-cart">
 
-        <div style="font-size:50px;">
+        <div style="font-size:50px">
           🛒
         </div>
 
@@ -98,63 +70,49 @@ function openCart() {
         </h3>
 
         <p>
-          أضف منتجًا من المطاعم أولًا.
+          أضف منتجًا أولًا.
         </p>
 
       </div>
-
     `;
 
-  }
+  } else {
 
-  else {
+    cart.forEach((item, index) => {
 
-    cart.forEach(
-      function(item, index) {
+      items += `
+        <div class="cart-item">
 
-        itemsHTML += `
+          <div>
+            <strong>
+              ${item.name}
+            </strong>
 
-          <div class="cart-item">
-
-            <div>
-
-              <strong>
-                ${item.name}
-              </strong>
-
-              <p>
-                ${item.price} جنيه
-              </p>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="removeFromCart(${index})">
-
-              حذف
-
-            </button>
-
+            <p>
+              ${item.price} جنيه
+            </p>
           </div>
 
-        `;
+          <button
+            type="button"
+            onclick="removeFromCart(${index})">
 
-      }
-    );
+            حذف
+
+          </button>
+
+        </div>
+      `;
+
+    });
 
   }
 
 
   const total =
     cart.reduce(
-      function(sum, item) {
-
-        return sum +
-          Number(item.price);
-
-      },
+      (sum, item) =>
+        sum + Number(item.price),
       0
     );
 
@@ -175,7 +133,6 @@ function openCart() {
           🛒 سلة الطلبات
         </h2>
 
-
         <button
           type="button"
           onclick="closeCart()">
@@ -189,7 +146,7 @@ function openCart() {
 
       <div class="cart-items">
 
-        ${itemsHTML}
+        ${items}
 
       </div>
 
@@ -197,37 +154,33 @@ function openCart() {
       ${
         cart.length > 0
         ?
-
         `
 
-          <div class="cart-total">
+        <div class="cart-total">
 
-            <span>
-              الإجمالي
-            </span>
+          <span>
+            الإجمالي
+          </span>
 
-            <strong>
-              ${total} جنيه
-            </strong>
+          <strong>
+            ${total} جنيه
+          </strong>
 
-          </div>
+        </div>
 
 
-          <button
-            type="button"
-            class="checkout-button"
-            onclick="checkout()">
+        <button
+          type="button"
+          class="checkout-button"
+          onclick="checkout()">
 
-            إتمام الطلب
+          إتمام الطلب
 
-          </button>
+        </button>
 
         `
-
         :
-
         ""
-
       }
 
     </div>
@@ -235,9 +188,7 @@ function openCart() {
   `;
 
 
-  document.body.appendChild(
-    modal
-  );
+  document.body.appendChild(modal);
 
 }
 
@@ -247,15 +198,10 @@ function openCart() {
 function closeCart() {
 
   const modal =
-    document.getElementById(
-      "cartModal"
-    );
-
+    document.getElementById("cartModal");
 
   if (modal) {
-
     modal.remove();
-
   }
 
 }
@@ -265,11 +211,7 @@ function closeCart() {
 
 function removeFromCart(index) {
 
-  cart.splice(
-    index,
-    1
-  );
-
+  cart.splice(index, 1);
 
   updateCartCount();
 
@@ -278,7 +220,55 @@ function removeFromCart(index) {
 }
 
 
-// ================= إتمام الطلب =================
+// ================= انتظار Firebase =================
+
+function waitForFirebase() {
+
+  return new Promise((resolve) => {
+
+    if (window.firebaseReady) {
+
+      resolve();
+
+      return;
+
+    }
+
+
+    let attempts = 0;
+
+
+    const timer =
+      setInterval(() => {
+
+        attempts++;
+
+
+        if (window.firebaseReady) {
+
+          clearInterval(timer);
+
+          resolve();
+
+        }
+
+
+        if (attempts >= 50) {
+
+          clearInterval(timer);
+
+          resolve();
+
+        }
+
+      }, 100);
+
+  });
+
+}
+
+
+// ================= تسجيل الطلب =================
 
 async function checkout() {
 
@@ -310,7 +300,7 @@ async function checkout() {
   if (!location) {
 
     showMessage(
-      "اكتب عنوان التوصيل أولاً 📍"
+      "اكتب عنوان التوصيل أولًا 📍"
     );
 
     return;
@@ -318,154 +308,140 @@ async function checkout() {
   }
 
 
-  // ================= Firebase =================
-
-  if (
-    window.firebaseReady &&
-    window.firebaseDB &&
-    window.firebaseCollection &&
-    window.firebaseAddDoc
-  ) {
-
-    try {
-
-      const total =
-        cart.reduce(
-          function(sum, item) {
-
-            return sum +
-              Number(item.price);
-
-          },
-          0
-        );
+  showMessage(
+    "جاري تسجيل الطلب..."
+  );
 
 
-      const order = {
-
-        items:
-          cart.map(
-            function(item) {
-
-              return {
-
-                name:
-                  item.name,
-
-                price:
-                  Number(item.price)
-
-              };
-
-            }
-          ),
+  await waitForFirebase();
 
 
-        total:
-          total,
+  if (!window.firebaseReady) {
 
+    showMessage(
+      "Firebase غير متصل ❌"
+    );
 
-        location:
-          location,
-
-
-        status:
-          "جديد",
-
-
-        createdAt:
-          window.firebaseServerTimestamp()
-
-      };
-
-
-      const ordersCollection =
-        window.firebaseCollection(
-          window.firebaseDB,
-          "orders"
-        );
-
-
-      const docRef =
-        await window.firebaseAddDoc(
-          ordersCollection,
-          order
-        );
-
-
-      const orderId =
-        docRef.id;
-
-
-      localStorage.setItem(
-        "lastOrderId",
-        orderId
-      );
-
-
-      localStorage.setItem(
-        "lastOrder",
-        JSON.stringify({
-          id: orderId,
-          ...order
-        })
-      );
-
-
-      cart = [];
-
-      updateCartCount();
-
-      closeCart();
-
-
-      showMessage(
-        "تم تسجيل الطلب بنجاح ✅ رقم الطلب: " +
-        orderId
-      );
-
-
-      const orderNumber =
-        document.getElementById(
-          "orderNumber"
-        );
-
-
-      if (orderNumber) {
-
-        orderNumber.value =
-          orderId;
-
-      }
-
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Firebase Error:",
-        error
-      );
-
-
-      showMessage(
-        "Firebase رفض تسجيل الطلب ❌"
-      );
-
-    }
-
+    console.error(
+      "Firebase لم يتم تحميله."
+    );
 
     return;
 
   }
 
 
-  // ================= Firebase غير متصل =================
+  try {
 
-  showMessage(
-    "Firebase غير متصل ❌"
-  );
+    const total =
+      cart.reduce(
+        (sum, item) =>
+          sum + Number(item.price),
+        0
+      );
+
+
+    const order = {
+
+      items: cart.map(item => ({
+
+        name: item.name,
+
+        price: Number(item.price)
+
+      })),
+
+      total: total,
+
+      location: location,
+
+      status: "جديد",
+
+      createdAt:
+        window.firebaseServerTimestamp()
+
+    };
+
+
+    const orders =
+      window.firebaseCollection(
+        window.firebaseDB,
+        "orders"
+      );
+
+
+    const result =
+      await window.firebaseAddDoc(
+        orders,
+        order
+      );
+
+
+    const orderId =
+      result.id;
+
+
+    localStorage.setItem(
+      "lastOrderId",
+      orderId
+    );
+
+
+    cart = [];
+
+    updateCartCount();
+
+    closeCart();
+
+
+    showMessage(
+      "تم تسجيل الطلب بنجاح ✅ رقم الطلب: " +
+      orderId
+    );
+
+
+    const orderInput =
+      document.getElementById(
+        "orderNumber"
+      );
+
+
+    if (orderInput) {
+
+      orderInput.value =
+        orderId;
+
+    }
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Firebase Error:",
+      error
+    );
+
+
+    if (
+      error.code ===
+      "permission-denied"
+    ) {
+
+      showMessage(
+        "Firestore رفض الطلب ❌"
+      );
+
+    } else {
+
+      showMessage(
+        "حصل خطأ أثناء تسجيل الطلب ❌"
+      );
+
+    }
+
+  }
 
 }
 
@@ -478,7 +454,6 @@ function setLocation() {
     document.getElementById(
       "locationInput"
     );
-
 
   const msg =
     document.getElementById(
@@ -500,7 +475,7 @@ function setLocation() {
     if (msg) {
 
       msg.textContent =
-        "اكتب عنوان التوصيل أولاً.";
+        "اكتب عنوان التوصيل أولًا.";
 
     }
 
@@ -564,7 +539,6 @@ async function trackOrder() {
       "orderNumber"
     );
 
-
   const msg =
     document.getElementById(
       "trackMsg"
@@ -590,83 +564,82 @@ async function trackOrder() {
   }
 
 
-  if (
-    window.firebaseReady &&
-    window.firebaseDB
-  ) {
-
-    try {
-
-      const firestore =
-        await import(
-          "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
-        );
+  await waitForFirebase();
 
 
-      const orderRef =
-        firestore.doc(
-          window.firebaseDB,
-          "orders",
-          number
-        );
+  if (!window.firebaseReady) {
 
+    msg.textContent =
+      "Firebase غير متصل.";
 
-      const snapshot =
-        await firestore.getDoc(
-          orderRef
-        );
-
-
-      if (
-        snapshot.exists()
-      ) {
-
-        const order =
-          snapshot.data();
-
-
-        msg.innerHTML = `
-
-          <strong>
-            حالة الطلب:
-            ${order.status || "جديد"}
-          </strong>
-
-          <br>
-
-          الإجمالي:
-          ${order.total || 0}
-          جنيه
-
-        `;
-
-
-        return;
-
-      }
-
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Track Error:",
-        error
-      );
-
-    }
+    return;
 
   }
 
 
-  msg.textContent =
-    "لم يتم العثور على الطلب.";
+  try {
+
+    const orderRef =
+      window.firebaseDoc(
+        window.firebaseDB,
+        "orders",
+        number
+      );
+
+
+    const result =
+      await window.firebaseGetDoc(
+        orderRef
+      );
+
+
+    if (!result.exists()) {
+
+      msg.textContent =
+        "لم يتم العثور على الطلب.";
+
+      return;
+
+    }
+
+
+    const order =
+      result.data();
+
+
+    msg.innerHTML = `
+
+      <strong>
+        حالة الطلب:
+        ${order.status || "جديد"}
+      </strong>
+
+      <br>
+
+      الإجمالي:
+      ${order.total || 0} جنيه
+
+    `;
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Track Error:",
+      error
+    );
+
+
+    msg.textContent =
+      "حدث خطأ أثناء تتبع الطلب.";
+
+  }
 
 }
 
 
-// ================= رسالة =================
+// ================= الرسائل =================
 
 function showMessage(text) {
 
@@ -677,9 +650,7 @@ function showMessage(text) {
 
 
   if (old) {
-
     old.remove();
-
   }
 
 
@@ -700,42 +671,32 @@ function showMessage(text) {
   message.style.position =
     "fixed";
 
-
   message.style.bottom =
     "25px";
-
 
   message.style.left =
     "50%";
 
-
   message.style.transform =
     "translateX(-50%)";
-
 
   message.style.background =
     "#00e0ff";
 
-
   message.style.color =
     "#00121d";
-
 
   message.style.padding =
     "13px 22px";
 
-
   message.style.borderRadius =
     "14px";
-
 
   message.style.fontWeight =
     "800";
 
-
   message.style.zIndex =
     "999999";
-
 
   message.style.boxShadow =
     "0 8px 30px rgba(0,0,0,.4)";
@@ -746,43 +707,29 @@ function showMessage(text) {
   );
 
 
-  setTimeout(
-    function() {
+  setTimeout(() => {
 
-      if (message) {
+    if (message) {
+      message.remove();
+    }
 
-        message.remove();
-
-      }
-
-    },
-    3000
-  );
+  }, 3000);
 
 }
 
 
-// ================= التشغيل =================
+// ================= تشغيل الموقع =================
 
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
+  () => {
 
     updateCartCount();
 
     loadSavedLocation();
 
     console.log(
-      "مندوب يعمل ✅"
-    );
-
-    console.log(
-      "Firebase:",
-      window.firebaseReady
-        ?
-        "متصل ✅"
-        :
-        "غير متصل ❌"
+      "موقع مندوب يعمل ✅"
     );
 
   }
