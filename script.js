@@ -1,14 +1,13 @@
 /* =====================================================
    MANDOUB - SCRIPT.JS
    السلة + تحديد الموقع + Firebase
-   + صفحة المطاعم المستقلة
+   + المطاعم
+   + تسجيل الدخول
+   + ربط لوحة الأدمن
 ===================================================== */
 
-
 let cart = [];
-
 let selectedLocation = "";
-
 let firebaseReady = false;
 
 
@@ -23,45 +22,40 @@ function waitForFirebase() {
     if (window.firebaseReady === true) {
 
       firebaseReady = true;
-
       resolve(true);
-
       return;
-    }
 
+    }
 
     let tries = 0;
 
+    const timer = setInterval(() => {
 
-    const timer =
-      setInterval(() => {
+      tries++;
 
-        tries++;
+      if (window.firebaseReady === true) {
 
+        clearInterval(timer);
 
-        if (window.firebaseReady === true) {
+        firebaseReady = true;
 
-          clearInterval(timer);
+        resolve(true);
 
-          firebaseReady = true;
+        return;
 
-          resolve(true);
+      }
 
-          return;
-        }
+      if (tries >= 50) {
 
+        clearInterval(timer);
 
-        if (tries >= 50) {
+        firebaseReady = false;
 
-          clearInterval(timer);
+        resolve(false);
 
-          firebaseReady = false;
+      }
 
-          resolve(false);
-
-        }
-
-      }, 100);
+    }, 100);
 
   });
 
@@ -75,73 +69,35 @@ function waitForFirebase() {
 function showMessage(message) {
 
   const old =
-    document.getElementById(
-      "siteMessage"
-    );
-
+    document.getElementById("siteMessage");
 
   if (old) {
     old.remove();
   }
 
-
   const box =
     document.createElement("div");
 
+  box.id = "siteMessage";
 
-  box.id =
-    "siteMessage";
+  box.textContent = message;
 
-
-  box.textContent =
-    message;
-
-
-  box.style.position =
-    "fixed";
-
-  box.style.left =
-    "50%";
-
-  box.style.bottom =
-    "25px";
-
-  box.style.transform =
-    "translateX(-50%)";
-
-  box.style.zIndex =
-    "99999";
-
-  box.style.width =
-    "calc(100% - 30px)";
-
-  box.style.maxWidth =
-    "430px";
-
-  box.style.padding =
-    "15px 18px";
-
-  box.style.borderRadius =
-    "15px";
-
-  box.style.background =
-    "#00dfff";
-
-  box.style.color =
-    "#00121d";
-
-  box.style.fontWeight =
-    "900";
-
-  box.style.textAlign =
-    "center";
-
-  box.style.boxShadow =
-    "0 10px 35px rgba(0,0,0,.35)";
-
+  box.style.position = "fixed";
+  box.style.left = "50%";
+  box.style.bottom = "25px";
+  box.style.transform = "translateX(-50%)";
+  box.style.zIndex = "99999";
+  box.style.width = "calc(100% - 30px)";
+  box.style.maxWidth = "430px";
+  box.style.padding = "15px 18px";
+  box.style.borderRadius = "15px";
+  box.style.background = "#00dfff";
+  box.style.color = "#00121d";
+  box.style.fontWeight = "900";
+  box.style.textAlign = "center";
+  box.style.boxShadow = "0 10px 35px rgba(0,0,0,.35)";
 
   document.body.appendChild(box);
-
 
   setTimeout(() => {
 
@@ -161,21 +117,14 @@ function showMessage(message) {
 function setLocation() {
 
   const input =
-    document.getElementById(
-      "locationInput"
-    );
-
+    document.getElementById("locationInput");
 
   const message =
-    document.getElementById(
-      "locationMsg"
-    );
-
+    document.getElementById("locationMsg");
 
   if (!input || !message) {
     return;
   }
-
 
   if (!navigator.geolocation) {
 
@@ -186,10 +135,8 @@ function setLocation() {
 
   }
 
-
   message.textContent =
     "📍 جاري تحديد موقعك...";
-
 
   navigator.geolocation.getCurrentPosition(
 
@@ -198,28 +145,22 @@ function setLocation() {
       const latitude =
         position.coords.latitude;
 
-
       const longitude =
         position.coords.longitude;
-
 
       selectedLocation =
         `${latitude}, ${longitude}`;
 
-
       input.value =
         "تم تحديد موقعك 📍";
 
-
       message.textContent =
         "✅ تم تحديد موقعك بنجاح";
-
 
       localStorage.setItem(
         "mandoub_location",
         selectedLocation
       );
-
 
       try {
 
@@ -228,16 +169,13 @@ function setLocation() {
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`,
             {
               headers: {
-                "Accept":
-                  "application/json"
+                "Accept": "application/json"
               }
             }
           );
 
-
         const data =
           await response.json();
-
 
         if (
           data &&
@@ -247,10 +185,8 @@ function setLocation() {
           input.value =
             data.display_name;
 
-
           selectedLocation =
             data.display_name;
-
 
           localStorage.setItem(
             "mandoub_location",
@@ -270,14 +206,12 @@ function setLocation() {
 
     },
 
-
     function(error) {
 
       console.error(
         "Location Error:",
         error
       );
-
 
       if (error.code === 1) {
 
@@ -309,7 +243,6 @@ function setLocation() {
 
     },
 
-
     {
       enableHighAccuracy: true,
       timeout: 15000,
@@ -334,27 +267,20 @@ document.addEventListener(
         "mandoub_location"
       );
 
-
     if (!saved) {
       return;
     }
 
-
     selectedLocation =
       saved;
-
 
     const input =
       document.getElementById(
         "locationInput"
       );
 
-
     if (input) {
-
-      input.value =
-        saved;
-
+      input.value = saved;
     }
 
   }
@@ -369,10 +295,8 @@ function addToCart(name, price) {
 
   const existing =
     cart.find(
-      item =>
-        item.name === name
+      item => item.name === name
     );
-
 
   if (existing) {
 
@@ -384,27 +308,21 @@ function addToCart(name, price) {
 
     cart.push({
 
-      name:
-        name,
+      name: name,
 
-      price:
-        Number(price) || 0,
+      price: Number(price) || 0,
 
-      quantity:
-        1
+      quantity: 1
 
     });
 
   }
 
-
   updateCartCount();
-
 
   showMessage(
     `✅ تم إضافة ${name} إلى السلة`
   );
-
 
   openCart();
 
@@ -422,11 +340,9 @@ function updateCartCount() {
       "cartCount"
     );
 
-
   if (!countElement) {
     return;
   }
-
 
   const count =
     cart.reduce(
@@ -434,7 +350,6 @@ function updateCartCount() {
         total + item.quantity,
       0
     );
-
 
   countElement.textContent =
     count;
@@ -478,11 +393,9 @@ function openCart() {
       "cartModal"
     );
 
-
   if (!modal) {
 
     createCartModal();
-
 
     modal =
       document.getElementById(
@@ -491,10 +404,8 @@ function openCart() {
 
   }
 
-
   modal.style.display =
     "block";
-
 
   renderCart();
 
@@ -510,10 +421,8 @@ function createCartModal() {
   const modal =
     document.createElement("div");
 
-
   modal.id =
     "cartModal";
-
 
   modal.innerHTML = `
 
@@ -521,7 +430,6 @@ function createCartModal() {
       class="cart-overlay"
       onclick="closeCart()">
     </div>
-
 
     <div class="cart-box">
 
@@ -541,18 +449,15 @@ function createCartModal() {
 
       </div>
 
-
       <div
         id="cartItems"
         class="cart-items">
       </div>
 
-
       <div
         id="cartTotal"
         class="cart-total">
       </div>
-
 
       <button
         id="checkoutButton"
@@ -563,7 +468,6 @@ function createCartModal() {
         إتمام الطلب
 
       </button>
-
 
       <p
         id="cartMessage"
@@ -576,7 +480,6 @@ function createCartModal() {
     </div>
 
   `;
-
 
   document.body.appendChild(
     modal
@@ -595,7 +498,6 @@ function closeCart() {
     document.getElementById(
       "cartModal"
     );
-
 
   if (modal) {
 
@@ -618,17 +520,14 @@ function renderCart() {
       "cartItems"
     );
 
-
   const total =
     document.getElementById(
       "cartTotal"
     );
 
-
   if (!container || !total) {
     return;
   }
-
 
   if (cart.length === 0) {
 
@@ -652,19 +551,15 @@ function renderCart() {
 
     `;
 
-
     total.innerHTML =
       "";
-
 
     return;
 
   }
 
-
   container.innerHTML =
     "";
-
 
   cart.forEach(
     (item, index) => {
@@ -674,10 +569,8 @@ function renderCart() {
           "div"
         );
 
-
       itemElement.className =
         "cart-item";
-
 
       itemElement.innerHTML = `
 
@@ -693,7 +586,6 @@ function renderCart() {
           </p>
 
         </div>
-
 
         <div
           style="
@@ -715,11 +607,9 @@ function renderCart() {
 
           </button>
 
-
           <strong>
             ${item.quantity}
           </strong>
-
 
           <button
             type="button"
@@ -733,7 +623,6 @@ function renderCart() {
 
           </button>
 
-
           <button
             type="button"
             onclick="removeItem(${index})">
@@ -746,7 +635,6 @@ function renderCart() {
 
       `;
 
-
       container.appendChild(
         itemElement
       );
@@ -754,10 +642,8 @@ function renderCart() {
     }
   );
 
-
   const cartTotal =
     getCartTotal();
-
 
   total.innerHTML = `
 
@@ -784,12 +670,9 @@ function increaseItem(index) {
     return;
   }
 
-
   cart[index].quantity++;
 
-
   updateCartCount();
-
 
   renderCart();
 
@@ -806,9 +689,7 @@ function decreaseItem(index) {
     return;
   }
 
-
   cart[index].quantity--;
-
 
   if (
     cart[index].quantity <= 0
@@ -818,9 +699,7 @@ function decreaseItem(index) {
 
   }
 
-
   updateCartCount();
-
 
   renderCart();
 
@@ -837,12 +716,9 @@ function removeItem(index) {
     return;
   }
 
-
   cart.splice(index, 1);
 
-
   updateCartCount();
-
 
   renderCart();
 
@@ -860,11 +736,9 @@ async function submitOrder() {
       "cartMessage"
     );
 
-
   if (!message) {
     return;
   }
-
 
   if (cart.length === 0) {
 
@@ -875,66 +749,47 @@ async function submitOrder() {
 
   }
 
-
   if (!selectedLocation) {
 
     message.textContent =
       "📍 حدد موقع التوصيل أولاً";
 
-
     closeCart();
-
 
     const locationInput =
       document.getElementById(
         "locationInput"
       );
 
-
     if (locationInput) {
 
       locationInput.scrollIntoView({
-        behavior:
-          "smooth",
-
-        block:
-          "center"
+        behavior: "smooth",
+        block: "center"
       });
-
 
       locationInput.focus();
 
     }
 
-
     return;
 
   }
 
-
   message.textContent =
     "⏳ جاري إرسال الطلب...";
 
-
   const ready =
     await waitForFirebase();
-
 
   if (!ready) {
 
     message.textContent =
       "❌ Firebase غير متصل";
 
-
-    console.error(
-      "Firebase is not ready"
-    );
-
-
     return;
 
   }
-
 
   try {
 
@@ -956,24 +811,19 @@ async function submitOrder() {
           })
         ),
 
-
       total:
         getCartTotal(),
-
 
       location:
         selectedLocation,
 
-
       status:
         "جديد",
-
 
       createdAt:
         window.firebaseServerTimestamp()
 
     };
-
 
     const orders =
       window.firebaseCollection(
@@ -981,44 +831,35 @@ async function submitOrder() {
         "orders"
       );
 
-
     const result =
       await window.firebaseAddDoc(
         orders,
         orderData
       );
 
-
     console.log(
       "Order ID:",
       result.id
     );
 
-
     message.textContent =
       "✅ تم إرسال طلبك بنجاح";
-
 
     showMessage(
       "✅ تم إرسال الطلب بنجاح"
     );
 
-
     cart = [];
-
 
     updateCartCount();
 
-
     renderCart();
-
 
     setTimeout(() => {
 
       closeCart();
 
     }, 1800);
-
 
   }
 
@@ -1029,117 +870,8 @@ async function submitOrder() {
       error
     );
 
-
     message.textContent =
       "❌ حصل خطأ أثناء إرسال الطلب";
-
-  }
-
-}
-
-
-/* =====================================================
-   TRACK ORDER
-===================================================== */
-
-async function trackOrder() {
-
-  const input =
-    document.getElementById(
-      "orderNumber"
-    );
-
-
-  const message =
-    document.getElementById(
-      "trackMsg"
-    );
-
-
-  if (!input || !message) {
-    return;
-  }
-
-
-  const orderNumber =
-    input.value.trim();
-
-
-  if (!orderNumber) {
-
-    message.textContent =
-      "❌ اكتب رقم الطلب أولاً";
-
-    return;
-
-  }
-
-
-  message.textContent =
-    "🔎 جاري البحث عن الطلب...";
-
-
-  const ready =
-    await waitForFirebase();
-
-
-  if (!ready) {
-
-    message.textContent =
-      "❌ Firebase غير متصل";
-
-    return;
-
-  }
-
-
-  try {
-
-    const orderRef =
-      window.firebaseDoc(
-        window.firebaseDB,
-        "orders",
-        orderNumber
-      );
-
-
-    const snapshot =
-      await window.firebaseGetDoc(
-        orderRef
-      );
-
-
-    if (!snapshot.exists()) {
-
-      message.textContent =
-        "❌ الطلب غير موجود";
-
-      return;
-
-    }
-
-
-    const data =
-      snapshot.data();
-
-
-    message.textContent =
-      `📦 حالة الطلب: ${
-        data.status || "جديد"
-      }`;
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "TRACK ERROR:",
-      error
-    );
-
-
-    message.textContent =
-      "❌ تعذر البحث عن الطلب";
 
   }
 
@@ -1157,11 +889,9 @@ async function loadRestaurants() {
       "restaurantsContainer"
     );
 
-
   if (!container) {
     return;
   }
-
 
   container.innerHTML = `
 
@@ -1173,10 +903,8 @@ async function loadRestaurants() {
 
   `;
 
-
   const ready =
     await waitForFirebase();
-
 
   if (!ready) {
 
@@ -1194,7 +922,6 @@ async function loadRestaurants() {
 
   }
 
-
   try {
 
     const restaurantsRef =
@@ -1203,25 +930,16 @@ async function loadRestaurants() {
         "restaurants"
       );
 
-
-    /*
-      ملاحظة:
-      Firebase لا يحتاج getDocs من الخارج
-      لذلك نستورده هنا عند الحاجة.
-    */
-
     const {
       getDocs
     } = await import(
       "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
     );
 
-
     const snapshot =
       await getDocs(
         restaurantsRef
       );
-
 
     if (snapshot.empty) {
 
@@ -1243,10 +961,8 @@ async function loadRestaurants() {
 
     }
 
-
     container.innerHTML =
       "";
-
 
     snapshot.forEach(
       restaurantDoc => {
@@ -1254,13 +970,11 @@ async function loadRestaurants() {
         const restaurant =
           restaurantDoc.data();
 
-
         const card =
           createRestaurantCard(
             restaurant,
             restaurantDoc.id
           );
-
 
         container.appendChild(
           card
@@ -1277,7 +991,6 @@ async function loadRestaurants() {
       "RESTAURANTS ERROR:",
       error
     );
-
 
     container.innerHTML = `
 
@@ -1312,10 +1025,8 @@ function createRestaurantCard(
       "article"
     );
 
-
   card.className =
     "restaurant";
-
 
   const name =
     restaurant.name ||
@@ -1323,18 +1034,15 @@ function createRestaurantCard(
     restaurant.title ||
     "مطعم";
 
-
   const description =
     restaurant.description ||
     restaurant.desc ||
     "مطعم متاح للطلب";
 
-
   const category =
     restaurant.category ||
     restaurant.type ||
     "مطاعم";
-
 
   const image =
     restaurant.image ||
@@ -1343,18 +1051,15 @@ function createRestaurantCard(
     restaurant.logo ||
     "";
 
-
   const deliveryTime =
     restaurant.deliveryTime ||
     restaurant.time ||
     "متاح للتوصيل";
 
-
   const rating =
     restaurant.rating ||
     restaurant.rate ||
     "";
-
 
   const imageHTML =
     image
@@ -1371,11 +1076,9 @@ function createRestaurantCard(
         </div>
       `;
 
-
   card.innerHTML = `
 
     ${imageHTML}
-
 
     <div class="card-body">
 
@@ -1383,23 +1086,19 @@ function createRestaurantCard(
         ${escapeHTML(category)}
       </span>
 
-
       <h3>
         ${escapeHTML(name)}
       </h3>
 
-
       <p>
         ${escapeHTML(description)}
       </p>
-
 
       <div class="restaurant-info">
 
         <span>
           🛵 ${escapeHTML(deliveryTime)}
         </span>
-
 
         ${
           rating
@@ -1413,7 +1112,6 @@ function createRestaurantCard(
 
       </div>
 
-
       <button
         type="button"
         onclick="openRestaurant('${escapeHTML(restaurantId)}')">
@@ -1425,7 +1123,6 @@ function createRestaurantCard(
     </div>
 
   `;
-
 
   return card;
 
@@ -1442,18 +1139,121 @@ function openRestaurant(restaurantId) {
     return;
   }
 
-
-  /*
-    الصفحة التالية للمينيو يمكن ربطها لاحقًا
-    بالـ restaurantId.
-
-    حاليًا نفتح صفحة المطعم إذا كانت موجودة.
-  */
-
   window.location.href =
     `restaurant.html?id=${encodeURIComponent(
       restaurantId
     )}`;
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function openLogin() {
+
+  /*
+    لو عندك login.html
+    يتم فتح صفحة تسجيل الدخول.
+  */
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+/* =====================================================
+   ADMIN
+===================================================== */
+
+function openAdmin() {
+
+  window.location.href =
+    "admin.html";
+
+}
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+function checkLogin() {
+
+  const loggedIn =
+    localStorage.getItem(
+      "mandoub_logged_in"
+    );
+
+  return loggedIn === "true";
+
+}
+
+
+/* =====================================================
+   LOGIN SUCCESS
+===================================================== */
+
+function loginSuccess() {
+
+  localStorage.setItem(
+    "mandoub_logged_in",
+    "true"
+  );
+
+  showMessage(
+    "✅ تم تسجيل الدخول بنجاح"
+  );
+
+  setTimeout(() => {
+
+    window.location.href =
+      "admin.html";
+
+  }, 800);
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logout() {
+
+  localStorage.removeItem(
+    "mandoub_logged_in"
+  );
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+/* =====================================================
+   PROTECT ADMIN
+===================================================== */
+
+function protectAdminPage() {
+
+  const isAdminPage =
+    window.location.pathname
+      .toLowerCase()
+      .includes("admin.html");
+
+  if (!isAdminPage) {
+    return;
+  }
+
+  if (!checkLogin()) {
+
+    window.location.href =
+      "login.html";
+
+  }
 
 }
 
@@ -1495,69 +1295,50 @@ function escapeHTML(value) {
 
 
 /* =====================================================
-   LOGIN
-===================================================== */
-
-function openLogin() {
-
-  showMessage(
-    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
-  );
-
-}
-
-
-/* =====================================================
    GLOBAL
 ===================================================== */
 
 window.addToCart =
   addToCart;
 
-
 window.openCart =
   openCart;
-
 
 window.closeCart =
   closeCart;
 
-
 window.setLocation =
   setLocation;
-
 
 window.submitOrder =
   submitOrder;
 
-
-window.trackOrder =
-  trackOrder;
-
-
 window.showMessage =
   showMessage;
-
 
 window.increaseItem =
   increaseItem;
 
-
 window.decreaseItem =
   decreaseItem;
-
 
 window.removeItem =
   removeItem;
 
-
 window.openLogin =
   openLogin;
 
+window.openAdmin =
+  openAdmin;
+
+window.loginSuccess =
+  loginSuccess;
+
+window.logout =
+  logout;
 
 window.loadRestaurants =
   loadRestaurants;
-
 
 window.openRestaurant =
   openRestaurant;
@@ -1573,11 +1354,7 @@ document.addEventListener(
 
     updateCartCount();
 
-
-    /*
-      لو الصفحة هي restaurants.html
-      حمّل المطاعم تلقائيًا.
-    */
+    protectAdminPage();
 
     if (
       document.getElementById(
@@ -1593,10 +1370,9 @@ document.addEventListener(
 );
 
 
-console.log(
-  "Mandoub Script Loaded ✅"
-);
-
+/* =====================================================
+   FIREBASE STATUS
+===================================================== */
 
 waitForFirebase()
   .then(
@@ -1610,3 +1386,8 @@ waitForFirebase()
 
     }
   );
+
+
+console.log(
+  "Mandoub Script Loaded ✅"
+);
