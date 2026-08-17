@@ -17,17 +17,17 @@
 
 <header class="navbar">
 
-  <a class="brand" href="#">
+  <a class="brand" href="index.html">
     <img src="assets/logo.png" alt="مندوب">
   </a>
 
   <nav>
 
-    <a class="active" href="#">
+    <a class="active" href="index.html">
       الرئيسية
     </a>
 
-    <a href="#restaurants">
+    <a href="restaurants.html">
       المطاعم
     </a>
 
@@ -35,25 +35,17 @@
       تتبع
     </a>
 
-    <a href="#contact">
-      تواصل
-    </a>
-
   </nav>
 
   <div class="nav-actions">
 
-    <!-- تسجيل الدخول -->
     <button
       type="button"
       class="login"
       onclick="openLogin()">
-
       تسجيل الدخول
-
     </button>
 
-    <!-- السلة -->
     <button
       type="button"
       class="cart"
@@ -62,9 +54,7 @@
 
       🛒
 
-      <span id="cartCount">
-        0
-      </span>
+      <span id="cartCount">0</span>
 
     </button>
 
@@ -86,48 +76,34 @@
       </p>
 
       <h1>
-
         اطلب من مطعمك المفضل
-
         <br>
-
-        <span>
-          ونوصلك بسرعة وأمان
-        </span>
-
+        <span>ونوصلك بسرعة وأمان</span>
       </h1>
 
       <p class="hero-text">
-
         اطلب أكلك، مشترياتك أو احتياجاتك اليومية
         من أفضل المطاعم والمحلات.
-
       </p>
 
 
-      <!-- LOCATION -->
-
       <div class="location-box">
 
-        <span>
-          📍
-        </span>
+        <span>📍</span>
 
         <input
           type="text"
           id="locationInput"
-          placeholder="اضغط على الزر لتحديد موقعك">
+          placeholder="اضغط على الزر لتحديد موقعك"
+          readonly>
 
         <button
           type="button"
           onclick="setLocation()">
-
           تحديد موقعي
-
         </button>
 
       </div>
-
 
       <p
         id="locationMsg"
@@ -135,15 +111,11 @@
       </p>
 
 
-      <!-- BENEFITS -->
-
       <div class="benefits">
 
         <div>
 
-          <b>
-            🛡️
-          </b>
+          <b>🛡️</b>
 
           <strong>
             آمن وموثوق
@@ -158,9 +130,7 @@
 
         <div>
 
-          <b>
-            🛵
-          </b>
+          <b>🛵</b>
 
           <strong>
             توصيل سريع
@@ -175,9 +145,7 @@
 
         <div>
 
-          <b>
-            🎧
-          </b>
+          <b>🎧</b>
 
           <strong>
             دعم العملاء
@@ -194,8 +162,6 @@
     </div>
 
 
-    <!-- HERO IMAGE -->
-
     <div class="hero-art">
 
       <img
@@ -208,11 +174,9 @@
   </section>
 
 
-  <!-- ================= RESTAURANTS ================= -->
+  <!-- ================= RESTAURANTS SHORTCUT ================= -->
 
-  <section
-    id="restaurants"
-    class="section">
+  <section class="section">
 
     <div class="section-head">
 
@@ -220,88 +184,22 @@
         المطاعم
       </h2>
 
-      <a href="#restaurants">
-        عرض الكل ←
+      <a href="restaurants.html">
+        عرض المطاعم ←
       </a>
 
     </div>
 
 
-    <!--
-      لا توجد مطاعم ثابتة هنا.
-
-      المطاعم يتم تحميلها من Firebase
-      ويتم إضافتها من صفحة الأدمن.
-    -->
-
-    <div
-      id="restaurantsContainer"
-      class="cards">
-
-      <div
-        id="restaurantsLoading"
-        class="restaurants-message">
-
-        ⏳ جاري تحميل المطاعم...
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= OFFERS ================= -->
-
-  <section
-    id="offers"
-    class="section">
-
-    <div class="section-head">
-
-      <h2>
-        العروض
-      </h2>
-
-    </div>
-
     <div class="offers-box">
 
       <h3>
-        عروض مندوب 🎉
+        🍔 اطلب من مطعمك المفضل
       </h3>
 
       <p>
-        تابعنا للحصول على أحدث العروض والخصومات.
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= ABOUT ================= -->
-
-  <section
-    id="about"
-    class="section">
-
-    <div class="about-box">
-
-      <p class="eyebrow">
-        عن مندوب
-      </p>
-
-      <h2>
-        توصيل سريع داخل مدينتك
-      </h2>
-
-      <p>
-
-        مندوب هي خدمة توصيل تساعدك في طلب الأكل
-        والمشتريات والاحتياجات اليومية بسهولة
-        وسرعة وأمان.
-
+        اضغط على «عرض المطاعم» لمشاهدة جميع المطاعم
+        المتاحة واختيار طلبك.
       </p>
 
     </div>
@@ -387,7 +285,12 @@ import {
 
 
 import {
-  getFirestore
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  getDoc
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
@@ -423,13 +326,32 @@ try {
   const app =
     initializeApp(firebaseConfig);
 
-
   const db =
     getFirestore(app);
 
 
   window.firebaseDB =
     db;
+
+
+  window.firebaseCollection =
+    collection;
+
+
+  window.firebaseAddDoc =
+    addDoc;
+
+
+  window.firebaseServerTimestamp =
+    serverTimestamp;
+
+
+  window.firebaseDoc =
+    doc;
+
+
+  window.firebaseGetDoc =
+    getDoc;
 
 
   window.firebaseReady =
@@ -441,9 +363,7 @@ try {
   );
 
 
-}
-
-catch(error) {
+} catch (error) {
 
   window.firebaseReady =
     false;
@@ -459,11 +379,7 @@ catch(error) {
 </script>
 
 
-<!-- ================= SCRIPT ================= -->
-
 <script src="script.js"></script>
 
-
 </body>
-
 </html>
