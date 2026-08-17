@@ -1,13 +1,23 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
 <title>مندوب | لوحة التحكم</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
   font-family:Arial,Tahoma,sans-serif;
@@ -16,16 +26,25 @@ body{
   min-height:100vh;
 }
 
-button,input,select,textarea{font-family:inherit}
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
 
-button{cursor:pointer;border:0}
+button{
+  cursor:pointer;
+  border:0;
+}
 
 .app{
   display:flex;
   min-height:100vh;
 }
 
-/* SIDEBAR */
+
+/* ================= SIDEBAR ================= */
 
 .sidebar{
   width:250px;
@@ -81,7 +100,8 @@ button{cursor:pointer;border:0}
   color:#00dfff;
 }
 
-/* MAIN */
+
+/* ================= MAIN ================= */
 
 .main{
   width:calc(100% - 250px);
@@ -109,7 +129,8 @@ button{cursor:pointer;border:0}
   font-size:12px;
 }
 
-/* SECTIONS */
+
+/* ================= PAGES ================= */
 
 .page{
   display:none;
@@ -119,7 +140,8 @@ button{cursor:pointer;border:0}
   display:block;
 }
 
-/* CARDS */
+
+/* ================= STATS ================= */
 
 .stats{
   display:grid;
@@ -147,6 +169,9 @@ button{cursor:pointer;border:0}
   font-size:28px;
 }
 
+
+/* ================= BOX ================= */
+
 .box{
   background:#061a2d;
   border:1px solid #173854;
@@ -160,7 +185,8 @@ button{cursor:pointer;border:0}
   margin-bottom:18px;
 }
 
-/* FORM */
+
+/* ================= FORM ================= */
 
 .form-grid{
   display:grid;
@@ -222,7 +248,15 @@ button{cursor:pointer;border:0}
   border-radius:9px;
 }
 
-/* LIST */
+.success{
+  background:#0b8f68;
+  color:#fff;
+  padding:9px 13px;
+  border-radius:9px;
+}
+
+
+/* ================= LIST ================= */
 
 .list{
   display:flex;
@@ -260,7 +294,57 @@ button{cursor:pointer;border:0}
   flex-wrap:wrap;
 }
 
-/* TABLE */
+
+/* ================= RESTAURANT IMAGE ================= */
+
+.restaurant-thumb{
+  width:70px;
+  height:70px;
+  border-radius:12px;
+  object-fit:cover;
+  background:#031321;
+  border:1px solid #23425d;
+  flex-shrink:0;
+}
+
+.restaurant-row{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  flex:1;
+}
+
+.restaurant-placeholder{
+  width:70px;
+  height:70px;
+  border-radius:12px;
+  background:#123a50;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  flex-shrink:0;
+}
+
+
+/* ================= BADGE ================= */
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  background:#12334a;
+  color:#00dfff;
+  font-size:11px;
+}
+
+.badge.off{
+  background:#3b1b27;
+  color:#ff6d98;
+}
+
+
+/* ================= TABLE ================= */
 
 .table-wrap{
   overflow-x:auto;
@@ -272,7 +356,8 @@ table{
   min-width:700px;
 }
 
-th,td{
+th,
+td{
   padding:13px;
   border-bottom:1px solid #173854;
   text-align:right;
@@ -287,16 +372,8 @@ td{
   color:#d7e0e8;
 }
 
-.badge{
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  background:#12334a;
-  color:#00dfff;
-  font-size:11px;
-}
 
-/* MESSAGE */
+/* ================= MESSAGE ================= */
 
 #message{
   position:fixed;
@@ -314,11 +391,8 @@ td{
   text-align:center;
 }
 
-/* MOBILE */
 
-.mobile-menu{
-  display:none;
-}
+/* ================= MOBILE ================= */
 
 @media(max-width:800px){
 
@@ -388,9 +462,19 @@ td{
   .item-actions{
     width:100%;
   }
+
+  .item-actions button{
+    flex:1;
+  }
+
+  .restaurant-row{
+    width:100%;
+  }
+
 }
 
 @media(max-width:400px){
+
   .stats{
     gap:8px;
   }
@@ -402,54 +486,77 @@ td{
   .stat strong{
     font-size:20px;
   }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
+
 
 <!-- ================= SIDEBAR ================= -->
 
 <aside class="sidebar">
 
   <div class="logo">
-    <img src="assets/logo.png" alt="مندوب">
-    <h2>لوحة مندوب</h2>
+
+    <img
+      src="assets/logo.png"
+      alt="مندوب">
+
+    <h2>
+      لوحة مندوب
+    </h2>
+
   </div>
+
 
   <div class="menu">
 
-    <button class="active" onclick="showPage('dashboard',this)">
+    <button
+      class="active"
+      onclick="showPage('dashboard',this)">
       📊 الرئيسية
     </button>
 
-    <button onclick="showPage('restaurants',this)">
+    <button
+      onclick="showPage('restaurants',this)">
       🍔 المطاعم
     </button>
 
-    <button onclick="showPage('products',this)">
+    <button
+      onclick="showPage('products',this)">
       🍟 المنتجات
     </button>
 
-    <button onclick="showPage('offers',this)">
+    <button
+      onclick="showPage('offers',this)">
       🎁 العروض
     </button>
 
-    <button onclick="showPage('orders',this)">
+    <button
+      onclick="showPage('orders',this)">
       📦 الطلبات
     </button>
 
-    <button onclick="showPage('drivers',this)">
+    <button
+      onclick="showPage('drivers',this)">
       🛵 الطيارين
     </button>
 
-    <button onclick="showPage('customers',this)">
+    <button
+      onclick="showPage('customers',this)">
       👥 العملاء
     </button>
 
-    <button onclick="showPage('settings',this)">
+    <button
+      onclick="showPage('settings',this)">
       ⚙️ الإعدادات
     </button>
 
@@ -458,9 +565,11 @@ td{
 </aside>
 
 
+
 <!-- ================= MAIN ================= -->
 
 <main class="main">
+
 
 <header class="topbar">
 
@@ -468,48 +577,90 @@ td{
     لوحة التحكم
   </h1>
 
-  <span class="status" id="firebaseStatus">
+  <span
+    class="status"
+    id="firebaseStatus">
     جاري الاتصال...
   </span>
 
 </header>
 
 
+
 <!-- ================= DASHBOARD ================= -->
 
-<section id="dashboard" class="page active">
+<section
+  id="dashboard"
+  class="page active">
 
   <div class="stats">
 
     <div class="stat">
-      <span>المطاعم</span>
-      <strong id="restaurantsCount">0</strong>
+
+      <span>
+        المطاعم
+      </span>
+
+      <strong id="restaurantsCount">
+        0
+      </strong>
+
     </div>
 
-    <div class="stat">
-      <span>المنتجات</span>
-      <strong id="productsCount">0</strong>
-    </div>
 
     <div class="stat">
-      <span>الطلبات</span>
-      <strong id="ordersCount">0</strong>
+
+      <span>
+        المنتجات
+      </span>
+
+      <strong id="productsCount">
+        0
+      </strong>
+
     </div>
 
+
     <div class="stat">
-      <span>الطيارين</span>
-      <strong id="driversCount">0</strong>
+
+      <span>
+        الطلبات
+      </span>
+
+      <strong id="ordersCount">
+        0
+      </strong>
+
+    </div>
+
+
+    <div class="stat">
+
+      <span>
+        الطيارين
+      </span>
+
+      <strong id="driversCount">
+        0
+      </strong>
+
     </div>
 
   </div>
 
+
   <div class="box">
 
-    <h2>مرحبًا بك في لوحة التحكم 👋</h2>
+    <h2>
+      مرحبًا بك في لوحة التحكم 👋
+    </h2>
 
-    <p style="color:#91a4b4;line-height:2">
+    <p
+      style="color:#91a4b4;line-height:2">
+
       من هنا تقدر تدير المطاعم والمنتجات والعروض
       والطلبات والطيارين والعملاء.
+
     </p>
 
   </div>
@@ -517,192 +668,448 @@ td{
 </section>
 
 
+
 <!-- ================= RESTAURANTS ================= -->
 
-<section id="restaurants" class="page">
+<section
+  id="restaurants"
+  class="page">
+
+
+  <!-- ADD / EDIT -->
 
   <div class="box">
 
-    <h2>إضافة مطعم</h2>
+    <h2 id="restaurantFormTitle">
+      إضافة مطعم
+    </h2>
+
 
     <div class="form-grid">
 
-      <div class="field">
-        <label>اسم المطعم</label>
-        <input id="restaurantName" placeholder="مثال: مطعم النيل">
-      </div>
 
       <div class="field">
-        <label>التصنيف</label>
-        <input id="restaurantCategory" placeholder="مثال: برجر">
+
+        <label>
+          اسم المطعم
+        </label>
+
+        <input
+          id="restaurantName"
+          placeholder="مثال: مطعم النيل">
+
       </div>
 
-      <div class="field">
-        <label>التقييم</label>
-        <input id="restaurantRating" type="number" step="0.1" placeholder="4.5">
-      </div>
 
       <div class="field">
-        <label>رسوم التوصيل</label>
-        <input id="restaurantDelivery" type="number" placeholder="25">
+
+        <label>
+          التصنيف
+        </label>
+
+        <input
+          id="restaurantCategory"
+          placeholder="مثال: برجر">
+
       </div>
+
+
+      <div class="field">
+
+        <label>
+          التقييم
+        </label>
+
+        <input
+          id="restaurantRating"
+          type="number"
+          min="0"
+          max="5"
+          step="0.1"
+          placeholder="4.5">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رسوم التوصيل
+        </label>
+
+        <input
+          id="restaurantDelivery"
+          type="number"
+          min="0"
+          placeholder="25">
+
+      </div>
+
 
       <div class="field full">
-        <label>وصف المطعم</label>
-        <textarea id="restaurantDescription" placeholder="وصف مختصر للمطعم"></textarea>
+
+        <label>
+          وصف المطعم
+        </label>
+
+        <textarea
+          id="restaurantDescription"
+          placeholder="وصف مختصر للمطعم"></textarea>
+
       </div>
 
+
       <div class="field">
-        <label>رابط صورة المطعم</label>
-        <input id="restaurantImage" placeholder="https://...">
+
+        <label>
+          رابط صورة المطعم
+        </label>
+
+        <input
+          id="restaurantImage"
+          placeholder="https://...">
+
       </div>
+
+
+      <div class="field">
+
+        <label>
+          حالة المطعم
+        </label>
+
+        <select id="restaurantActive">
+
+          <option value="true">
+            ظاهر ومتاح
+          </option>
+
+          <option value="false">
+            مخفي
+          </option>
+
+        </select>
+
+      </div>
+
 
     </div>
 
+
     <br>
 
-    <button class="primary" onclick="addRestaurant()">
+
+    <button
+      class="primary"
+      id="restaurantSubmit"
+      onclick="saveRestaurant()">
+
       + إضافة المطعم
+
     </button>
+
+
+    <button
+      class="secondary"
+      id="restaurantCancel"
+      onclick="cancelRestaurantEdit()"
+      style="display:none;margin-right:7px">
+
+      إلغاء التعديل
+
+    </button>
+
 
   </div>
 
+
+
+  <!-- LIST -->
+
   <div class="box">
 
-    <h2>المطاعم الموجودة</h2>
+    <h2>
+      المطاعم الموجودة
+    </h2>
 
-    <div id="restaurantsList" class="list">
+
+    <div
+      id="restaurantsList"
+      class="list">
+
       جاري التحميل...
+
     </div>
 
   </div>
 
 </section>
+
 
 
 <!-- ================= PRODUCTS ================= -->
 
-<section id="products" class="page">
+<section
+  id="products"
+  class="page">
+
 
   <div class="box">
 
-    <h2>إضافة منتج</h2>
+    <h2>
+      إضافة منتج
+    </h2>
+
 
     <div class="form-grid">
 
+
       <div class="field">
-        <label>المطعم</label>
+
+        <label>
+          المطعم
+        </label>
+
         <select id="productRestaurant">
-          <option value="">اختر المطعم</option>
+
+          <option value="">
+            اختر المطعم
+          </option>
+
         </select>
+
       </div>
 
-      <div class="field">
-        <label>اسم المنتج</label>
-        <input id="productName" placeholder="مثال: برجر لحم">
-      </div>
 
       <div class="field">
-        <label>السعر</label>
-        <input id="productPrice" type="number" placeholder="100">
+
+        <label>
+          اسم المنتج
+        </label>
+
+        <input
+          id="productName"
+          placeholder="مثال: برجر لحم">
+
       </div>
 
+
       <div class="field">
-        <label>الصورة</label>
-        <input id="productImage" placeholder="https://...">
+
+        <label>
+          السعر
+        </label>
+
+        <input
+          id="productPrice"
+          type="number"
+          placeholder="100">
+
       </div>
+
+
+      <div class="field">
+
+        <label>
+          الصورة
+        </label>
+
+        <input
+          id="productImage"
+          placeholder="https://...">
+
+      </div>
+
 
       <div class="field full">
-        <label>الوصف</label>
-        <textarea id="productDescription" placeholder="وصف المنتج"></textarea>
+
+        <label>
+          الوصف
+        </label>
+
+        <textarea
+          id="productDescription"
+          placeholder="وصف المنتج"></textarea>
+
       </div>
+
 
     </div>
 
+
     <br>
 
-    <button class="primary" onclick="addProduct()">
+
+    <button
+      class="primary"
+      onclick="addProduct()">
+
       + إضافة المنتج
+
     </button>
 
   </div>
 
+
   <div class="box">
 
-    <h2>المنتجات</h2>
+    <h2>
+      المنتجات
+    </h2>
 
-    <div id="productsList" class="list">
+    <div
+      id="productsList"
+      class="list">
+
       جاري التحميل...
+
     </div>
 
   </div>
 
 </section>
+
 
 
 <!-- ================= OFFERS ================= -->
 
-<section id="offers" class="page">
+<section
+  id="offers"
+  class="page">
 
   <div class="box">
 
-    <h2>إضافة عرض</h2>
+    <h2>
+      إضافة عرض
+    </h2>
+
 
     <div class="form-grid">
 
-      <div class="field">
-        <label>عنوان العرض</label>
-        <input id="offerTitle" placeholder="خصم 20%">
-      </div>
 
       <div class="field">
-        <label>المطعم</label>
+
+        <label>
+          عنوان العرض
+        </label>
+
+        <input
+          id="offerTitle"
+          placeholder="خصم 20%">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          المطعم
+        </label>
+
         <select id="offerRestaurant">
-          <option value="">كل المطاعم</option>
+
+          <option value="">
+            كل المطاعم
+          </option>
+
         </select>
+
       </div>
 
-      <div class="field">
-        <label>قيمة الخصم</label>
-        <input id="offerDiscount" placeholder="20%">
-      </div>
 
       <div class="field">
-        <label>رابط صورة العرض</label>
-        <input id="offerImage" placeholder="https://...">
+
+        <label>
+          قيمة الخصم
+        </label>
+
+        <input
+          id="offerDiscount"
+          placeholder="20%">
+
       </div>
 
-      <div class="field">
-        <label>تاريخ البداية</label>
-        <input id="offerStart" type="date">
-      </div>
 
       <div class="field">
-        <label>تاريخ النهاية</label>
-        <input id="offerEnd" type="date">
+
+        <label>
+          رابط صورة العرض
+        </label>
+
+        <input
+          id="offerImage"
+          placeholder="https://...">
+
       </div>
+
+
+      <div class="field">
+
+        <label>
+          تاريخ البداية
+        </label>
+
+        <input
+          id="offerStart"
+          type="date">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          تاريخ النهاية
+        </label>
+
+        <input
+          id="offerEnd"
+          type="date">
+
+      </div>
+
 
       <div class="field full">
-        <label>وصف العرض</label>
-        <textarea id="offerDescription"></textarea>
+
+        <label>
+          وصف العرض
+        </label>
+
+        <textarea
+          id="offerDescription"></textarea>
+
       </div>
+
 
     </div>
 
+
     <br>
 
-    <button class="primary" onclick="addOffer()">
+
+    <button
+      class="primary"
+      onclick="addOffer()">
+
       + إضافة العرض
+
     </button>
 
   </div>
 
+
   <div class="box">
 
-    <h2>العروض</h2>
+    <h2>
+      العروض
+    </h2>
 
-    <div id="offersList" class="list">
+    <div
+      id="offersList"
+      class="list">
+
       جاري التحميل...
+
     </div>
 
   </div>
@@ -710,13 +1117,19 @@ td{
 </section>
 
 
+
 <!-- ================= ORDERS ================= -->
 
-<section id="orders" class="page">
+<section
+  id="orders"
+  class="page">
 
   <div class="box">
 
-    <h2>الطلبات</h2>
+    <h2>
+      الطلبات
+    </h2>
+
 
     <div class="table-wrap">
 
@@ -725,22 +1138,44 @@ td{
         <thead>
 
           <tr>
-            <th>رقم الطلب</th>
-            <th>العميل</th>
-            <th>العنوان</th>
-            <th>الإجمالي</th>
-            <th>الطيار</th>
-            <th>الحالة</th>
+
+            <th>
+              رقم الطلب
+            </th>
+
+            <th>
+              العميل
+            </th>
+
+            <th>
+              العنوان
+            </th>
+
+            <th>
+              الإجمالي
+            </th>
+
+            <th>
+              الطيار
+            </th>
+
+            <th>
+              الحالة
+            </th>
+
           </tr>
 
         </thead>
 
+
         <tbody id="ordersTable">
 
           <tr>
+
             <td colspan="6">
               جاري تحميل الطلبات...
             </td>
+
           </tr>
 
         </tbody>
@@ -754,28 +1189,54 @@ td{
 </section>
 
 
+
 <!-- ================= DRIVERS ================= -->
 
-<section id="drivers" class="page">
+<section
+  id="drivers"
+  class="page">
 
   <div class="box">
 
-    <h2>إضافة طيار</h2>
+    <h2>
+      إضافة طيار
+    </h2>
+
 
     <div class="form-grid">
 
-      <div class="field">
-        <label>اسم الطيار</label>
-        <input id="driverName" placeholder="اسم الطيار">
-      </div>
 
       <div class="field">
-        <label>رقم الهاتف</label>
-        <input id="driverPhone" placeholder="01xxxxxxxxx">
+
+        <label>
+          اسم الطيار
+        </label>
+
+        <input
+          id="driverName"
+          placeholder="اسم الطيار">
+
       </div>
 
+
       <div class="field">
-        <label>الحالة</label>
+
+        <label>
+          رقم الهاتف
+        </label>
+
+        <input
+          id="driverPhone"
+          placeholder="01xxxxxxxxx">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          الحالة
+        </label>
 
         <select id="driverStatus">
 
@@ -791,41 +1252,64 @@ td{
 
       </div>
 
+
     </div>
+
 
     <br>
 
-    <button class="primary" onclick="addDriver()">
+
+    <button
+      class="primary"
+      onclick="addDriver()">
+
       + إضافة الطيار
+
     </button>
 
   </div>
 
+
   <div class="box">
 
-    <h2>الطيارين</h2>
+    <h2>
+      الطيارين
+    </h2>
 
-    <div id="driversList" class="list">
+    <div
+      id="driversList"
+      class="list">
+
       جاري التحميل...
+
     </div>
 
   </div>
 
 </section>
+
 
 
 <!-- ================= CUSTOMERS ================= -->
 
-<section id="customers" class="page">
+<section
+  id="customers"
+  class="page">
 
   <div class="box">
 
-    <h2>العملاء</h2>
+    <h2>
+      العملاء
+    </h2>
 
-    <div id="customersList" class="list">
+    <div
+      id="customersList"
+      class="list">
 
       <div style="color:#899aaa">
+
         العملاء سيظهرون هنا عند ربط تسجيل الدخول.
+
       </div>
 
     </div>
@@ -835,33 +1319,68 @@ td{
 </section>
 
 
+
 <!-- ================= SETTINGS ================= -->
 
-<section id="settings" class="page">
+<section
+  id="settings"
+  class="page">
 
   <div class="box">
 
-    <h2>إعدادات الموقع</h2>
+    <h2>
+      إعدادات الموقع
+    </h2>
+
 
     <div class="form-grid">
 
-      <div class="field">
-        <label>اسم الموقع</label>
-        <input id="siteName" value="مندوب">
-      </div>
 
       <div class="field">
-        <label>رقم التواصل</label>
-        <input id="sitePhone" placeholder="01xxxxxxxxx">
+
+        <label>
+          اسم الموقع
+        </label>
+
+        <input
+          id="siteName"
+          value="مندوب">
+
       </div>
 
-      <div class="field">
-        <label>رسوم التوصيل الافتراضية</label>
-        <input id="defaultDelivery" type="number" value="25">
-      </div>
 
       <div class="field">
-        <label>حالة استقبال الطلبات</label>
+
+        <label>
+          رقم التواصل
+        </label>
+
+        <input
+          id="sitePhone"
+          placeholder="01xxxxxxxxx">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رسوم التوصيل الافتراضية
+        </label>
+
+        <input
+          id="defaultDelivery"
+          type="number"
+          value="25">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          حالة استقبال الطلبات
+        </label>
 
         <select id="ordersEnabled">
 
@@ -877,17 +1396,25 @@ td{
 
       </div>
 
+
     </div>
+
 
     <br>
 
-    <button class="primary" onclick="saveSettings()">
+
+    <button
+      class="primary"
+      onclick="saveSettings()">
+
       حفظ الإعدادات
+
     </button>
 
   </div>
 
 </section>
+
 
 </main>
 
@@ -897,13 +1424,15 @@ td{
 <div id="message"></div>
 
 
+
 <!-- ================= FIREBASE ================= -->
 
 <script type="module">
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 import {
   getFirestore,
@@ -913,11 +1442,11 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  setDoc,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
-
-/* ================= FIREBASE CONFIG ================= */
 
 const firebaseConfig = {
 
@@ -946,8 +1475,13 @@ const firebaseConfig = {
 
 
 let db = null;
+
 let restaurants = [];
 
+let editingRestaurantId = null;
+
+
+/* ================= FIREBASE ================= */
 
 try{
 
@@ -956,6 +1490,7 @@ try{
 
   db =
     getFirestore(app);
+
 
   document.getElementById(
     "firebaseStatus"
@@ -976,7 +1511,8 @@ try{
 
 /* ================= NAVIGATION ================= */
 
-window.showPage = function(page,button){
+window.showPage =
+function(page,button){
 
   document
     .querySelectorAll(".page")
@@ -984,9 +1520,14 @@ window.showPage = function(page,button){
       p.classList.remove("active");
     });
 
-  document
-    .getElementById(page)
-    .classList.add("active");
+
+  const target =
+    document.getElementById(page);
+
+
+  if(target){
+    target.classList.add("active");
+  }
 
 
   document
@@ -995,7 +1536,10 @@ window.showPage = function(page,button){
       b.classList.remove("active");
     });
 
-  button.classList.add("active");
+
+  if(button){
+    button.classList.add("active");
+  }
 
 
   const titles = {
@@ -1018,6 +1562,7 @@ window.showPage = function(page,button){
 
   };
 
+
   document.getElementById(
     "pageTitle"
   ).textContent =
@@ -1033,23 +1578,41 @@ function message(text){
   const box =
     document.getElementById("message");
 
-  box.textContent = text;
-  box.style.display = "block";
+
+  box.textContent =
+    text;
+
+
+  box.style.display =
+    "block";
+
 
   setTimeout(()=>{
-    box.style.display = "none";
+
+    box.style.display =
+      "none";
+
   },2500);
 
 }
 
 
-/* ================= RESTAURANTS ================= */
+/* =====================================================
+   RESTAURANTS
+===================================================== */
 
-window.addRestaurant = async function(){
+
+/* ================= SAVE RESTAURANT ================= */
+
+window.saveRestaurant =
+async function(){
 
   if(!db){
 
-    message("Firebase غير متصل ❌");
+    message(
+      "Firebase غير متصل ❌"
+    );
+
     return;
 
   }
@@ -1060,25 +1623,30 @@ window.addRestaurant = async function(){
       "restaurantName"
     ).value.trim();
 
+
   const category =
     document.getElementById(
       "restaurantCategory"
     ).value.trim();
+
 
   const rating =
     document.getElementById(
       "restaurantRating"
     ).value;
 
+
   const delivery =
     document.getElementById(
       "restaurantDelivery"
     ).value;
 
+
   const description =
     document.getElementById(
       "restaurantDescription"
     ).value.trim();
+
 
   const image =
     document.getElementById(
@@ -1086,53 +1654,112 @@ window.addRestaurant = async function(){
     ).value.trim();
 
 
+  const active =
+    document.getElementById(
+      "restaurantActive"
+    ).value === "true";
+
+
   if(!name){
 
-    message("اكتب اسم المطعم أولاً");
+    message(
+      "اكتب اسم المطعم أولاً"
+    );
+
     return;
 
   }
 
 
+  const data = {
+
+    name:name,
+
+    category:category,
+
+    rating:Number(
+      rating || 0
+    ),
+
+    delivery:Number(
+      delivery || 0
+    ),
+
+    description:description,
+
+    image:image,
+
+    active:active
+
+  };
+
+
   try{
 
-    await addDoc(
-      collection(db,"restaurants"),
-      {
 
-        name:name,
+    /* EDIT */
 
-        category:category,
+    if(editingRestaurantId){
 
-        rating:Number(rating || 0),
+      await updateDoc(
 
-        delivery:Number(delivery || 0),
+        doc(
+          db,
+          "restaurants",
+          editingRestaurantId
+        ),
 
-        description:description,
+        data
 
-        image:image,
-
-        active:true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
+      );
 
 
-    message("تم إضافة المطعم ✅");
+      message(
+        "تم تعديل المطعم ✅"
+      );
 
-    clearRestaurantForm();
+
+    }
+
+
+    /* ADD */
+
+    else{
+
+      data.createdAt =
+        serverTimestamp();
+
+
+      await addDoc(
+
+        collection(
+          db,
+          "restaurants"
+        ),
+
+        data
+
+      );
+
+
+      message(
+        "تم إضافة المطعم ✅"
+      );
+
+    }
+
+
+    cancelRestaurantEdit();
 
     await loadRestaurants();
+
 
   }catch(error){
 
     console.error(error);
 
     message(
-      "حدث خطأ أثناء إضافة المطعم ❌"
+      "حدث خطأ أثناء حفظ المطعم ❌"
     );
 
   }
@@ -1140,38 +1767,173 @@ window.addRestaurant = async function(){
 };
 
 
+/* ================= EDIT ================= */
+
+window.editRestaurant =
+function(id){
+
+  const restaurant =
+    restaurants.find(
+      r=>r.id===id
+    );
+
+
+  if(!restaurant)
+    return;
+
+
+  editingRestaurantId =
+    id;
+
+
+  document.getElementById(
+    "restaurantName"
+  ).value =
+    restaurant.name || "";
+
+
+  document.getElementById(
+    "restaurantCategory"
+  ).value =
+    restaurant.category || "";
+
+
+  document.getElementById(
+    "restaurantRating"
+  ).value =
+    restaurant.rating ?? "";
+
+
+  document.getElementById(
+    "restaurantDelivery"
+  ).value =
+    restaurant.delivery ?? "";
+
+
+  document.getElementById(
+    "restaurantDescription"
+  ).value =
+    restaurant.description || "";
+
+
+  document.getElementById(
+    "restaurantImage"
+  ).value =
+    restaurant.image || "";
+
+
+  document.getElementById(
+    "restaurantActive"
+  ).value =
+    restaurant.active === false
+    ? "false"
+    : "true";
+
+
+  document.getElementById(
+    "restaurantFormTitle"
+  ).textContent =
+    "تعديل المطعم";
+
+
+  document.getElementById(
+    "restaurantSubmit"
+  ).textContent =
+    "حفظ التعديل";
+
+
+  document.getElementById(
+    "restaurantCancel"
+  ).style.display =
+    "inline-block";
+
+
+  document.getElementById(
+    "restaurantName"
+  ).focus();
+
+};
+
+
+/* ================= CANCEL EDIT ================= */
+
+window.cancelRestaurantEdit =
+function(){
+
+  editingRestaurantId =
+    null;
+
+
+  document.getElementById(
+    "restaurantFormTitle"
+  ).textContent =
+    "إضافة مطعم";
+
+
+  document.getElementById(
+    "restaurantSubmit"
+  ).textContent =
+    "+ إضافة المطعم";
+
+
+  document.getElementById(
+    "restaurantCancel"
+  ).style.display =
+    "none";
+
+
+  clearRestaurantForm();
+
+};
+
+
+/* ================= CLEAR ================= */
+
 function clearRestaurantForm(){
 
   document.getElementById(
     "restaurantName"
-  ).value="";
+  ).value = "";
+
 
   document.getElementById(
     "restaurantCategory"
-  ).value="";
+  ).value = "";
+
 
   document.getElementById(
     "restaurantRating"
-  ).value="";
+  ).value = "";
+
 
   document.getElementById(
     "restaurantDelivery"
-  ).value="";
+  ).value = "";
+
 
   document.getElementById(
     "restaurantDescription"
-  ).value="";
+  ).value = "";
+
 
   document.getElementById(
     "restaurantImage"
-  ).value="";
+  ).value = "";
+
+
+  document.getElementById(
+    "restaurantActive"
+  ).value = "true";
 
 }
 
 
+/* ================= LOAD RESTAURANTS ================= */
+
 async function loadRestaurants(){
 
-  if(!db) return;
+  if(!db)
+    return;
 
 
   const list =
@@ -1179,15 +1941,22 @@ async function loadRestaurants(){
       "restaurantsList"
     );
 
+
   list.innerHTML =
     "جاري التحميل...";
 
 
   try{
 
+
     const snapshot =
       await getDocs(
-        collection(db,"restaurants")
+
+        collection(
+          db,
+          "restaurants"
+        )
+
       );
 
 
@@ -1197,8 +1966,11 @@ async function loadRestaurants(){
     snapshot.forEach(item=>{
 
       restaurants.push({
+
         id:item.id,
+
         ...item.data()
+
       });
 
     });
@@ -1210,46 +1982,203 @@ async function loadRestaurants(){
       restaurants.length;
 
 
-    if(restaurants.length===0){
+    if(
+      restaurants.length === 0
+    ){
 
-      list.innerHTML =
-        `<div style="color:#899aaa">
+      list.innerHTML = `
+
+        <div style="color:#899aaa">
+
           لا توجد مطاعم حتى الآن.
-        </div>`;
 
-    }else{
+        </div>
+
+      `;
+
+    }
+
+
+    else{
+
 
       list.innerHTML =
-        restaurants.map(r=>`
 
-          <div class="item">
+        restaurants.map(
+          restaurant=>{
 
-            <div class="item-info">
+            const image =
+              restaurant.image || "";
 
-              <strong>
-                ${escapeHTML(r.name || "")}
-              </strong>
 
-              <small>
-                ${escapeHTML(r.category || "")}
-                • توصيل ${r.delivery || 0} جنيه
-              </small>
+            const active =
+              restaurant.active !== false;
 
-            </div>
 
-            <div class="item-actions">
+            return `
 
-              <button
-                class="danger"
-                onclick="deleteRestaurant('${r.id}')">
-                حذف
-              </button>
+              <div class="item">
 
-            </div>
 
-          </div>
+                <div class="restaurant-row">
 
-        `).join("");
+
+                  ${
+                    image
+
+                    ?
+
+                    `
+
+                    <img
+                      class="restaurant-thumb"
+                      src="${escapeHTML(image)}"
+                      alt="${escapeHTML(
+                        restaurant.name || "مطعم"
+                      )}"
+                      onerror="
+                        this.style.display='none';
+                        this.nextElementSibling.style.display='flex';
+                      ">
+
+                    <div
+                      class="restaurant-placeholder"
+                      style="display:none">
+
+                      🍔
+
+                    </div>
+
+                    `
+
+                    :
+
+                    `
+
+                    <div
+                      class="restaurant-placeholder">
+
+                      🍔
+
+                    </div>
+
+                    `
+                  }
+
+
+                  <div class="item-info">
+
+                    <strong>
+
+                      ${escapeHTML(
+                        restaurant.name || ""
+                      )}
+
+                    </strong>
+
+
+                    <small>
+
+                      ${escapeHTML(
+                        restaurant.category || "بدون تصنيف"
+                      )}
+
+                      • توصيل
+
+                      ${restaurant.delivery || 0}
+
+                      جنيه
+
+                      • تقييم
+
+                      ${restaurant.rating || 0}
+
+                    </small>
+
+
+                    <br>
+
+
+                    <span
+                      class="badge ${
+                        active ? "" : "off"
+                      }">
+
+                      ${
+                        active
+                        ? "متاح"
+                        : "مخفي"
+                      }
+
+                    </span>
+
+                  </div>
+
+
+                </div>
+
+
+                <div class="item-actions">
+
+
+                  <button
+                    class="secondary"
+                    onclick="
+                      editRestaurant(
+                        '${restaurant.id}'
+                      )
+                    ">
+
+                    تعديل
+
+                  </button>
+
+
+                  <button
+                    class="${
+                      active
+                      ? "secondary"
+                      : "success"
+                    }"
+                    onclick="
+                      toggleRestaurant(
+                        '${restaurant.id}',
+                        ${active}
+                      )
+                    ">
+
+                    ${
+                      active
+                      ? "إيقاف"
+                      : "تفعيل"
+                    }
+
+                  </button>
+
+
+                  <button
+                    class="danger"
+                    onclick="
+                      deleteRestaurant(
+                        '${restaurant.id}'
+                      )
+                    ">
+
+                    حذف
+
+                  </button>
+
+
+                </div>
+
+
+              </div>
+
+            `;
+
+          }
+
+        ).join("");
 
     }
 
@@ -1261,47 +2190,139 @@ async function loadRestaurants(){
 
     console.error(error);
 
-    list.innerHTML =
-      "حدث خطأ أثناء تحميل المطاعم.";
+    list.innerHTML = `
+
+      <div style="color:#ff6d98">
+
+        حدث خطأ أثناء تحميل المطاعم.
+
+      </div>
+
+    `;
 
   }
 
 }
 
 
-window.deleteRestaurant = async function(id){
+/* ================= TOGGLE ================= */
 
-  if(!confirm("هل تريد حذف المطعم؟")) return;
+window.toggleRestaurant =
+async function(id,current){
+
+  if(!db)
+    return;
 
 
   try{
 
-    await deleteDoc(
-      doc(db,"restaurants",id)
+    await updateDoc(
+
+      doc(
+        db,
+        "restaurants",
+        id
+      ),
+
+      {
+        active:!current
+      }
+
     );
 
-    message("تم حذف المطعم");
+
+    message(
+      current
+      ? "تم إيقاف المطعم"
+      : "تم تفعيل المطعم"
+    );
+
 
     await loadRestaurants();
+
 
   }catch(error){
 
     console.error(error);
 
-    message("تعذر حذف المطعم");
+    message(
+      "تعذر تغيير حالة المطعم"
+    );
 
   }
 
 };
 
 
-/* ================= PRODUCT ================= */
+/* ================= DELETE ================= */
 
-window.addProduct = async function(){
+window.deleteRestaurant =
+async function(id){
+
+  if(
+    !confirm(
+      "هل تريد حذف المطعم نهائيًا؟"
+    )
+  )
+    return;
+
+
+  try{
+
+    await deleteDoc(
+
+      doc(
+        db,
+        "restaurants",
+        id
+      )
+
+    );
+
+
+    message(
+      "تم حذف المطعم"
+    );
+
+
+    if(
+      editingRestaurantId === id
+    ){
+
+      cancelRestaurantEdit();
+
+    }
+
+
+    await loadRestaurants();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    message(
+      "تعذر حذف المطعم"
+    );
+
+  }
+
+};
+
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+window.addProduct =
+async function(){
 
   if(!db){
 
-    message("Firebase غير متصل ❌");
+    message(
+      "Firebase غير متصل ❌"
+    );
+
     return;
 
   }
@@ -1312,20 +2333,24 @@ window.addProduct = async function(){
       "productRestaurant"
     ).value;
 
+
   const name =
     document.getElementById(
       "productName"
     ).value.trim();
+
 
   const price =
     document.getElementById(
       "productPrice"
     ).value;
 
+
   const image =
     document.getElementById(
       "productImage"
     ).value.trim();
+
 
   const description =
     document.getElementById(
@@ -1333,7 +2358,11 @@ window.addProduct = async function(){
     ).value.trim();
 
 
-  if(!restaurantId || !name || !price){
+  if(
+    !restaurantId ||
+    !name ||
+    !price
+  ){
 
     message(
       "اختر المطعم واكتب اسم المنتج والسعر"
@@ -1347,18 +2376,23 @@ window.addProduct = async function(){
   try{
 
     await addDoc(
-      collection(db,"products"),
+
+      collection(
+        db,
+        "products"
+      ),
+
       {
 
-        restaurantId:restaurantId,
+        restaurantId,
 
-        name:name,
+        name,
 
         price:Number(price),
 
-        image:image,
+        image,
 
-        description:description,
+        description,
 
         active:true,
 
@@ -1366,27 +2400,33 @@ window.addProduct = async function(){
           serverTimestamp()
 
       }
+
     );
 
 
-    message("تم إضافة المنتج ✅");
+    message(
+      "تم إضافة المنتج ✅"
+    );
 
 
     document.getElementById(
       "productName"
-    ).value="";
+    ).value = "";
+
 
     document.getElementById(
       "productPrice"
-    ).value="";
+    ).value = "";
+
 
     document.getElementById(
       "productImage"
-    ).value="";
+    ).value = "";
+
 
     document.getElementById(
       "productDescription"
-    ).value="";
+    ).value = "";
 
 
     loadProducts();
@@ -1396,7 +2436,9 @@ window.addProduct = async function(){
 
     console.error(error);
 
-    message("حدث خطأ أثناء إضافة المنتج ❌");
+    message(
+      "حدث خطأ أثناء إضافة المنتج ❌"
+    );
 
   }
 
@@ -1405,7 +2447,8 @@ window.addProduct = async function(){
 
 async function loadProducts(){
 
-  if(!db) return;
+  if(!db)
+    return;
 
 
   const list =
@@ -1418,7 +2461,12 @@ async function loadProducts(){
 
     const snapshot =
       await getDocs(
-        collection(db,"products")
+
+        collection(
+          db,
+          "products"
+        )
+
       );
 
 
@@ -1430,10 +2478,13 @@ async function loadProducts(){
 
     if(snapshot.empty){
 
-      list.innerHTML =
-        `<div style="color:#899aaa">
+      list.innerHTML = `
+
+        <div style="color:#899aaa">
           لا توجد منتجات.
-        </div>`;
+        </div>
+
+      `;
 
       return;
 
@@ -1441,50 +2492,78 @@ async function loadProducts(){
 
 
     list.innerHTML =
-      snapshot.docs.map(item=>{
 
-        const p = item.data();
+      snapshot.docs.map(
+        item=>{
 
-        const restaurant =
-          restaurants.find(
-            r=>r.id===p.restaurantId
-          );
+          const p =
+            item.data();
 
 
-        return `
+          const restaurant =
+            restaurants.find(
+              r=>
+                r.id ===
+                p.restaurantId
+            );
 
-          <div class="item">
 
-            <div class="item-info">
+          return `
 
-              <strong>
-                ${escapeHTML(p.name || "")}
-              </strong>
+            <div class="item">
 
-              <small>
-                ${escapeHTML(
-                  restaurant?.name || "مطعم غير معروف"
-                )}
-                • ${p.price || 0} جنيه
-              </small>
+              <div class="item-info">
+
+                <strong>
+
+                  ${escapeHTML(
+                    p.name || ""
+                  )}
+
+                </strong>
+
+
+                <small>
+
+                  ${escapeHTML(
+                    restaurant?.name ||
+                    "مطعم غير معروف"
+                  )}
+
+                  •
+
+                  ${p.price || 0}
+
+                  جنيه
+
+                </small>
+
+              </div>
+
+
+              <div class="item-actions">
+
+                <button
+                  class="danger"
+                  onclick="
+                    deleteProduct(
+                      '${item.id}'
+                    )
+                  ">
+
+                  حذف
+
+                </button>
+
+              </div>
 
             </div>
 
-            <div class="item-actions">
+          `;
 
-              <button
-                class="danger"
-                onclick="deleteProduct('${item.id}')">
-                حذف
-              </button>
+        }
 
-            </div>
-
-          </div>
-
-        `;
-
-      }).join("");
+      ).join("");
 
 
   }catch(error){
@@ -1499,39 +2578,64 @@ async function loadProducts(){
 }
 
 
-window.deleteProduct = async function(id){
+window.deleteProduct =
+async function(id){
 
-  if(!confirm("هل تريد حذف المنتج؟")) return;
+  if(
+    !confirm(
+      "هل تريد حذف المنتج؟"
+    )
+  )
+    return;
 
 
   try{
 
     await deleteDoc(
-      doc(db,"products",id)
+
+      doc(
+        db,
+        "products",
+        id
+      )
+
     );
 
-    message("تم حذف المنتج");
+
+    message(
+      "تم حذف المنتج"
+    );
+
 
     loadProducts();
+
 
   }catch(error){
 
     console.error(error);
 
-    message("تعذر حذف المنتج");
+    message(
+      "تعذر حذف المنتج"
+    );
 
   }
 
 };
 
 
-/* ================= OFFERS ================= */
+/* =====================================================
+   OFFERS
+===================================================== */
 
-window.addOffer = async function(){
+window.addOffer =
+async function(){
 
   if(!db){
 
-    message("Firebase غير متصل ❌");
+    message(
+      "Firebase غير متصل ❌"
+    );
+
     return;
 
   }
@@ -1542,30 +2646,36 @@ window.addOffer = async function(){
       "offerTitle"
     ).value.trim();
 
+
   const restaurantId =
     document.getElementById(
       "offerRestaurant"
     ).value;
+
 
   const discount =
     document.getElementById(
       "offerDiscount"
     ).value.trim();
 
+
   const image =
     document.getElementById(
       "offerImage"
     ).value.trim();
+
 
   const start =
     document.getElementById(
       "offerStart"
     ).value;
 
+
   const end =
     document.getElementById(
       "offerEnd"
     ).value;
+
 
   const description =
     document.getElementById(
@@ -1575,7 +2685,10 @@ window.addOffer = async function(){
 
   if(!title){
 
-    message("اكتب عنوان العرض");
+    message(
+      "اكتب عنوان العرض"
+    );
+
     return;
 
   }
@@ -1584,23 +2697,28 @@ window.addOffer = async function(){
   try{
 
     await addDoc(
-      collection(db,"offers"),
+
+      collection(
+        db,
+        "offers"
+      ),
+
       {
 
-        title:title,
+        title,
 
         restaurantId:
           restaurantId || null,
 
-        discount:discount,
+        discount,
 
-        image:image,
+        image,
 
-        start:start,
+        start,
 
-        end:end,
+        end,
 
-        description:description,
+        description,
 
         active:true,
 
@@ -1608,10 +2726,14 @@ window.addOffer = async function(){
           serverTimestamp()
 
       }
+
     );
 
 
-    message("تم إضافة العرض 🎁");
+    message(
+      "تم إضافة العرض 🎁"
+    );
+
 
     loadOffers();
 
@@ -1620,7 +2742,9 @@ window.addOffer = async function(){
 
     console.error(error);
 
-    message("حدث خطأ أثناء إضافة العرض");
+    message(
+      "حدث خطأ أثناء إضافة العرض"
+    );
 
   }
 
@@ -1629,7 +2753,8 @@ window.addOffer = async function(){
 
 async function loadOffers(){
 
-  if(!db) return;
+  if(!db)
+    return;
 
 
   const list =
@@ -1642,16 +2767,24 @@ async function loadOffers(){
 
     const snapshot =
       await getDocs(
-        collection(db,"offers")
+
+        collection(
+          db,
+          "offers"
+        )
+
       );
 
 
     if(snapshot.empty){
 
-      list.innerHTML =
-        `<div style="color:#899aaa">
+      list.innerHTML = `
+
+        <div style="color:#899aaa">
           لا توجد عروض.
-        </div>`;
+        </div>
+
+      `;
 
       return;
 
@@ -1659,43 +2792,64 @@ async function loadOffers(){
 
 
     list.innerHTML =
-      snapshot.docs.map(item=>{
 
-        const o=item.data();
+      snapshot.docs.map(
+        item=>{
+
+          const o =
+            item.data();
 
 
-        return `
+          return `
 
-          <div class="item">
+            <div class="item">
 
-            <div class="item-info">
+              <div class="item-info">
 
-              <strong>
-                ${escapeHTML(o.title || "")}
-              </strong>
+                <strong>
 
-              <small>
-                خصم:
-                ${escapeHTML(o.discount || "-")}
-              </small>
+                  ${escapeHTML(
+                    o.title || ""
+                  )}
+
+                </strong>
+
+
+                <small>
+
+                  خصم:
+                  ${escapeHTML(
+                    o.discount || "-"
+                  )}
+
+                </small>
+
+              </div>
+
+
+              <div class="item-actions">
+
+                <button
+                  class="danger"
+                  onclick="
+                    deleteOffer(
+                      '${item.id}'
+                    )
+                  ">
+
+                  حذف
+
+                </button>
+
+              </div>
 
             </div>
 
-            <div class="item-actions">
+          `;
 
-              <button
-                class="danger"
-                onclick="deleteOffer('${item.id}')">
-                حذف
-              </button>
+        }
 
-            </div>
-
-          </div>
-
-        `;
-
-      }).join("");
+      ).join("");
 
 
   }catch(error){
@@ -1707,39 +2861,64 @@ async function loadOffers(){
 }
 
 
-window.deleteOffer = async function(id){
+window.deleteOffer =
+async function(id){
 
-  if(!confirm("هل تريد حذف العرض؟")) return;
+  if(
+    !confirm(
+      "هل تريد حذف العرض؟"
+    )
+  )
+    return;
 
 
   try{
 
     await deleteDoc(
-      doc(db,"offers",id)
+
+      doc(
+        db,
+        "offers",
+        id
+      )
+
     );
 
-    message("تم حذف العرض");
+
+    message(
+      "تم حذف العرض"
+    );
+
 
     loadOffers();
+
 
   }catch(error){
 
     console.error(error);
 
-    message("تعذر حذف العرض");
+    message(
+      "تعذر حذف العرض"
+    );
 
   }
 
 };
 
 
-/* ================= DRIVERS ================= */
+/* =====================================================
+   DRIVERS
+===================================================== */
 
-window.addDriver = async function(){
+window.addDriver =
+async function(){
 
   if(!db){
 
-    message("Firebase غير متصل ❌");
+    message(
+      "Firebase غير متصل ❌"
+    );
+
     return;
 
   }
@@ -1750,10 +2929,12 @@ window.addDriver = async function(){
       "driverName"
     ).value.trim();
 
+
   const phone =
     document.getElementById(
       "driverPhone"
     ).value.trim();
+
 
   const status =
     document.getElementById(
@@ -1761,7 +2942,10 @@ window.addDriver = async function(){
     ).value;
 
 
-  if(!name || !phone){
+  if(
+    !name ||
+    !phone
+  ){
 
     message(
       "اكتب اسم الطيار ورقم الهاتف"
@@ -1775,14 +2959,19 @@ window.addDriver = async function(){
   try{
 
     await addDoc(
-      collection(db,"drivers"),
+
+      collection(
+        db,
+        "drivers"
+      ),
+
       {
 
-        name:name,
+        name,
 
-        phone:phone,
+        phone,
 
-        status:status,
+        status,
 
         active:true,
 
@@ -1790,19 +2979,23 @@ window.addDriver = async function(){
           serverTimestamp()
 
       }
+
     );
 
 
-    message("تم إضافة الطيار 🛵");
+    message(
+      "تم إضافة الطيار 🛵"
+    );
 
 
     document.getElementById(
       "driverName"
-    ).value="";
+    ).value = "";
+
 
     document.getElementById(
       "driverPhone"
-    ).value="";
+    ).value = "";
 
 
     loadDrivers();
@@ -1812,7 +3005,9 @@ window.addDriver = async function(){
 
     console.error(error);
 
-    message("حدث خطأ أثناء إضافة الطيار");
+    message(
+      "حدث خطأ أثناء إضافة الطيار"
+    );
 
   }
 
@@ -1821,7 +3016,8 @@ window.addDriver = async function(){
 
 async function loadDrivers(){
 
-  if(!db) return;
+  if(!db)
+    return;
 
 
   const list =
@@ -1834,7 +3030,12 @@ async function loadDrivers(){
 
     const snapshot =
       await getDocs(
-        collection(db,"drivers")
+
+        collection(
+          db,
+          "drivers"
+        )
+
       );
 
 
@@ -1846,10 +3047,13 @@ async function loadDrivers(){
 
     if(snapshot.empty){
 
-      list.innerHTML =
-        `<div style="color:#899aaa">
+      list.innerHTML = `
+
+        <div style="color:#899aaa">
           لا يوجد طيارين.
-        </div>`;
+        </div>
+
+      `;
 
       return;
 
@@ -1857,43 +3061,69 @@ async function loadDrivers(){
 
 
     list.innerHTML =
-      snapshot.docs.map(item=>{
 
-        const d=item.data();
+      snapshot.docs.map(
+        item=>{
+
+          const d =
+            item.data();
 
 
-        return `
+          return `
 
-          <div class="item">
+            <div class="item">
 
-            <div class="item-info">
+              <div class="item-info">
 
-              <strong>
-                ${escapeHTML(d.name || "")}
-              </strong>
+                <strong>
 
-              <small>
-                ${escapeHTML(d.phone || "")}
-                • ${escapeHTML(d.status || "")}
-              </small>
+                  ${escapeHTML(
+                    d.name || ""
+                  )}
+
+                </strong>
+
+
+                <small>
+
+                  ${escapeHTML(
+                    d.phone || ""
+                  )}
+
+                  •
+
+                  ${escapeHTML(
+                    d.status || ""
+                  )}
+
+                </small>
+
+              </div>
+
+
+              <div class="item-actions">
+
+                <button
+                  class="danger"
+                  onclick="
+                    deleteDriver(
+                      '${item.id}'
+                    )
+                  ">
+
+                  حذف
+
+                </button>
+
+              </div>
 
             </div>
 
-            <div class="item-actions">
+          `;
 
-              <button
-                class="danger"
-                onclick="deleteDriver('${item.id}')">
-                حذف
-              </button>
+        }
 
-            </div>
-
-          </div>
-
-        `;
-
-      }).join("");
+      ).join("");
 
 
   }catch(error){
@@ -1905,37 +3135,59 @@ async function loadDrivers(){
 }
 
 
-window.deleteDriver = async function(id){
+window.deleteDriver =
+async function(id){
 
-  if(!confirm("هل تريد حذف الطيار؟")) return;
+  if(
+    !confirm(
+      "هل تريد حذف الطيار؟"
+    )
+  )
+    return;
 
 
   try{
 
     await deleteDoc(
-      doc(db,"drivers",id)
+
+      doc(
+        db,
+        "drivers",
+        id
+      )
+
     );
 
-    message("تم حذف الطيار");
+
+    message(
+      "تم حذف الطيار"
+    );
+
 
     loadDrivers();
+
 
   }catch(error){
 
     console.error(error);
 
-    message("تعذر حذف الطيار");
+    message(
+      "تعذر حذف الطيار"
+    );
 
   }
 
 };
 
 
-/* ================= ORDERS ================= */
+/* =====================================================
+   ORDERS
+===================================================== */
 
 async function loadOrders(){
 
-  if(!db) return;
+  if(!db)
+    return;
 
 
   const table =
@@ -1948,7 +3200,12 @@ async function loadOrders(){
 
     const snapshot =
       await getDocs(
-        collection(db,"orders")
+
+        collection(
+          db,
+          "orders"
+        )
+
       );
 
 
@@ -1963,9 +3220,13 @@ async function loadOrders(){
       table.innerHTML = `
 
         <tr>
+
           <td colspan="6">
+
             لا توجد طلبات حتى الآن.
+
           </td>
+
         </tr>
 
       `;
@@ -1976,56 +3237,70 @@ async function loadOrders(){
 
 
     table.innerHTML =
-      snapshot.docs.map(item=>{
 
-        const o=item.data();
+      snapshot.docs.map(
+        item=>{
+
+          const o =
+            item.data();
 
 
-        return `
+          return `
 
-          <tr>
+            <tr>
 
-            <td>
-              ${escapeHTML(item.id)}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                o.customerName || "غير محدد"
-              )}
-            </td>
-
-            <td>
-              ${escapeHTML(
-                o.location || "غير محدد"
-              )}
-            </td>
-
-            <td>
-              ${o.total || 0} جنيه
-            </td>
-
-            <td>
-              ${escapeHTML(
-                o.driverName || "لم يتم التعيين"
-              )}
-            </td>
-
-            <td>
-
-              <span class="badge">
+              <td>
                 ${escapeHTML(
-                  o.status || "جديد"
+                  item.id
                 )}
-              </span>
+              </td>
 
-            </td>
+              <td>
+                ${escapeHTML(
+                  o.customerName ||
+                  "غير محدد"
+                )}
+              </td>
 
-          </tr>
+              <td>
+                ${escapeHTML(
+                  o.location ||
+                  "غير محدد"
+                )}
+              </td>
 
-        `;
+              <td>
+                ${o.total || 0}
+                جنيه
+              </td>
 
-      }).join("");
+              <td>
+                ${escapeHTML(
+                  o.driverName ||
+                  "لم يتم التعيين"
+                )}
+              </td>
+
+              <td>
+
+                <span class="badge">
+
+                  ${escapeHTML(
+                    o.status ||
+                    "جديد"
+                  )}
+
+                </span>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+
+      ).join("");
 
 
   }catch(error){
@@ -2037,66 +3312,115 @@ async function loadOrders(){
 }
 
 
-/* ================= SELECTS ================= */
+/* =====================================================
+   SELECTS
+===================================================== */
 
 function updateRestaurantSelects(){
 
-  const selects = [
-
+  const productSelect =
     document.getElementById(
       "productRestaurant"
-    ),
+    );
 
+
+  const offerSelect =
     document.getElementById(
       "offerRestaurant"
-    )
-
-  ];
+    );
 
 
-  selects.forEach((select,index)=>{
+  if(productSelect){
 
-    if(!select) return;
+    productSelect.innerHTML = `
+
+      <option value="">
+        اختر المطعم
+      </option>
+
+      ${
+        restaurants.map(
+          r=>`
+
+            <option
+              value="${r.id}"
+              ${
+                r.active === false
+                ? "disabled"
+                : ""
+              }>
+
+              ${escapeHTML(
+                r.name || ""
+              )}
+
+              ${
+                r.active === false
+                ? " — مخفي"
+                : ""
+              }
+
+            </option>
+
+          `
+        ).join("")
+      }
+
+    `;
+
+  }
 
 
-    const first =
-      index===1
-      ? `<option value="">
-          كل المطاعم
-        </option>`
-      : `<option value="">
-          اختر المطعم
-        </option>`;
+  if(offerSelect){
 
+    offerSelect.innerHTML = `
 
-    select.innerHTML =
-      first +
-      restaurants.map(r=>`
+      <option value="">
+        كل المطاعم
+      </option>
 
-        <option value="${r.id}">
-          ${escapeHTML(r.name || "")}
-        </option>
+      ${
+        restaurants.map(
+          r=>`
 
-      `).join("");
+            <option value="${r.id}">
 
-  });
+              ${escapeHTML(
+                r.name || ""
+              )}
+
+            </option>
+
+          `
+        ).join("")
+      }
+
+    `;
+
+  }
 
 }
 
 
-/* ================= SETTINGS ================= */
+/* =====================================================
+   SETTINGS
+===================================================== */
 
-window.saveSettings = async function(){
+window.saveSettings =
+async function(){
 
   if(!db){
 
-    message("Firebase غير متصل ❌");
+    message(
+      "Firebase غير متصل ❌"
+    );
+
     return;
 
   }
 
 
-  const settings={
+  const settings = {
 
     siteName:
       document.getElementById(
@@ -2125,28 +3449,27 @@ window.saveSettings = async function(){
 
   try{
 
-    const ref =
+    await setDoc(
+
       doc(
         db,
         "settings",
         "site"
-      );
+      ),
 
+      settings,
 
-    await updateDoc(
-      ref,
-      settings
-    ).catch(
-      async ()=>{
-        await addDoc(
-          collection(db,"settings"),
-          settings
-        );
+      {
+        merge:true
       }
+
     );
 
 
-    message("تم حفظ الإعدادات ✅");
+    message(
+      "تم حفظ الإعدادات ✅"
+    );
+
 
   }catch(error){
 
@@ -2161,25 +3484,48 @@ window.saveSettings = async function(){
 };
 
 
-/* ================= SECURITY HELPER ================= */
+/* =====================================================
+   SECURITY
+===================================================== */
 
 function escapeHTML(value){
 
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  return String(
+    value ?? ""
+  )
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
 
 }
 
 
-/* ================= START ================= */
+/* =====================================================
+   START
+===================================================== */
 
 async function start(){
 
-  if(!db) return;
+  if(!db)
+    return;
+
 
   await loadRestaurants();
 
@@ -2197,6 +3543,7 @@ async function start(){
 start();
 
 </script>
+
 
 </body>
 </html>
