@@ -2,15 +2,21 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  >
 
   <title>مندوب | توصيل سريع وآمن</title>
 
   <style>
+
+    /* =====================================================
+       RESET
+    ===================================================== */
 
     * {
       box-sizing: border-box;
@@ -20,13 +26,12 @@
 
     html {
       scroll-behavior: smooth;
-      width: 100%;
-      overflow-x: hidden;
     }
 
     body {
       width: 100%;
       min-height: 100vh;
+
       overflow-x: hidden;
 
       font-family:
@@ -37,8 +42,8 @@
         Arial,
         sans-serif;
 
-      background: #020d1c;
-      color: #fff;
+      background: #020b16;
+      color: #ffffff;
 
       direction: rtl;
     }
@@ -49,73 +54,108 @@
     }
 
     button {
-      cursor: pointer;
       border: 0;
+      cursor: pointer;
     }
 
     a {
-      color: inherit;
       text-decoration: none;
+      color: inherit;
     }
 
     img {
-      max-width: 100%;
       display: block;
+      max-width: 100%;
     }
 
 
-    /* ================= NAVBAR ================= */
+    /* =====================================================
+       NAVBAR
+    ===================================================== */
 
     .navbar {
+
       position: sticky;
+
       top: 0;
-      z-index: 1000;
+
+      z-index: 5000;
 
       width: 100%;
+
       min-height: 68px;
 
-      padding: 8px 12px;
+      padding:
+        8px
+        max(12px, env(safe-area-inset-right))
+        8px
+        max(12px, env(safe-area-inset-left));
 
       display: flex;
+
       align-items: center;
-      gap: 10px;
 
-      background: rgba(2, 13, 28, 0.97);
+      gap: 9px;
 
-      border-bottom: 1px solid rgba(0, 217, 255, 0.15);
+      background:
+        rgba(2, 11, 22, 0.96);
 
-      backdrop-filter: blur(15px);
+      border-bottom:
+        1px solid
+        rgba(0, 217, 255, 0.16);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
 
+    /* اللوجو */
+
     .brand {
+
       width: 48px;
       min-width: 48px;
 
+      height: 48px;
+
       display: flex;
+
       align-items: center;
       justify-content: center;
+
+      border-radius: 14px;
     }
 
     .brand img {
-      width: 46px;
-      height: 46px;
+
+      width: 44px;
+      height: 44px;
+
       object-fit: contain;
     }
 
 
+    /* =====================================================
+       NAV LINKS
+    ===================================================== */
+
     .navbar nav {
+
       flex: 1;
 
+      min-width: 0;
+
       display: flex;
+
       align-items: center;
 
-      gap: 18px;
+      gap: 6px;
 
       overflow-x: auto;
-      white-space: nowrap;
 
       scrollbar-width: none;
+
+      padding: 3px 0;
     }
 
     .navbar nav::-webkit-scrollbar {
@@ -123,71 +163,123 @@
     }
 
     .navbar nav a {
+
       flex-shrink: 0;
 
-      padding: 8px 2px;
+      padding:
+        9px
+        9px;
 
-      color: #aebdca;
+      border-radius: 10px;
 
-      font-size: 13px;
+      color: #9eacbb;
+
+      font-size: 12px;
+
       font-weight: 600;
 
-      transition: .2s;
+      white-space: nowrap;
+
+      transition: 0.2s;
     }
 
-    .navbar nav a:hover,
+    .navbar nav a:hover {
+      color: #ffffff;
+      background: #071b2d;
+    }
+
     .navbar nav a.active {
+
       color: #00d9ff;
+
+      background:
+        rgba(0, 217, 255, 0.09);
     }
 
+
+    /* =====================================================
+       NAV ACTIONS
+    ===================================================== */
 
     .nav-actions {
+
       display: flex;
+
       align-items: center;
+
       gap: 7px;
 
       flex-shrink: 0;
     }
 
 
+    /* تسجيل الدخول */
+
     .login {
-      display: none;
 
-      padding: 9px 13px;
+      height: 44px;
 
-      border: 1px solid rgba(0, 217, 255, .25);
-      border-radius: 10px;
+      padding: 0 13px;
+
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.25);
+
+      border-radius: 12px;
 
       background: transparent;
 
-      color: #fff;
+      color: #ffffff;
 
-      font-size: 13px;
+      font-size: 12px;
+
       font-weight: 700;
     }
 
+    .login:active {
+      transform: scale(0.97);
+    }
+
+
+    /* السلة */
 
     .cart {
+
       position: relative;
 
       width: 46px;
       height: 46px;
 
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.3);
+
       border-radius: 13px;
 
-      background: #08d8f5;
+      background: #062239;
 
-      color: #00121d;
+      color: #ffffff;
 
       font-size: 21px;
+
+      transition: 0.2s;
     }
 
+    .cart:active {
+      transform: scale(0.94);
+    }
 
     #cartCount {
+
       position: absolute;
 
-      top: -5px;
-      left: -5px;
+      top: -4px;
+      left: -4px;
 
       min-width: 19px;
       height: 19px;
@@ -195,92 +287,105 @@
       padding: 0 5px;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
       border-radius: 50%;
 
-      background: #ff2364;
+      background: #ff2869;
 
-      color: #fff;
+      color: #ffffff;
 
       font-size: 10px;
+
       font-weight: 900;
     }
 
 
-    /* ================= MAIN ================= */
-
-    main {
-      width: 100%;
-    }
-
-
-    /* ================= HERO ================= */
+    /* =====================================================
+       HERO
+    ===================================================== */
 
     .hero {
+
       width: 100%;
 
       min-height: calc(100vh - 68px);
 
-      padding: 45px 17px 30px;
+      padding:
+        55px
+        17px
+        35px;
 
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
 
-      gap: 30px;
+      justify-content: center;
+
+      text-align: center;
 
       background:
+
         radial-gradient(
-          circle at 50% 20%,
-          rgba(0, 217, 255, .11),
-          transparent 40%
+          circle at 50% 15%,
+          rgba(0, 217, 255, 0.13),
+          transparent 38%
         ),
 
         radial-gradient(
-          circle at 20% 80%,
-          rgba(255, 40, 120, .06),
-          transparent 30%
-        );
+          circle at 90% 80%,
+          rgba(255, 40, 105, 0.08),
+          transparent 35%
+        ),
+
+        #020b16;
     }
 
 
     .hero-content {
-      width: 100%;
-      max-width: 650px;
 
-      text-align: center;
+      width: 100%;
+
+      max-width: 650px;
     }
 
 
     .eyebrow {
+
       margin-bottom: 14px;
 
       color: #00d9ff;
 
       font-size: 14px;
+
       font-weight: 800;
     }
 
 
     .hero h1 {
+
       margin-bottom: 17px;
 
-      font-size: clamp(29px, 8vw, 50px);
+      font-size:
+        clamp(31px, 9vw, 52px);
 
-      line-height: 1.4;
+      line-height: 1.35;
 
       font-weight: 900;
     }
 
 
     .hero h1 span {
+
       background:
         linear-gradient(
           90deg,
           #00d9ff,
-          #fff,
+          #ffffff,
           #ff3c88
         );
 
@@ -292,9 +397,15 @@
 
 
     .hero-text {
-      margin-bottom: 25px;
 
-      color: #aeb9c8;
+      max-width: 570px;
+
+      margin:
+        0
+        auto
+        25px;
+
+      color: #9eacbb;
 
       font-size: 15px;
 
@@ -302,33 +413,42 @@
     }
 
 
-    /* ================= LOCATION ================= */
+    /* =====================================================
+       LOCATION
+    ===================================================== */
 
     .location-box {
+
       width: 100%;
 
-      padding: 9px;
+      padding: 8px;
 
       display: flex;
+
       flex-direction: column;
 
-      gap: 9px;
+      gap: 8px;
 
-      background: #061a30;
-
-      border: 1px solid #23405d;
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.2);
 
       border-radius: 17px;
 
+      background: #061a2d;
+
       box-shadow:
-        0 15px 40px rgba(0, 0, 0, .2);
+        0 15px 45px
+        rgba(0, 0, 0, 0.22);
     }
 
 
     .location-row {
+
       width: 100%;
 
       display: flex;
+
       align-items: center;
 
       gap: 8px;
@@ -336,439 +456,423 @@
 
 
     .location-icon {
+
       width: 42px;
       min-width: 42px;
-      height: 50px;
+
+      height: 48px;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
-      font-size: 21px;
+      border-radius: 11px;
+
+      background: #08253d;
+
+      font-size: 20px;
     }
 
 
     .location-box input {
-      flex: 1;
 
-      min-width: 0;
+      width: 100%;
 
-      height: 50px;
+      height: 48px;
 
-      padding: 0 5px;
+      padding: 0 10px;
 
       border: 0;
+
       outline: 0;
 
       background: transparent;
 
-      color: #fff;
+      color: #ffffff;
 
-      font-size: 15px;
+      font-size: 14px;
     }
 
 
     .location-box input::placeholder {
-      color: #7f91a3;
+      color: #738598;
     }
 
 
-    .location-box button {
-      width: 100%;
-      height: 50px;
+    .location-box > button {
 
-      border-radius: 12px;
+      width: 100%;
+
+      height: 49px;
+
+      border-radius: 11px;
 
       background:
         linear-gradient(
           90deg,
           #00d9ff,
-          #08c8e5
+          #08b9d4
         );
 
-      color: #00121d;
+      color: #00131d;
 
       font-size: 14px;
+
       font-weight: 900;
     }
 
 
     .location-msg {
+
       min-height: 20px;
 
       margin-top: 8px;
 
       color: #00d9ff;
 
-      font-size: 13px;
+      font-size: 12px;
     }
 
 
-    /* ================= BENEFITS ================= */
+    /* =====================================================
+       QUICK ACTIONS
+    ===================================================== */
 
-    .benefits {
+    .quick-actions {
+
       width: 100%;
 
       margin-top: 22px;
 
       display: grid;
-      grid-template-columns: 1fr;
+
+      grid-template-columns:
+        repeat(2, 1fr);
 
       gap: 10px;
     }
 
 
-    .benefits > div {
-      padding: 15px;
+    .quick-card {
 
-      display: grid;
+      min-height: 78px;
 
-      grid-template-columns: 42px 1fr;
+      padding: 14px;
 
-      grid-template-rows: auto auto;
+      display: flex;
 
       align-items: center;
+
+      gap: 10px;
+
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.13);
+
+      border-radius: 15px;
+
+      background: #061827;
 
       text-align: right;
 
-      background: #061a30;
-
-      border: 1px solid #173854;
-
-      border-radius: 15px;
+      transition: 0.2s;
     }
 
 
-    .benefits b {
-      grid-row: 1 / 3;
-
-      font-size: 25px;
-
-      text-align: center;
+    .quick-card:active {
+      transform: scale(0.97);
     }
 
 
-    .benefits strong {
-      font-size: 14px;
-    }
+    .quick-icon {
 
+      width: 38px;
+      min-width: 38px;
 
-    .benefits small {
-      margin-top: 3px;
-
-      color: #8293a5;
-
-      font-size: 11px;
-    }
-
-
-    /* ================= HERO IMAGE ================= */
-
-    .hero-art {
-      width: 100%;
-      max-width: 330px;
+      height: 38px;
 
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
 
-
-    .delivery-image {
-      width: 100%;
-      max-width: 310px;
-
-      filter:
-        drop-shadow(
-          0 20px 35px
-          rgba(0, 217, 255, .15)
-        );
-    }
-
-
-    /* ================= RESTAURANTS ================= */
-
-    .section {
-      width: 100%;
-
-      padding: 45px 15px;
-    }
-
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 20px;
-    }
-
-
-    .section-head h2 {
-      font-size: 23px;
-    }
-
-
-    .section-head a {
-      color: #00d9ff;
-
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-
-    .cards {
-      width: 100%;
-
-      display: grid;
-
-      grid-template-columns: 1fr;
-
-      gap: 14px;
-    }
-
-
-    .restaurant {
-      overflow: hidden;
-
-      background: #061a30;
-
-      border: 1px solid #173854;
-
-      border-radius: 18px;
-
-      box-shadow:
-        0 12px 30px rgba(0, 0, 0, .18);
-    }
-
-
-    .food {
-      width: 100%;
-      height: 145px;
-
-      display: flex;
       align-items: center;
       justify-content: center;
 
-      background:
-        radial-gradient(
-          circle,
-          #123a50,
-          #061725
-        );
+      border-radius: 10px;
 
-      font-size: 65px;
-    }
-
-
-    .card-body {
-      padding: 16px;
-    }
-
-
-    .card-body h3 {
-      margin-bottom: 6px;
-
-      font-size: 18px;
-    }
-
-
-    .card-body p {
-      margin-bottom: 12px;
-
-      color: #8f9daf;
-
-      font-size: 13px;
-    }
-
-
-    .restaurant-info {
-      display: flex;
-      justify-content: space-between;
-
-      gap: 10px;
-
-      margin-bottom: 14px;
-
-      color: #00d9ff;
-
-      font-size: 12px;
-    }
-
-
-    .restaurant-info span:last-child {
-      color: #8999aa;
-    }
-
-
-    .card-body button {
-      width: 100%;
-      height: 46px;
-
-      border-radius: 11px;
-
-      background: #08d8f5;
-
-      color: #00121d;
-
-      font-size: 14px;
-      font-weight: 900;
-    }
-
-
-    /* ================= OFFERS ================= */
-
-    .offers-box {
-      padding: 25px 20px;
-
-      text-align: center;
-
-      background:
-        linear-gradient(
-          135deg,
-          #082943,
-          #061827
-        );
-
-      border: 1px solid #173854;
-
-      border-radius: 18px;
-    }
-
-
-    .offers-box h3 {
-      margin-bottom: 10px;
+      background: #082943;
 
       font-size: 20px;
     }
 
 
-    .offers-box p {
-      color: #94a5b6;
+    .quick-card strong {
 
-      font-size: 14px;
+      display: block;
 
-      line-height: 1.8;
-    }
-
-
-    /* ================= ABOUT ================= */
-
-    .about-box {
-      padding: 25px 20px;
-
-      background: #061a30;
-
-      border: 1px solid #173854;
-
-      border-radius: 18px;
-    }
-
-
-    .about-box h2 {
-      margin-bottom: 12px;
-
-      font-size: 23px;
-    }
-
-
-    .about-box p:last-child {
-      color: #9eabbc;
-
-      font-size: 14px;
-
-      line-height: 2;
-    }
-
-
-    /* ================= TRACK ================= */
-
-    .track {
-      width: calc(100% - 30px);
-
-      margin: 0 auto 40px;
-
-      padding: 25px 18px;
-
-      text-align: center;
-
-      background:
-        linear-gradient(
-          135deg,
-          #082943,
-          #061827
-        );
-
-      border: 1px solid #173854;
-
-      border-radius: 20px;
-    }
-
-
-    .track h2 {
-      margin-bottom: 9px;
-
-      font-size: 23px;
-    }
-
-
-    .track-description {
-      margin-bottom: 20px;
-
-      color: #92a5b4;
+      margin-bottom: 3px;
 
       font-size: 13px;
     }
 
 
-    .track-form {
+    .quick-card small {
+
+      color: #718497;
+
+      font-size: 10px;
+    }
+
+
+    /* =====================================================
+       HERO IMAGE
+    ===================================================== */
+
+    .hero-art {
+
       width: 100%;
 
+      max-width: 330px;
+
+      margin-top: 28px;
+    }
+
+
+    .delivery-image {
+
+      width: 100%;
+
+      object-fit: contain;
+
+      filter:
+        drop-shadow(
+          0 20px 40px
+          rgba(0, 217, 255, 0.17)
+        );
+    }
+
+
+    /* =====================================================
+       RESTAURANTS PREVIEW
+    ===================================================== */
+
+    .section {
+
+      width: 100%;
+
+      padding:
+        45px
+        16px;
+    }
+
+
+    .section-head {
+
       display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .section-head h2 {
+
+      font-size: 22px;
+
+      font-weight: 900;
+    }
+
+
+    .section-head a {
+
+      color: #00d9ff;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+
+    .restaurants-preview {
+
+      width: 100%;
+
+      padding: 22px 18px;
+
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.14);
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #07243a,
+          #061725
+        );
+
+      text-align: center;
+    }
+
+
+    .restaurants-preview-icon {
+
+      margin-bottom: 10px;
+
+      font-size: 42px;
+    }
+
+
+    .restaurants-preview h3 {
+
+      margin-bottom: 7px;
+
+      font-size: 19px;
+    }
+
+
+    .restaurants-preview p {
+
+      margin-bottom: 17px;
+
+      color: #8d9cac;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+    }
+
+
+    .primary-button {
+
+      min-height: 46px;
+
+      padding: 0 22px;
+
+      border-radius: 11px;
+
+      background: #00d9ff;
+
+      color: #00131d;
+
+      font-size: 13px;
+
+      font-weight: 900;
+    }
+
+
+    /* =====================================================
+       TRACK
+    ===================================================== */
+
+    .track {
+
+      width: calc(100% - 32px);
+
+      margin:
+        0
+        auto
+        35px;
+
+      padding:
+        25px
+        17px;
+
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.17);
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #072941,
+          #061827
+        );
+
+      text-align: center;
+    }
+
+
+    .track h2 {
+
+      margin-bottom: 8px;
+
+      font-size: 22px;
+    }
+
+
+    .track-description {
+
+      margin-bottom: 18px;
+
+      color: #8c9aaa;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+    }
+
+
+    .track-form {
+
+      display: flex;
+
       flex-direction: column;
 
-      gap: 9px;
+      gap: 8px;
     }
 
 
     .track-form input {
+
       width: 100%;
-      height: 50px;
+
+      height: 49px;
 
       padding: 0 14px;
 
-      border: 1px solid #23405d;
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.17);
 
       border-radius: 11px;
 
-      outline: 0;
+      outline: none;
 
-      background: #020d1c;
+      background: #020b16;
 
-      color: #fff;
+      color: #ffffff;
 
-      font-size: 14px;
+      font-size: 13px;
     }
 
 
     .track-form button {
+
       width: 100%;
-      height: 50px;
+
+      height: 49px;
 
       border-radius: 11px;
 
-      background: #08d8f5;
+      background: #00d9ff;
 
-      color: #00121d;
+      color: #00131d;
 
       font-weight: 900;
     }
 
 
     #trackMsg {
-      margin-top: 14px;
+
+      margin-top: 13px;
 
       color: #00d9ff;
 
@@ -778,100 +882,141 @@
     }
 
 
-    /* ================= FOOTER ================= */
+    /* =====================================================
+       FOOTER
+    ===================================================== */
 
     footer {
+
       width: 100%;
 
-      padding: 35px 15px 45px;
+      padding:
+        35px
+        16px
+        45px;
 
       text-align: center;
 
-      background: #010813;
+      background: #010711;
 
-      border-top: 1px solid #173854;
+      border-top:
+        1px solid
+        rgba(0, 217, 255, 0.1);
     }
 
 
     footer img {
-      width: 60px;
 
-      margin: 0 auto 10px;
+      width: 58px;
+
+      margin:
+        0
+        auto
+        10px;
     }
 
 
     footer p {
-      margin-bottom: 10px;
 
-      color: #aab5c5;
+      margin-bottom: 8px;
+
+      color: #a7b5c3;
 
       font-size: 13px;
     }
 
 
     footer small {
-      color: #68788b;
+
+      color: #627486;
 
       font-size: 10px;
     }
 
 
-    /* ================= CART ================= */
+    /* =====================================================
+       CART MODAL
+    ===================================================== */
 
     #cartModal {
+
       position: fixed;
 
       inset: 0;
 
-      z-index: 99999;
+      z-index: 10000;
     }
 
 
     .cart-overlay {
+
       position: absolute;
 
       inset: 0;
 
-      background: rgba(0, 0, 0, .78);
+      background:
+        rgba(0, 0, 0, 0.78);
 
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(5px);
     }
 
 
     .cart-box {
+
       position: absolute;
 
       left: 50%;
       bottom: 0;
 
-      transform: translateX(-50%);
+      transform:
+        translateX(-50%);
 
       width: 100%;
+
       max-width: 600px;
 
-      max-height: 85vh;
+      max-height: 86vh;
 
       overflow-y: auto;
 
-      padding: 20px 16px 25px;
+      padding:
+        20px
+        16px
+        30px;
 
-      background: #061a30;
+      border-radius:
+        24px
+        24px
+        0
+        0;
 
-      border: 1px solid #23405d;
+      background: #061a2d;
 
-      border-radius: 24px 24px 0 0;
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.2);
+
+      box-shadow:
+        0 -20px 60px
+        rgba(0, 0, 0, 0.5);
     }
 
 
     .cart-header {
+
       display: flex;
 
       align-items: center;
+
       justify-content: space-between;
 
-      padding-bottom: 15px;
+      padding-bottom: 14px;
 
-      border-bottom: 1px solid #173854;
+      border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      margin-bottom: 14px;
     }
 
 
@@ -881,41 +1026,49 @@
 
 
     .cart-header button {
+
       width: 40px;
       height: 40px;
 
       border-radius: 10px;
 
-      background: #12304d;
+      background: #102e47;
 
-      color: #fff;
+      color: #ffffff;
 
       font-size: 18px;
     }
 
 
     .cart-items {
-      padding: 15px 0;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
     }
 
 
     .cart-item {
+
       display: flex;
 
       align-items: center;
+
       justify-content: space-between;
 
       gap: 10px;
 
       padding: 14px;
 
-      margin-bottom: 9px;
+      border:
+        1px solid
+        rgba(0, 217, 255, 0.1);
 
-      background: #081f37;
+      border-radius: 13px;
 
-      border: 1px solid #173854;
-
-      border-radius: 14px;
+      background: #08243b;
     }
 
 
@@ -925,7 +1078,8 @@
 
 
     .cart-item p {
-      margin-top: 5px;
+
+      margin-top: 4px;
 
       color: #00d9ff;
 
@@ -934,148 +1088,175 @@
 
 
     .cart-item button {
-      padding: 8px 12px;
 
-      border-radius: 9px;
+      padding:
+        8px
+        11px;
 
-      background: #ff2364;
+      border-radius: 8px;
 
-      color: #fff;
+      background: #ff2869;
 
-      font-size: 12px;
+      color: #ffffff;
+
+      font-size: 11px;
+
       font-weight: 800;
     }
 
 
     .cart-total {
+
       display: flex;
+
+      align-items: center;
 
       justify-content: space-between;
 
-      padding: 15px 0;
+      margin-top: 17px;
 
-      border-top: 1px solid #173854;
+      padding-top: 14px;
 
-      font-size: 16px;
+      border-top:
+        1px solid
+        rgba(255,255,255,0.08);
     }
 
 
     .cart-total strong {
+
       color: #00d9ff;
+
+      font-size: 19px;
     }
 
 
     .checkout-button {
+
       width: 100%;
-      height: 52px;
 
-      border-radius: 12px;
+      height: 51px;
 
-      background:
-        linear-gradient(
-          90deg,
-          #00d9ff,
-          #08c8e5
-        );
+      margin-top: 13px;
 
-      color: #00121d;
-
-      font-weight: 900;
-    }
-
-
-    /* ================= MESSAGE ================= */
-
-    #cartMessage {
-      position: fixed !important;
-
-      left: 50% !important;
-      bottom: 22px !important;
-
-      transform: translateX(-50%) !important;
-
-      z-index: 100000 !important;
-
-      width: max-content;
-      max-width: calc(100% - 30px);
-
-      padding: 12px 18px;
-
-      border-radius: 12px;
+      border-radius: 11px;
 
       background: #00d9ff;
 
-      color: #00121d;
+      color: #00131d;
 
-      text-align: center;
-
-      font-size: 13px;
       font-weight: 900;
     }
 
 
-    /* ================= TABLET ================= */
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
 
-    @media (min-width: 600px) {
+    #cartMessage {
 
-      .hero {
-        padding: 65px 30px;
-      }
+      position: fixed !important;
 
-      .benefits {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      z-index: 20000 !important;
 
-      .benefits > div {
-        display: flex;
+      left: 50% !important;
 
-        flex-direction: column;
+      bottom:
+        calc(
+          20px +
+          env(safe-area-inset-bottom)
+        ) !important;
 
-        text-align: center;
+      transform:
+        translateX(-50%) !important;
 
-        gap: 5px;
-      }
+      width: max-content;
 
-      .cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      max-width: calc(100% - 30px);
 
+      padding:
+        11px
+        17px;
+
+      border-radius: 11px;
+
+      background: #00d9ff;
+
+      color: #00131d;
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      text-align: center;
+
+      box-shadow:
+        0 10px 35px
+        rgba(0,0,0,.35);
     }
 
 
-    /* ================= DESKTOP ================= */
+    /* =====================================================
+       DESKTOP
+    ===================================================== */
 
-    @media (min-width: 900px) {
+    @media (min-width: 800px) {
 
       .navbar {
-        padding: 10px 5%;
+
+        min-height: 76px;
+
+        padding:
+          10px
+          5%;
       }
+
+
+      .brand,
+      .brand img {
+
+        width: 54px;
+        height: 54px;
+      }
+
 
       .navbar nav {
+
         justify-content: center;
+
+        gap: 12px;
       }
 
-      .login {
-        display: block;
+
+      .navbar nav a {
+
+        padding:
+          10px
+          13px;
+
+        font-size: 14px;
       }
 
 
       .hero {
-        max-width: 1200px;
 
         min-height: 650px;
 
-        margin: auto;
-
         display: grid;
 
-        grid-template-columns: 1fr .8fr;
+        grid-template-columns:
+          1fr
+          0.8fr;
 
-        align-items: center;
+        max-width: 1200px;
 
-        gap: 50px;
+        margin: auto;
 
-        padding: 70px 30px;
+        padding:
+          70px
+          30px;
+
+        text-align: right;
       }
 
 
@@ -1084,8 +1265,17 @@
       }
 
 
+      .hero-text {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+
       .location-box {
+
         flex-direction: row;
+
+        align-items: center;
       }
 
 
@@ -1094,74 +1284,77 @@
       }
 
 
-      .location-box button {
-        width: 150px;
+      .location-box > button {
+        width: 145px;
       }
 
 
-      .benefits {
-        grid-template-columns: repeat(3, 1fr);
+      .quick-actions {
+        grid-template-columns:
+          repeat(4, 1fr);
       }
 
 
-      .benefits > div {
-        display: flex;
-
-        flex-direction: column;
-
-        text-align: center;
-
-        gap: 5px;
+      .hero-art {
+        max-width: 440px;
+        margin: auto;
       }
 
 
       .section {
-        max-width: 1200px;
+
+        max-width: 1000px;
 
         margin: auto;
-
-        padding-left: 30px;
-        padding-right: 30px;
-      }
-
-
-      .cards {
-        grid-template-columns: repeat(4, 1fr);
       }
 
 
       .track {
-        max-width: 1100px;
+        max-width: 1000px;
+      }
+
+
+      .track-form {
+
+        max-width: 600px;
+
+        margin: auto;
+
+        flex-direction: row;
+      }
+
+
+      .track-form button {
+        width: 150px;
+      }
+
+
+      .login {
+        display: block;
       }
 
     }
 
 
-    /* ================= IPHONE ================= */
+    /* =====================================================
+       VERY SMALL PHONES
+    ===================================================== */
 
-    @media (max-width: 400px) {
-
-      .navbar {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-
-      .navbar nav {
-        gap: 10px;
-      }
+    @media (max-width: 380px) {
 
       .navbar nav a {
         font-size: 10px;
+        padding: 8px 6px;
       }
 
       .brand {
-        width: 43px;
-        min-width: 43px;
+        width: 42px;
+        min-width: 42px;
       }
 
       .brand img {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
       }
 
       .cart {
@@ -1170,11 +1363,11 @@
       }
 
       .hero h1 {
-        font-size: 27px;
+        font-size: 28px;
       }
 
-      .hero-text {
-        font-size: 14px;
+      .quick-card {
+        padding: 11px;
       }
 
     }
@@ -1187,11 +1380,17 @@
 <body>
 
 
-  <!-- ================= NAVBAR ================= -->
+  <!-- =====================================================
+       NAVBAR
+  ===================================================== -->
 
   <header class="navbar">
 
-    <a class="brand" href="#">
+
+    <a
+      class="brand"
+      href="index.html"
+      aria-label="الرئيسية">
 
       <img
         src="assets/logo.png"
@@ -1204,16 +1403,12 @@
 
       <a
         class="active"
-        href="#">
+        href="index.html">
         الرئيسية
       </a>
 
-      <a href="#restaurants">
+      <a href="restaurants.html">
         المطاعم
-      </a>
-
-      <a href="#offers">
-        العروض
       </a>
 
       <a href="#track">
@@ -1229,10 +1424,11 @@
 
     <div class="nav-actions">
 
+
       <button
         type="button"
         class="login"
-        onclick="showMessage('تسجيل الدخول قريبًا 👤')">
+        onclick="goToLogin()">
 
         تسجيل الدخول
 
@@ -1242,8 +1438,8 @@
       <button
         type="button"
         class="cart"
-        id="cartButton"
-        onclick="openCart()">
+        onclick="openCart()"
+        aria-label="السلة">
 
         🛒
 
@@ -1253,23 +1449,29 @@
 
       </button>
 
+
     </div>
 
   </header>
 
 
 
-  <!-- ================= MAIN ================= -->
+  <!-- =====================================================
+       MAIN
+  ===================================================== -->
 
   <main>
 
 
-    <!-- ================= HERO ================= -->
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
 
     <section class="hero">
 
 
       <div class="hero-content">
+
 
         <p class="eyebrow">
           مندوب — توصيل داخل مدينتك
@@ -1278,12 +1480,12 @@
 
         <h1>
 
-          اطلب من مطعمك المفضل
+          اطلب اللي محتاجه
 
           <br>
 
           <span>
-            ونوصلك بسرعة وأمان
+            ونوصله لحد بابك
           </span>
 
         </h1>
@@ -1291,25 +1493,29 @@
 
         <p class="hero-text">
 
-          اطلب أكلك ومشترياتك واحتياجاتك اليومية
-          بسهولة من خلال مندوب.
+          اطلب من المطاعم والمحلات الموجودة
+          على مندوب، وتابع طلبك بسهولة من لحظة
+          الطلب لحد التوصيل.
 
         </p>
 
+
+        <!-- LOCATION -->
 
         <div class="location-box">
 
 
           <div class="location-row">
 
-            <span class="location-icon">
+
+            <div class="location-icon">
               📍
-            </span>
+            </div>
 
 
             <input
-              type="text"
               id="locationInput"
+              type="text"
               placeholder="اكتب عنوان التوصيل">
 
           </div>
@@ -1333,65 +1539,119 @@
         </p>
 
 
-        <div class="benefits">
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-actions">
 
 
-          <div>
+          <a
+            class="quick-card"
+            href="restaurants.html">
 
-            <b>🛡️</b>
+            <div class="quick-icon">
+              🍔
+            </div>
 
-            <strong>
-              آمن وموثوق
-            </strong>
+            <div>
 
-            <small>
-              خدمة مضمونة
-            </small>
+              <strong>
+                المطاعم
+              </strong>
 
-          </div>
+              <small>
+                اختار مطعمك
+              </small>
 
+            </div>
 
-          <div>
-
-            <b>🛵</b>
-
-            <strong>
-              توصيل سريع
-            </strong>
-
-            <small>
-              في أسرع وقت
-            </small>
-
-          </div>
+          </a>
 
 
-          <div>
+          <a
+            class="quick-card"
+            href="restaurants.html">
 
-            <b>🎧</b>
+            <div class="quick-icon">
+              🛒
+            </div>
 
-            <strong>
-              دعم العملاء
-            </strong>
+            <div>
 
-            <small>
-              متاح لمساعدتك
-            </small>
+              <strong>
+                اطلب الآن
+              </strong>
 
-          </div>
+              <small>
+                ابدأ طلبك
+              </small>
+
+            </div>
+
+          </a>
+
+
+          <a
+            class="quick-card"
+            href="#track">
+
+            <div class="quick-icon">
+              🛵
+            </div>
+
+            <div>
+
+              <strong>
+                تتبع الطلب
+              </strong>
+
+              <small>
+                اعرف طلبك فين
+              </small>
+
+            </div>
+
+          </a>
+
+
+          <button
+            type="button"
+            class="quick-card"
+            onclick="goToLogin()">
+
+            <div class="quick-icon">
+              👤
+            </div>
+
+            <div>
+
+              <strong>
+                حسابي
+              </strong>
+
+              <small>
+                تسجيل الدخول
+              </small>
+
+            </div>
+
+          </button>
 
 
         </div>
 
+
       </div>
 
+
+      <!-- HERO IMAGE -->
 
       <div class="hero-art">
 
         <img
           class="delivery-image"
           src="assets/delivery.png"
-          alt="مندوب دليفري">
+          alt="مندوب توصيل">
 
       </div>
 
@@ -1400,11 +1660,11 @@
 
 
 
-    <!-- ================= RESTAURANTS ================= -->
+    <!-- =====================================================
+         RESTAURANTS
+    ===================================================== -->
 
-    <section
-      id="restaurants"
-      class="section">
+    <section class="section">
 
 
       <div class="section-head">
@@ -1414,239 +1674,43 @@
         </h2>
 
 
-        <a href="#restaurants">
+        <a href="restaurants.html">
           عرض الكل ←
         </a>
 
       </div>
 
 
-      <div class="cards">
+      <div class="restaurants-preview">
 
 
-        <!-- RESTAURANT 1 -->
+        <div class="restaurants-preview-icon">
+          🍔
+        </div>
 
-        <article class="restaurant">
-
-          <div class="food">
-            🍔
-          </div>
-
-
-          <div class="card-body">
-
-            <h3>
-              برجر كنج
-            </h3>
-
-
-            <p>
-              برجر • أمريكي
-            </p>
-
-
-            <div class="restaurant-info">
-
-              <span>
-                ⭐ 4.5
-              </span>
-
-              <span>
-                توصيل من 25ج
-              </span>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="addToCart('برجر كنج',100)">
-
-              اطلب الآن
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-
-        <!-- RESTAURANT 2 -->
-
-        <article class="restaurant">
-
-          <div class="food">
-            🍕
-          </div>
-
-
-          <div class="card-body">
-
-            <h3>
-              بيتزا هت
-            </h3>
-
-
-            <p>
-              بيتزا • إيطالي
-            </p>
-
-
-            <div class="restaurant-info">
-
-              <span>
-                ⭐ 4.3
-              </span>
-
-              <span>
-                توصيل من 25ج
-              </span>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="addToCart('بيتزا هت',150)">
-
-              اطلب الآن
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-
-        <!-- RESTAURANT 3 -->
-
-        <article class="restaurant">
-
-          <div class="food">
-            🍗
-          </div>
-
-
-          <div class="card-body">
-
-            <h3>
-              دجاج كنتاكي
-            </h3>
-
-
-            <p>
-              فراخ • وجبات
-            </p>
-
-
-            <div class="restaurant-info">
-
-              <span>
-                ⭐ 4.6
-              </span>
-
-              <span>
-                توصيل من 25ج
-              </span>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="addToCart('دجاج كنتاكي',130)">
-
-              اطلب الآن
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-
-        <!-- RESTAURANT 4 -->
-
-        <article class="restaurant">
-
-          <div class="food">
-            🍰
-          </div>
-
-
-          <div class="card-body">
-
-            <h3>
-              حلويات
-            </h3>
-
-
-            <p>
-              حلويات • شرقي
-            </p>
-
-
-            <div class="restaurant-info">
-
-              <span>
-                ⭐ 4.4
-              </span>
-
-              <span>
-                توصيل من 25ج
-              </span>
-
-            </div>
-
-
-            <button
-              type="button"
-              onclick="addToCart('حلويات',80)">
-
-              اطلب الآن
-
-            </button>
-
-          </div>
-
-        </article>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ================= OFFERS ================= -->
-
-    <section
-      id="offers"
-      class="section">
-
-
-      <div class="section-head">
-
-        <h2>
-          العروض
-        </h2>
-
-      </div>
-
-
-      <div class="offers-box">
 
         <h3>
-          عروض مندوب قريبًا 🎉
+          اختار مطعمك وابدأ طلبك
         </h3>
 
 
         <p>
-          تابعنا للحصول على أحدث العروض والخصومات.
+
+          هتلاقي هنا المطاعم اللي بيضيفها
+          الأدمن، وبعد اختيار المطعم هتدخل
+          على المنيو والمنتجات.
+
         </p>
+
+
+        <a
+          href="restaurants.html"
+          class="primary-button">
+
+          تصفح المطاعم
+
+        </a>
+
 
       </div>
 
@@ -1655,33 +1719,35 @@
 
 
 
-    <!-- ================= ABOUT ================= -->
+    <!-- =====================================================
+         ABOUT
+    ===================================================== -->
 
     <section
       id="about"
       class="section">
 
 
-      <div class="about-box">
+      <div class="restaurants-preview">
+
 
         <p class="eyebrow">
           عن مندوب
         </p>
 
 
-        <h2>
-          توصيل سريع داخل مدينتك
-        </h2>
+        <h3>
+          توصيل بسيط وسريع
+        </h3>
 
 
         <p>
 
-          مندوب هي خدمة توصيل تساعدك
-          في طلب الأكل والمشتريات
-          والاحتياجات اليومية بسهولة
-          وسرعة وأمان.
+          مندوب منصة لتوصيل الطلبات من المطاعم
+          والمحلات إلى العميل بسهولة وأمان.
 
         </p>
+
 
       </div>
 
@@ -1690,7 +1756,9 @@
 
 
 
-    <!-- ================= TRACK ================= -->
+    <!-- =====================================================
+         TRACK
+    ===================================================== -->
 
     <section
       id="track"
@@ -1708,7 +1776,9 @@
 
 
       <p class="track-description">
-        أدخل رقم الطلب لمتابعة حالته.
+
+        اكتب رقم الطلب لمعرفة آخر حالة للطلب.
+
       </p>
 
 
@@ -1716,8 +1786,8 @@
 
 
         <input
-          type="text"
           id="orderNumber"
+          type="text"
           placeholder="رقم الطلب">
 
 
@@ -1743,9 +1813,12 @@
 
 
 
-  <!-- ================= FOOTER ================= -->
+  <!-- =====================================================
+       FOOTER
+  ===================================================== -->
 
   <footer>
+
 
     <img
       src="assets/logo.png"
@@ -1761,17 +1834,23 @@
       © 2026 مندوب — جميع الحقوق محفوظة
     </small>
 
+
   </footer>
 
 
 
-  <!-- ================= FIREBASE + APP ================= -->
+  <!-- =====================================================
+       FIREBASE + FUNCTIONS
+  ===================================================== -->
 
   <script type="module">
 
+
     import {
       initializeApp
-    } from
+    }
+
+    from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
@@ -1782,11 +1861,15 @@
       serverTimestamp,
       doc,
       getDoc
-    } from
+    }
+
+    from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-    /* ================= FIREBASE CONFIG ================= */
+    /* =====================================================
+       FIREBASE CONFIG
+    ===================================================== */
 
     const firebaseConfig = {
 
@@ -1814,44 +1897,34 @@
     };
 
 
-    /* ================= FIREBASE INIT ================= */
+    /* =====================================================
+       FIREBASE INITIALIZE
+    ===================================================== */
+
+    let db = null;
+
+    let firebaseReady = false;
+
 
     try {
 
+
       const app =
-        initializeApp(firebaseConfig);
+        initializeApp(
+          firebaseConfig
+        );
 
 
-      const db =
+      db =
         getFirestore(app);
 
 
-      window.firebaseDB =
-        db;
+      firebaseReady = true;
 
 
-      window.firebaseCollection =
-        collection;
+      window.firebaseDB = db;
 
-
-      window.firebaseAddDoc =
-        addDoc;
-
-
-      window.firebaseServerTimestamp =
-        serverTimestamp;
-
-
-      window.firebaseDoc =
-        doc;
-
-
-      window.firebaseGetDoc =
-        getDoc;
-
-
-      window.firebaseReady =
-        true;
+      window.firebaseReady = true;
 
 
       console.log(
@@ -1859,10 +1932,14 @@
       );
 
 
-    } catch (error) {
+    }
 
-      window.firebaseReady =
-        false;
+    catch(error) {
+
+
+      firebaseReady = false;
+
+      window.firebaseReady = false;
 
 
       console.error(
@@ -1874,22 +1951,25 @@
 
 
 
-    /* ================= CART ================= */
+    /* =====================================================
+       CART
+    ===================================================== */
 
     let cart = [];
 
 
     function updateCartCount() {
 
-      const count =
+
+      const element =
         document.getElementById(
           "cartCount"
         );
 
 
-      if (count) {
+      if(element) {
 
-        count.textContent =
+        element.textContent =
           cart.length;
 
       }
@@ -1897,16 +1977,15 @@
     }
 
 
-
     function addToCart(
       name,
       price
     ) {
 
+
       cart.push({
 
-        name:
-          name,
+        name: name,
 
         price:
           Number(price)
@@ -1929,13 +2008,14 @@
 
     function openCart() {
 
+
       const oldModal =
         document.getElementById(
           "cartModal"
         );
 
 
-      if (oldModal) {
+      if(oldModal) {
 
         oldModal.remove();
 
@@ -1945,24 +2025,25 @@
       let itemsHTML = "";
 
 
-      if (cart.length === 0) {
+      if(cart.length === 0) {
+
 
         itemsHTML = `
 
           <div
             style="
               text-align:center;
-              padding:30px;
-            ">
+              padding:30px 10px;
+            "
+          >
 
             <div
               style="
                 font-size:45px;
                 margin-bottom:10px;
-              ">
-
+              "
+            >
               🛒
-
             </div>
 
             <h3>
@@ -1973,20 +2054,24 @@
               style="
                 color:#8998aa;
                 margin-top:8px;
-              ">
-
-              لم تقم بإضافة أي طلب حتى الآن.
-
+                font-size:13px;
+              "
+            >
+              لم تقم بإضافة أي منتج.
             </p>
 
           </div>
 
         `;
 
-      } else {
+      }
+
+      else {
+
 
         cart.forEach(
           (item, index) => {
+
 
             itemsHTML += `
 
@@ -1995,7 +2080,7 @@
                 <div>
 
                   <strong>
-                    ${item.name}
+                    ${escapeHTML(item.name)}
                   </strong>
 
                   <p>
@@ -2004,13 +2089,11 @@
 
                 </div>
 
-
                 <button
                   type="button"
-                  onclick="removeFromCart(${index})">
-
+                  onclick="removeFromCart(${index})"
+                >
                   حذف
-
                 </button>
 
               </div>
@@ -2045,8 +2128,8 @@
 
         <div
           class="cart-overlay"
-          onclick="closeCart()">
-        </div>
+          onclick="closeCart()"
+        ></div>
 
 
         <div class="cart-box">
@@ -2061,10 +2144,9 @@
 
             <button
               type="button"
-              onclick="closeCart()">
-
+              onclick="closeCart()"
+            >
               ✕
-
             </button>
 
           </div>
@@ -2078,7 +2160,7 @@
 
 
           ${
-            cart.length
+            cart.length > 0
               ? `
 
                 <div class="cart-total">
@@ -2097,10 +2179,9 @@
                 <button
                   type="button"
                   class="checkout-button"
-                  onclick="checkout()">
-
+                  onclick="checkout()"
+                >
                   إتمام الطلب
-
                 </button>
 
               `
@@ -2123,13 +2204,14 @@
 
     function closeCart() {
 
+
       const modal =
         document.getElementById(
           "cartModal"
         );
 
 
-      if (modal) {
+      if(modal) {
 
         modal.remove();
 
@@ -2139,7 +2221,20 @@
 
 
 
-    function removeFromCart(index) {
+    function removeFromCart(
+      index
+    ) {
+
+
+      if(
+        index < 0 ||
+        index >= cart.length
+      ) {
+
+        return;
+
+      }
+
 
       cart.splice(
         index,
@@ -2156,25 +2251,17 @@
 
 
 
-    /* ================= CHECKOUT ================= */
+    /* =====================================================
+       CHECKOUT
+    ===================================================== */
 
     async function checkout() {
 
-      if (cart.length === 0) {
+
+      if(cart.length === 0) {
 
         showMessage(
           "السلة فارغة."
-        );
-
-        return;
-
-      }
-
-
-      if (!window.firebaseReady) {
-
-        showMessage(
-          "Firebase غير متصل ❌"
         );
 
         return;
@@ -2194,18 +2281,28 @@
           : "";
 
 
-      if (!location) {
+      if(!location) {
 
         showMessage(
           "اكتب عنوان التوصيل أولاً 📍"
         );
 
-
-        if (locationInput) {
+        if(locationInput) {
 
           locationInput.focus();
 
         }
+
+        return;
+
+      }
+
+
+      if(!firebaseReady) {
+
+        showMessage(
+          "Firebase غير متصل ❌"
+        );
 
         return;
 
@@ -2221,6 +2318,7 @@
 
 
       try {
+
 
         const order = {
 
@@ -2247,34 +2345,25 @@
             "جديد",
 
           createdAt:
-            window.firebaseServerTimestamp()
+            serverTimestamp()
 
         };
 
 
-        const ref =
-          await window.firebaseAddDoc(
-
-            window.firebaseCollection(
-              window.firebaseDB,
+        const orderRef =
+          await addDoc(
+            collection(
+              db,
               "orders"
             ),
-
             order
-
           );
 
 
         localStorage.setItem(
           "lastOrderId",
-          ref.id
+          orderRef.id
         );
-
-
-        cart = [];
-
-
-        updateCartCount();
 
 
         const orderNumber =
@@ -2283,30 +2372,35 @@
           );
 
 
-        if (orderNumber) {
+        if(orderNumber) {
 
           orderNumber.value =
-            ref.id;
+            orderRef.id;
 
         }
 
 
+        cart = [];
+
+
+        updateCartCount();
+
+
+        closeCart();
+
+
         showMessage(
-          "تم تسجيل الطلب ✅ رقم الطلب: " +
-          ref.id
+          "تم تسجيل الطلب ✅"
         );
 
 
-        setTimeout(
-          closeCart,
-          2000
-        );
+      }
 
+      catch(error) {
 
-      } catch (error) {
 
         console.error(
-          "Firebase Error:",
+          "Order Error:",
           error
         );
 
@@ -2321,9 +2415,12 @@
 
 
 
-    /* ================= LOCATION ================= */
+    /* =====================================================
+       LOCATION
+    ===================================================== */
 
     function setLocation() {
+
 
       const input =
         document.getElementById(
@@ -2337,10 +2434,8 @@
         );
 
 
-      if (!input || !msg) {
-
+      if(!input) {
         return;
-
       }
 
 
@@ -2348,10 +2443,16 @@
         input.value.trim();
 
 
-      if (!value) {
+      if(!value) {
 
-        msg.textContent =
-          "اكتب عنوان التوصيل أولاً.";
+
+        if(msg) {
+
+          msg.textContent =
+            "اكتب عنوان التوصيل أولاً.";
+
+        }
+
 
         return;
 
@@ -2364,14 +2465,24 @@
       );
 
 
-      msg.textContent =
-        "تم حفظ عنوان التوصيل ✅";
+      if(msg) {
+
+        msg.textContent =
+          "تم حفظ عنوان التوصيل ✅";
+
+      }
+
+
+      showMessage(
+        "تم حفظ عنوان التوصيل 📍"
+      );
 
     }
 
 
 
-    function loadSavedLocation() {
+    function loadLocation() {
+
 
       const saved =
         localStorage.getItem(
@@ -2385,7 +2496,7 @@
         );
 
 
-      if (
+      if(
         saved &&
         input
       ) {
@@ -2399,9 +2510,12 @@
 
 
 
-    /* ================= TRACK ================= */
+    /* =====================================================
+       TRACK ORDER
+    ===================================================== */
 
     async function trackOrder() {
+
 
       const input =
         document.getElementById(
@@ -2415,10 +2529,8 @@
         );
 
 
-      if (!input || !msg) {
-
+      if(!input || !msg) {
         return;
-
       }
 
 
@@ -2426,7 +2538,7 @@
         input.value.trim();
 
 
-      if (!id) {
+      if(!id) {
 
         msg.textContent =
           "اكتب رقم الطلب.";
@@ -2436,7 +2548,7 @@
       }
 
 
-      if (!window.firebaseReady) {
+      if(!firebaseReady) {
 
         msg.textContent =
           "Firebase غير متصل.";
@@ -2448,25 +2560,22 @@
 
       try {
 
-        const ref =
-          window.firebaseDoc(
 
-            window.firebaseDB,
-
+        const orderRef =
+          doc(
+            db,
             "orders",
-
             id
-
           );
 
 
         const snapshot =
-          await window.firebaseGetDoc(
-            ref
+          await getDoc(
+            orderRef
           );
 
 
-        if (!snapshot.exists()) {
+        if(!snapshot.exists()) {
 
           msg.textContent =
             "لم يتم العثور على الطلب.";
@@ -2484,19 +2593,29 @@
 
           <strong>
             حالة الطلب:
-            ${order.status || "جديد"}
+            ${escapeHTML(
+              order.status ||
+              "جديد"
+            )}
           </strong>
 
           <br>
 
           الإجمالي:
-          ${order.total || 0} جنيه
+          ${Number(
+            order.total || 0
+          )}
+          جنيه
 
         `;
 
-      } catch (error) {
+      }
+
+      catch(error) {
+
 
         console.error(
+          "Tracking Error:",
           error
         );
 
@@ -2510,9 +2629,36 @@
 
 
 
-    /* ================= MESSAGE ================= */
+    /* =====================================================
+       LOGIN
+    ===================================================== */
 
-    function showMessage(text) {
+    function goToLogin() {
+
+      /*
+        لما نعمل صفحة تسجيل الدخول
+        هنغير السطر ده إلى:
+
+        window.location.href =
+          "login.html";
+      */
+
+      showMessage(
+        "صفحة تسجيل الدخول هنجهزها في الخطوة الجاية 👤"
+      );
+
+    }
+
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    function showMessage(
+      text
+    ) {
+
 
       const old =
         document.getElementById(
@@ -2520,7 +2666,7 @@
         );
 
 
-      if (old) {
+      if(old) {
 
         old.remove();
 
@@ -2549,7 +2695,7 @@
       setTimeout(
         () => {
 
-          if (message) {
+          if(message) {
 
             message.remove();
 
@@ -2563,7 +2709,44 @@
 
 
 
-    /* ================= GLOBAL FUNCTIONS ================= */
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHTML(
+      value
+    ) {
+
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+
+    /* =====================================================
+       GLOBAL FUNCTIONS
+    ===================================================== */
 
     window.addToCart =
       addToCart;
@@ -2589,20 +2772,19 @@
     window.showMessage =
       showMessage;
 
+    window.goToLogin =
+      goToLogin;
 
 
-    /* ================= START ================= */
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
+    /* =====================================================
+       START
+    ===================================================== */
 
-        loadSavedLocation();
+    loadLocation();
 
-        updateCartCount();
+    updateCartCount();
 
-      }
-    );
 
   </script>
 
