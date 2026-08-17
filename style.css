@@ -155,7 +155,7 @@ section {
   display: flex;
   align-items: center;
 
-  gap: 8px;
+  gap: 7px;
 
   margin: 0 5px;
 
@@ -174,7 +174,7 @@ section {
 .navbar nav a {
   flex-shrink: 0;
 
-  padding: 8px 4px;
+  padding: 8px 3px;
 
   color: #d7e5ef;
 
@@ -200,45 +200,45 @@ section {
   align-items: center;
 
   gap: 5px;
+
+  min-width: 0;
 }
 
 
 /* =====================================================
    LOGIN
-   ظاهر على الموبايل والآيفون
+   يظهر على الموبايل والآيفون
 ===================================================== */
 
 .login {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
+  display: block;
 
   flex-shrink: 0;
 
-  height: 40px;
+  min-height: 40px;
 
-  padding:
-    0 9px;
+  padding: 8px 9px;
 
   border:
     1px solid rgba(0, 224, 255, 0.30);
 
   border-radius: 10px;
 
-  background: #06233a;
+  background:
+    rgba(6, 35, 58, 0.95);
 
   color: #fff;
 
   font-size: 11px;
 
-  font-weight: 800;
+  line-height: 1.2;
 
-  line-height: 1;
+  font-weight: 800;
 
   white-space: nowrap;
 
-  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 
@@ -518,9 +518,11 @@ section {
 
   display: grid;
 
-  grid-template-columns: 44px minmax(0, 1fr);
+  grid-template-columns:
+    44px minmax(0, 1fr);
 
-  grid-template-rows: auto auto;
+  grid-template-rows:
+    auto auto;
 
   align-items: center;
 
@@ -1262,6 +1264,32 @@ footer small {
 
 
 /* =====================================================
+   RESTAURANTS LOADING / MESSAGE
+===================================================== */
+
+.restaurants-message {
+  width: 100%;
+
+  padding: 30px 15px;
+
+  border-radius: 16px;
+
+  background: #061a2d;
+
+  border:
+    1px solid rgba(0, 224, 255, 0.12);
+
+  color: #91a4b3;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+
+/* =====================================================
    SMALL PHONES
 ===================================================== */
 
@@ -1273,35 +1301,45 @@ footer small {
   }
 
   .brand {
-    width: 42px;
-    min-width: 42px;
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
   }
 
   .brand img {
-    width: 37px;
-    height: 37px;
+    width: 36px;
+    height: 36px;
   }
 
   .navbar nav {
-    gap: 5px;
+    gap: 4px;
     margin: 0 3px;
   }
 
   .navbar nav a {
     font-size: 10px;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .nav-actions {
+    gap: 3px;
   }
 
   .login {
-    height: 38px;
-    padding: 0 7px;
+    min-height: 38px;
+
+    padding:
+      7px 7px;
+
     font-size: 10px;
   }
 
   .cart {
-    width: 41px;
-    height: 41px;
+    width: 40px;
+    height: 40px;
+
+    font-size: 18px;
   }
 
   .hero {
@@ -1321,6 +1359,7 @@ footer small {
 
   .track {
     width: calc(100% - 24px);
+
     margin-left: 12px;
     margin-right: 12px;
   }
@@ -1340,6 +1379,7 @@ footer small {
 
   .hero-content {
     max-width: 700px;
+
     margin-left: auto;
     margin-right: auto;
   }
@@ -1395,11 +1435,12 @@ footer small {
   }
 
   .login {
-    display: flex;
+    display: block;
 
-    height: auto;
+    min-height: auto;
 
-    padding: 10px 16px;
+    padding:
+      10px 16px;
 
     border:
       1px solid rgba(0, 224, 255, 0.25);
@@ -1499,7 +1540,8 @@ footer small {
     left: 50%;
     right: auto;
 
-    transform: translateX(-50%);
+    transform:
+      translateX(-50%);
 
     width: 600px;
     max-width: 600px;
@@ -1520,6 +1562,7 @@ footer small {
     padding-bottom:
       env(safe-area-inset-bottom);
   }
+
 }
 
 
@@ -1530,6 +1573,7 @@ footer small {
 html,
 body {
   max-width: 100%;
+
   overflow-x: hidden;
 }
 
@@ -1540,4 +1584,35 @@ body * {
 input,
 button {
   max-width: 100%;
+}
+
+
+/* =====================================================
+   TOUCH / IPHONE
+===================================================== */
+
+button,
+a,
+input {
+  -webkit-touch-callout: none;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+
+/* =====================================================
+   LOGIN VISIBILITY FINAL FIX
+===================================================== */
+
+.nav-actions .login {
+  display: block !important;
+  visibility: visible;
+  opacity: 1;
 }
