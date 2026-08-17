@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -22,250 +21,250 @@
 }
 
 body{
-
-  font-family:
-    Arial,
-    Tahoma,
-    sans-serif;
-
+  font-family:Arial,Tahoma,sans-serif;
   min-height:100vh;
-
   background:
-    radial-gradient(
-      circle at top,
-      #103451 0%,
-      #061827 45%,
-      #020b16 100%
-    );
-
+    radial-gradient(circle at top,#0b3049 0%,#020b16 55%);
   color:#fff;
-
   display:flex;
-
   align-items:center;
-
   justify-content:center;
-
   padding:20px;
-
 }
 
-.login-page{
-
+.login-wrapper{
   width:100%;
-
-  max-width:420px;
-
+  max-width:430px;
 }
 
 .logo{
-
   text-align:center;
-
   margin-bottom:25px;
-
 }
 
 .logo img{
-
   width:90px;
-
   height:90px;
-
   object-fit:contain;
-
   display:block;
-
   margin:auto;
-
 }
 
 .logo h1{
-
   margin-top:10px;
-
   color:#00dfff;
-
-  font-size:27px;
-
+  font-size:28px;
 }
 
 .logo p{
-
-  margin-top:7px;
-
+  margin-top:6px;
   color:#8fa5b7;
-
   font-size:13px;
-
 }
 
-.login-box{
-
-  background:
-    rgba(6,26,45,.96);
-
+.card{
+  background:rgba(6,26,45,.96);
   border:1px solid #173854;
-
   border-radius:22px;
-
   padding:25px;
-
   box-shadow:
-    0 20px 60px
-    rgba(0,0,0,.35);
-
+    0 20px 60px rgba(0,0,0,.35);
 }
 
-.login-box h2{
+.tabs{
+  display:flex;
+  gap:8px;
+  background:#031321;
+  padding:5px;
+  border-radius:13px;
+  margin-bottom:22px;
+}
 
+.tab{
+  flex:1;
+  border:0;
+  padding:12px;
+  border-radius:9px;
+  background:transparent;
+  color:#91a4b4;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.tab.active{
+  background:#00dfff;
+  color:#00131e;
+}
+
+.form{
+  display:none;
+}
+
+.form.active{
+  display:block;
+}
+
+.title{
   font-size:21px;
+  margin-bottom:7px;
+}
 
+.subtitle{
+  color:#8fa5b7;
+  font-size:13px;
+  line-height:1.8;
   margin-bottom:20px;
-
 }
 
 .field{
-
-  margin-bottom:15px;
-
+  margin-bottom:14px;
 }
 
 .field label{
-
   display:block;
-
-  color:#a9bac8;
-
+  color:#aabac7;
   font-size:13px;
-
   margin-bottom:7px;
-
 }
 
 .field input{
-
   width:100%;
-
   padding:14px;
-
   border-radius:12px;
-
   border:1px solid #23425d;
-
   background:#031321;
-
   color:#fff;
-
   outline:none;
-
-  font-size:15px;
-
+  font-size:14px;
 }
 
 .field input:focus{
-
   border-color:#00dfff;
-
-  box-shadow:
-    0 0 0 2px
-    rgba(0,223,255,.10);
-
+  box-shadow:0 0 0 2px rgba(0,223,255,.08);
 }
 
-.login-button{
+.password-wrap{
+  position:relative;
+}
 
-  width:100%;
+.password-wrap input{
+  padding-left:55px;
+}
 
-  padding:14px;
-
+.show-password{
+  position:absolute;
+  left:8px;
+  top:7px;
+  height:40px;
+  min-width:42px;
   border:0;
-
-  border-radius:12px;
-
-  background:#00dfff;
-
-  color:#00131e;
-
-  font-weight:bold;
-
-  font-size:15px;
-
+  border-radius:9px;
+  background:#12324b;
+  color:#fff;
   cursor:pointer;
+}
 
+.primary{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:14px;
+  background:#00dfff;
+  color:#00131e;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
   margin-top:5px;
-
 }
 
-.login-button:disabled{
-
-  opacity:.6;
-
+.primary:disabled{
+  opacity:.55;
   cursor:not-allowed;
-
 }
 
-.message{
-
-  margin-top:15px;
-
-  padding:12px;
-
-  border-radius:11px;
-
+.forgot{
+  display:block;
+  width:100%;
   text-align:center;
-
+  margin-top:15px;
+  border:0;
+  background:transparent;
+  color:#00dfff;
+  cursor:pointer;
   font-size:13px;
-
-  display:none;
-
-  line-height:1.7;
-
-}
-
-.message.error{
-
-  display:block;
-
-  background:#351321;
-
-  border:1px solid #6d2940;
-
-  color:#ff759b;
-
-}
-
-.message.success{
-
-  display:block;
-
-  background:#092f27;
-
-  border:1px solid #17624f;
-
-  color:#43e6ae;
-
 }
 
 .back{
-
   display:block;
-
   text-align:center;
-
-  margin-top:18px;
-
-  color:#8fa5b7;
-
+  margin-top:20px;
+  color:#91a4b4;
   text-decoration:none;
-
   font-size:13px;
-
 }
 
-.back:hover{
+.message{
+  display:none;
+  margin-bottom:15px;
+  padding:12px;
+  border-radius:11px;
+  font-size:13px;
+  line-height:1.7;
+  text-align:center;
+}
 
-  color:#00dfff;
+.message.show{
+  display:block;
+}
+
+.message.error{
+  background:#421525;
+  border:1px solid #7c2948;
+  color:#ff8eae;
+}
+
+.message.success{
+  background:#082f26;
+  border:1px solid #17644f;
+  color:#53e8b1;
+}
+
+.loading{
+  display:inline-block;
+  width:16px;
+  height:16px;
+  border:2px solid rgba(0,19,30,.3);
+  border-top-color:#00131e;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  vertical-align:middle;
+  margin-left:7px;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+@media(max-width:420px){
+
+  body{
+    padding:12px;
+  }
+
+  .card{
+    padding:20px;
+  }
+
+  .logo img{
+    width:75px;
+    height:75px;
+  }
+
+  .logo h1{
+    font-size:24px;
+  }
 
 }
 
@@ -277,8 +276,10 @@ body{
 <body>
 
 
-<div class="login-page">
+<div class="login-wrapper">
 
+
+  <!-- LOGO -->
 
   <div class="logo">
 
@@ -291,20 +292,65 @@ body{
     <h1>مندوب</h1>
 
     <p>
-      تسجيل الدخول إلى لوحة التحكم
+      اطلب أكلك بسهولة من أفضل المطاعم
     </p>
 
   </div>
 
 
-  <div class="login-box">
+  <!-- CARD -->
 
-    <h2>
-      🔐 تسجيل الدخول
-    </h2>
+  <div class="card">
 
 
-    <form id="loginForm">
+    <!-- TABS -->
+
+    <div class="tabs">
+
+      <button
+        id="loginTab"
+        class="tab active"
+        type="button"
+        onclick="showForm('login')"
+      >
+        تسجيل الدخول
+      </button>
+
+      <button
+        id="registerTab"
+        class="tab"
+        type="button"
+        onclick="showForm('register')"
+      >
+        إنشاء حساب
+      </button>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+      id="message"
+      class="message"
+    ></div>
+
+
+    <!-- ================= LOGIN ================= -->
+
+    <form
+      id="loginForm"
+      class="form active"
+      onsubmit="loginUser(event)"
+    >
+
+      <h2 class="title">
+        أهلاً بك 👋
+      </h2>
+
+      <p class="subtitle">
+        سجل دخولك إلى حسابك للمتابعة.
+      </p>
 
 
       <div class="field">
@@ -314,10 +360,10 @@ body{
         </label>
 
         <input
-          id="email"
+          id="loginEmail"
           type="email"
-          placeholder="admin@example.com"
-          autocomplete="username"
+          placeholder="example@email.com"
+          autocomplete="email"
           required
         >
 
@@ -330,69 +376,209 @@ body{
           كلمة المرور
         </label>
 
-        <input
-          id="password"
-          type="password"
-          placeholder="••••••••"
-          autocomplete="current-password"
-          required
-        >
+        <div class="password-wrap">
+
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="كلمة المرور"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            type="button"
+            class="show-password"
+            onclick="togglePassword('loginPassword',this)"
+          >
+            👁
+          </button>
+
+        </div>
 
       </div>
 
 
       <button
         id="loginButton"
-        class="login-button"
+        class="primary"
         type="submit"
       >
-
         تسجيل الدخول
-
       </button>
 
 
-      <div
-        id="loginMessage"
-        class="message"
-      ></div>
+      <button
+        type="button"
+        class="forgot"
+        onclick="resetPassword()"
+      >
+        نسيت كلمة المرور؟
+      </button>
 
+    </form>
+
+
+    <!-- ================= REGISTER ================= -->
+
+    <form
+      id="registerForm"
+      class="form"
+      onsubmit="registerUser(event)"
+    >
+
+      <h2 class="title">
+        إنشاء حساب جديد 📝
+      </h2>
+
+      <p class="subtitle">
+        أنشئ حسابك الآن وابدأ طلباتك بسهولة.
+      </p>
+
+
+      <div class="field">
+
+        <label>
+          الاسم
+        </label>
+
+        <input
+          id="registerName"
+          type="text"
+          placeholder="اكتب اسمك"
+          autocomplete="name"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          البريد الإلكتروني
+        </label>
+
+        <input
+          id="registerEmail"
+          type="email"
+          placeholder="example@email.com"
+          autocomplete="email"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          كلمة المرور
+        </label>
+
+        <div class="password-wrap">
+
+          <input
+            id="registerPassword"
+            type="password"
+            placeholder="6 أحرف أو أكثر"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+
+          <button
+            type="button"
+            class="show-password"
+            onclick="togglePassword('registerPassword',this)"
+          >
+            👁
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          تأكيد كلمة المرور
+        </label>
+
+        <div class="password-wrap">
+
+          <input
+            id="registerConfirm"
+            type="password"
+            placeholder="أعد كتابة كلمة المرور"
+            autocomplete="new-password"
+            minlength="6"
+            required
+          >
+
+          <button
+            type="button"
+            class="show-password"
+            onclick="togglePassword('registerConfirm',this)"
+          >
+            👁
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="registerButton"
+        class="primary"
+        type="submit"
+      >
+        إنشاء الحساب
+      </button>
 
     </form>
 
 
     <a
-      class="back"
       href="index.html"
+      class="back"
     >
-      ← العودة للرئيسية
+      ← العودة إلى الصفحة الرئيسية
     </a>
 
 
   </div>
 
-
 </div>
 
 
-<script type="module">
 
-/* =====================================================
-   FIREBASE
-===================================================== */
+<!-- ================= FIREBASE ================= -->
+
+<script type="module">
 
 import {
   initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 import {
   getAuth,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
   onAuthStateChanged
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
 
 
 /* =====================================================
@@ -425,63 +611,94 @@ const firebaseConfig = {
 };
 
 
+
 /* =====================================================
-   INITIALIZE
+   INIT
 ===================================================== */
 
-let app;
+const app =
+  initializeApp(firebaseConfig);
 
-let auth;
+const auth =
+  getAuth(app);
+
+const db =
+  getFirestore(app);
 
 
-try{
 
-  app =
-    initializeApp(
-      firebaseConfig
+/* =====================================================
+   FORM SWITCH
+===================================================== */
+
+window.showForm = function(type){
+
+  const loginForm =
+    document.getElementById(
+      "loginForm"
     );
 
-  auth =
-    getAuth(app);
+  const registerForm =
+    document.getElementById(
+      "registerForm"
+    );
 
-}catch(error){
+  const loginTab =
+    document.getElementById(
+      "loginTab"
+    );
 
-  console.error(error);
-
-  showMessage(
-    "تعذر تشغيل Firebase",
-    "error"
-  );
-
-}
-
-
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const form =
-  document.getElementById(
-    "loginForm"
-  );
+  const registerTab =
+    document.getElementById(
+      "registerTab"
+    );
 
 
-const emailInput =
-  document.getElementById(
-    "email"
-  );
+  clearMessage();
 
 
-const passwordInput =
-  document.getElementById(
-    "password"
-  );
+  if(type === "register"){
 
+    loginForm.classList.remove(
+      "active"
+    );
 
-const loginButton =
-  document.getElementById(
-    "loginButton"
-  );
+    registerForm.classList.add(
+      "active"
+    );
+
+    loginTab.classList.remove(
+      "active"
+    );
+
+    registerTab.classList.add(
+      "active"
+    );
+
+  }
+
+  else{
+
+    registerForm.classList.remove(
+      "active"
+    );
+
+    loginForm.classList.add(
+      "active"
+    );
+
+    registerTab.classList.remove(
+      "active"
+    );
+
+    loginTab.classList.add(
+      "active"
+    );
+
+  }
+
+};
+
 
 
 /* =====================================================
@@ -490,258 +707,520 @@ const loginButton =
 
 function showMessage(
   text,
-  type
+  type="error"
 ){
 
   const box =
     document.getElementById(
-      "loginMessage"
+      "message"
     );
-
-
-  if(!box){
-    return;
-  }
-
 
   box.textContent =
     text;
 
-
   box.className =
-    "message " + type;
-
+    "message show " + type;
 
 }
+
+
+function clearMessage(){
+
+  const box =
+    document.getElementById(
+      "message"
+    );
+
+  box.textContent =
+    "";
+
+  box.className =
+    "message";
+
+}
+
 
 
 /* =====================================================
-   CHECK CURRENT LOGIN
+   PASSWORD SHOW/HIDE
 ===================================================== */
 
-if(auth){
+window.togglePassword =
+function(
+  inputId,
+  button
+){
 
-  onAuthStateChanged(
-    auth,
-    function(user){
-
-      if(user){
-
-        /*
-          المستخدم مسجل بالفعل
-          ندخله على لوحة الأدمن
-        */
-
-        localStorage.setItem(
-          "mandoub_logged_in",
-          "true"
-        );
+  const input =
+    document.getElementById(
+      inputId
+    );
 
 
-        window.location.href =
-          "admin.html";
+  if(!input) return;
 
-      }
 
-    }
-  );
+  if(input.type === "password"){
 
-}
+    input.type =
+      "text";
+
+    button.textContent =
+      "🙈";
+
+  }
+
+  else{
+
+    input.type =
+      "password";
+
+    button.textContent =
+      "👁";
+
+  }
+
+};
+
 
 
 /* =====================================================
    LOGIN
 ===================================================== */
 
-form.addEventListener(
-  "submit",
-  async function(event){
+window.loginUser =
+async function(event){
 
-    event.preventDefault();
+  event.preventDefault();
 
-
-    if(!auth){
-
-      showMessage(
-        "❌ Firebase غير متصل",
-        "error"
-      );
-
-      return;
-
-    }
+  clearMessage();
 
 
-    const email =
-      emailInput.value.trim();
+  const email =
+    document.getElementById(
+      "loginEmail"
+    ).value.trim();
+
+  const password =
+    document.getElementById(
+      "loginPassword"
+    ).value;
 
 
-    const password =
-      passwordInput.value;
-
-
-    if(!email){
-
-      showMessage(
-        "❌ اكتب البريد الإلكتروني",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    if(!password){
-
-      showMessage(
-        "❌ اكتب كلمة المرور",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    loginButton.disabled =
-      true;
-
-
-    loginButton.textContent =
-      "⏳ جاري تسجيل الدخول...";
-
+  if(!email || !password){
 
     showMessage(
-      "",
-      ""
+      "اكتب البريد الإلكتروني وكلمة المرور"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "loginButton"
     );
 
 
-    try{
+  button.disabled =
+    true;
 
-      const result =
-        await signInWithEmailAndPassword(
-          auth,
+  button.innerHTML =
+    `<span class="loading"></span> جاري تسجيل الدخول`;
+
+
+  try{
+
+    const result =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+    console.log(
+      "Logged in:",
+      result.user.uid
+    );
+
+
+    showMessage(
+      "✅ تم تسجيل الدخول بنجاح",
+      "success"
+    );
+
+
+    setTimeout(()=>{
+
+      window.location.href =
+        "index.html";
+
+    },800);
+
+
+  }
+
+  catch(error){
+
+    console.error(
+      "LOGIN ERROR:",
+      error
+    );
+
+
+    showMessage(
+      getFirebaseErrorMessage(
+        error.code
+      )
+    );
+
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "تسجيل الدخول";
+
+  }
+
+};
+
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
+
+window.registerUser =
+async function(event){
+
+  event.preventDefault();
+
+  clearMessage();
+
+
+  const name =
+    document.getElementById(
+      "registerName"
+    ).value.trim();
+
+  const email =
+    document.getElementById(
+      "registerEmail"
+    ).value.trim();
+
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
+
+  const confirm =
+    document.getElementById(
+      "registerConfirm"
+    ).value;
+
+
+  if(!name){
+
+    showMessage(
+      "اكتب اسمك أولاً"
+    );
+
+    return;
+
+  }
+
+
+  if(!email){
+
+    showMessage(
+      "اكتب البريد الإلكتروني"
+    );
+
+    return;
+
+  }
+
+
+  if(password.length < 6){
+
+    showMessage(
+      "كلمة المرور يجب أن تكون 6 أحرف على الأقل"
+    );
+
+    return;
+
+  }
+
+
+  if(password !== confirm){
+
+    showMessage(
+      "كلمتا المرور غير متطابقتين"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "registerButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.innerHTML =
+    `<span class="loading"></span> جاري إنشاء الحساب`;
+
+
+  try{
+
+    /* إنشاء حساب Firebase */
+
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+    const user =
+      result.user;
+
+
+    /* حفظ اسم المستخدم في Authentication */
+
+    await updateProfile(
+      user,
+      {
+        displayName:
+          name
+      }
+    );
+
+
+    /* إنشاء ملف العميل في Firestore */
+
+    await setDoc(
+      doc(
+        db,
+        "customers",
+        user.uid
+      ),
+      {
+
+        uid:
+          user.uid,
+
+        name:
+          name,
+
+        email:
           email,
-          password
-        );
 
+        role:
+          "customer",
 
-      if(result.user){
+        active:
+          true,
 
-        localStorage.setItem(
-          "mandoub_logged_in",
-          "true"
-        );
-
-
-        showMessage(
-          "✅ تم تسجيل الدخول بنجاح، جاري فتح لوحة التحكم...",
-          "success"
-        );
-
-
-        setTimeout(
-          function(){
-
-            window.location.href =
-              "admin.html";
-
-          },
-          700
-        );
+        createdAt:
+          serverTimestamp()
 
       }
+    );
 
 
-    }
+    showMessage(
+      "✅ تم إنشاء حسابك بنجاح",
+      "success"
+    );
 
-    catch(error){
 
-      console.error(
-        "LOGIN ERROR:",
-        error
+    setTimeout(()=>{
+
+      window.location.href =
+        "index.html";
+
+    },1000);
+
+
+  }
+
+  catch(error){
+
+    console.error(
+      "REGISTER ERROR:",
+      error
+    );
+
+
+    showMessage(
+      getFirebaseErrorMessage(
+        error.code
+      )
+    );
+
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "إنشاء الحساب";
+
+  }
+
+};
+
+
+
+/* =====================================================
+   RESET PASSWORD
+===================================================== */
+
+window.resetPassword =
+async function(){
+
+  clearMessage();
+
+
+  const email =
+    document.getElementById(
+      "loginEmail"
+    ).value.trim();
+
+
+  if(!email){
+
+    showMessage(
+      "اكتب بريدك الإلكتروني أولاً ثم اضغط نسيت كلمة المرور"
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      email
+    );
+
+
+    showMessage(
+      "✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+      "success"
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "RESET ERROR:",
+      error
+    );
+
+
+    showMessage(
+      getFirebaseErrorMessage(
+        error.code
+      )
+    );
+
+  }
+
+};
+
+
+
+/* =====================================================
+   FIREBASE ERROR MESSAGES
+===================================================== */
+
+function getFirebaseErrorMessage(code){
+
+  switch(code){
+
+    case "auth/invalid-email":
+
+      return "❌ البريد الإلكتروني غير صحيح";
+
+
+    case "auth/user-not-found":
+
+      return "❌ لا يوجد حساب بهذا البريد";
+
+
+    case "auth/wrong-password":
+
+      return "❌ كلمة المرور غير صحيحة";
+
+
+    case "auth/invalid-credential":
+
+      return "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
+
+
+    case "auth/email-already-in-use":
+
+      return "❌ هذا البريد مسجل بالفعل";
+
+
+    case "auth/weak-password":
+
+      return "❌ كلمة المرور ضعيفة، استخدم 6 أحرف على الأقل";
+
+
+    case "auth/too-many-requests":
+
+      return "❌ محاولات كثيرة، حاول مرة أخرى بعد قليل";
+
+
+    case "auth/network-request-failed":
+
+      return "❌ تحقق من اتصال الإنترنت";
+
+
+    case "auth/operation-not-allowed":
+
+      return "❌ تسجيل الدخول بالبريد غير مفعل في Firebase";
+
+
+    default:
+
+      return "❌ حدث خطأ، حاول مرة أخرى";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   CHECK CURRENT USER
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  function(user){
+
+    if(user){
+
+      console.log(
+        "Current user:",
+        user.email
       );
-
-
-      let errorMessage =
-        "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
-
-
-      if(
-        error.code ===
-        "auth/invalid-email"
-      ){
-
-        errorMessage =
-          "❌ البريد الإلكتروني غير صحيح";
-
-      }
-
-      else if(
-        error.code ===
-        "auth/user-not-found"
-      ){
-
-        errorMessage =
-          "❌ الحساب غير موجود";
-
-      }
-
-      else if(
-        error.code ===
-        "auth/wrong-password"
-      ){
-
-        errorMessage =
-          "❌ كلمة المرور غير صحيحة";
-
-      }
-
-      else if(
-        error.code ===
-        "auth/invalid-credential"
-      ){
-
-        errorMessage =
-          "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
-
-      }
-
-      else if(
-        error.code ===
-        "auth/too-many-requests"
-      ){
-
-        errorMessage =
-          "❌ محاولات كثيرة، حاول مرة أخرى بعد قليل";
-
-      }
-
-      else if(
-        error.code ===
-        "auth/network-request-failed"
-      ){
-
-        errorMessage =
-          "❌ تحقق من اتصال الإنترنت";
-
-      }
-
-
-      showMessage(
-        errorMessage,
-        "error"
-      );
-
-
-      loginButton.disabled =
-        false;
-
-
-      loginButton.textContent =
-        "تسجيل الدخول";
 
     }
 
@@ -749,16 +1228,8 @@ form.addEventListener(
 );
 
 
-/* =====================================================
-   GLOBAL FIREBASE STATUS
-===================================================== */
-
-window.firebaseReady =
-  true;
-
-
 console.log(
-  "Mandoub Login Firebase Ready ✅"
+  "Mandoub Login Loaded ✅"
 );
 
 </script>
