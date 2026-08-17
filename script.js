@@ -1,120 +1,432 @@
-// ================= السلة =================
+/* =====================================================
+   MANDOUB - SCRIPT.JS
+   السلة + تحديد الموقع + إرسال الطلب إلى Firebase
+===================================================== */
 
 let cart = [];
 
+let selectedLocation = "";
 
-// ================= تحديث رقم السلة =================
-
-function updateCartCount() {
-
-  const count =
-    document.getElementById("cartCount");
-
-  if (count) {
-    count.textContent = cart.length;
-  }
-
-}
+let firebaseReady = false;
 
 
-// ================= إضافة للسلة =================
+/* =====================================================
+   FIREBASE
+===================================================== */
 
-function addToCart(name, price) {
+function waitForFirebase() {
 
-  cart.push({
-    name: name,
-    price: Number(price)
+  return new Promise((resolve) => {
+
+    if (window.firebaseReady === true) {
+      firebaseReady = true;
+      resolve(true);
+      return;
+    }
+
+    let tries = 0;
+
+    const timer = setInterval(() => {
+
+      tries++;
+
+      if (window.firebaseReady === true) {
+
+        clearInterval(timer);
+
+        firebaseReady = true;
+
+        resolve(true);
+
+      }
+
+      if (tries >= 50) {
+
+        clearInterval(timer);
+
+        firebaseReady = false;
+
+        resolve(false);
+
+      }
+
+    }, 100);
+
   });
 
-  updateCartCount();
-
-  showMessage(
-    "تمت إضافة " + name + " إلى السلة 🛒"
-  );
-
 }
 
 
-// ================= فتح السلة =================
+/* =====================================================
+   MESSAGE
+===================================================== */
 
-function openCart() {
+function showMessage(message) {
 
-  const old =
-    document.getElementById("cartModal");
+  let old = document.getElementById("siteMessage");
 
   if (old) {
     old.remove();
   }
 
+  const box = document.createElement("div");
 
-  const modal =
-    document.createElement("div");
+  box.id = "siteMessage";
 
-  modal.id = "cartModal";
+  box.textContent = message;
+
+  box.style.position = "fixed";
+  box.style.left = "50%";
+  box.style.bottom = "25px";
+  box.style.transform = "translateX(-50%)";
+  box.style.zIndex = "99999";
+  box.style.width = "calc(100% - 30px)";
+  box.style.maxWidth = "430px";
+  box.style.padding = "15px 18px";
+  box.style.borderRadius = "15px";
+  box.style.background = "#00dfff";
+  box.style.color = "#00121d";
+  box.style.fontWeight = "900";
+  box.style.textAlign = "center";
+  box.style.boxShadow = "0 10px 35px rgba(0,0,0,.35)";
+
+  document.body.appendChild(box);
+
+  setTimeout(() => {
+
+    box.remove();
+
+  }, 3000);
+
+}
 
 
-  let items = "";
+/* =====================================================
+   LOCATION
+===================================================== */
+
+function setLocation() {
+
+  const input =
+    document.getElementById("locationInput");
+
+  const message =
+    document.getElementById("locationMsg");
 
 
-  if (cart.length === 0) {
+  if (!navigator.geolocation) {
 
-    items = `
-      <div class="empty-cart">
+    message.textContent =
+      "❌ جهازك لا يدعم تحديد الموقع";
 
-        <div style="font-size:50px">
-          🛒
-        </div>
+    return;
 
-        <h3>
-          السلة فارغة
-        </h3>
+  }
 
-        <p>
-          أضف منتجًا أولًا.
-        </p>
 
-      </div>
-    `;
+  message.textContent =
+    "📍 جاري تحديد موقعك...";
 
-  } else {
 
-    cart.forEach((item, index) => {
+  navigator.geolocation.getCurrentPosition(
 
-      items += `
-        <div class="cart-item">
+    async function(position) {
 
-          <div>
-            <strong>
-              ${item.name}
-            </strong>
+      const latitude =
+        position.coords.latitude;
 
-            <p>
-              ${item.price} جنيه
-            </p>
-          </div>
+      const longitude =
+        position.coords.longitude;
 
-          <button
-            type="button"
-            onclick="removeFromCart(${index})">
 
-            حذف
+      selectedLocation =
+        `${latitude}, ${longitude}`;
 
-          </button>
 
-        </div>
-      `;
+      input.value =
+        `تم تحديد موقعك 📍`;
+
+
+      message.textContent =
+        "✅ تم تحديد موقعك بنجاح";
+
+
+      localStorage.setItem(
+        "mandoub_location",
+        selectedLocation
+      );
+
+
+      try {
+
+        await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=ar`,
+          {
+            headers: {
+              "Accept": "application/json"
+            }
+          }
+        )
+        .then(res => res.json())
+        .then(data => {
+
+          if (
+            data &&
+            data.display_name
+          ) {
+
+            input.value =
+              data.display_name;
+
+            selectedLocation =
+              data.display_name;
+
+            localStorage.setItem(
+              "mandoub_location",
+              selectedLocation
+            );
+
+          }
+
+        });
+
+      } catch (error) {
+
+        console.log(
+          "لم يتم جلب اسم العنوان",
+          error
+        );
+
+      }
+
+    },
+
+    function(error) {
+
+      console.error(
+        "Location Error:",
+        error
+      );
+
+
+      if (error.code === 1) {
+
+        message.textContent =
+          "❌ لازم تسمح للموقع بالوصول إلى موقعك";
+
+      }
+
+      else if (error.code === 2) {
+
+        message.textContent =
+          "❌ تعذر تحديد موقعك";
+
+      }
+
+      else if (error.code === 3) {
+
+        message.textContent =
+          "❌ انتهى وقت تحديد الموقع، حاول مرة أخرى";
+
+      }
+
+      else {
+
+        message.textContent =
+          "❌ حدث خطأ أثناء تحديد الموقع";
+
+      }
+
+    },
+
+    {
+      enableHighAccuracy: true,
+      timeout: 15000,
+      maximumAge: 0
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   LOAD SAVED LOCATION
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    const saved =
+      localStorage.getItem(
+        "mandoub_location"
+      );
+
+    if (!saved) {
+      return;
+    }
+
+    selectedLocation = saved;
+
+    const input =
+      document.getElementById(
+        "locationInput"
+      );
+
+    if (input) {
+
+      input.value =
+        saved;
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ADD TO CART
+===================================================== */
+
+function addToCart(name, price) {
+
+  const existing =
+    cart.find(
+      item => item.name === name
+    );
+
+
+  if (existing) {
+
+    existing.quantity++;
+
+  }
+
+  else {
+
+    cart.push({
+
+      name: name,
+
+      price: Number(price),
+
+      quantity: 1
 
     });
 
   }
 
 
-  const total =
+  updateCartCount();
+
+  showMessage(
+    `✅ تم إضافة ${name} إلى السلة`
+  );
+
+
+  openCart();
+
+}
+
+
+/* =====================================================
+   CART COUNT
+===================================================== */
+
+function updateCartCount() {
+
+  const countElement =
+    document.getElementById(
+      "cartCount"
+    );
+
+
+  if (!countElement) {
+    return;
+  }
+
+
+  const count =
     cart.reduce(
-      (sum, item) =>
-        sum + Number(item.price),
+      (total, item) =>
+        total + item.quantity,
       0
     );
+
+
+  countElement.textContent =
+    count;
+
+}
+
+
+/* =====================================================
+   CART TOTAL
+===================================================== */
+
+function getCartTotal() {
+
+  return cart.reduce(
+
+    (total, item) => {
+
+      return total +
+        (item.price * item.quantity);
+
+    },
+
+    0
+
+  );
+
+}
+
+
+/* =====================================================
+   OPEN CART
+===================================================== */
+
+function openCart() {
+
+  let modal =
+    document.getElementById(
+      "cartModal"
+    );
+
+
+  if (!modal) {
+
+    createCartModal();
+
+    modal =
+      document.getElementById(
+        "cartModal"
+      );
+
+  }
+
+
+  modal.style.display =
+    "block";
+
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   CREATE CART MODAL
+===================================================== */
+
+function createCartModal() {
+
+  const modal =
+    document.createElement("div");
+
+  modal.id =
+    "cartModal";
 
 
   modal.innerHTML = `
@@ -123,7 +435,6 @@ function openCart() {
       class="cart-overlay"
       onclick="closeCart()">
     </div>
-
 
     <div class="cart-box">
 
@@ -136,194 +447,376 @@ function openCart() {
         <button
           type="button"
           onclick="closeCart()">
-
           ✕
-
         </button>
 
       </div>
 
 
-      <div class="cart-items">
-
-        ${items}
-
+      <div
+        id="cartItems"
+        class="cart-items">
       </div>
 
 
-      ${
-        cart.length > 0
-        ?
-        `
-
-        <div class="cart-total">
-
-          <span>
-            الإجمالي
-          </span>
-
-          <strong>
-            ${total} جنيه
-          </strong>
-
-        </div>
+      <div
+        id="cartTotal"
+        class="cart-total">
+      </div>
 
 
-        <button
-          type="button"
-          class="checkout-button"
-          onclick="checkout()">
+      <button
+        id="checkoutButton"
+        class="checkout-button"
+        type="button"
+        onclick="submitOrder()">
 
-          إتمام الطلب
+        إتمام الطلب
 
-        </button>
+      </button>
 
-        `
-        :
-        ""
-      }
+
+      <p
+        id="cartMessage"
+        style="
+          margin-top:12px;
+          color:#00dfff;
+        ">
+      </p>
 
     </div>
 
   `;
 
 
-  document.body.appendChild(modal);
+  document.body.appendChild(
+    modal
+  );
 
 }
 
 
-// ================= إغلاق السلة =================
+/* =====================================================
+   CLOSE CART
+===================================================== */
 
 function closeCart() {
 
   const modal =
-    document.getElementById("cartModal");
+    document.getElementById(
+      "cartModal"
+    );
+
 
   if (modal) {
-    modal.remove();
+
+    modal.style.display =
+      "none";
+
   }
 
 }
 
 
-// ================= حذف =================
+/* =====================================================
+   RENDER CART
+===================================================== */
 
-function removeFromCart(index) {
+function renderCart() {
 
-  cart.splice(index, 1);
+  const container =
+    document.getElementById(
+      "cartItems"
+    );
 
-  updateCartCount();
-
-  openCart();
-
-}
-
-
-// ================= انتظار Firebase =================
-
-function waitForFirebase() {
-
-  return new Promise((resolve) => {
-
-    if (window.firebaseReady) {
-
-      resolve();
-
-      return;
-
-    }
+  const total =
+    document.getElementById(
+      "cartTotal"
+    );
 
 
-    let attempts = 0;
+  if (!container || !total) {
+    return;
+  }
 
-
-    const timer =
-      setInterval(() => {
-
-        attempts++;
-
-
-        if (window.firebaseReady) {
-
-          clearInterval(timer);
-
-          resolve();
-
-        }
-
-
-        if (attempts >= 50) {
-
-          clearInterval(timer);
-
-          resolve();
-
-        }
-
-      }, 100);
-
-  });
-
-}
-
-
-// ================= تسجيل الطلب =================
-
-async function checkout() {
 
   if (cart.length === 0) {
 
-    showMessage(
-      "السلة فارغة ❌"
-    );
+    container.innerHTML = `
+
+      <div class="empty-cart">
+
+        <div style="font-size:45px">
+          🛒
+        </div>
+
+        <h3>
+          السلة فارغة
+        </h3>
+
+        <p>
+          أضف طلب من أحد المطاعم أولاً
+        </p>
+
+      </div>
+
+    `;
+
+
+    total.innerHTML = "";
 
     return;
 
   }
 
 
-  const locationInput =
-    document.getElementById(
-      "locationInput"
-    );
+  container.innerHTML = "";
 
 
-  const location =
-    locationInput
-      ?
-      locationInput.value.trim()
-      :
-      "";
+  cart.forEach(
+    (item, index) => {
+
+      const itemElement =
+        document.createElement(
+          "div"
+        );
 
 
-  if (!location) {
-
-    showMessage(
-      "اكتب عنوان التوصيل أولًا 📍"
-    );
-
-    return;
-
-  }
+      itemElement.className =
+        "cart-item";
 
 
-  showMessage(
-    "جاري تسجيل الطلب..."
+      itemElement.innerHTML = `
+
+        <div>
+
+          <strong>
+            ${escapeHTML(item.name)}
+          </strong>
+
+          <p>
+            ${item.price} جنيه × ${item.quantity}
+          </p>
+
+        </div>
+
+
+        <div
+          style="
+            display:flex;
+            align-items:center;
+            gap:6px;
+          ">
+
+          <button
+            type="button"
+            style="
+              background:#00dfff;
+              color:#00121d;
+              padding:7px 10px;
+            "
+            onclick="increaseItem(${index})">
+
+            +
+
+          </button>
+
+
+          <strong>
+            ${item.quantity}
+          </strong>
+
+
+          <button
+            type="button"
+            style="
+              background:#173b55;
+              padding:7px 10px;
+            "
+            onclick="decreaseItem(${index})">
+
+            −
+
+          </button>
+
+
+          <button
+            type="button"
+            onclick="removeItem(${index})">
+
+            حذف
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        itemElement
+      );
+
+    }
   );
 
 
-  await waitForFirebase();
+  const cartTotal =
+    getCartTotal();
 
 
-  if (!window.firebaseReady) {
+  total.innerHTML = `
 
-    showMessage(
-      "Firebase غير متصل ❌"
+    <span>
+      الإجمالي
+    </span>
+
+    <strong>
+      ${cartTotal} جنيه
+    </strong>
+
+  `;
+
+}
+
+
+/* =====================================================
+   INCREASE ITEM
+===================================================== */
+
+function increaseItem(index) {
+
+  if (!cart[index]) {
+    return;
+  }
+
+  cart[index].quantity++;
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   DECREASE ITEM
+===================================================== */
+
+function decreaseItem(index) {
+
+  if (!cart[index]) {
+    return;
+  }
+
+
+  cart[index].quantity--;
+
+
+  if (
+    cart[index].quantity <= 0
+  ) {
+
+    cart.splice(index, 1);
+
+  }
+
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   REMOVE ITEM
+===================================================== */
+
+function removeItem(index) {
+
+  if (!cart[index]) {
+    return;
+  }
+
+
+  cart.splice(index, 1);
+
+
+  updateCartCount();
+
+  renderCart();
+
+}
+
+
+/* =====================================================
+   SUBMIT ORDER
+===================================================== */
+
+async function submitOrder() {
+
+  const message =
+    document.getElementById(
+      "cartMessage"
     );
 
+
+  if (cart.length === 0) {
+
+    message.textContent =
+      "❌ السلة فارغة";
+
+    return;
+
+  }
+
+
+  if (!selectedLocation) {
+
+    message.textContent =
+      "📍 حدد موقع التوصيل أولاً";
+
+    closeCart();
+
+
+    const locationInput =
+      document.getElementById(
+        "locationInput"
+      );
+
+
+    if (locationInput) {
+
+      locationInput.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+      locationInput.focus();
+
+    }
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "⏳ جاري إرسال الطلب...";
+
+
+  const ready =
+    await waitForFirebase();
+
+
+  if (!ready) {
+
+    message.textContent =
+      "❌ Firebase غير متصل";
+
     console.error(
-      "Firebase لم يتم تحميله."
+      "Firebase is not ready"
     );
 
     return;
@@ -333,29 +826,26 @@ async function checkout() {
 
   try {
 
-    const total =
-      cart.reduce(
-        (sum, item) =>
-          sum + Number(item.price),
-        0
-      );
-
-
-    const order = {
+    const orderData = {
 
       items: cart.map(item => ({
 
         name: item.name,
 
-        price: Number(item.price)
+        price: item.price,
+
+        quantity: item.quantity
 
       })),
 
-      total: total,
+      total:
+        getCartTotal(),
 
-      location: location,
+      location:
+        selectedLocation,
 
-      status: "جديد",
+      status:
+        "جديد",
 
       createdAt:
         window.firebaseServerTimestamp()
@@ -373,17 +863,22 @@ async function checkout() {
     const result =
       await window.firebaseAddDoc(
         orders,
-        order
+        orderData
       );
 
 
-    const orderId =
-      result.id;
+    console.log(
+      "Order ID:",
+      result.id
+    );
 
 
-    localStorage.setItem(
-      "lastOrderId",
-      orderId
+    message.textContent =
+      "✅ تم إرسال طلبك بنجاح";
+
+
+    showMessage(
+      "✅ تم إرسال الطلب بنجاح"
     );
 
 
@@ -391,27 +886,14 @@ async function checkout() {
 
     updateCartCount();
 
-    closeCart();
+    renderCart();
 
 
-    showMessage(
-      "تم تسجيل الطلب بنجاح ✅ رقم الطلب: " +
-      orderId
-    );
+    setTimeout(() => {
 
+      closeCart();
 
-    const orderInput =
-      document.getElementById(
-        "orderNumber"
-      );
-
-
-    if (orderInput) {
-
-      orderInput.value =
-        orderId;
-
-    }
+    }, 1800);
 
 
   }
@@ -419,318 +901,216 @@ async function checkout() {
   catch (error) {
 
     console.error(
-      "Firebase Error:",
+      "ORDER ERROR:",
       error
     );
 
 
-    if (
-      error.code ===
-      "permission-denied"
-    ) {
-
-      showMessage(
-        "Firestore رفض الطلب ❌"
-      );
-
-    } else {
-
-      showMessage(
-        "حصل خطأ أثناء تسجيل الطلب ❌"
-      );
-
-    }
+    message.textContent =
+      "❌ حصل خطأ أثناء إرسال الطلب";
 
   }
 
 }
 
 
-// ================= الموقع =================
+/* =====================================================
+   TRACK ORDER
+===================================================== */
 
-function setLocation() {
-
-  const input =
-    document.getElementById(
-      "locationInput"
-    );
-
-  const msg =
-    document.getElementById(
-      "locationMsg"
-    );
-
-
-  if (!input) {
-    return;
-  }
-
-
-  const location =
-    input.value.trim();
-
-
-  if (!location) {
-
-    if (msg) {
-
-      msg.textContent =
-        "اكتب عنوان التوصيل أولًا.";
-
-    }
-
-    return;
-
-  }
-
-
-  localStorage.setItem(
-    "deliveryLocation",
-    location
-  );
-
-
-  if (msg) {
-
-    msg.textContent =
-      "تم حفظ عنوان التوصيل: " +
-      location;
-
-  }
-
-}
-
-
-// ================= تحميل الموقع =================
-
-function loadSavedLocation() {
-
-  const saved =
-    localStorage.getItem(
-      "deliveryLocation"
-    );
-
-
-  const input =
-    document.getElementById(
-      "locationInput"
-    );
-
-
-  if (
-    saved &&
-    input
-  ) {
-
-    input.value =
-      saved;
-
-  }
-
-}
-
-
-// ================= تتبع الطلب =================
-
-async function trackOrder() {
+function trackOrder() {
 
   const input =
     document.getElementById(
       "orderNumber"
     );
 
-  const msg =
+  const message =
     document.getElementById(
       "trackMsg"
     );
 
 
-  if (!input || !msg) {
+  if (!input || !message) {
     return;
   }
 
 
-  const number =
+  const orderNumber =
     input.value.trim();
 
 
-  if (!number) {
+  if (!orderNumber) {
 
-    msg.textContent =
-      "اكتب رقم الطلب.";
-
-    return;
-
-  }
-
-
-  await waitForFirebase();
-
-
-  if (!window.firebaseReady) {
-
-    msg.textContent =
-      "Firebase غير متصل.";
+    message.textContent =
+      "❌ اكتب رقم الطلب أولاً";
 
     return;
 
   }
-
-
-  try {
-
-    const orderRef =
-      window.firebaseDoc(
-        window.firebaseDB,
-        "orders",
-        number
-      );
-
-
-    const result =
-      await window.firebaseGetDoc(
-        orderRef
-      );
-
-
-    if (!result.exists()) {
-
-      msg.textContent =
-        "لم يتم العثور على الطلب.";
-
-      return;
-
-    }
-
-
-    const order =
-      result.data();
-
-
-    msg.innerHTML = `
-
-      <strong>
-        حالة الطلب:
-        ${order.status || "جديد"}
-      </strong>
-
-      <br>
-
-      الإجمالي:
-      ${order.total || 0} جنيه
-
-    `;
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Track Error:",
-      error
-    );
-
-
-    msg.textContent =
-      "حدث خطأ أثناء تتبع الطلب.";
-
-  }
-
-}
-
-
-// ================= الرسائل =================
-
-function showMessage(text) {
-
-  const old =
-    document.getElementById(
-      "cartMessage"
-    );
-
-
-  if (old) {
-    old.remove();
-  }
-
-
-  const message =
-    document.createElement(
-      "div"
-    );
-
-
-  message.id =
-    "cartMessage";
 
 
   message.textContent =
-    text;
+    "🔎 جاري البحث عن الطلب...";
 
 
-  message.style.position =
-    "fixed";
+  waitForFirebase()
+    .then(async ready => {
 
-  message.style.bottom =
-    "25px";
+      if (!ready) {
 
-  message.style.left =
-    "50%";
+        message.textContent =
+          "❌ Firebase غير متصل";
 
-  message.style.transform =
-    "translateX(-50%)";
+        return;
 
-  message.style.background =
-    "#00e0ff";
-
-  message.style.color =
-    "#00121d";
-
-  message.style.padding =
-    "13px 22px";
-
-  message.style.borderRadius =
-    "14px";
-
-  message.style.fontWeight =
-    "800";
-
-  message.style.zIndex =
-    "999999";
-
-  message.style.boxShadow =
-    "0 8px 30px rgba(0,0,0,.4)";
+      }
 
 
-  document.body.appendChild(
-    message
-  );
+      try {
+
+        const {
+          doc,
+          getDoc
+        } = await import(
+          "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js"
+        );
 
 
-  setTimeout(() => {
+        const orderRef =
+          doc(
+            window.firebaseDB,
+            "orders",
+            orderNumber
+          );
 
-    if (message) {
-      message.remove();
-    }
 
-  }, 3000);
+        const snapshot =
+          await getDoc(
+            orderRef
+          );
+
+
+        if (!snapshot.exists()) {
+
+          message.textContent =
+            "❌ الطلب غير موجود";
+
+          return;
+
+        }
+
+
+        const data =
+          snapshot.data();
+
+
+        message.textContent =
+          `📦 حالة الطلب: ${data.status || "جديد"}`;
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          "❌ تعذر البحث عن الطلب";
+
+      }
+
+    });
 
 }
 
 
-// ================= تشغيل الموقع =================
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function escapeHTML(value) {
 
-    updateCartCount();
+  return String(value)
 
-    loadSavedLocation();
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function openLogin() {
+
+  showMessage(
+    "👤 تسجيل الدخول هنضيفه في الخطوة الجاية"
+  );
+
+}
+
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+window.addToCart =
+  addToCart;
+
+window.openCart =
+  openCart;
+
+window.closeCart =
+  closeCart;
+
+window.setLocation =
+  setLocation;
+
+window.submitOrder =
+  submitOrder;
+
+window.trackOrder =
+  trackOrder;
+
+window.showMessage =
+  showMessage;
+
+window.increaseItem =
+  increaseItem;
+
+window.decreaseItem =
+  decreaseItem;
+
+window.removeItem =
+  removeItem;
+
+window.openLogin =
+  openLogin;
+
+
+/* =====================================================
+   START
+===================================================== */
+
+console.log(
+  "Mandoub Script Loaded ✅"
+);
+
+waitForFirebase()
+  .then(ready => {
 
     console.log(
-      "موقع مندوب يعمل ✅"
+      ready
+        ? "Firebase Ready ✅"
+        : "Firebase Not Ready ❌"
     );
 
-  }
-);
+  });
