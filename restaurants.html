@@ -8,21 +8,16 @@
   <title>المطاعم | مندوب</title>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       min-height: 100vh;
       background: #020d1b;
-      color: white;
+      color: #fff;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -32,237 +27,118 @@
         sans-serif;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font-family: inherit;
-      cursor: pointer;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    /* NAVBAR */
-
-    .navbar {
+    header {
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 100;
 
-      width: 100%;
-      min-height: 65px;
+      height: 70px;
+      padding: 10px 16px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
 
-      padding: 8px 12px;
-
-      background: rgba(2, 13, 27, .98);
-
-      border-bottom:
-        1px solid rgba(0, 224, 255, .2);
-
+      background: rgba(2, 13, 27, .97);
+      border-bottom: 1px solid rgba(0, 224, 255, .2);
       backdrop-filter: blur(12px);
     }
 
-    .brand img {
+    .logo {
       width: 50px;
       height: 50px;
       object-fit: contain;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-
-      overflow-x: auto;
-      white-space: nowrap;
-
-      scrollbar-width: none;
-    }
-
-    .nav-links::-webkit-scrollbar {
-      display: none;
-    }
-
-    .nav-links a {
-      font-size: 13px;
-      color: #c7d5df;
-      flex-shrink: 0;
-    }
-
-    .nav-links a.active {
-      color: #00dfff;
-      font-weight: 800;
-    }
-
-    .cart-btn {
-      width: 48px;
-      height: 48px;
-
-      border: 1px solid rgba(0,224,255,.3);
-      border-radius: 13px;
-
+    .back {
+      border: 1px solid rgba(0, 224, 255, .3);
       background: #06233a;
       color: white;
-
-      font-size: 21px;
-
-      position: relative;
+      padding: 10px 15px;
+      border-radius: 11px;
+      font-weight: 700;
+      text-decoration: none;
     }
 
-    .cart-count {
-      position: absolute;
-
-      top: -5px;
-      left: -5px;
-
-      min-width: 20px;
-      height: 20px;
-
-      border-radius: 50%;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: #00dfff;
-      color: #00121d;
-
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    /* PAGE */
-
-    .page {
+    main {
       width: 100%;
       max-width: 1000px;
-
       margin: auto;
-
-      padding: 30px 16px 60px;
+      padding: 30px 16px 50px;
     }
 
-    .page-title {
+    .title {
       text-align: center;
       margin-bottom: 25px;
     }
 
-    .page-title small {
-      display: block;
-
-      color: #00dfff;
-
-      font-size: 14px;
-      font-weight: 800;
-
+    .title h1 {
+      font-size: 30px;
       margin-bottom: 8px;
     }
 
-    .page-title h1 {
-      font-size: 30px;
-      font-weight: 900;
-    }
-
-    .page-title p {
-      color: #8fa2b2;
-      margin-top: 10px;
+    .title p {
+      color: #8ea3b4;
       font-size: 14px;
     }
 
-    /* RESTAURANTS */
+    #loading {
+      text-align: center;
+      color: #00dfff;
+      padding: 30px;
+    }
 
-    .restaurants-grid {
+    #error {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #ff557f;
+    }
+
+    .restaurants {
       display: grid;
-
       grid-template-columns: 1fr;
-
-      gap: 16px;
+      gap: 15px;
     }
 
-    .restaurant-card {
+    .restaurant {
       overflow: hidden;
-
+      background: #061b2e;
+      border: 1px solid rgba(0, 224, 255, .14);
       border-radius: 18px;
-
-      background: #061a2d;
-
-      border:
-        1px solid rgba(0,224,255,.15);
-
-      box-shadow:
-        0 10px 30px rgba(0,0,0,.25);
-
-      transition: .2s;
-    }
-
-    .restaurant-card:active {
-      transform: scale(.98);
+      box-shadow: 0 10px 30px rgba(0,0,0,.2);
     }
 
     .restaurant-image {
       width: 100%;
-      height: 170px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background:
-        radial-gradient(
-          circle,
-          #123b51,
-          #061725
-        );
-
-      overflow: hidden;
-    }
-
-    .restaurant-image img {
-      width: 100%;
-      height: 100%;
-
+      height: 180px;
       object-fit: cover;
+      background: #09243a;
     }
 
-    .restaurant-placeholder {
-      font-size: 65px;
-    }
-
-    .restaurant-body {
+    .restaurant-content {
       padding: 17px;
     }
 
-    .restaurant-body h2 {
-      font-size: 19px;
+    .restaurant-content h2 {
+      font-size: 20px;
       margin-bottom: 7px;
     }
 
-    .restaurant-category {
+    .restaurant-content p {
       color: #91a4b3;
-      font-size: 13px;
-      margin-bottom: 13px;
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 14px;
     }
 
     .restaurant-info {
       display: flex;
       justify-content: space-between;
-
       gap: 10px;
-
-      color: #00dfff;
-
-      font-size: 12px;
-
       margin-bottom: 15px;
+      color: #00dfff;
+      font-size: 13px;
     }
 
     .restaurant-info span:last-child {
@@ -271,185 +147,100 @@
 
     .open-button {
       width: 100%;
-      height: 47px;
-
+      height: 48px;
       border: 0;
       border-radius: 11px;
-
-      background:
-        linear-gradient(
-          90deg,
-          #00dfff,
-          #08b9d4
-        );
-
+      background: #00dfff;
       color: #00121d;
-
+      font-size: 15px;
       font-weight: 900;
-      font-size: 14px;
+      cursor: pointer;
     }
 
-    /* LOADING */
-
-    .loading {
-      text-align: center;
-
-      padding: 50px 15px;
-
-      color: #8fa2b2;
+    .open-button:active {
+      transform: scale(.98);
     }
-
-    .loading-icon {
-      font-size: 35px;
-      margin-bottom: 10px;
-    }
-
-    /* EMPTY */
 
     .empty {
       text-align: center;
-
       padding: 50px 20px;
-
-      border:
-        1px solid rgba(0,224,255,.12);
-
-      border-radius: 18px;
-
-      background: #061a2d;
+      color: #91a4b3;
     }
 
-    .empty div {
+    .empty-icon {
       font-size: 50px;
       margin-bottom: 15px;
     }
 
-    .empty p {
-      color: #8fa2b2;
-      margin-top: 8px;
-    }
-
     @media (min-width: 600px) {
-
-      .restaurants-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+      .restaurants {
+        grid-template-columns: repeat(2, 1fr);
       }
-
     }
 
     @media (min-width: 900px) {
-
-      .restaurants-grid {
-        grid-template-columns:
-          repeat(3, 1fr);
+      .restaurants {
+        grid-template-columns: repeat(3, 1fr);
       }
-
     }
-
   </style>
 </head>
 
 <body>
 
-  <header class="navbar">
+  <header>
 
-    <a class="brand" href="index.html">
-      <img src="assets/logo.png" alt="مندوب">
+    <a href="index.html">
+      <img
+        src="assets/logo.png"
+        class="logo"
+        alt="مندوب"
+      >
     </a>
 
-    <nav class="nav-links">
-
-      <a href="index.html">
-        الرئيسية
-      </a>
-
-      <a href="restaurants.html" class="active">
-        المطاعم
-      </a>
-
-      <a href="index.html#offers">
-        العروض
-      </a>
-
-      <a href="index.html#track">
-        تتبع الطلب
-      </a>
-
-    </nav>
-
-    <button
-      class="cart-btn"
-      onclick="openCart()">
-
-      🛒
-
-      <span
-        id="cartCount"
-        class="cart-count">
-        0
-      </span>
-
-    </button>
+    <a href="index.html" class="back">
+      ← الرئيسية
+    </a>
 
   </header>
 
+  <main>
 
-  <main class="page">
-
-    <div class="page-title">
-
-      <small>
-        مندوب 🍔
-      </small>
-
-      <h1>
-        المطاعم
-      </h1>
-
-      <p>
-        اختار المطعم وشوف المنتجات المتاحة
-      </p>
-
+    <div class="title">
+      <h1>🍽️ المطاعم</h1>
+      <p>اختار المطعم اللي تحب تطلب منه</p>
     </div>
 
-
-    <div
-      id="restaurantsList"
-      class="restaurants-grid">
-
-      <div class="loading">
-
-        <div class="loading-icon">
-          ⏳
-        </div>
-
-        جاري تحميل المطاعم...
-
-      </div>
-
+    <div id="loading">
+      جاري تحميل المطاعم...
     </div>
+
+    <div id="error">
+      حصل خطأ أثناء تحميل المطاعم.
+    </div>
+
+    <section
+      id="restaurants"
+      class="restaurants">
+    </section>
 
   </main>
 
+
+  <!-- ================= FIREBASE ================= -->
 
   <script type="module">
 
     import {
       initializeApp
-    }
-    from
+    } from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
 
     import {
       getFirestore,
       collection,
-      getDocs,
-      query,
-      where
-    }
-    from
+      getDocs
+    } from
     "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
@@ -482,105 +273,60 @@
     const app =
       initializeApp(firebaseConfig);
 
-
     const db =
       getFirestore(app);
 
 
-    const list =
+    const restaurantsContainer =
       document.getElementById(
-        "restaurantsList"
+        "restaurants"
       );
 
-
-    /* =========================
-       السلة
-    ========================= */
-
-    function updateCartCount() {
-
-      const cart =
-        JSON.parse(
-          localStorage.getItem("mandoubCart")
-          || "[]"
-        );
-
+    const loading =
       document.getElementById(
-        "cartCount"
-      ).textContent = cart.length;
+        "loading"
+      );
 
-    }
+    const errorBox =
+      document.getElementById(
+        "error"
+      );
 
-
-    window.openCart = function() {
-
-      const cart =
-        JSON.parse(
-          localStorage.getItem("mandoubCart")
-          || "[]"
-        );
-
-      if (!cart.length) {
-
-        alert("السلة فارغة 🛒");
-
-        return;
-
-      }
-
-      let text =
-        "المنتجات في السلة:\\n\\n";
-
-      cart.forEach(item => {
-
-        text +=
-          `${item.name} - ${item.price} جنيه\\n`;
-
-      });
-
-      alert(text);
-
-    };
-
-
-    updateCartCount();
-
-
-    /* =========================
-       تحميل المطاعم
-    ========================= */
 
     async function loadRestaurants() {
 
       try {
 
-        const restaurantsRef =
-          collection(
-            db,
-            "restaurants"
-          );
-
-
         const snapshot =
           await getDocs(
-            restaurantsRef
+            collection(
+              db,
+              "restaurants"
+            )
           );
+
+
+        loading.style.display =
+          "none";
 
 
         if (snapshot.empty) {
 
-          list.innerHTML = `
+          restaurantsContainer.innerHTML = `
 
             <div class="empty">
 
-              <div>🍽️</div>
+              <div class="empty-icon">
+                🍽️
+              </div>
 
               <h2>
                 لا توجد مطاعم حاليًا
               </h2>
 
               <p>
-                أضف المطاعم من صفحة الأدمن
+                المطاعم التي تضيفها من لوحة الأدمن
+                ستظهر هنا.
               </p>
 
             </div>
@@ -592,20 +338,10 @@
         }
 
 
-        list.innerHTML = "";
-
-
-        snapshot.forEach(doc => {
+        snapshot.forEach((doc) => {
 
           const restaurant =
             doc.data();
-
-
-          if (
-            restaurant.active === false
-          ) {
-            return;
-          }
 
 
           const id =
@@ -613,28 +349,33 @@
 
 
           const name =
-            restaurant.name
-            || "مطعم بدون اسم";
+            restaurant.name ||
+            "مطعم بدون اسم";
 
 
           const category =
-            restaurant.category
-            || "مطعم";
+            restaurant.category ||
+            "مطعم";
+
+
+          const description =
+            restaurant.description ||
+            "اطلب أشهى الوجبات من هذا المطعم";
 
 
           const rating =
-            restaurant.rating
-            || "جديد";
+            restaurant.rating ||
+            "4.5";
 
 
-          const deliveryFee =
-            restaurant.deliveryFee
-            ?? 25;
+          const delivery =
+            restaurant.delivery ||
+            "25";
 
 
           const image =
-            restaurant.image
-            || "";
+            restaurant.image ||
+            "assets/logo.png";
 
 
           const card =
@@ -644,39 +385,26 @@
 
 
           card.className =
-            "restaurant-card";
+            "restaurant";
 
 
           card.innerHTML = `
 
-            <div class="restaurant-image">
+            <img
+              class="restaurant-image"
+              src="${image}"
+              alt="${name}"
+              onerror="this.src='assets/logo.png'"
+            >
 
-              ${
-                image
-                ?
-                `<img
-                  src="${image}"
-                  alt="${name}">
-                `
-                :
-                `
-                <div class="restaurant-placeholder">
-                  🍔
-                </div>
-                `
-              }
-
-            </div>
-
-
-            <div class="restaurant-body">
+            <div class="restaurant-content">
 
               <h2>
                 ${name}
               </h2>
 
-              <p class="restaurant-category">
-                ${category}
+              <p>
+                ${description}
               </p>
 
               <div class="restaurant-info">
@@ -686,17 +414,16 @@
                 </span>
 
                 <span>
-                  توصيل ${deliveryFee}ج
+                  توصيل من ${delivery}ج
                 </span>
 
               </div>
 
               <button
                 class="open-button"
-                onclick="openRestaurant('${id}')">
-
+                data-id="${id}"
+              >
                 عرض المنتجات
-
               </button>
 
             </div>
@@ -704,47 +431,51 @@
           `;
 
 
-          list.appendChild(card);
+          const button =
+            card.querySelector(
+              ".open-button"
+            );
+
+
+          button.addEventListener(
+            "click",
+            function () {
+
+              window.location.href =
+                "restaurant.html?id=" +
+                encodeURIComponent(id);
+
+            }
+          );
+
+
+          restaurantsContainer.appendChild(
+            card
+          );
 
         });
 
-      }
 
-      catch (error) {
+      } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Firebase Error:",
+          error
+        );
 
-        list.innerHTML = `
 
-          <div class="empty">
+        loading.style.display =
+          "none";
 
-            <div>⚠️</div>
+        errorBox.style.display =
+          "block";
 
-            <h2>
-              حصلت مشكلة في تحميل المطاعم
-            </h2>
-
-            <p>
-              تأكد من اتصال Firebase وقواعد Firestore
-            </p>
-
-          </div>
-
-        `;
+        errorBox.textContent =
+          "حصل خطأ في الاتصال بقاعدة البيانات ❌";
 
       }
 
     }
-
-
-    window.openRestaurant =
-      function(id) {
-
-        window.location.href =
-          "restaurant.html?id="
-          + encodeURIComponent(id);
-
-      };
 
 
     loadRestaurants();
@@ -753,4 +484,3 @@
 
 </body>
 </html>
-``
