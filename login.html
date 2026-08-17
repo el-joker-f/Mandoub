@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
->
+<meta name="viewport"
+      content="width=device-width,initial-scale=1.0">
 
 <title>مندوب | تسجيل الدخول</title>
 
@@ -22,73 +19,67 @@
 
 body{
   font-family:Arial,Tahoma,sans-serif;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top,#0b3049 0%,#020b16 55%);
+  background:#020d18;
   color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
+  min-height:100vh;
+  padding:25px 15px 50px;
 }
 
-.login-wrapper{
+.container{
   width:100%;
-  max-width:430px;
+  max-width:700px;
+  margin:auto;
 }
 
 .logo{
   text-align:center;
-  margin-bottom:25px;
+  margin:10px 0 25px;
 }
 
 .logo img{
-  width:90px;
-  height:90px;
+  width:75px;
+  height:75px;
   object-fit:contain;
-  display:block;
-  margin:auto;
 }
 
 .logo h1{
-  margin-top:10px;
   color:#00dfff;
-  font-size:28px;
+  font-size:25px;
+  margin-top:8px;
 }
 
 .logo p{
-  margin-top:6px;
-  color:#8fa5b7;
-  font-size:13px;
+  color:#9badbd;
+  margin-top:8px;
 }
 
-.card{
-  background:rgba(6,26,45,.96);
-  border:1px solid #173854;
-  border-radius:22px;
+.auth-box{
+  background:#061a2d;
+  border:1px solid #16415e;
+  border-radius:25px;
   padding:25px;
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.35);
+  box-shadow:0 15px 45px rgba(0,0,0,.25);
 }
 
 .tabs{
-  display:flex;
-  gap:8px;
-  background:#031321;
-  padding:5px;
-  border-radius:13px;
-  margin-bottom:22px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  background:#021321;
+  padding:6px;
+  border-radius:18px;
+  margin-bottom:25px;
 }
 
 .tab{
-  flex:1;
   border:0;
-  padding:12px;
-  border-radius:9px;
+  border-radius:14px;
+  padding:16px 10px;
   background:transparent;
-  color:#91a4b4;
-  cursor:pointer;
+  color:#8295a6;
+  font-size:17px;
   font-weight:bold;
+  cursor:pointer;
 }
 
 .tab.active{
@@ -96,173 +87,132 @@ body{
   color:#00131e;
 }
 
-.form{
+.message{
   display:none;
-}
-
-.form.active{
-  display:block;
-}
-
-.title{
-  font-size:21px;
-  margin-bottom:7px;
-}
-
-.subtitle{
-  color:#8fa5b7;
-  font-size:13px;
-  line-height:1.8;
+  padding:15px;
+  border-radius:15px;
   margin-bottom:20px;
+  text-align:center;
+  font-weight:bold;
+  line-height:1.7;
+}
+
+.message.error{
+  display:block;
+  background:#481527;
+  border:1px solid #b92859;
+  color:#ff8eae;
+}
+
+.message.success{
+  display:block;
+  background:#073d30;
+  border:1px solid #16a879;
+  color:#5df0bb;
+}
+
+.form-title{
+  font-size:27px;
+  margin-bottom:8px;
+}
+
+.form-description{
+  color:#94a8b8;
+  line-height:1.8;
+  margin-bottom:25px;
 }
 
 .field{
-  margin-bottom:14px;
+  margin-bottom:18px;
 }
 
 .field label{
   display:block;
-  color:#aabac7;
-  font-size:13px;
-  margin-bottom:7px;
+  color:#aab9c7;
+  margin-bottom:8px;
+  font-size:15px;
+}
+
+.input-box{
+  position:relative;
 }
 
 .field input{
   width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid #23425d;
+  height:58px;
   background:#031321;
+  border:2px solid #21445f;
+  border-radius:16px;
+  padding:0 17px;
   color:#fff;
+  font-size:16px;
   outline:none;
-  font-size:14px;
 }
 
 .field input:focus{
   border-color:#00dfff;
-  box-shadow:0 0 0 2px rgba(0,223,255,.08);
 }
 
-.password-wrap{
-  position:relative;
+.password-input{
+  padding-left:65px !important;
 }
 
-.password-wrap input{
-  padding-left:55px;
-}
-
-.show-password{
+.eye{
   position:absolute;
-  left:8px;
+  left:7px;
   top:7px;
-  height:40px;
-  min-width:42px;
+  width:48px;
+  height:44px;
   border:0;
-  border-radius:9px;
-  background:#12324b;
+  border-radius:13px;
+  background:#12344d;
   color:#fff;
+  font-size:20px;
   cursor:pointer;
 }
 
 .primary{
   width:100%;
+  height:60px;
   border:0;
-  border-radius:12px;
-  padding:14px;
+  border-radius:17px;
   background:#00dfff;
   color:#00131e;
-  font-size:15px;
-  font-weight:bold;
+  font-size:19px;
+  font-weight:900;
   cursor:pointer;
   margin-top:5px;
 }
 
 .primary:disabled{
-  opacity:.55;
+  opacity:.6;
   cursor:not-allowed;
-}
-
-.forgot{
-  display:block;
-  width:100%;
-  text-align:center;
-  margin-top:15px;
-  border:0;
-  background:transparent;
-  color:#00dfff;
-  cursor:pointer;
-  font-size:13px;
 }
 
 .back{
   display:block;
   text-align:center;
-  margin-top:20px;
-  color:#91a4b4;
+  color:#00dfff;
   text-decoration:none;
-  font-size:13px;
+  margin-top:20px;
 }
 
-.message{
+.hidden{
   display:none;
-  margin-bottom:15px;
-  padding:12px;
-  border-radius:11px;
-  font-size:13px;
-  line-height:1.7;
-  text-align:center;
 }
 
-.message.show{
-  display:block;
-}
-
-.message.error{
-  background:#421525;
-  border:1px solid #7c2948;
-  color:#ff8eae;
-}
-
-.message.success{
-  background:#082f26;
-  border:1px solid #17644f;
-  color:#53e8b1;
-}
-
-.loading{
-  display:inline-block;
-  width:16px;
-  height:16px;
-  border:2px solid rgba(0,19,30,.3);
-  border-top-color:#00131e;
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-  vertical-align:middle;
-  margin-left:7px;
-}
-
-@keyframes spin{
-  to{
-    transform:rotate(360deg);
-  }
-}
-
-@media(max-width:420px){
+@media(max-width:500px){
 
   body{
-    padding:12px;
+    padding:15px 10px 40px;
   }
 
-  .card{
-    padding:20px;
+  .auth-box{
+    padding:18px;
+    border-radius:20px;
   }
 
-  .logo img{
-    width:75px;
-    height:75px;
-  }
-
-  .logo h1{
+  .form-title{
     font-size:24px;
   }
 
@@ -272,22 +222,15 @@ body{
 
 </head>
 
-
 <body>
 
-
-<div class="login-wrapper">
-
-
-  <!-- LOGO -->
+<div class="container">
 
   <div class="logo">
 
     <img
       src="assets/logo.png"
-      alt="مندوب"
-      onerror="this.style.display='none'"
-    >
+      alt="مندوب">
 
     <h1>مندوب</h1>
 
@@ -298,31 +241,29 @@ body{
   </div>
 
 
-  <!-- CARD -->
-
-  <div class="card">
-
+  <div class="auth-box">
 
     <!-- TABS -->
 
     <div class="tabs">
 
       <button
-        id="loginTab"
         class="tab active"
-        type="button"
-        onclick="showForm('login')"
-      >
-        تسجيل الدخول
+        id="registerTab"
+        onclick="showRegister()">
+
+        إنشاء حساب
+
       </button>
 
+
       <button
-        id="registerTab"
         class="tab"
-        type="button"
-        onclick="showForm('register')"
-      >
-        إنشاء حساب
+        id="loginTab"
+        onclick="showLogin()">
+
+        تسجيل الدخول
+
       </button>
 
     </div>
@@ -332,106 +273,19 @@ body{
 
     <div
       id="message"
-      class="message"
-    ></div>
-
-
-    <!-- ================= LOGIN ================= -->
-
-    <form
-      id="loginForm"
-      class="form active"
-      onsubmit="loginUser(event)"
-    >
-
-      <h2 class="title">
-        أهلاً بك 👋
-      </h2>
-
-      <p class="subtitle">
-        سجل دخولك إلى حسابك للمتابعة.
-      </p>
-
-
-      <div class="field">
-
-        <label>
-          البريد الإلكتروني
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="example@email.com"
-          autocomplete="email"
-          required
-        >
-
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          كلمة المرور
-        </label>
-
-        <div class="password-wrap">
-
-          <input
-            id="loginPassword"
-            type="password"
-            placeholder="كلمة المرور"
-            autocomplete="current-password"
-            required
-          >
-
-          <button
-            type="button"
-            class="show-password"
-            onclick="togglePassword('loginPassword',this)"
-          >
-            👁
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <button
-        id="loginButton"
-        class="primary"
-        type="submit"
-      >
-        تسجيل الدخول
-      </button>
-
-
-      <button
-        type="button"
-        class="forgot"
-        onclick="resetPassword()"
-      >
-        نسيت كلمة المرور؟
-      </button>
-
-    </form>
+      class="message">
+    </div>
 
 
     <!-- ================= REGISTER ================= -->
 
-    <form
-      id="registerForm"
-      class="form"
-      onsubmit="registerUser(event)"
-    >
+    <div id="registerForm">
 
-      <h2 class="title">
+      <h2 class="form-title">
         إنشاء حساب جديد 📝
       </h2>
 
-      <p class="subtitle">
+      <p class="form-description">
         أنشئ حسابك الآن وابدأ طلباتك بسهولة.
       </p>
 
@@ -446,9 +300,7 @@ body{
           id="registerName"
           type="text"
           placeholder="اكتب اسمك"
-          autocomplete="name"
-          required
-        >
+          autocomplete="name">
 
       </div>
 
@@ -462,10 +314,8 @@ body{
         <input
           id="registerEmail"
           type="email"
-          placeholder="example@email.com"
-          autocomplete="email"
-          required
-        >
+          placeholder="example@gmail.com"
+          autocomplete="email">
 
       </div>
 
@@ -476,23 +326,22 @@ body{
           كلمة المرور
         </label>
 
-        <div class="password-wrap">
+        <div class="input-box">
 
           <input
             id="registerPassword"
+            class="password-input"
             type="password"
-            placeholder="6 أحرف أو أكثر"
-            autocomplete="new-password"
-            minlength="6"
-            required
-          >
+            placeholder="6 أحرف على الأقل"
+            autocomplete="new-password">
 
           <button
             type="button"
-            class="show-password"
-            onclick="togglePassword('registerPassword',this)"
-          >
-            👁
+            class="eye"
+            onclick="togglePassword('registerPassword',this)">
+
+            👁️
+
           </button>
 
         </div>
@@ -506,23 +355,22 @@ body{
           تأكيد كلمة المرور
         </label>
 
-        <div class="password-wrap">
+        <div class="input-box">
 
           <input
             id="registerConfirm"
+            class="password-input"
             type="password"
             placeholder="أعد كتابة كلمة المرور"
-            autocomplete="new-password"
-            minlength="6"
-            required
-          >
+            autocomplete="new-password">
 
           <button
             type="button"
-            class="show-password"
-            onclick="togglePassword('registerConfirm',this)"
-          >
-            👁
+            class="eye"
+            onclick="togglePassword('registerConfirm',this)">
+
+            👁️
+
           </button>
 
         </div>
@@ -533,29 +381,112 @@ body{
       <button
         id="registerButton"
         class="primary"
-        type="submit"
-      >
+        onclick="registerUser()">
+
         إنشاء الحساب
+
       </button>
 
-    </form>
+    </div>
+
+
+    <!-- ================= LOGIN ================= -->
+
+    <div
+      id="loginForm"
+      class="hidden">
+
+      <h2 class="form-title">
+        تسجيل الدخول 👋
+      </h2>
+
+      <p class="form-description">
+        سجل دخولك للمتابعة وطلب الطعام.
+      </p>
+
+
+      <div class="field">
+
+        <label>
+          البريد الإلكتروني
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="example@gmail.com"
+          autocomplete="email">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          كلمة المرور
+        </label>
+
+        <div class="input-box">
+
+          <input
+            id="loginPassword"
+            class="password-input"
+            type="password"
+            placeholder="كلمة المرور"
+            autocomplete="current-password">
+
+          <button
+            type="button"
+            class="eye"
+            onclick="togglePassword('loginPassword',this)">
+
+            👁️
+
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="loginButton"
+        class="primary"
+        onclick="loginUser()">
+
+        تسجيل الدخول
+
+      </button>
+
+
+      <a
+        href="#"
+        class="back"
+        onclick="forgotPassword();return false;">
+
+        نسيت كلمة المرور؟
+
+      </a>
+
+    </div>
 
 
     <a
       href="index.html"
-      class="back"
-    >
-      ← العودة إلى الصفحة الرئيسية
-    </a>
+      class="back">
 
+      ← العودة للرئيسية
+
+    </a>
 
   </div>
 
 </div>
 
 
-
-<!-- ================= FIREBASE ================= -->
+<!-- =====================================================
+     FIREBASE AUTH
+===================================================== -->
 
 <script type="module">
 
@@ -563,14 +494,15 @@ import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendPasswordResetEmail,
   updateProfile,
-  onAuthStateChanged
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
 
 import {
   getFirestore,
@@ -580,10 +512,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+/* ================= FIREBASE CONFIG ================= */
 
 const firebaseConfig = {
 
@@ -611,211 +540,237 @@ const firebaseConfig = {
 };
 
 
-
-/* =====================================================
-   INIT
-===================================================== */
+/* ================= INITIALIZE ================= */
 
 const app =
   initializeApp(firebaseConfig);
 
+
 const auth =
   getAuth(app);
+
 
 const db =
   getFirestore(app);
 
 
+/* ================= MESSAGE ================= */
 
-/* =====================================================
-   FORM SWITCH
-===================================================== */
-
-window.showForm = function(type){
-
-  const loginForm =
-    document.getElementById(
-      "loginForm"
-    );
-
-  const registerForm =
-    document.getElementById(
-      "registerForm"
-    );
-
-  const loginTab =
-    document.getElementById(
-      "loginTab"
-    );
-
-  const registerTab =
-    document.getElementById(
-      "registerTab"
-    );
-
-
-  clearMessage();
-
-
-  if(type === "register"){
-
-    loginForm.classList.remove(
-      "active"
-    );
-
-    registerForm.classList.add(
-      "active"
-    );
-
-    loginTab.classList.remove(
-      "active"
-    );
-
-    registerTab.classList.add(
-      "active"
-    );
-
-  }
-
-  else{
-
-    registerForm.classList.remove(
-      "active"
-    );
-
-    loginForm.classList.add(
-      "active"
-    );
-
-    registerTab.classList.remove(
-      "active"
-    );
-
-    loginTab.classList.add(
-      "active"
-    );
-
-  }
-
-};
-
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function showMessage(
-  text,
-  type="error"
-){
+function showMessage(text,type="error"){
 
   const box =
-    document.getElementById(
-      "message"
-    );
+    document.getElementById("message");
 
   box.textContent =
     text;
 
   box.className =
-    "message show " + type;
+    "message " + type;
 
 }
 
 
-function clearMessage(){
+/* ================= REGISTER ================= */
 
-  const box =
+window.registerUser =
+async function(){
+
+  const name =
     document.getElementById(
-      "message"
+      "registerName"
+    ).value.trim();
+
+
+  const email =
+    document.getElementById(
+      "registerEmail"
+    ).value.trim();
+
+
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
+
+
+  const confirmPassword =
+    document.getElementById(
+      "registerConfirm"
+    ).value;
+
+
+  const button =
+    document.getElementById(
+      "registerButton"
     );
 
-  box.textContent =
-    "";
 
-  box.className =
-    "message";
+  /* VALIDATION */
 
-}
+  if(!name){
 
-
-
-/* =====================================================
-   PASSWORD SHOW/HIDE
-===================================================== */
-
-window.togglePassword =
-function(
-  inputId,
-  button
-){
-
-  const input =
-    document.getElementById(
-      inputId
+    showMessage(
+      "❌ اكتب اسمك أولاً"
     );
 
-
-  if(!input) return;
-
-
-  if(input.type === "password"){
-
-    input.type =
-      "text";
-
-    button.textContent =
-      "🙈";
+    return;
 
   }
 
-  else{
 
-    input.type =
-      "password";
+  if(!email){
+
+    showMessage(
+      "❌ اكتب البريد الإلكتروني"
+    );
+
+    return;
+
+  }
+
+
+  if(password.length < 6){
+
+    showMessage(
+      "❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل"
+    );
+
+    return;
+
+  }
+
+
+  if(password !== confirmPassword){
+
+    showMessage(
+      "❌ كلمتا المرور غير متطابقتين"
+    );
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ جاري إنشاء الحساب...";
+
+
+  try{
+
+    /* CREATE FIREBASE ACCOUNT */
+
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+    const user =
+      result.user;
+
+
+    /* SAVE NAME */
+
+    await updateProfile(
+      user,
+      {
+        displayName:name
+      }
+    );
+
+
+    /* SAVE CUSTOMER DATA */
+
+    try{
+
+      await setDoc(
+        doc(
+          db,
+          "customers",
+          user.uid
+        ),
+        {
+
+          uid:user.uid,
+
+          name:name,
+
+          email:email,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+    }catch(error){
+
+      console.log(
+        "Customer profile save error:",
+        error
+      );
+
+    }
+
+
+    showMessage(
+      "✅ تم إنشاء الحساب بنجاح، جاري الدخول...",
+      "success"
+    );
+
+
+    setTimeout(()=>{
+
+      window.location.href =
+        "index.html";
+
+    },1200);
+
+
+  }catch(error){
+
+    console.error(
+      "REGISTER ERROR:",
+      error
+    );
+
+
+    showMessage(
+      firebaseError(error)
+    );
+
+
+    button.disabled =
+      false;
 
     button.textContent =
-      "👁";
+      "إنشاء الحساب";
 
   }
 
 };
 
 
-
-/* =====================================================
-   LOGIN
-===================================================== */
+/* ================= LOGIN ================= */
 
 window.loginUser =
-async function(event){
-
-  event.preventDefault();
-
-  clearMessage();
-
+async function(){
 
   const email =
     document.getElementById(
       "loginEmail"
     ).value.trim();
 
+
   const password =
     document.getElementById(
       "loginPassword"
     ).value;
-
-
-  if(!email || !password){
-
-    showMessage(
-      "اكتب البريد الإلكتروني وكلمة المرور"
-    );
-
-    return;
-
-  }
 
 
   const button =
@@ -824,26 +779,41 @@ async function(event){
     );
 
 
+  if(!email){
+
+    showMessage(
+      "❌ اكتب البريد الإلكتروني"
+    );
+
+    return;
+
+  }
+
+
+  if(!password){
+
+    showMessage(
+      "❌ اكتب كلمة المرور"
+    );
+
+    return;
+
+  }
+
+
   button.disabled =
     true;
 
-  button.innerHTML =
-    `<span class="loading"></span> جاري تسجيل الدخول`;
+  button.textContent =
+    "⏳ جاري تسجيل الدخول...";
 
 
   try{
 
-    const result =
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    console.log(
-      "Logged in:",
-      result.user.uid
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
     );
 
 
@@ -861,9 +831,7 @@ async function(event){
     },800);
 
 
-  }
-
-  catch(error){
+  }catch(error){
 
     console.error(
       "LOGIN ERROR:",
@@ -872,9 +840,7 @@ async function(event){
 
 
     showMessage(
-      getFirebaseErrorMessage(
-        error.code
-      )
+      firebaseError(error)
     );
 
 
@@ -889,208 +855,10 @@ async function(event){
 };
 
 
+/* ================= FORGOT PASSWORD ================= */
 
-/* =====================================================
-   REGISTER
-===================================================== */
-
-window.registerUser =
-async function(event){
-
-  event.preventDefault();
-
-  clearMessage();
-
-
-  const name =
-    document.getElementById(
-      "registerName"
-    ).value.trim();
-
-  const email =
-    document.getElementById(
-      "registerEmail"
-    ).value.trim();
-
-  const password =
-    document.getElementById(
-      "registerPassword"
-    ).value;
-
-  const confirm =
-    document.getElementById(
-      "registerConfirm"
-    ).value;
-
-
-  if(!name){
-
-    showMessage(
-      "اكتب اسمك أولاً"
-    );
-
-    return;
-
-  }
-
-
-  if(!email){
-
-    showMessage(
-      "اكتب البريد الإلكتروني"
-    );
-
-    return;
-
-  }
-
-
-  if(password.length < 6){
-
-    showMessage(
-      "كلمة المرور يجب أن تكون 6 أحرف على الأقل"
-    );
-
-    return;
-
-  }
-
-
-  if(password !== confirm){
-
-    showMessage(
-      "كلمتا المرور غير متطابقتين"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "registerButton"
-    );
-
-
-  button.disabled =
-    true;
-
-  button.innerHTML =
-    `<span class="loading"></span> جاري إنشاء الحساب`;
-
-
-  try{
-
-    /* إنشاء حساب Firebase */
-
-    const result =
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    const user =
-      result.user;
-
-
-    /* حفظ اسم المستخدم في Authentication */
-
-    await updateProfile(
-      user,
-      {
-        displayName:
-          name
-      }
-    );
-
-
-    /* إنشاء ملف العميل في Firestore */
-
-    await setDoc(
-      doc(
-        db,
-        "customers",
-        user.uid
-      ),
-      {
-
-        uid:
-          user.uid,
-
-        name:
-          name,
-
-        email:
-          email,
-
-        role:
-          "customer",
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    showMessage(
-      "✅ تم إنشاء حسابك بنجاح",
-      "success"
-    );
-
-
-    setTimeout(()=>{
-
-      window.location.href =
-        "index.html";
-
-    },1000);
-
-
-  }
-
-  catch(error){
-
-    console.error(
-      "REGISTER ERROR:",
-      error
-    );
-
-
-    showMessage(
-      getFirebaseErrorMessage(
-        error.code
-      )
-    );
-
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "إنشاء الحساب";
-
-  }
-
-};
-
-
-
-/* =====================================================
-   RESET PASSWORD
-===================================================== */
-
-window.resetPassword =
+window.forgotPassword =
 async function(){
-
-  clearMessage();
-
 
   const email =
     document.getElementById(
@@ -1101,7 +869,7 @@ async function(){
   if(!email){
 
     showMessage(
-      "اكتب بريدك الإلكتروني أولاً ثم اضغط نسيت كلمة المرور"
+      "❌ اكتب البريد الإلكتروني أولاً"
     );
 
     return;
@@ -1118,24 +886,20 @@ async function(){
 
 
     showMessage(
-      "✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني",
+      "✅ تم إرسال رابط تغيير كلمة المرور إلى بريدك",
       "success"
     );
 
-  }
 
-  catch(error){
+  }catch(error){
 
     console.error(
-      "RESET ERROR:",
       error
     );
 
 
     showMessage(
-      getFirebaseErrorMessage(
-        error.code
-      )
+      firebaseError(error)
     );
 
   }
@@ -1143,98 +907,142 @@ async function(){
 };
 
 
+/* ================= FIREBASE ERRORS ================= */
 
-/* =====================================================
-   FIREBASE ERROR MESSAGES
-===================================================== */
+function firebaseError(error){
 
-function getFirebaseErrorMessage(code){
+  const code =
+    error?.code || "";
+
 
   switch(code){
 
-    case "auth/invalid-email":
+    case "auth/email-already-in-use":
+      return "❌ البريد الإلكتروني مستخدم بالفعل";
 
+    case "auth/invalid-email":
       return "❌ البريد الإلكتروني غير صحيح";
 
-
-    case "auth/user-not-found":
-
-      return "❌ لا يوجد حساب بهذا البريد";
-
-
-    case "auth/wrong-password":
-
-      return "❌ كلمة المرور غير صحيحة";
-
+    case "auth/weak-password":
+      return "❌ كلمة المرور ضعيفة، استخدم 6 أحرف أو أكثر";
 
     case "auth/invalid-credential":
-
       return "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
 
+    case "auth/user-not-found":
+      return "❌ الحساب غير موجود";
 
-    case "auth/email-already-in-use":
-
-      return "❌ هذا البريد مسجل بالفعل";
-
-
-    case "auth/weak-password":
-
-      return "❌ كلمة المرور ضعيفة، استخدم 6 أحرف على الأقل";
-
+    case "auth/wrong-password":
+      return "❌ كلمة المرور غير صحيحة";
 
     case "auth/too-many-requests":
-
-      return "❌ محاولات كثيرة، حاول مرة أخرى بعد قليل";
-
+      return "❌ محاولات كثيرة، حاول بعد قليل";
 
     case "auth/network-request-failed":
-
       return "❌ تحقق من اتصال الإنترنت";
 
-
     case "auth/operation-not-allowed":
-
-      return "❌ تسجيل الدخول بالبريد غير مفعل في Firebase";
-
+      return "❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase";
 
     default:
-
-      return "❌ حدث خطأ، حاول مرة أخرى";
+      return "❌ حدث خطأ: " + (error?.message || "حاول مرة أخرى");
 
   }
 
 }
 
-
-
-/* =====================================================
-   CHECK CURRENT USER
-===================================================== */
-
-onAuthStateChanged(
-  auth,
-  function(user){
-
-    if(user){
-
-      console.log(
-        "Current user:",
-        user.email
-      );
-
-    }
-
-  }
-);
-
-
-console.log(
-  "Mandoub Login Loaded ✅"
-);
-
 </script>
 
 
-</body>
+<script>
 
+/* ================= TABS ================= */
+
+function showRegister(){
+
+  document
+    .getElementById("registerForm")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("loginForm")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("registerTab")
+    .classList.add("active");
+
+
+  document
+    .getElementById("loginTab")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("message")
+    .className="message";
+
+}
+
+
+function showLogin(){
+
+  document
+    .getElementById("registerForm")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("loginForm")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("registerTab")
+    .classList.remove("active");
+
+
+  document
+    .getElementById("loginTab")
+    .classList.add("active");
+
+
+  document
+    .getElementById("message")
+    .className="message";
+
+}
+
+
+function togglePassword(id,button){
+
+  const input =
+    document.getElementById(id);
+
+
+  if(input.type === "password"){
+
+    input.type =
+      "text";
+
+    button.textContent =
+      "🙈";
+
+  }else{
+
+    input.type =
+      "password";
+
+    button.textContent =
+      "👁️";
+
+  }
+
+}
+
+</script>
+
+</body>
 </html>
