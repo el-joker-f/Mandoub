@@ -2,485 +2,706 @@
 <html lang="ar" dir="rtl">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>المطاعم | مندوب</title>
+<title>مندوب | المطاعم</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body {
-      min-height: 100vh;
-      background: #020d1b;
-      color: #fff;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
-    }
+html,body{
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+body{
+  font-family:Arial,Tahoma,sans-serif;
+  background:#020d1c;
+  color:#fff;
+}
 
-      height: 70px;
-      padding: 10px 16px;
+a{
+  text-decoration:none;
+  color:inherit;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+button{
+  font-family:inherit;
+  cursor:pointer;
+  border:0;
+}
 
-      background: rgba(2, 13, 27, .97);
-      border-bottom: 1px solid rgba(0, 224, 255, .2);
-      backdrop-filter: blur(12px);
-    }
+/* NAVBAR */
 
-    .logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-    }
+.navbar{
+  width:100%;
+  height:68px;
 
-    .back {
-      border: 1px solid rgba(0, 224, 255, .3);
-      background: #06233a;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 11px;
-      font-weight: 700;
-      text-decoration: none;
-    }
+  display:flex;
+  align-items:center;
 
-    main {
-      width: 100%;
-      max-width: 1000px;
-      margin: auto;
-      padding: 30px 16px 50px;
-    }
+  padding:8px 12px;
 
-    .title {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+  background:#031326;
+  border-bottom:1px solid #12304d;
 
-    .title h1 {
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
 
-    .title p {
-      color: #8ea3b4;
-      font-size: 14px;
-    }
+.logo{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  flex-shrink:0;
+}
 
-    #loading {
-      text-align: center;
-      color: #00dfff;
-      padding: 30px;
-    }
+.nav-links{
+  flex:1;
 
-    #error {
-      display: none;
-      text-align: center;
-      padding: 20px;
-      color: #ff557f;
-    }
+  display:flex;
+  justify-content:center;
+  align-items:center;
 
-    .restaurants {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
+  gap:20px;
+  margin:0 15px;
 
-    .restaurant {
-      overflow: hidden;
-      background: #061b2e;
-      border: 1px solid rgba(0, 224, 255, .14);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.2);
-    }
+  overflow-x:auto;
+  scrollbar-width:none;
+}
 
-    .restaurant-image {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: #09243a;
-    }
+.nav-links::-webkit-scrollbar{
+  display:none;
+}
 
-    .restaurant-content {
-      padding: 17px;
-    }
+.nav-links a{
+  white-space:nowrap;
+  font-size:14px;
+  color:#d5e0ea;
+}
 
-    .restaurant-content h2 {
-      font-size: 20px;
-      margin-bottom: 7px;
-    }
+.nav-links a.active{
+  color:#00d9ff;
+  font-weight:bold;
+}
 
-    .restaurant-content p {
-      color: #91a4b3;
-      font-size: 14px;
-      line-height: 1.8;
-      margin-bottom: 14px;
-    }
+.cart{
+  width:48px;
+  height:48px;
+  min-width:48px;
 
-    .restaurant-info {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 15px;
-      color: #00dfff;
-      font-size: 13px;
-    }
+  border-radius:13px;
 
-    .restaurant-info span:last-child {
-      color: #91a4b3;
-    }
+  background:#08d8f5;
+  font-size:21px;
 
-    .open-button {
-      width: 100%;
-      height: 48px;
-      border: 0;
-      border-radius: 11px;
-      background: #00dfff;
-      color: #00121d;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-    }
+  position:relative;
+}
 
-    .open-button:active {
-      transform: scale(.98);
-    }
+#cartCount{
+  position:absolute;
 
-    .empty {
-      text-align: center;
-      padding: 50px 20px;
-      color: #91a4b3;
-    }
+  top:2px;
+  left:2px;
 
-    .empty-icon {
-      font-size: 50px;
-      margin-bottom: 15px;
-    }
+  min-width:18px;
+  height:18px;
 
-    @media (min-width: 600px) {
-      .restaurants {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+  padding:2px 5px;
 
-    @media (min-width: 900px) {
-      .restaurants {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  </style>
+  border-radius:20px;
+
+  background:#ff2364;
+  color:#fff;
+
+  font-size:10px;
+  font-weight:bold;
+}
+
+/* PAGE */
+
+.container{
+  width:100%;
+  max-width:1200px;
+
+  margin:auto;
+
+  padding:35px 18px 60px;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:25px;
+}
+
+.header h1{
+  font-size:30px;
+}
+
+.back{
+  color:#00d9ff;
+  font-size:14px;
+}
+
+/* RESTAURANTS */
+
+#restaurants{
+  display:grid;
+
+  grid-template-columns:
+  repeat(4,1fr);
+
+  gap:18px;
+}
+
+.restaurant{
+  overflow:hidden;
+
+  background:#061a30;
+
+  border:1px solid #173854;
+
+  border-radius:20px;
+
+  transition:.2s;
+}
+
+.restaurant:hover{
+  transform:translateY(-3px);
+  border-color:#00d9ff;
+}
+
+.restaurant-image{
+  width:100%;
+  height:175px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    radial-gradient(
+      circle,
+      #123a50,
+      #061725
+    );
+}
+
+.restaurant-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.restaurant-image .emoji{
+  font-size:70px;
+}
+
+.restaurant-body{
+  padding:18px;
+}
+
+.restaurant-body h2{
+  font-size:20px;
+  margin-bottom:7px;
+}
+
+.restaurant-body p{
+  color:#91a2b2;
+  font-size:13px;
+  margin-bottom:15px;
+}
+
+.info{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+
+  margin-bottom:15px;
+
+  font-size:13px;
+}
+
+.rating{
+  color:#00d9ff;
+}
+
+.delivery{
+  color:#91a2b2;
+}
+
+.menu-button{
+  width:100%;
+  height:48px;
+
+  border-radius:12px;
+
+  background:#08d8f5;
+  color:#00121d;
+
+  font-weight:bold;
+  font-size:15px;
+}
+
+.empty{
+  grid-column:1/-1;
+
+  padding:70px 20px;
+
+  text-align:center;
+
+  background:#061a30;
+
+  border:1px solid #173854;
+  border-radius:20px;
+}
+
+.empty-icon{
+  font-size:50px;
+  margin-bottom:15px;
+}
+
+.empty h2{
+  margin-bottom:8px;
+}
+
+.empty p{
+  color:#91a2b2;
+}
+
+/* LOADING */
+
+.loading{
+  grid-column:1/-1;
+
+  text-align:center;
+
+  padding:60px;
+
+  color:#00d9ff;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+  .navbar{
+    height:64px;
+    padding:7px 9px;
+  }
+
+  .logo{
+    width:43px;
+    height:43px;
+  }
+
+  .nav-links{
+    justify-content:flex-start;
+    gap:12px;
+    margin:0 8px;
+  }
+
+  .nav-links a{
+    font-size:11px;
+  }
+
+  .cart{
+    width:45px;
+    height:45px;
+    min-width:45px;
+  }
+
+  .container{
+    padding:28px 14px 50px;
+  }
+
+  .header h1{
+    font-size:27px;
+  }
+
+  .back{
+    font-size:12px;
+  }
+
+  #restaurants{
+    grid-template-columns:1fr;
+    gap:15px;
+  }
+
+  .restaurant-image{
+    height:190px;
+  }
+
+}
+</style>
 </head>
 
 <body>
 
-  <header>
+<header class="navbar">
+
+  <a href="index.html">
+    <img
+      class="logo"
+      src="assets/logo.png"
+      alt="مندوب">
+  </a>
+
+  <nav class="nav-links">
 
     <a href="index.html">
-      <img
-        src="assets/logo.png"
-        class="logo"
-        alt="مندوب"
-      >
+      الرئيسية
     </a>
 
-    <a href="index.html" class="back">
+    <a
+      href="restaurants.html"
+      class="active">
+      المطاعم
+    </a>
+
+    <a href="index.html#offers">
+      العروض
+    </a>
+
+    <a href="index.html#track">
+      تتبع
+    </a>
+
+    <a href="index.html#about">
+      عن مندوب
+    </a>
+
+  </nav>
+
+  <button
+    class="cart"
+    onclick="goCart()">
+
+    🛒
+
+    <span id="cartCount">
+      0
+    </span>
+
+  </button>
+
+</header>
+
+
+<main class="container">
+
+  <div class="header">
+
+    <h1>
+      المطاعم
+    </h1>
+
+    <a
+      class="back"
+      href="index.html">
       ← الرئيسية
     </a>
 
-  </header>
+  </div>
 
-  <main>
 
-    <div class="title">
-      <h1>🍽️ المطاعم</h1>
-      <p>اختار المطعم اللي تحب تطلب منه</p>
-    </div>
+  <section id="restaurants">
 
-    <div id="loading">
+    <div class="loading">
       جاري تحميل المطاعم...
     </div>
 
-    <div id="error">
-      حصل خطأ أثناء تحميل المطاعم.
-    </div>
+  </section>
 
-    <section
-      id="restaurants"
-      class="restaurants">
-    </section>
-
-  </main>
+</main>
 
 
-  <!-- ================= FIREBASE ================= -->
+<script type="module">
 
-  <script type="module">
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-    import {
-      initializeApp
-    } from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-
-    import {
-      getFirestore,
-      collection,
-      getDocs
-    } from
-    "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-    const firebaseConfig = {
+const firebaseConfig = {
 
-      apiKey:
-        "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+  apiKey:
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
-      authDomain:
-        "mandoub-dv.firebaseapp.com",
+  authDomain:
+    "mandoub-dv.firebaseapp.com",
 
-      projectId:
-        "mandoub-dv",
+  projectId:
+    "mandoub-dv",
 
-      storageBucket:
-        "mandoub-dv.firebasestorage.app",
+  storageBucket:
+    "mandoub-dv.firebasestorage.app",
 
-      messagingSenderId:
-        "311140400335",
+  messagingSenderId:
+    "311140400335",
 
-      appId:
-        "1:311140400335:web:db198b7c53259c53594bba",
+  appId:
+    "1:311140400335:web:db198b7c53259c53594bba",
 
-      measurementId:
-        "G-7V1LJQYYXD"
+  measurementId:
+    "G-7V1LJQYYXD"
 
-    };
-
-
-    const app =
-      initializeApp(firebaseConfig);
-
-    const db =
-      getFirestore(app);
+};
 
 
-    const restaurantsContainer =
-      document.getElementById(
-        "restaurants"
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
+
+
+async function loadRestaurants(){
+
+  const container =
+    document.getElementById("restaurants");
+
+  try{
+
+    const q =
+      query(
+        collection(db,"restaurants"),
+        orderBy("createdAt","desc")
       );
 
-    const loading =
-      document.getElementById(
-        "loading"
-      );
+    const snapshot =
+      await getDocs(q);
 
-    const errorBox =
-      document.getElementById(
-        "error"
-      );
 
+    container.innerHTML = "";
 
-    async function loadRestaurants() {
 
-      try {
+    if(snapshot.empty){
 
-        const snapshot =
-          await getDocs(
-            collection(
-              db,
-              "restaurants"
-            )
-          );
+      container.innerHTML = `
 
+        <div class="empty">
 
-        loading.style.display =
-          "none";
+          <div class="empty-icon">
+            🍽️
+          </div>
 
+          <h2>
+            لا توجد مطاعم حاليًا
+          </h2>
 
-        if (snapshot.empty) {
+          <p>
+            سيتم إضافة المطاعم قريبًا.
+          </p>
 
-          restaurantsContainer.innerHTML = `
+        </div>
 
-            <div class="empty">
+      `;
 
-              <div class="empty-icon">
-                🍽️
-              </div>
-
-              <h2>
-                لا توجد مطاعم حاليًا
-              </h2>
-
-              <p>
-                المطاعم التي تضيفها من لوحة الأدمن
-                ستظهر هنا.
-              </p>
-
-            </div>
-
-          `;
-
-          return;
-
-        }
-
-
-        snapshot.forEach((doc) => {
-
-          const restaurant =
-            doc.data();
-
-
-          const id =
-            doc.id;
-
-
-          const name =
-            restaurant.name ||
-            "مطعم بدون اسم";
-
-
-          const category =
-            restaurant.category ||
-            "مطعم";
-
-
-          const description =
-            restaurant.description ||
-            "اطلب أشهى الوجبات من هذا المطعم";
-
-
-          const rating =
-            restaurant.rating ||
-            "4.5";
-
-
-          const delivery =
-            restaurant.delivery ||
-            "25";
-
-
-          const image =
-            restaurant.image ||
-            "assets/logo.png";
-
-
-          const card =
-            document.createElement(
-              "article"
-            );
-
-
-          card.className =
-            "restaurant";
-
-
-          card.innerHTML = `
-
-            <img
-              class="restaurant-image"
-              src="${image}"
-              alt="${name}"
-              onerror="this.src='assets/logo.png'"
-            >
-
-            <div class="restaurant-content">
-
-              <h2>
-                ${name}
-              </h2>
-
-              <p>
-                ${description}
-              </p>
-
-              <div class="restaurant-info">
-
-                <span>
-                  ⭐ ${rating}
-                </span>
-
-                <span>
-                  توصيل من ${delivery}ج
-                </span>
-
-              </div>
-
-              <button
-                class="open-button"
-                data-id="${id}"
-              >
-                عرض المنتجات
-              </button>
-
-            </div>
-
-          `;
-
-
-          const button =
-            card.querySelector(
-              ".open-button"
-            );
-
-
-          button.addEventListener(
-            "click",
-            function () {
-
-              window.location.href =
-                "restaurant.html?id=" +
-                encodeURIComponent(id);
-
-            }
-          );
-
-
-          restaurantsContainer.appendChild(
-            card
-          );
-
-        });
-
-
-      } catch (error) {
-
-        console.error(
-          "Firebase Error:",
-          error
-        );
-
-
-        loading.style.display =
-          "none";
-
-        errorBox.style.display =
-          "block";
-
-        errorBox.textContent =
-          "حصل خطأ في الاتصال بقاعدة البيانات ❌";
-
-      }
-
+      return;
     }
 
 
-    loadRestaurants();
+    snapshot.forEach(docSnap=>{
 
-  </script>
+      const restaurant =
+        docSnap.data();
+
+      const id =
+        docSnap.id;
+
+
+      const name =
+        restaurant.name || "مطعم";
+
+      const category =
+        restaurant.category || "مطعم";
+
+      const rating =
+        restaurant.rating || "جديد";
+
+      const delivery =
+        restaurant.delivery || "حسب المسافة";
+
+      const image =
+        restaurant.image || "";
+
+      const card =
+        document.createElement("article");
+
+      card.className =
+        "restaurant";
+
+
+      let imageHTML = "";
+
+      if(image){
+
+        imageHTML = `
+
+          <img
+            src="${escapeHTML(image)}"
+            alt="${escapeHTML(name)}"
+            onerror="this.style.display='none';this.parentElement.querySelector('.emoji').style.display='block';">
+
+          <div
+            class="emoji"
+            style="display:none">
+            🍽️
+          </div>
+
+        `;
+
+      }else{
+
+        imageHTML = `
+
+          <div class="emoji">
+            🍽️
+          </div>
+
+        `;
+
+      }
+
+
+      card.innerHTML = `
+
+        <div class="restaurant-image">
+
+          ${imageHTML}
+
+        </div>
+
+
+        <div class="restaurant-body">
+
+          <h2>
+            ${escapeHTML(name)}
+          </h2>
+
+          <p>
+            ${escapeHTML(category)}
+          </p>
+
+
+          <div class="info">
+
+            <span class="rating">
+              ⭐ ${escapeHTML(String(rating))}
+            </span>
+
+            <span class="delivery">
+              ${escapeHTML(String(delivery))}
+            </span>
+
+          </div>
+
+
+          <button
+            class="menu-button"
+            data-id="${escapeHTML(id)}">
+
+            عرض المنيو
+
+          </button>
+
+        </div>
+
+      `;
+
+
+      const button =
+        card.querySelector(".menu-button");
+
+
+      button.addEventListener(
+        "click",
+        ()=>{
+
+          window.location.href =
+            "menu.html?restaurantId=" +
+            encodeURIComponent(id);
+
+        }
+      );
+
+
+      container.appendChild(card);
+
+    });
+
+
+  }catch(error){
+
+    console.error(error);
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          ⚠️
+        </div>
+
+        <h2>
+          حصل خطأ
+        </h2>
+
+        <p>
+          لم نتمكن من تحميل المطاعم.
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function goCart(){
+
+  window.location.href =
+    "index.html#cart";
+
+}
+
+
+loadRestaurants();
+
+</script>
 
 </body>
 </html>
