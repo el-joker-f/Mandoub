@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta name="viewport"
@@ -274,11 +273,6 @@ body{
   text-align:center;
 }
 
-.verify-icon{
-  font-size:65px;
-  margin-bottom:15px;
-}
-
 .verify-email{
   color:#00dfff;
   direction:ltr;
@@ -318,12 +312,6 @@ body{
   line-height:1.8;
 }
 
-.loading{
-  text-align:center;
-  padding:20px;
-  color:#8295a6;
-}
-
 @media(max-width:500px){
 
   body{
@@ -345,16 +333,9 @@ body{
 
 </head>
 
-
 <body>
 
-
 <div class="container">
-
-
-  <!-- =========================
-       LOGO
-  ========================== -->
 
   <div class="logo">
 
@@ -370,21 +351,9 @@ body{
 
   </div>
 
-
-  <!-- =========================
-       AUTH BOX
-  ========================== -->
-
   <div class="auth-box">
 
-
-    <!-- =========================
-         TABS
-    ========================== -->
-
-    <div
-      id="tabs"
-      class="tabs">
+    <div id="tabs" class="tabs">
 
       <button
         id="registerTab"
@@ -395,7 +364,6 @@ body{
         إنشاء حساب
 
       </button>
-
 
       <button
         id="loginTab"
@@ -409,44 +377,23 @@ body{
 
     </div>
 
+    <div id="message" class="message"></div>
 
-    <!-- =========================
-         MESSAGE
-    ========================== -->
-
-    <div
-      id="message"
-      class="message">
-    </div>
-
-
-    <!-- =========================
-         REGISTER
-    ========================== -->
+    <!-- REGISTER -->
 
     <div id="registerForm">
-
 
       <h2 class="form-title">
         إنشاء حساب جديد 📝
       </h2>
 
-
       <p class="form-description">
-
-        أنشئ حسابك الآن، وبعد التسجيل سنرسل
-        رسالة إلى بريدك الإلكتروني لتأكيد الحساب.
-
+        أنشئ حسابك الآن، وبعد التسجيل سنرسل رسالة إلى بريدك الإلكتروني لتأكيد الحساب.
       </p>
-
-
-      <!-- NAME -->
 
       <div class="field">
 
-        <label>
-          الاسم
-        </label>
+        <label>الاسم</label>
 
         <input
           id="registerName"
@@ -456,14 +403,9 @@ body{
 
       </div>
 
-
-      <!-- EMAIL -->
-
       <div class="field">
 
-        <label>
-          البريد الإلكتروني
-        </label>
+        <label>البريد الإلكتروني</label>
 
         <input
           id="registerEmail"
@@ -473,15 +415,9 @@ body{
 
       </div>
 
-
-      <!-- PASSWORD -->
-
       <div class="field">
 
-        <label>
-          كلمة المرور
-        </label>
-
+        <label>كلمة المرور</label>
 
         <div class="input-box">
 
@@ -492,7 +428,6 @@ body{
             placeholder="مثال: Mandoub2@0"
             autocomplete="new-password"
             oninput="checkPassword()">
-
 
           <button
             type="button"
@@ -505,60 +440,31 @@ body{
 
         </div>
 
-
-        <!-- PASSWORD RULES -->
-
         <div class="password-rules">
 
           <div class="password-rules-title">
             🔐 شروط كلمة المرور
           </div>
 
-
-          <div
-            id="ruleLength"
-            class="rule">
-
+          <div id="ruleLength" class="rule">
             ❌ 8 أحرف على الأقل
-
           </div>
 
-
-          <div
-            id="ruleUpper"
-            class="rule">
-
+          <div id="ruleUpper" class="rule">
             ❌ حرف إنجليزي كبير A-Z
-
           </div>
 
-
-          <div
-            id="ruleLower"
-            class="rule">
-
+          <div id="ruleLower" class="rule">
             ❌ حرف إنجليزي صغير a-z
-
           </div>
 
-
-          <div
-            id="ruleNumber"
-            class="rule">
-
+          <div id="ruleNumber" class="rule">
             ❌ رقم 0-9
-
           </div>
 
-
-          <div
-            id="ruleSpecial"
-            class="rule">
-
+          <div id="ruleSpecial" class="rule">
             ❌ علامة خاصة مثل @ أو & أو #
-
           </div>
-
 
           <div class="strength">
 
@@ -573,15 +479,9 @@ body{
 
       </div>
 
-
-      <!-- CONFIRM PASSWORD -->
-
       <div class="field">
 
-        <label>
-          تأكيد كلمة المرور
-        </label>
-
+        <label>تأكيد كلمة المرور</label>
 
         <div class="input-box">
 
@@ -591,7 +491,6 @@ body{
             type="password"
             placeholder="أعد كتابة كلمة المرور"
             autocomplete="new-password">
-
 
           <button
             type="button"
@@ -606,9 +505,6 @@ body{
 
       </div>
 
-
-      <!-- REGISTER BUTTON -->
-
       <button
         id="registerButton"
         class="primary"
@@ -619,38 +515,23 @@ body{
 
       </button>
 
-
     </div>
 
+    <!-- LOGIN -->
 
-    <!-- =========================
-         LOGIN
-    ========================== -->
-
-    <div
-      id="loginForm"
-      class="hidden">
-
+    <div id="loginForm" class="hidden">
 
       <h2 class="form-title">
         تسجيل الدخول 👋
       </h2>
 
-
       <p class="form-description">
-
         سجل دخولك للمتابعة وطلب الطعام.
-
       </p>
-
-
-      <!-- EMAIL -->
 
       <div class="field">
 
-        <label>
-          البريد الإلكتروني
-        </label>
+        <label>البريد الإلكتروني</label>
 
         <input
           id="loginEmail"
@@ -660,15 +541,9 @@ body{
 
       </div>
 
-
-      <!-- PASSWORD -->
-
       <div class="field">
 
-        <label>
-          كلمة المرور
-        </label>
-
+        <label>كلمة المرور</label>
 
         <div class="input-box">
 
@@ -678,7 +553,6 @@ body{
             type="password"
             placeholder="كلمة المرور"
             autocomplete="current-password">
-
 
           <button
             type="button"
@@ -693,9 +567,6 @@ body{
 
       </div>
 
-
-      <!-- LOGIN -->
-
       <button
         id="loginButton"
         class="primary"
@@ -706,9 +577,6 @@ body{
 
       </button>
 
-
-      <!-- RESET -->
-
       <a
         href="#"
         class="back"
@@ -718,41 +586,30 @@ body{
 
       </a>
 
-
     </div>
 
-
-    <!-- =========================
-         EMAIL VERIFICATION
-    ========================== -->
+    <!-- VERIFY -->
 
     <div
       id="verifyForm"
       class="hidden verify-box">
 
-
       <div class="email-icon">
         📧
       </div>
-
 
       <h2 class="form-title">
         تأكيد البريد الإلكتروني
       </h2>
 
-
       <p class="form-description">
-
-        أرسلنا رسالة تأكيد إلى:
-
+        أرسلنا رابط تأكيد إلى:
       </p>
-
 
       <div
         id="verifyEmail"
         class="verify-email">
       </div>
-
 
       <div class="verify-note">
 
@@ -761,13 +618,12 @@ body{
 
         <br>
 
-        اضغط على زر أو رابط
-        <strong>تأكيد البريد الإلكتروني</strong>
-        الموجود داخل الرسالة.
+        اضغط على رابط
+        <strong>تأكيد البريد الإلكتروني</strong>.
 
         <br>
 
-        بعد الضغط على الرابط، ارجع إلى هنا واضغط
+        بعد الضغط على الرابط، ارجع إلى الموقع واضغط
         <strong>تحقق من حالة البريد</strong>.
 
         <br>
@@ -776,9 +632,6 @@ body{
         <strong>الرسائل غير المرغوب فيها</strong>.
 
       </div>
-
-
-      <!-- CHECK VERIFICATION -->
 
       <div class="verify-actions">
 
@@ -792,9 +645,6 @@ body{
 
         </button>
 
-
-        <!-- RESEND -->
-
         <button
           id="resendButton"
           class="secondary"
@@ -804,9 +654,6 @@ body{
           📧 إعادة إرسال رسالة التأكيد
 
         </button>
-
-
-        <!-- LOGOUT -->
 
         <button
           class="secondary"
@@ -819,20 +666,11 @@ body{
 
       </div>
 
-
       <p class="small-text">
-
-        ملاحظة: لا تحتاج إلى نسخ أي كود.
-        فقط اضغط على رابط التأكيد الموجود داخل الرسالة.
-
+        لا تحتاج إلى نسخ أي كود. اضغط على رابط التأكيد داخل الرسالة.
       </p>
 
     </div>
-
-
-    <!-- =========================
-         HOME
-    ========================== -->
 
     <a
       href="index.html"
@@ -842,66 +680,39 @@ body{
 
     </a>
 
-
   </div>
 
 </div>
 
-
-
-<!-- =====================================================
-     FIREBASE
-===================================================== -->
-
 <script type="module">
 
-
 import {
-
   initializeApp
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-
 import {
-
   getAuth,
-
   createUserWithEmailAndPassword,
-
   signInWithEmailAndPassword,
-
   updateProfile,
-
   sendEmailVerification,
-
   sendPasswordResetEmail,
-
   signOut
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
-
 import {
-
   getFirestore,
-
   doc,
-
   setDoc,
-
   getDoc,
-
   serverTimestamp
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
 
 
 /* =====================================================
@@ -934,50 +745,54 @@ const firebaseConfig = {
 };
 
 
-
 /* =====================================================
    INITIALIZE
 ===================================================== */
 
 const app =
-  initializeApp(
-    firebaseConfig
-  );
-
+  initializeApp(firebaseConfig);
 
 const auth =
   getAuth(app);
-
 
 const db =
   getFirestore(app);
 
 
-
 /* =====================================================
-   EMAIL VERIFICATION SETTINGS
+   IMPORTANT
+   FIREBASE EMAIL VERIFICATION
 ===================================================== */
 
 /*
-   هذا هو الرابط الذي سيعود إليه المستخدم
-   بعد الضغط على رابط التأكيد في الإيميل.
+   مهم جدًا:
 
-   يجب أن يكون موجودًا في Firebase:
+   رابط العودة أصبح Firebase Hosting
+   بدل Workers.
+
+   هذا يقلل مشاكل فتح الرابط من Gmail
+   ويجعل رابط التحقق يرجع للموقع الرسمي.
+
+   لازم يكون هذا الدومين موجود في:
+
+   Firebase Console
+   >
    Authentication
-   > Settings
-   > Authorized domains
+   >
+   Settings
+   >
+   Authorized domains
 */
 
 const actionCodeSettings = {
 
   url:
-    "https://mandoub.iscc.workers.dev/",
+    "https://mandoub-dv.web.app/login.html",
 
   handleCodeInApp:
     false
 
 };
-
 
 
 /* =====================================================
@@ -987,31 +802,22 @@ const actionCodeSettings = {
 let verificationEmail = "";
 
 
-
 /* =====================================================
    MESSAGE
 ===================================================== */
 
-function showMessage(
-  text,
-  type = "error"
-){
+function showMessage(text,type="error"){
 
   const box =
-    document.getElementById(
-      "message"
-    );
-
+    document.getElementById("message");
 
   box.textContent =
     text;
-
 
   box.className =
     "message " + type;
 
 }
-
 
 
 /* =====================================================
@@ -1026,26 +832,20 @@ function(){
       "registerPassword"
     ).value;
 
-
   const hasLength =
     password.length >= 8;
-
 
   const hasUpper =
     /[A-Z]/.test(password);
 
-
   const hasLower =
     /[a-z]/.test(password);
-
 
   const hasNumber =
     /[0-9]/.test(password);
 
-
   const hasSpecial =
     /[^A-Za-z0-9]/.test(password);
-
 
   setRule(
     "ruleLength",
@@ -1053,13 +853,11 @@ function(){
     "8 أحرف على الأقل"
   );
 
-
   setRule(
     "ruleUpper",
     hasUpper,
     "حرف إنجليزي كبير A-Z"
   );
-
 
   setRule(
     "ruleLower",
@@ -1067,13 +865,11 @@ function(){
     "حرف إنجليزي صغير a-z"
   );
 
-
   setRule(
     "ruleNumber",
     hasNumber,
     "رقم 0-9"
   );
-
 
   setRule(
     "ruleSpecial",
@@ -1081,20 +877,13 @@ function(){
     "علامة خاصة مثل @ أو & أو #"
   );
 
-
   let score = 0;
 
-
   if(hasLength) score++;
-
   if(hasUpper) score++;
-
   if(hasLower) score++;
-
   if(hasNumber) score++;
-
   if(hasSpecial) score++;
-
 
   document.getElementById(
     "strengthBar"
@@ -1104,20 +893,13 @@ function(){
 };
 
 
-
-function setRule(
-  id,
-  valid,
-  text
-){
+function setRule(id,valid,text){
 
   const element =
     document.getElementById(id);
 
-
   element.textContent =
     (valid ? "✅ " : "❌ ") + text;
-
 
   if(valid){
 
@@ -1132,14 +914,11 @@ function setRule(
 }
 
 
-
 /* =====================================================
    STRONG PASSWORD
 ===================================================== */
 
-function isStrongPassword(
-  password
-){
+function isStrongPassword(password){
 
   return (
 
@@ -1158,46 +937,38 @@ function isStrongPassword(
 }
 
 
-
 /* =====================================================
    SHOW VERIFY
 ===================================================== */
 
 function showVerifyPage(
   email,
-  message =
-    "📧 تم إرسال رسالة تأكيد إلى بريدك الإلكتروني."
+  message="📧 تم إرسال رسالة تأكيد إلى بريدك الإلكتروني."
 ){
 
   verificationEmail =
     email;
 
-
   document
     .getElementById("registerForm")
     .classList.add("hidden");
-
 
   document
     .getElementById("loginForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("tabs")
     .classList.add("hidden");
-
 
   document
     .getElementById("verifyForm")
     .classList.remove("hidden");
 
-
   document
     .getElementById("verifyEmail")
     .textContent =
-      email;
-
+    email;
 
   showMessage(
     message,
@@ -1207,14 +978,11 @@ function showVerifyPage(
 }
 
 
-
 /* =====================================================
-   SEND VERIFICATION EMAIL
+   SEND VERIFICATION
 ===================================================== */
 
-async function sendVerification(
-  user
-){
+async function sendVerification(user){
 
   await sendEmailVerification(
     user,
@@ -1222,7 +990,6 @@ async function sendVerification(
   );
 
 }
-
 
 
 /* =====================================================
@@ -1237,25 +1004,21 @@ async function(){
       "registerName"
     ).value.trim();
 
-
   const email =
     document.getElementById(
       "registerEmail"
     ).value.trim()
       .toLowerCase();
 
-
   const password =
     document.getElementById(
       "registerPassword"
     ).value;
 
-
   const confirmPassword =
     document.getElementById(
       "registerConfirm"
     ).value;
-
 
   const button =
     document.getElementById(
@@ -1312,17 +1075,11 @@ async function(){
   button.disabled =
     true;
 
-
   button.textContent =
     "⏳ جاري إنشاء الحساب...";
 
 
   try{
-
-
-    /* =========================
-       CREATE ACCOUNT
-    ========================= */
 
     const result =
       await createUserWithEmailAndPassword(
@@ -1331,15 +1088,9 @@ async function(){
         password
       );
 
-
     const user =
       result.user;
 
-
-
-    /* =========================
-       SAVE NAME
-    ========================= */
 
     await updateProfile(
       user,
@@ -1349,11 +1100,6 @@ async function(){
       }
     );
 
-
-
-    /* =========================
-       SAVE CUSTOMER
-    ========================= */
 
     await setDoc(
       doc(
@@ -1382,13 +1128,8 @@ async function(){
     );
 
 
-
-    /* =========================
-       SEND FIREBASE EMAIL
-    ========================= */
-
     button.textContent =
-      "📧 جاري إرسال رسالة التأكيد...";
+      "📧 جاري إرسال رابط التأكيد...";
 
 
     await sendVerification(
@@ -1396,14 +1137,9 @@ async function(){
     );
 
 
-
-    /* =========================
-       SHOW VERIFY PAGE
-    ========================= */
-
     showVerifyPage(
       email,
-      "✅ تم إنشاء الحساب وإرسال رسالة تأكيد إلى بريدك الإلكتروني."
+      "✅ تم إنشاء الحساب وإرسال رابط تأكيد إلى بريدك الإلكتروني."
     );
 
 
@@ -1413,7 +1149,6 @@ async function(){
       "REGISTER ERROR:",
       error
     );
-
 
     showMessage(
       firebaseError(error)
@@ -1425,12 +1160,10 @@ async function(){
   button.disabled =
     false;
 
-
   button.textContent =
     "إنشاء الحساب";
 
 };
-
 
 
 /* =====================================================
@@ -1445,17 +1178,14 @@ async function(){
       "checkVerificationButton"
     );
 
-
   button.disabled =
     true;
-
 
   button.textContent =
     "⏳ جاري التحقق...";
 
 
   try{
-
 
     const user =
       auth.currentUser;
@@ -1474,10 +1204,6 @@ async function(){
     }
 
 
-    /* =========================
-       RELOAD USER
-    ========================= */
-
     await user.reload();
 
 
@@ -1485,9 +1211,7 @@ async function(){
       auth.currentUser;
 
 
-    if(
-      !currentUser
-    ){
+    if(!currentUser){
 
       throw new Error(
         "لم يتم العثور على الحساب."
@@ -1496,13 +1220,7 @@ async function(){
     }
 
 
-    /* =========================
-       CHECK FIREBASE
-    ========================= */
-
-    if(
-      !currentUser.emailVerified
-    ){
+    if(!currentUser.emailVerified){
 
       showMessage(
         "⚠️ البريد لم يتم تأكيده بعد. افتح رسالة Firebase واضغط على رابط تأكيد البريد.",
@@ -1513,10 +1231,6 @@ async function(){
 
     }
 
-
-    /* =========================
-       SAVE VERIFIED STATE
-    ========================= */
 
     await setDoc(
       doc(
@@ -1563,7 +1277,6 @@ async function(){
       error
     );
 
-
     showMessage(
       firebaseError(error)
     );
@@ -1574,16 +1287,14 @@ async function(){
   button.disabled =
     false;
 
-
   button.textContent =
     "✅ تحقق من حالة البريد";
 
 };
 
 
-
 /* =====================================================
-   RESEND VERIFICATION
+   RESEND
 ===================================================== */
 
 window.resendVerificationEmail =
@@ -1593,7 +1304,6 @@ async function(){
     document.getElementById(
       "resendButton"
     );
-
 
   const user =
     auth.currentUser;
@@ -1613,13 +1323,11 @@ async function(){
   button.disabled =
     true;
 
-
   button.textContent =
     "⏳ جاري إرسال الرسالة...";
 
 
   try{
-
 
     await user.reload();
 
@@ -1628,9 +1336,7 @@ async function(){
       auth.currentUser;
 
 
-    if(
-      currentUser.emailVerified
-    ){
+    if(currentUser.emailVerified){
 
       showMessage(
         "✅ البريد الإلكتروني مؤكد بالفعل.",
@@ -1648,7 +1354,7 @@ async function(){
 
 
     showMessage(
-      "✅ تم إرسال رسالة تأكيد جديدة. افتح بريدك واضغط على رابط التأكيد.",
+      "✅ تم إرسال رسالة تأكيد جديدة. اضغط على رابط التأكيد داخل الرسالة.",
       "success"
     );
 
@@ -1656,10 +1362,9 @@ async function(){
   }catch(error){
 
     console.error(
-      "RESEND VERIFICATION ERROR:",
+      "RESEND ERROR:",
       error
     );
-
 
     showMessage(
       firebaseError(error)
@@ -1671,12 +1376,10 @@ async function(){
   button.disabled =
     false;
 
-
   button.textContent =
     "📧 إعادة إرسال رسالة التأكيد";
 
 };
-
 
 
 /* =====================================================
@@ -1692,12 +1395,10 @@ async function(){
     ).value.trim()
       .toLowerCase();
 
-
   const password =
     document.getElementById(
       "loginPassword"
     ).value;
-
 
   const button =
     document.getElementById(
@@ -1730,17 +1431,11 @@ async function(){
   button.disabled =
     true;
 
-
   button.textContent =
     "⏳ جاري تسجيل الدخول...";
 
 
   try{
-
-
-    /* =========================
-       LOGIN
-    ========================= */
 
     const result =
       await signInWithEmailAndPassword(
@@ -1770,11 +1465,6 @@ async function(){
     }
 
 
-
-    /* =========================
-       GET CUSTOMER
-    ========================= */
-
     const customerRef =
       doc(
         db,
@@ -1789,14 +1479,7 @@ async function(){
       );
 
 
-
-    /* =========================
-       CHECK FIREBASE EMAIL
-    ========================= */
-
-    if(
-      !currentUser.emailVerified
-    ){
+    if(!currentUser.emailVerified){
 
       showVerifyPage(
         currentUser.email,
@@ -1812,7 +1495,7 @@ async function(){
 
 
         showMessage(
-          "📧 تم إرسال رسالة تأكيد جديدة إلى بريدك الإلكتروني.",
+          "📧 تم إرسال رابط تأكيد جديد إلى بريدك الإلكتروني.",
           "success"
         );
 
@@ -1824,27 +1507,19 @@ async function(){
         );
 
         showMessage(
-          "⚠️ الحساب غير مؤكد. لم نتمكن من إرسال رسالة جديدة الآن: " +
+          "⚠️ الحساب غير مؤكد. تعذر إرسال رسالة جديدة الآن: " +
           firebaseError(error),
           "info"
         );
 
       }
 
-
       return;
 
     }
 
 
-
-    /* =========================
-       CUSTOMER DOCUMENT
-    ========================= */
-
-    if(
-      !customerSnap.exists()
-    ){
+    if(!customerSnap.exists()){
 
       await setDoc(
         customerRef,
@@ -1895,11 +1570,6 @@ async function(){
     }
 
 
-
-    /* =========================
-       SUCCESS
-    ========================= */
-
     showMessage(
       "✅ تم تسجيل الدخول بنجاح.",
       "success"
@@ -1924,7 +1594,6 @@ async function(){
       error
     );
 
-
     showMessage(
       firebaseError(error)
     );
@@ -1935,12 +1604,10 @@ async function(){
   button.disabled =
     false;
 
-
   button.textContent =
     "تسجيل الدخول";
 
 };
-
 
 
 /* =====================================================
@@ -1970,7 +1637,6 @@ async function(){
 
   try{
 
-
     await sendPasswordResetEmail(
       auth,
       email
@@ -1990,7 +1656,6 @@ async function(){
       error
     );
 
-
     showMessage(
       firebaseError(error)
     );
@@ -1998,7 +1663,6 @@ async function(){
   }
 
 };
-
 
 
 /* =====================================================
@@ -2010,24 +1674,19 @@ async function(){
 
   try{
 
-
     await signOut(
       auth
     );
 
-
     verificationEmail =
       "";
 
-
     showLogin();
-
 
     showMessage(
       "✅ تم تسجيل الخروج.",
       "success"
     );
-
 
   }catch(error){
 
@@ -2036,7 +1695,6 @@ async function(){
       error
     );
 
-
     showMessage(
       "❌ تعذر تسجيل الخروج."
     );
@@ -2044,7 +1702,6 @@ async function(){
   }
 
 };
-
 
 
 /* =====================================================
@@ -2058,39 +1715,32 @@ function(){
     .getElementById("registerForm")
     .classList.remove("hidden");
 
-
   document
     .getElementById("loginForm")
     .classList.add("hidden");
-
 
   document
     .getElementById("verifyForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("tabs")
     .classList.remove("hidden");
-
 
   document
     .getElementById("registerTab")
     .classList.add("active");
 
-
   document
     .getElementById("loginTab")
     .classList.remove("active");
 
-
   document
     .getElementById("message")
     .className =
-      "message";
+    "message";
 
 };
-
 
 
 /* =====================================================
@@ -2104,39 +1754,32 @@ function(){
     .getElementById("registerForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("loginForm")
     .classList.remove("hidden");
-
 
   document
     .getElementById("verifyForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("tabs")
     .classList.remove("hidden");
-
 
   document
     .getElementById("registerTab")
     .classList.remove("active");
 
-
   document
     .getElementById("loginTab")
     .classList.add("active");
 
-
   document
     .getElementById("message")
     .className =
-      "message";
+    "message";
 
 };
-
 
 
 /* =====================================================
@@ -2144,22 +1787,16 @@ function(){
 ===================================================== */
 
 window.togglePassword =
-function(
-  id,
-  button
-){
+function(id,button){
 
   const input =
     document.getElementById(id);
 
 
-  if(
-    input.type === "password"
-  ){
+  if(input.type === "password"){
 
     input.type =
       "text";
-
 
     button.textContent =
       "🙈";
@@ -2169,7 +1806,6 @@ function(
     input.type =
       "password";
 
-
     button.textContent =
       "👁️";
 
@@ -2178,14 +1814,11 @@ function(
 };
 
 
-
 /* =====================================================
    FIREBASE ERRORS
 ===================================================== */
 
-function firebaseError(
-  error
-){
+function firebaseError(error){
 
   const code =
     error?.code || "";
@@ -2194,60 +1827,43 @@ function firebaseError(
   switch(code){
 
     case "auth/email-already-in-use":
-
       return "❌ البريد الإلكتروني مستخدم بالفعل.";
 
     case "auth/invalid-email":
-
       return "❌ البريد الإلكتروني غير صحيح.";
 
     case "auth/weak-password":
-
       return "❌ كلمة المرور ضعيفة.";
 
     case "auth/invalid-credential":
-
       return "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة.";
 
     case "auth/user-not-found":
-
       return "❌ الحساب غير موجود.";
 
     case "auth/wrong-password":
-
       return "❌ كلمة المرور غير صحيحة.";
 
     case "auth/too-many-requests":
-
       return "❌ محاولات كثيرة، حاول بعد قليل.";
 
     case "auth/network-request-failed":
-
       return "❌ تحقق من اتصال الإنترنت.";
 
     case "auth/operation-not-allowed":
-
       return "❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase.";
 
     case "auth/invalid-api-key":
-
       return "❌ مفتاح Firebase غير صحيح.";
 
     case "auth/unauthorized-continue-uri":
-
       return "❌ رابط العودة غير مسموح به في Firebase Authorized Domains.";
 
     case "auth/invalid-continue-uri":
-
       return "❌ رابط العودة غير صحيح.";
 
     case "auth/requires-recent-login":
-
       return "❌ يجب تسجيل الدخول مرة أخرى.";
-
-    case "auth/too-many-requests":
-
-      return "❌ تم إيقاف الطلبات مؤقتًا بسبب كثرة المحاولات. حاول لاحقًا.";
 
     default:
 
@@ -2276,7 +1892,6 @@ function firebaseError(
 }
 
 
-
 /* =====================================================
    AUTH STATE
 ===================================================== */
@@ -2285,14 +1900,11 @@ auth.onAuthStateChanged(
   async function(user){
 
     if(!user){
-
       return;
-
     }
 
 
     try{
-
 
       await user.reload();
 
@@ -2302,20 +1914,11 @@ auth.onAuthStateChanged(
 
 
       if(!currentUser){
-
         return;
-
       }
 
 
-      /*
-        لو البريد اتأكد من رابط Firebase
-        نحدّث Firestore تلقائيًا.
-      */
-
-      if(
-        currentUser.emailVerified
-      ){
+      if(currentUser.emailVerified){
 
         const customerRef =
           doc(
@@ -2331,17 +1934,13 @@ auth.onAuthStateChanged(
           );
 
 
-        if(
-          customerSnap.exists()
-        ){
+        if(customerSnap.exists()){
 
           const data =
             customerSnap.data();
 
 
-          if(
-            data.emailVerified !== true
-          ){
+          if(data.emailVerified !== true){
 
             await setDoc(
               customerRef,
@@ -2365,7 +1964,6 @@ auth.onAuthStateChanged(
 
       }
 
-
     }catch(error){
 
       console.error(
@@ -2381,5 +1979,4 @@ auth.onAuthStateChanged(
 </script>
 
 </body>
-
 </html>
