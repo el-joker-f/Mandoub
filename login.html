@@ -286,6 +286,14 @@ body{
   font-weight:bold;
 }
 
+.otp-input{
+  direction:ltr !important;
+  text-align:center !important;
+  letter-spacing:10px;
+  font-size:28px !important;
+  font-weight:bold;
+}
+
 .verify-note{
   background:#031321;
   border:1px solid #173b55;
@@ -323,6 +331,10 @@ body{
     font-size:24px;
   }
 
+  .otp-input{
+    letter-spacing:6px;
+  }
+
 }
 
 </style>
@@ -349,6 +361,7 @@ body{
 
 
   <div class="auth-box">
+
 
     <!-- ================= TABS ================= -->
 
@@ -643,7 +656,7 @@ body{
     </div>
 
 
-    <!-- ================= VERIFY ================= -->
+    <!-- ================= OTP ================= -->
 
     <div
       id="verifyForm"
@@ -654,12 +667,12 @@ body{
       </div>
 
       <h2 class="form-title">
-        باقي خطوة واحدة فقط
+        تأكيد البريد الإلكتروني
       </h2>
 
       <p class="form-description">
 
-        أرسلنا رسالة تأكيد إلى:
+        أرسلنا كود تحقق مكوّن من 6 أرقام إلى:
 
       </p>
 
@@ -671,17 +684,39 @@ body{
 
       <div class="verify-note">
 
-        📩 افتح بريدك الإلكتروني وابحث عن رسالة
-        <strong>تأكيد البريد الإلكتروني</strong>.
+        📩 افتح بريدك الإلكتروني.
 
         <br>
 
-        اضغط على زر التأكيد الموجود داخل الرسالة.
+        ابحث عن رسالة التحقق من
+        <strong>مندوب</strong>.
 
         <br>
 
-        إذا لم تجد الرسالة، افحص مجلد
-        <strong>الرسائل غير المرغوب فيها</strong>.
+        أدخل الكود المكوّن من 6 أرقام هنا.
+
+        <br>
+
+        الكود صالح لمدة
+        <strong>10 دقائق</strong>.
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          كود التحقق
+        </label>
+
+        <input
+          id="otpInput"
+          class="otp-input"
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          autocomplete="one-time-code"
+          placeholder="000000">
 
       </div>
 
@@ -689,12 +724,12 @@ body{
       <div class="verify-actions">
 
         <button
-          id="checkVerifyButton"
+          id="verifyButton"
           class="primary"
           type="button"
-          onclick="checkVerification()">
+          onclick="verifyOTP()">
 
-          ✅ تم التأكيد — تحقق الآن
+          ✅ تأكيد الكود
 
         </button>
 
@@ -703,9 +738,9 @@ body{
           id="resendButton"
           class="secondary"
           type="button"
-          onclick="resendVerification()">
+          onclick="sendOTP(true)">
 
-          📧 إعادة إرسال رسالة التأكيد
+          📧 إعادة إرسال الكود
 
         </button>
 
@@ -713,9 +748,9 @@ body{
         <button
           class="secondary"
           type="button"
-          onclick="logoutUnverified()">
+          onclick="cancelVerification()">
 
-          تسجيل الخروج
+          رجوع
 
         </button>
 
@@ -724,8 +759,7 @@ body{
 
       <p class="small-text">
 
-        بعد الضغط على رابط التأكيد، ارجع إلى هنا واضغط
-        «تم التأكيد — تحقق الآن».
+        إذا لم تجد الرسالة، افحص مجلد الرسائل غير المرغوب فيها.
 
       </p>
 
@@ -745,10 +779,6 @@ body{
 </div>
 
 
-<!-- =====================================================
-     FIREBASE AUTH
-===================================================== -->
-
 <script type="module">
 
 import {
@@ -762,7 +792,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  sendEmailVerification,
   sendPasswordResetEmail,
   signOut
 } from
@@ -773,13 +802,14 @@ import {
   getFirestore,
   doc,
   setDoc,
+  getDoc,
   serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
 /* =====================================================
-   FIREBASE CONFIG
+   FIREBASE
 ===================================================== */
 
 const firebaseConfig = {
@@ -808,46 +838,33 @@ const firebaseConfig = {
 };
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
 const app =
   initializeApp(firebaseConfig);
 
+
 const auth =
   getAuth(app);
+
 
 const db =
   getFirestore(app);
 
 
 /* =====================================================
+   MANDOUB API
+===================================================== */
+
+const API_URL =
+  "https://mandoub.iscc.workers.dev";
+
+
+/* =====================================================
    VARIABLES
 ===================================================== */
 
+let verificationEmail = "";
 let verificationUser = null;
-
-
-/* =====================================================
-   CONTINUE URL
-===================================================== */
-
-const continueUrl =
-  "https://mandoub.iscc.workers.dev/";
-
-
-/* =====================================================
-   EMAIL ACTION SETTINGS
-===================================================== */
-
-const actionCodeSettings = {
-
-  url: continueUrl,
-
-  handleCodeInApp: false
-
-};
+let verificationMode = "register";
 
 
 /* =====================================================
@@ -860,9 +877,7 @@ function showMessage(
 ){
 
   const box =
-    document.getElementById(
-      "message"
-    );
+    document.getElementById("message");
 
   box.textContent =
     text;
@@ -874,7 +889,7 @@ function showMessage(
 
 
 /* =====================================================
-   PASSWORD CHECK
+   PASSWORD
 ===================================================== */
 
 window.checkPassword =
@@ -886,60 +901,68 @@ function(){
     ).value;
 
 
-  const hasLength =
-    password.length >= 8;
+  const rules = {
 
-  const hasUpper =
-    /[A-Z]/.test(password);
+    ruleLength:
+      password.length >= 8,
 
-  const hasLower =
-    /[a-z]/.test(password);
+    ruleUpper:
+      /[A-Z]/.test(password),
 
-  const hasNumber =
-    /[0-9]/.test(password);
+    ruleLower:
+      /[a-z]/.test(password),
 
-  const hasSpecial =
-    /[^A-Za-z0-9]/.test(password);
+    ruleNumber:
+      /[0-9]/.test(password),
+
+    ruleSpecial:
+      /[^A-Za-z0-9]/.test(password)
+
+  };
 
 
   setRule(
     "ruleLength",
-    hasLength,
+    rules.ruleLength,
     "8 أحرف على الأقل"
   );
 
   setRule(
     "ruleUpper",
-    hasUpper,
+    rules.ruleUpper,
     "حرف إنجليزي كبير A-Z"
   );
 
   setRule(
     "ruleLower",
-    hasLower,
+    rules.ruleLower,
     "حرف إنجليزي صغير a-z"
   );
 
   setRule(
     "ruleNumber",
-    hasNumber,
+    rules.ruleNumber,
     "رقم 0-9"
   );
 
   setRule(
     "ruleSpecial",
-    hasSpecial,
+    rules.ruleSpecial,
     "علامة خاصة مثل @ أو & أو #"
   );
 
 
   let score = 0;
 
-  if(hasLength) score++;
-  if(hasUpper) score++;
-  if(hasLower) score++;
-  if(hasNumber) score++;
-  if(hasSpecial) score++;
+  Object.values(rules).forEach(
+    value => {
+
+      if(value){
+        score++;
+      }
+
+    }
+  );
 
 
   document.getElementById(
@@ -961,26 +984,16 @@ function setRule(
 
 
   element.textContent =
-    (valid ? "✅ " : "❌ ") +
-    text;
+    (valid ? "✅ " : "❌ ") + text;
 
 
-  if(valid){
-
-    element.classList.add("ok");
-
-  }else{
-
-    element.classList.remove("ok");
-
-  }
+  element.classList.toggle(
+    "ok",
+    valid
+  );
 
 }
 
-
-/* =====================================================
-   STRONG PASSWORD
-===================================================== */
 
 function isStrongPassword(
   password
@@ -1004,17 +1017,129 @@ function isStrongPassword(
 
 
 /* =====================================================
-   SHOW VERIFY PAGE
+   SEND OTP
+===================================================== */
+
+window.sendOTP =
+async function(resend=false){
+
+  if(!verificationEmail){
+
+    showMessage(
+      "❌ لا يوجد بريد إلكتروني للتحقق."
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "resendButton"
+    );
+
+
+  if(resend){
+
+    button.disabled = true;
+
+    button.textContent =
+      "⏳ جاري إرسال الكود...";
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        API_URL + "/api/otp",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            email:
+              verificationEmail
+
+          })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok || !data.success){
+
+      throw new Error(
+        data.error ||
+        "فشل إرسال كود التحقق"
+      );
+
+    }
+
+
+    showMessage(
+      "✅ تم إرسال كود التحقق إلى بريدك الإلكتروني.",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "OTP SEND ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "❌ تعذر إرسال كود التحقق: " +
+      error.message
+    );
+
+  }
+
+
+  if(resend){
+
+    button.disabled = false;
+
+    button.textContent =
+      "📧 إعادة إرسال الكود";
+
+  }
+
+};
+
+
+/* =====================================================
+   SHOW OTP PAGE
 ===================================================== */
 
 function showVerifyPage(
+  email,
   user,
-  message =
-    "📩 تم إرسال رسالة التأكيد إلى بريدك الإلكتروني"
+  mode="register"
 ){
+
+  verificationEmail =
+    email;
 
   verificationUser =
     user;
+
+  verificationMode =
+    mode;
 
 
   document
@@ -1040,15 +1165,198 @@ function showVerifyPage(
   document
     .getElementById("verifyEmail")
     .textContent =
-      user.email || "";
+      email;
 
 
-  showMessage(
-    message,
-    "success"
+  document
+    .getElementById("otpInput")
+    .value = "";
+
+
+  setTimeout(
+    function(){
+
+      document
+        .getElementById("otpInput")
+        .focus();
+
+    },
+    100
   );
 
 }
+
+
+/* =====================================================
+   VERIFY OTP
+===================================================== */
+
+window.verifyOTP =
+async function(){
+
+  const otp =
+    document
+      .getElementById("otpInput")
+      .value
+      .trim();
+
+
+  const button =
+    document.getElementById(
+      "verifyButton"
+    );
+
+
+  if(!/^\d{6}$/.test(otp)){
+
+    showMessage(
+      "❌ اكتب كود التحقق المكوّن من 6 أرقام."
+    );
+
+    return;
+
+  }
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "⏳ جاري التحقق...";
+
+
+  try{
+
+    const response =
+      await fetch(
+        API_URL + "/api/verify",
+        {
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            email:
+              verificationEmail,
+
+            otp:
+              otp
+
+          })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !response.ok ||
+      !data.success ||
+      !data.verified
+    ){
+
+      throw new Error(
+        data.error ||
+        "كود التحقق غير صحيح"
+      );
+
+    }
+
+
+    /* ==========================================
+       OTP صحيح
+    ========================================== */
+
+    const user =
+      auth.currentUser ||
+      verificationUser;
+
+
+    if(!user){
+
+      throw new Error(
+        "جلسة الحساب انتهت. سجل الدخول مرة أخرى."
+      );
+
+    }
+
+
+    /*
+      حفظ حالة التحقق داخل Firestore.
+    */
+
+    await setDoc(
+      doc(
+        db,
+        "customers",
+        user.uid
+      ),
+      {
+
+        uid:
+          user.uid,
+
+        email:
+          verificationEmail,
+
+        emailVerified:
+          true,
+
+        emailVerifiedAt:
+          serverTimestamp()
+
+      },
+      {
+        merge:true
+      }
+    );
+
+
+    showMessage(
+      "🎉 تم تأكيد البريد الإلكتروني بنجاح!",
+      "success"
+    );
+
+
+    setTimeout(
+      function(){
+
+        window.location.href =
+          "index.html";
+
+      },
+      800
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "OTP VERIFY ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "❌ " + error.message
+    );
+
+
+  }
+
+
+  button.disabled = false;
+
+  button.textContent =
+    "✅ تأكيد الكود";
+
+};
 
 
 /* =====================================================
@@ -1059,27 +1367,38 @@ window.registerUser =
 async function(){
 
   const name =
-    document.getElementById(
-      "registerName"
-    ).value.trim();
+    document
+      .getElementById(
+        "registerName"
+      )
+      .value
+      .trim();
 
 
   const email =
-    document.getElementById(
-      "registerEmail"
-    ).value.trim();
+    document
+      .getElementById(
+        "registerEmail"
+      )
+      .value
+      .trim()
+      .toLowerCase();
 
 
   const password =
-    document.getElementById(
-      "registerPassword"
-    ).value;
+    document
+      .getElementById(
+        "registerPassword"
+      )
+      .value;
 
 
   const confirmPassword =
-    document.getElementById(
-      "registerConfirm"
-    ).value;
+    document
+      .getElementById(
+        "registerConfirm"
+      )
+      .value;
 
 
   const button =
@@ -1091,7 +1410,7 @@ async function(){
   if(!name){
 
     showMessage(
-      "❌ اكتب اسمك أولاً"
+      "❌ اكتب اسمك أولاً."
     );
 
     return;
@@ -1102,7 +1421,7 @@ async function(){
   if(!email){
 
     showMessage(
-      "❌ اكتب البريد الإلكتروني"
+      "❌ اكتب البريد الإلكتروني."
     );
 
     return;
@@ -1126,7 +1445,7 @@ async function(){
   if(password !== confirmPassword){
 
     showMessage(
-      "❌ كلمتا المرور غير متطابقتين"
+      "❌ كلمتا المرور غير متطابقتين."
     );
 
     return;
@@ -1134,8 +1453,7 @@ async function(){
   }
 
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
   button.textContent =
     "⏳ جاري إنشاء الحساب...";
@@ -1158,62 +1476,67 @@ async function(){
     await updateProfile(
       user,
       {
-        displayName:name
+        displayName:
+          name
       }
     );
 
 
-    /* ================= SEND VERIFICATION ================= */
+    /*
+      حفظ العميل.
+    */
 
-    await sendEmailVerification(
-      user,
-      actionCodeSettings
+    await setDoc(
+      doc(
+        db,
+        "customers",
+        user.uid
+      ),
+      {
+
+        uid:
+          user.uid,
+
+        name:
+          name,
+
+        email:
+          email,
+
+        emailVerified:
+          false,
+
+        createdAt:
+          serverTimestamp()
+
+      },
+      {
+        merge:true
+      }
     );
 
 
-    /* ================= SAVE USER ================= */
+    verificationEmail =
+      email;
 
-    try{
+    verificationUser =
+      user;
 
-      await setDoc(
-        doc(
-          db,
-          "customers",
-          user.uid
-        ),
-        {
+    verificationMode =
+      "register";
 
-          uid:
-            user.uid,
 
-          name:
-            name,
+    /*
+      إرسال OTP من Mandoub API.
+    */
 
-          email:
-            email,
-
-          emailVerified:
-            false,
-
-          createdAt:
-            serverTimestamp()
-
-        }
-      );
-
-    }catch(error){
-
-      console.error(
-        "CUSTOMER SAVE ERROR:",
-        error
-      );
-
-    }
+    await sendOTP(false);
 
 
     showVerifyPage(
+      email,
       user,
-      "✅ الحساب اتعمل بنجاح. افتح بريدك واضغط زر «تأكيد البريد الإلكتروني»."
+      "register"
     );
 
 
@@ -1225,6 +1548,11 @@ async function(){
     );
 
 
+    /*
+      لو إنشاء الحساب تم في Firebase
+      لكن إرسال OTP فشل، لا نحذف الحساب.
+    */
+
     showMessage(
       firebaseError(error)
     );
@@ -1232,238 +1560,10 @@ async function(){
   }
 
 
-  button.disabled =
-    false;
+  button.disabled = false;
 
   button.textContent =
     "إنشاء الحساب";
-
-};
-
-
-/* =====================================================
-   RESEND VERIFICATION
-===================================================== */
-
-window.resendVerification =
-async function(){
-
-  if(!verificationUser){
-
-    showMessage(
-      "❌ لا يوجد حساب يحتاج إلى التأكيد"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "resendButton"
-    );
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "⏳ جاري إرسال الرسالة...";
-
-
-  try{
-
-    await verificationUser.reload();
-
-
-    const currentUser =
-      auth.currentUser;
-
-
-    if(
-      currentUser &&
-      currentUser.emailVerified
-    ){
-
-      showMessage(
-        "✅ بريدك الإلكتروني مؤكد بالفعل",
-        "success"
-      );
-
-      button.disabled =
-        false;
-
-      button.textContent =
-        "📧 إعادة إرسال رسالة التأكيد";
-
-      return;
-
-    }
-
-
-    await sendEmailVerification(
-      currentUser,
-      actionCodeSettings
-    );
-
-
-    showMessage(
-      "✅ تم إرسال رسالة تأكيد جديدة. افحص الوارد والرسائل غير المرغوب فيها.",
-      "success"
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "RESEND ERROR:",
-      error
-    );
-
-
-    showMessage(
-      firebaseError(error)
-    );
-
-  }
-
-
-  button.disabled =
-    false;
-
-  button.textContent =
-    "📧 إعادة إرسال رسالة التأكيد";
-
-};
-
-
-/* =====================================================
-   CHECK VERIFICATION
-===================================================== */
-
-window.checkVerification =
-async function(){
-
-  const button =
-    document.getElementById(
-      "checkVerifyButton"
-    );
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "⏳ جاري التحقق...";
-
-
-  try{
-
-    const currentUser =
-      auth.currentUser;
-
-
-    if(!currentUser){
-
-      showMessage(
-        "❌ سجل الدخول مرة أخرى للتحقق من بريدك."
-      );
-
-      showLogin();
-
-      return;
-
-    }
-
-
-    await currentUser.reload();
-
-
-    if(
-      currentUser.emailVerified
-    ){
-
-      showMessage(
-        "🎉 تم تأكيد بريدك الإلكتروني بنجاح!",
-        "success"
-      );
-
-
-      try{
-
-        await setDoc(
-          doc(
-            db,
-            "customers",
-            currentUser.uid
-          ),
-          {
-
-            emailVerified:
-              true,
-
-            emailVerifiedAt:
-              serverTimestamp()
-
-          },
-          {
-            merge:true
-          }
-        );
-
-      }catch(error){
-
-        console.error(
-          "VERIFY SAVE ERROR:",
-          error
-        );
-
-      }
-
-
-      setTimeout(
-        function(){
-
-          window.location.href =
-            "index.html";
-
-        },
-        1000
-      );
-
-
-      return;
-
-    }
-
-
-    showMessage(
-      "⚠️ لسه البريد غير مؤكد. افتح رسالة التأكيد واضغط على زر التأكيد، وبعدها اضغط هنا مرة أخرى.",
-      "info"
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "CHECK VERIFY ERROR:",
-      error
-    );
-
-
-    showMessage(
-      firebaseError(error)
-    );
-
-  }
-
-
-  button.disabled =
-    false;
-
-  button.textContent =
-    "✅ تم التأكيد — تحقق الآن";
 
 };
 
@@ -1476,15 +1576,21 @@ window.loginUser =
 async function(){
 
   const email =
-    document.getElementById(
-      "loginEmail"
-    ).value.trim();
+    document
+      .getElementById(
+        "loginEmail"
+      )
+      .value
+      .trim()
+      .toLowerCase();
 
 
   const password =
-    document.getElementById(
-      "loginPassword"
-    ).value;
+    document
+      .getElementById(
+        "loginPassword"
+      )
+      .value;
 
 
   const button =
@@ -1496,7 +1602,7 @@ async function(){
   if(!email){
 
     showMessage(
-      "❌ اكتب البريد الإلكتروني"
+      "❌ اكتب البريد الإلكتروني."
     );
 
     return;
@@ -1507,7 +1613,7 @@ async function(){
   if(!password){
 
     showMessage(
-      "❌ اكتب كلمة المرور"
+      "❌ اكتب كلمة المرور."
     );
 
     return;
@@ -1515,8 +1621,7 @@ async function(){
   }
 
 
-  button.disabled =
-    true;
+  button.disabled = true;
 
   button.textContent =
     "⏳ جاري تسجيل الدخول...";
@@ -1536,20 +1641,56 @@ async function(){
       result.user;
 
 
-    await user.reload();
+    /*
+      نقرأ حالة التحقق من Firestore.
+    */
+
+    const customerRef =
+      doc(
+        db,
+        "customers",
+        user.uid
+      );
 
 
-    const currentUser =
-      auth.currentUser;
+    const customerSnap =
+      await getDoc(
+        customerRef
+      );
+
+
+    const customerData =
+      customerSnap.exists()
+        ? customerSnap.data()
+        : null;
 
 
     if(
-      !currentUser.emailVerified
+      !customerData ||
+      customerData.emailVerified !== true
     ){
 
+      verificationEmail =
+        email;
+
+      verificationUser =
+        user;
+
+      verificationMode =
+        "login";
+
+
+      /*
+        إرسال OTP جديد.
+      */
+
+      await sendOTP(false);
+
+
       showVerifyPage(
-        currentUser,
-        "⚠️ لازم تؤكد بريدك الإلكتروني قبل الدخول."
+        email,
+        user,
+        "login"
       );
 
 
@@ -1559,7 +1700,7 @@ async function(){
 
 
     showMessage(
-      "✅ تم تسجيل الدخول بنجاح",
+      "✅ تم تسجيل الدخول بنجاح.",
       "success"
     );
 
@@ -1590,48 +1731,10 @@ async function(){
   }
 
 
-  button.disabled =
-    false;
+  button.disabled = false;
 
   button.textContent =
     "تسجيل الدخول";
-
-};
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-window.logoutUnverified =
-async function(){
-
-  try{
-
-    await signOut(auth);
-
-    verificationUser =
-      null;
-
-    showLogin();
-
-    showMessage(
-      "✅ تم تسجيل الخروج",
-      "success"
-    );
-
-  }catch(error){
-
-    console.error(
-      "LOGOUT ERROR:",
-      error
-    );
-
-    showMessage(
-      "❌ تعذر تسجيل الخروج"
-    );
-
-  }
 
 };
 
@@ -1644,15 +1747,18 @@ window.forgotPassword =
 async function(){
 
   const email =
-    document.getElementById(
-      "loginEmail"
-    ).value.trim();
+    document
+      .getElementById(
+        "loginEmail"
+      )
+      .value
+      .trim();
 
 
   if(!email){
 
     showMessage(
-      "❌ اكتب البريد الإلكتروني أولاً"
+      "❌ اكتب البريد الإلكتروني أولاً."
     );
 
     return;
@@ -1687,6 +1793,38 @@ async function(){
     );
 
   }
+
+};
+
+
+/* =====================================================
+   CANCEL VERIFICATION
+===================================================== */
+
+window.cancelVerification =
+async function(){
+
+  verificationEmail = "";
+
+  verificationUser = null;
+
+  verificationMode = "register";
+
+
+  try{
+
+    await signOut(auth);
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+  }
+
+
+  showLogin();
 
 };
 
@@ -1859,20 +1997,11 @@ function firebaseError(
     case "auth/operation-not-allowed":
       return "❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase.";
 
-    case "auth/unauthorized-continue-uri":
-      return "❌ دومين الموقع غير مضاف إلى Authorized domains في Firebase.";
-
-    case "auth/invalid-continue-uri":
-      return "❌ رابط المتابعة غير صحيح.";
-
-    case "auth/invalid-action-code":
-      return "❌ رابط التأكيد غير صالح أو انتهت صلاحيته.";
-
-    case "auth/expired-action-code":
-      return "❌ رابط التأكيد انتهت صلاحيته. اطلب رسالة جديدة.";
-
     default:
-      return "❌ حدث خطأ، حاول مرة أخرى.";
+      return (
+        error?.message ||
+        "❌ حدث خطأ، حاول مرة أخرى."
+      );
 
   }
 
@@ -1880,57 +2009,26 @@ function firebaseError(
 
 
 /* =====================================================
-   INITIAL CHECK
+   OTP INPUT
 ===================================================== */
 
-auth.onAuthStateChanged(
-  async function(user){
+document
+  .getElementById("otpInput")
+  .addEventListener(
+    "input",
+    function(){
 
-    if(!user){
-
-      return;
-
-    }
-
-
-    try{
-
-      await user.reload();
-
-
-      if(
-        auth.currentUser &&
-        auth.currentUser.emailVerified
-      ){
-
-        /*
-          المستخدم مؤكد بالفعل.
-          نترك الصفحة كما هي.
-        */
-
-        return;
-
-      }
-
-
-      /*
-        لو الحساب غير مؤكد،
-        لا ندخله تلقائياً لأي مكان.
-      */
-
-    }catch(error){
-
-      console.error(
-        "AUTH STATE ERROR:",
-        error
-      );
+      this.value =
+        this.value
+          .replace(/\D/g,"")
+          .slice(0,6);
 
     }
+  );
 
-  }
-);
 
 </script>
 
 </body>
+
 </html>
