@@ -5,1535 +5,617 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>مندوب | لوحة التحكم</title>
 
 <style>
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
-  font-family:Arial,Tahoma,sans-serif;
-  background:#020d18;
-  color:#fff;
-  min-height:100vh;
-}
-
-button,
-input,
-select,
-textarea{
-  font-family:inherit;
+font-family:Arial,Tahoma,sans-serif;
+background:#020d18;
+color:#fff;
 }
 
 button{
-  cursor:pointer;
+cursor:pointer;
+font-family:inherit;
 }
 
 .app{
-  display:flex;
-  min-height:100vh;
+display:flex;
+min-height:100vh;
 }
 
 
-/* =====================================================
-   SIDEBAR
-===================================================== */
+/* SIDEBAR */
 
 .sidebar{
-  width:260px;
-  background:#061a2d;
-  border-left:1px solid #16415e;
-  padding:20px 15px;
-  position:fixed;
-  right:0;
-  top:0;
-  bottom:0;
-  overflow-y:auto;
-  z-index:100;
+
+width:260px;
+background:#061a2d;
+padding:20px;
+position:fixed;
+right:0;
+top:0;
+bottom:0;
+
 }
 
 .logo{
-  text-align:center;
-  padding:10px 0 25px;
-  border-bottom:1px solid #173b55;
-  margin-bottom:20px;
+text-align:center;
+margin-bottom:25px;
 }
 
 .logo img{
-  width:65px;
-  height:65px;
-  object-fit:contain;
+
+width:70px;
+height:70px;
+
 }
 
 .logo h1{
-  color:#00dfff;
-  margin-top:7px;
-  font-size:23px;
+
+color:#00dfff;
+
 }
 
-.logo p{
-  color:#8295a6;
-  font-size:13px;
-  margin-top:6px;
-}
 
-.menu{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
-}
+/* MENU */
 
 .menu button{
-  width:100%;
-  border:0;
-  background:transparent;
-  color:#9badbd;
-  padding:14px 15px;
-  border-radius:13px;
-  text-align:right;
-  font-size:15px;
-  font-weight:bold;
-}
 
-.menu button:hover{
-  background:#0d2a40;
-  color:#fff;
+width:100%;
+padding:14px;
+margin-bottom:8px;
+border:0;
+border-radius:12px;
+background:none;
+color:#ccc;
+text-align:right;
+
 }
 
 .menu button.active{
-  background:#00dfff;
-  color:#00131e;
+
+background:#00dfff;
+color:#00131e;
+
 }
 
 
-/* =====================================================
-   MAIN
-===================================================== */
+/* MAIN */
 
 .main{
-  width:calc(100% - 260px);
-  margin-right:260px;
-  min-height:100vh;
+
+margin-right:260px;
+width:calc(100% - 260px);
+
 }
+
 
 .topbar{
-  height:75px;
-  background:#061a2d;
-  border-bottom:1px solid #16415e;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
-  position:sticky;
-  top:0;
-  z-index:50;
+
+height:70px;
+background:#061a2d;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:20px;
+
 }
 
-.page-title{
-  font-size:23px;
-}
-
-.firebase-status{
-  background:#082f26;
-  color:#35e6a1;
-  border:1px solid #145f4b;
-  border-radius:12px;
-  padding:9px 13px;
-  font-size:13px;
-  font-weight:bold;
-}
 
 .content{
-  padding:25px;
+
+padding:20px;
+
 }
 
-
-/* =====================================================
-   PAGES
-===================================================== */
 
 .page{
-  display:none;
+
+display:none;
+
 }
+
 
 .page.active{
-  display:block;
+
+display:block;
+
 }
 
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.stat{
-  background:#061a2d;
-  border:1px solid #16415e;
-  border-radius:18px;
-  padding:20px;
-}
-
-.stat-title{
-  color:#8295a6;
-  font-size:14px;
-  margin-bottom:10px;
-}
-
-.stat-number{
-  color:#00dfff;
-  font-size:30px;
-  font-weight:900;
-}
-
-
-/* =====================================================
-   CARD
-===================================================== */
 
 .card{
-  background:#061a2d;
-  border:1px solid #16415e;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:20px;
+
+background:#061a2d;
+border:1px solid #16415e;
+border-radius:20px;
+padding:20px;
+margin-bottom:20px;
+
 }
 
-.card-title{
-  font-size:20px;
-  margin-bottom:18px;
-}
-
-.card-subtitle{
-  color:#8295a6;
-  margin-top:-10px;
-  margin-bottom:18px;
-  line-height:1.7;
-}
-
-
-/* =====================================================
-   FORMS
-===================================================== */
 
 .form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+
 }
 
-.field{
-  margin-bottom:15px;
-}
-
-.field.full{
-  grid-column:1/-1;
-}
 
 .field label{
-  display:block;
-  color:#aab9c7;
-  margin-bottom:7px;
-  font-size:14px;
+
+display:block;
+margin-bottom:8px;
+color:#aaa;
+
 }
 
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  background:#031321;
-  color:#fff;
-  border:2px solid #21445f;
-  border-radius:13px;
-  padding:13px 14px;
-  outline:none;
-  font-size:15px;
-}
 
 .field input,
+.field textarea,
 .field select{
-  height:50px;
+
+width:100%;
+background:#031321;
+border:2px solid #21445f;
+color:#fff;
+padding:13px;
+border-radius:12px;
+
 }
 
-.field textarea{
-  min-height:100px;
-  resize:vertical;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  border-color:#00dfff;
-}
 
 .primary{
-  border:0;
-  border-radius:13px;
-  background:#00dfff;
-  color:#00131e;
-  padding:14px 20px;
-  font-weight:900;
-  font-size:15px;
-  min-height:50px;
-}
 
-.primary:hover{
-  opacity:.9;
-}
-
-.secondary{
-  border:1px solid #21658b;
-  border-radius:11px;
-  background:#12344d;
-  color:#fff;
-  padding:9px 13px;
-  font-weight:bold;
-}
-
-.danger{
-  border:0;
-  border-radius:11px;
-  background:#651b31;
-  color:#ff9ab6;
-  padding:9px 13px;
-  font-weight:bold;
-}
-
-.danger:hover{
-  background:#84203e;
-}
-
-
-/* =====================================================
-   ITEMS
-===================================================== */
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.item{
-  background:#031321;
-  border:1px solid #173b55;
-  border-radius:15px;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.item-info{
-  min-width:0;
-}
-
-.item-info strong{
-  display:block;
-  font-size:16px;
-  margin-bottom:7px;
-}
-
-.item-info small{
-  color:#8295a6;
-  line-height:1.8;
-}
-
-.item-actions{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  flex-shrink:0;
-}
-
-
-/* =====================================================
-   TABLE
-===================================================== */
-
-.table-wrap{
-  overflow-x:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-}
-
-th,
-td{
-  padding:13px 10px;
-  border-bottom:1px solid #173b55;
-  text-align:right;
-  white-space:nowrap;
-}
-
-th{
-  color:#00dfff;
-  font-size:14px;
-}
-
-td{
-  color:#c4d0da;
-  font-size:14px;
-}
-
-.badge{
-  display:inline-block;
-  background:#12344d;
-  border:1px solid #21658b;
-  color:#8edfff;
-  border-radius:20px;
-  padding:5px 10px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-.message{
-  display:none;
-  position:fixed;
-  left:25px;
-  bottom:25px;
-  max-width:400px;
-  background:#073d30;
-  border:1px solid #16a879;
-  color:#5df0bb;
-  padding:15px 18px;
-  border-radius:15px;
-  z-index:1000;
-  font-weight:bold;
-  box-shadow:0 10px 30px rgba(0,0,0,.3);
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-.mobile-menu{
-  display:none;
-}
-
-@media(max-width:900px){
-
-  .sidebar{
-    width:220px;
-  }
-
-  .main{
-    width:calc(100% - 220px);
-    margin-right:220px;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
+background:#00dfff;
+border:0;
+padding:15px 25px;
+border-radius:12px;
+font-weight:bold;
 
 }
 
-@media(max-width:700px){
-
-  .sidebar{
-    width:100%;
-    height:auto;
-    position:relative;
-    right:auto;
-    bottom:auto;
-    border-left:0;
-    border-bottom:1px solid #16415e;
-  }
-
-  .main{
-    width:100%;
-    margin-right:0;
-  }
-
-  .app{
-    display:block;
-  }
-
-  .menu{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .topbar{
-    position:relative;
-    padding:12px 15px;
-    height:auto;
-    gap:10px;
-  }
-
-  .content{
-    padding:15px;
-  }
-
-  .form-grid{
-    grid-template-columns:1fr;
-  }
-
-  .field.full{
-    grid-column:auto;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-
-  .stat{
-    padding:15px;
-  }
-
-  .stat-number{
-    font-size:25px;
-  }
-
-}
-
-@media(max-width:450px){
-
-  .menu{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .menu button{
-    padding:11px 8px;
-    font-size:13px;
-  }
-
-  .page-title{
-    font-size:18px;
-  }
-
-  .firebase-status{
-    font-size:11px;
-    padding:7px 8px;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .item{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .item-actions{
-    width:100%;
-  }
-
-}
 
 </style>
 
 </head>
 
+
 <body>
+
 
 <div class="app">
 
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
 <aside class="sidebar">
 
-  <div class="logo">
 
-    <img
-      src="assets/logo.png"
-      alt="مندوب">
+<div class="logo">
 
-    <h1>مندوب</h1>
+<img src="assets/logo.png">
 
-    <p>
-      لوحة تحكم الإدارة
-    </p>
+<h1>مندوب</h1>
 
-  </div>
+</div>
 
 
-  <nav class="menu">
-
-    <button
-      class="active"
-      onclick="showPage('dashboard',this)">
-
-      📊 لوحة التحكم
-
-    </button>
+<div class="menu">
 
 
-    <button
-      onclick="showPage('restaurants',this)">
-
-      🍔 المطاعم
-
-    </button>
+<button class="active" onclick="showPage('dashboard',this)">
+📊 لوحة التحكم
+</button>
 
 
-    <button
-      onclick="showPage('products',this)">
-
-      🍟 المنتجات
-
-    </button>
+<button onclick="showPage('restaurants',this)">
+🍔 المطاعم
+</button>
 
 
-    <button
-      onclick="showPage('offers',this)">
-
-      🎁 العروض
-
-    </button>
+<button onclick="showPage('products',this)">
+🍟 المنتجات
+</button>
 
 
-    <button
-      onclick="showPage('orders',this)">
-
-      📦 الطلبات
-
-    </button>
+<button onclick="showPage('orders',this)">
+📦 الطلبات
+</button>
 
 
-    <button
-      onclick="showPage('drivers',this)">
+</div>
 
-      🛵 الطيارين
-
-    </button>
-
-
-    <button
-      onclick="showPage('customers',this)">
-
-      👥 العملاء
-
-    </button>
-
-
-    <button
-      onclick="showPage('settings',this)">
-
-      ⚙️ الإعدادات
-
-    </button>
-
-  </nav>
 
 </aside>
 
 
-<!-- =====================================================
-     MAIN
-===================================================== -->
 
 <main class="main">
 
 
-  <header class="topbar">
+<div class="topbar">
 
-    <h1
-      id="pageTitle"
-      class="page-title">
+<h2 id="pageTitle">
+لوحة التحكم
+</h2>
 
-      لوحة التحكم
 
-    </h1>
+<div id="firebaseStatus">
+جاري الاتصال...
+</div>
 
 
-    <div
-      id="firebaseStatus"
-      class="firebase-status">
+</div>
 
-      جاري الاتصال بـ Firebase...
 
-    </div>
 
-  </header>
+<div class="content">
 
 
-  <div class="content">
 
+<section id="dashboard" class="page active">
 
-    <!-- =================================================
-         DASHBOARD
-    ================================================= -->
+<div class="card">
 
-    <section
-      id="dashboard"
-      class="page active">
+<h2>
+مرحبا بك في لوحة التحكم
+</h2>
 
+</div>
 
-      <div class="stats">
+</section>
 
 
-        <div class="stat">
 
-          <div class="stat-title">
-            المطاعم
-          </div>
 
-          <div
-            id="restaurantsCount"
-            class="stat-number">
+<!-- المطاعم -->
 
-            0
 
-          </div>
+<section id="restaurants" class="page">
 
-        </div>
 
 
-        <div class="stat">
+<div class="card">
 
-          <div class="stat-title">
-            المنتجات
-          </div>
 
-          <div
-            id="productsCount"
-            class="stat-number">
+<h2>
+إضافة مطعم جديد 🍔
+</h2>
 
-            0
 
-          </div>
 
-        </div>
+<div class="form-grid">
 
 
-        <div class="stat">
 
-          <div class="stat-title">
-            الطلبات
-          </div>
+<div class="field">
 
-          <div
-            id="ordersCount"
-            class="stat-number">
+<label>
+اسم المطعم
+</label>
 
-            0
+<input id="restaurantName">
 
-          </div>
+</div>
 
-        </div>
 
 
-        <div class="stat">
+<div class="field">
 
-          <div class="stat-title">
-            الطيارين
-          </div>
+<label>
+التصنيف
+</label>
 
-          <div
-            id="driversCount"
-            class="stat-number">
+<input id="restaurantCategory">
 
-            0
+</div>
 
-          </div>
 
-        </div>
+<div class="field">
 
-      </div>
+<label>
+رابط صورة المطعم
+</label>
 
+<input id="restaurantImage">
 
-      <div class="card">
+</div>
 
-        <h2 class="card-title">
-          مرحبًا بك في لوحة تحكم مندوب 👋
-        </h2>
 
-        <p class="card-subtitle">
+<div class="field">
 
-          من هنا يمكنك إدارة المطاعم والمنتجات والعروض
-          والطلبات والطيارين وإعدادات الموقع.
+<label>
+خط العرض Latitude
+</label>
 
-        </p>
+<input 
+id="restaurantLat"
+type="number"
+step="any"
+placeholder="30.0444">
 
-      </div>
+</div>
 
-    </section>
 
+<div class="field">
 
-    <!-- =================================================
-         RESTAURANTS
-    ================================================= -->
+<label>
+خط الطول Longitude
+</label>
 
-    <section
-      id="restaurants"
-      class="page">
+<input 
+id="restaurantLng"
+type="number"
+step="any"
+placeholder="31.2357">
 
+</div>
 
-      <div class="card">
 
-        <h2 class="card-title">
-          إضافة مطعم جديد 🍔
-        </h2>
+</div>
 
 
-        <div class="form-grid">
+<br>
 
 
-          <div class="field">
+<button 
+class="secondary"
+onclick="getRestaurantLocation()">
 
-            <label>
-              اسم المطعم
-            </label>
+📍 تحديد موقع المطعم تلقائياً
 
-            <input
-              id="restaurantName"
-              type="text"
-              placeholder="مثال: مطعم البركة">
+</button>
 
-          </div>
 
+<br><br>
 
-          <div class="field">
 
-            <label>
-              التصنيف
-            </label>
+<div class="field">
 
-            <input
-              id="restaurantCategory"
-              type="text"
-              placeholder="مثال: برجر">
+<label>
+وصف المطعم
+</label>
 
-          </div>
 
+<textarea id="restaurantDescription"></textarea>
 
-          <div class="field">
 
-            <label>
-              التقييم
-            </label>
+</div>
 
-            <input
-              id="restaurantRating"
-              type="number"
-              min="0"
-              max="5"
-              step="0.1"
-              value="0">
 
-          </div>
 
+<button 
+class="primary"
+onclick="addRestaurant()">
 
-          <div class="field">
+➕ إضافة المطعم
 
-            <label>
-              سعر التوصيل
-            </label>
+</button>
 
-            <input
-              id="restaurantDelivery"
-              type="number"
-              min="0"
-              value="0">
 
-          </div>
 
+</div>
 
-          <div class="field full">
 
-            <label>
-              وصف المطعم
-            </label>
 
-            <textarea
-              id="restaurantDescription"
-              placeholder="اكتب وصف المطعم"></textarea>
+<div class="card">
 
-          </div>
+<h2>
+المطاعم الحالية
+</h2>
 
 
-          <div class="field full">
+<div id="restaurantsList">
 
-            <label>
-              رابط صورة المطعم
-            </label>
+جاري التحميل...
 
-            <input
-              id="restaurantImage"
-              type="url"
-              placeholder="https://...">
+</div>
 
-          </div>
 
-        </div>
+</div>
 
 
-        <button
-          class="primary"
-          onclick="addRestaurant()">
+</section>
 
-          ➕ إضافة المطعم
+      <!-- ================= PRODUCTS ================= -->
 
-        </button>
+<section id="products" class="page">
 
-      </div>
 
+<div class="card">
 
-      <div class="card">
+<h2>
+إضافة منتج 🍟
+</h2>
 
-        <h2 class="card-title">
-          المطاعم الحالية
-        </h2>
 
-        <div
-          id="restaurantsList"
-          class="list">
+<div class="form-grid">
 
-          جاري تحميل المطاعم...
 
-        </div>
+<div class="field">
 
-      </div>
+<label>
+المطعم
+</label>
 
-    </section>
+<select id="productRestaurant">
 
+<option>
+اختر المطعم
+</option>
 
-    <!-- =================================================
-         PRODUCTS
-    ================================================= -->
+</select>
 
-    <section
-      id="products"
-      class="page">
+</div>
 
 
-      <div class="card">
 
-        <h2 class="card-title">
-          إضافة منتج جديد 🍟
-        </h2>
+<div class="field">
 
+<label>
+اسم المنتج
+</label>
 
-        <div class="form-grid">
+<input id="productName">
 
+</div>
 
-          <div class="field">
 
-            <label>
-              المطعم
-            </label>
 
-            <select
-              id="productRestaurant">
+<div class="field">
 
-              <option value="">
-                جاري تحميل المطاعم...
-              </option>
+<label>
+السعر
+</label>
 
-            </select>
+<input 
+id="productPrice"
+type="number">
 
-          </div>
+</div>
 
 
-          <div class="field">
 
-            <label>
-              اسم المنتج
-            </label>
+<div class="field">
 
-            <input
-              id="productName"
-              type="text"
-              placeholder="مثال: برجر لحم">
+<label>
+صورة المنتج
+</label>
 
-          </div>
+<input id="productImage">
 
+</div>
 
-          <div class="field">
 
-            <label>
-              السعر
-            </label>
+</div>
 
-            <input
-              id="productPrice"
-              type="number"
-              min="0"
-              step="0.01"
-              placeholder="100">
 
-          </div>
+<br>
 
 
-          <div class="field">
+<button 
+class="primary"
+onclick="addProduct()">
 
-            <label>
-              رابط صورة المنتج
-            </label>
+➕ إضافة المنتج
 
-            <input
-              id="productImage"
-              type="url"
-              placeholder="https://...">
+</button>
 
-          </div>
 
+</div>
 
-          <div class="field full">
 
-            <label>
-              وصف المنتج
-            </label>
+<div class="card">
 
-            <textarea
-              id="productDescription"
-              placeholder="اكتب وصف المنتج"></textarea>
+<h2>
+المنتجات الحالية
+</h2>
 
-          </div>
 
-        </div>
+<div id="productsList">
 
+جاري التحميل...
 
-        <button
-          class="primary"
-          onclick="addProduct()">
+</div>
 
-          ➕ إضافة المنتج
 
-        </button>
+</div>
 
-      </div>
 
+</section>
 
-      <div class="card">
 
-        <h2 class="card-title">
-          المنتجات الحالية
-        </h2>
 
-        <div
-          id="productsList"
-          class="list">
 
-          جاري تحميل المنتجات...
+<!-- ================= ORDERS ================= -->
 
-        </div>
 
-      </div>
+<section id="orders" class="page">
 
-    </section>
 
+<div class="card">
 
-    <!-- =================================================
-         OFFERS
-    ================================================= -->
+<h2>
+الطلبات 📦
+</h2>
 
-    <section
-      id="offers"
-      class="page">
 
+<table width="100%">
 
-      <div class="card">
 
-        <h2 class="card-title">
-          إضافة عرض جديد 🎁
-        </h2>
+<thead>
 
+<tr>
 
-        <div class="form-grid">
+<th>
+رقم الطلب
+</th>
 
+<th>
+العميل
+</th>
 
-          <div class="field">
+<th>
+الإجمالي
+</th>
 
-            <label>
-              عنوان العرض
-            </label>
+<th>
+الحالة
+</th>
 
-            <input
-              id="offerTitle"
-              type="text"
-              placeholder="مثال: خصم 30%">
 
-          </div>
+</tr>
 
 
-          <div class="field">
+</thead>
 
-            <label>
-              المطعم
-            </label>
 
-            <select
-              id="offerRestaurant">
 
-              <option value="">
-                كل المطاعم
-              </option>
+<tbody id="ordersTable">
 
-            </select>
 
-          </div>
+</tbody>
 
 
-          <div class="field">
+</table>
 
-            <label>
-              الخصم
-            </label>
 
-            <input
-              id="offerDiscount"
-              type="text"
-              placeholder="30%">
+</div>
 
-          </div>
 
+</section>
 
-          <div class="field">
 
-            <label>
-              رابط صورة العرض
-            </label>
 
-            <input
-              id="offerImage"
-              type="url"
-              placeholder="https://...">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              بداية العرض
-            </label>
-
-            <input
-              id="offerStart"
-              type="date">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              نهاية العرض
-            </label>
-
-            <input
-              id="offerEnd"
-              type="date">
-
-          </div>
-
-
-          <div class="field full">
-
-            <label>
-              وصف العرض
-            </label>
-
-            <textarea
-              id="offerDescription"
-              placeholder="اكتب تفاصيل العرض"></textarea>
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="primary"
-          onclick="addOffer()">
-
-          🎁 إضافة العرض
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          العروض الحالية
-        </h2>
-
-        <div
-          id="offersList"
-          class="list">
-
-          جاري تحميل العروض...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         ORDERS
-    ================================================= -->
-
-    <section
-      id="orders"
-      class="page">
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          إدارة الطلبات 📦
-        </h2>
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  رقم الطلب
-                </th>
-
-                <th>
-                  العميل
-                </th>
-
-                <th>
-                  الموقع
-                </th>
-
-                <th>
-                  الإجمالي
-                </th>
-
-                <th>
-                  الطيار
-                </th>
-
-                <th>
-                  الحالة
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody
-              id="ordersTable">
-
-              <tr>
-
-                <td colspan="6">
-
-                  جاري تحميل الطلبات...
-
-                </td>
-
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         DRIVERS
-    ================================================= -->
-
-    <section
-      id="drivers"
-      class="page">
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          إضافة طيار جديد 🛵
-        </h2>
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              اسم الطيار
-            </label>
-
-            <input
-              id="driverName"
-              type="text"
-              placeholder="اسم الطيار">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رقم الهاتف
-            </label>
-
-            <input
-              id="driverPhone"
-              type="tel"
-              placeholder="01xxxxxxxxx">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              الحالة
-            </label>
-
-            <select
-              id="driverStatus">
-
-              <option value="متاح">
-                متاح
-              </option>
-
-              <option value="غير متاح">
-                غير متاح
-              </option>
-
-            </select>
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="primary"
-          onclick="addDriver()">
-
-          ➕ إضافة الطيار
-
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          الطيارين الحاليين
-        </h2>
-
-        <div
-          id="driversList"
-          class="list">
-
-          جاري تحميل الطيارين...
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         CUSTOMERS
-    ================================================= -->
-
-    <section
-      id="customers"
-      class="page">
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          العملاء 👥
-        </h2>
-
-        <p class="card-subtitle">
-
-          بيانات العملاء يتم إنشاؤها تلقائيًا عند التسجيل
-          من صفحة تسجيل الدخول.
-
-        </p>
-
-        <div
-          style="
-            color:#8295a6;
-            background:#031321;
-            border:1px solid #173b55;
-            border-radius:15px;
-            padding:20px;
-            line-height:2;
-          ">
-
-          إدارة بيانات العملاء بشكل كامل تحتاج إلى
-          صلاحيات وقواعد أمان مناسبة في Firestore.
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================
-         SETTINGS
-    ================================================= -->
-
-    <section
-      id="settings"
-      class="page">
-
-
-      <div class="card">
-
-        <h2 class="card-title">
-          إعدادات الموقع ⚙️
-        </h2>
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              اسم الموقع
-            </label>
-
-            <input
-              id="siteName"
-              type="text"
-              value="مندوب">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رقم الهاتف
-            </label>
-
-            <input
-              id="sitePhone"
-              type="tel"
-              placeholder="01xxxxxxxxx">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              سعر التوصيل الافتراضي
-            </label>
-
-            <input
-              id="defaultDelivery"
-              type="number"
-              min="0"
-              value="25">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              استقبال الطلبات
-            </label>
-
-            <select
-              id="ordersEnabled">
-
-              <option value="true">
-                مفعل
-              </option>
-
-              <option value="false">
-                متوقف
-              </option>
-
-            </select>
-
-          </div>
-
-        </div>
-
-
-        <button
-          class="primary"
-          onclick="saveSettings()">
-
-          💾 حفظ الإعدادات
-
-        </button>
-
-      </div>
-
-    </section>
-
-
-  </div>
+</div>
 
 </main>
 
 
-<!-- MESSAGE -->
-
-<div
-  id="message"
-  class="message">
 </div>
 
 
-<!-- =====================================================
-     ADMIN JS
-===================================================== -->
 
-<script
-  type="module"
-  src="admin.js">
 
-</script>
+<div id="message">
 
 </div>
+
+
+
+
+<script type="module" src="admin.js"></script>
+
 
 </body>
 
