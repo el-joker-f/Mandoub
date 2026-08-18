@@ -1,3349 +1,713 @@
-/* =====================================================
-   MANDOUB - ADMIN.JS
-   لوحة التحكم + Firebase Firestore
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
-   النسخة المعدلة:
-   - إدارة المطاعم
-   - تحديد موقع المطعم GPS
-   - حفظ Latitude / Longitude
-   - إدارة المنتجات داخل المطعم
-   - إدارة العروض
-   - إدارة الطيارين
-   - إدارة الطلبات
-   - إعدادات الموقع
-===================================================== */
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>مندوب | لوحة التحكم</title>
 
-import {
-  initializeApp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
+body{
+  font-family:Arial,Tahoma,sans-serif;
+  background:#020d18;
+  color:#fff;
+}
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  deleteDoc,
-  doc,
-  updateDoc,
-  getDoc,
-  setDoc,
-  serverTimestamp
-} from
-"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+button{
+  cursor:pointer;
+  font-family:inherit;
+}
 
+.app{
+  display:flex;
+  min-height:100vh;
+}
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+.sidebar{
+  width:260px;
+  background:#061a2d;
+  padding:20px;
+  position:fixed;
+  right:0;
+  top:0;
+  bottom:0;
+  overflow-y:auto;
+}
 
-const firebaseConfig = {
+.logo{
+  text-align:center;
+  margin-bottom:25px;
+}
 
-  apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+.logo img{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
 
-  authDomain:
-    "mandoub-dv.firebaseapp.com",
+.logo h1{
+  color:#00dfff;
+}
 
-  projectId:
-    "mandoub-dv",
+.menu button{
+  width:100%;
+  padding:14px;
+  margin-bottom:8px;
+  border:0;
+  border-radius:12px;
+  background:none;
+  color:#ccc;
+  text-align:right;
+}
 
-  storageBucket:
-    "mandoub-dv.firebasestorage.app",
+.menu button.active{
+  background:#00dfff;
+  color:#00131e;
+}
 
-  messagingSenderId:
-    "311140400335",
+.main{
+  margin-right:260px;
+  width:calc(100% - 260px);
+}
 
-  appId:
-    "1:311140400335:web:db198b7c53259c53594bba",
+.topbar{
+  height:70px;
+  background:#061a2d;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
 
-  measurementId:
-    "G-7V1LJQYYXD"
+#firebaseStatus{
+  padding:8px 12px;
+  border-radius:10px;
+  font-size:13px;
+}
 
-};
+.content{
+  padding:20px;
+}
 
+.page{
+  display:none;
+}
 
-/* =====================================================
-   FIREBASE
-===================================================== */
+.page.active{
+  display:block;
+}
 
-let db = null;
+.card{
+  background:#061a2d;
+  border:1px solid #16415e;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:20px;
+}
 
-let restaurants = [];
+.card h2{
+  margin-bottom:18px;
+}
 
-let messageTimer = null;
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
 
+.field label{
+  display:block;
+  margin-bottom:8px;
+  color:#aaa;
+}
 
-/* =====================================================
-   FIREBASE INITIALIZE
-===================================================== */
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  background:#031321;
+  border:2px solid #21445f;
+  color:#fff;
+  padding:13px;
+  border-radius:12px;
+  outline:none;
+}
 
-try {
+.field textarea{
+  min-height:100px;
+  resize:vertical;
+}
 
-  const app =
-    initializeApp(firebaseConfig);
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:#00dfff;
+}
 
+.primary,
+.secondary,
+.danger{
+  border:0;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:bold;
+}
 
-  db =
-    getFirestore(app);
+.primary{
+  background:#00dfff;
+  color:#00131e;
+}
 
+.secondary{
+  background:#123650;
+  color:#fff;
+}
 
-  const status =
-    document.getElementById(
-      "firebaseStatus"
-    );
+.danger{
+  background:#6b1930;
+  color:#fff;
+}
 
+.location-box{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
 
-  if (status) {
+.location-status{
+  width:100%;
+  color:#91a4b3;
+  font-size:13px;
+}
 
-    status.textContent =
-      "Firebase متصل ✅";
+.item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  background:#031321;
+  border:1px solid #16415e;
+  padding:15px;
+  border-radius:15px;
+  margin-bottom:10px;
+}
 
-    status.style.background =
-      "#082f26";
+.item-info{
+  flex:1;
+}
 
-    status.style.color =
-      "#35e6a1";
+.item-info strong{
+  display:block;
+  margin-bottom:7px;
+}
 
+.item-info small{
+  color:#91a4b3;
+  line-height:1.8;
+}
+
+.item-actions{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.badge{
+  display:inline-block;
+  background:#123650;
+  padding:5px 9px;
+  border-radius:8px;
+}
+
+.empty{
+  color:#899aaa;
+  text-align:center;
+  padding:25px;
+}
+
+table{
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:12px;
+  border-bottom:1px solid #16415e;
+  text-align:right;
+}
+
+@media(max-width:800px){
+
+  .sidebar{
+    width:210px;
   }
 
+  .main{
+    margin-right:210px;
+    width:calc(100% - 210px);
+  }
 
-  console.log(
-    "Firebase Admin Connected ✅"
-  );
-
-
-} catch (error) {
-
-  console.error(
-    "Firebase Error:",
-    error
-  );
-
-
-  const status =
-    document.getElementById(
-      "firebaseStatus"
-    );
-
-
-  if (status) {
-
-    status.textContent =
-      "Firebase غير متصل ❌";
-
-    status.style.background =
-      "#3a1220";
-
-    status.style.color =
-      "#ff6b91";
-
+  .form-grid{
+    grid-template-columns:1fr;
   }
 
 }
 
+@media(max-width:600px){
 
-/* =====================================================
-   MESSAGE
-===================================================== */
+  .sidebar{
+    width:75px;
+    padding:10px;
+  }
 
-function message(text) {
+  .logo h1{
+    display:none;
+  }
 
-  const box =
-    document.getElementById(
-      "message"
-    );
+  .logo img{
+    width:50px;
+    height:50px;
+  }
 
+  .menu button{
+    font-size:0;
+    text-align:center;
+    padding:14px 5px;
+  }
 
-  if (!box) return;
+  .menu button::first-letter{
+    font-size:20px;
+  }
 
+  .main{
+    margin-right:75px;
+    width:calc(100% - 75px);
+  }
 
-  box.textContent =
-    text;
+  .topbar{
+    padding:12px;
+  }
 
+  .topbar h2{
+    font-size:17px;
+  }
 
-  box.style.display =
-    "block";
+  .content{
+    padding:10px;
+  }
 
+  .item{
+    flex-direction:column;
+    align-items:stretch;
+  }
 
-  clearTimeout(
-    messageTimer
-  );
+  .item-actions{
+    width:100%;
+  }
 
+  .item-actions button{
+    flex:1;
+  }
 
-  messageTimer =
-    setTimeout(() => {
-
-      box.style.display =
-        "none";
-
-    }, 2800);
-
+  table{
+    font-size:12px;
+  }
 }
+</style>
 
+</head>
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+<body>
 
-function escapeHTML(value) {
+<div class="app">
 
-  return String(
-    value ?? ""
-  )
+<aside class="sidebar">
 
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
+  <div class="logo">
+    <img src="assets/logo.png" alt="مندوب">
+    <h1>مندوب</h1>
+  </div>
 
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
+  <div class="menu">
 
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
+    <button class="active" onclick="showPage('dashboard',this)">
+      📊 لوحة التحكم
+    </button>
 
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
+    <button onclick="showPage('restaurants',this)">
+      🍔 المطاعم
+    </button>
 
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    <button onclick="showPage('products',this)">
+      🍟 المنتجات
+    </button>
 
-}
+    <button onclick="showPage('orders',this)">
+      📦 الطلبات
+    </button>
 
+  </div>
 
-/* =====================================================
-   SAFE URL
-===================================================== */
+</aside>
 
-function safeURL(value) {
 
-  const url =
-    String(
-      value || ""
-    ).trim();
+<main class="main">
 
+  <div class="topbar">
 
-  if (!url) {
+    <h2 id="pageTitle">
+      لوحة التحكم
+    </h2>
 
-    return "";
+    <div id="firebaseStatus">
+      جاري الاتصال...
+    </div>
 
-  }
+  </div>
 
 
-  try {
+  <div class="content">
 
-    const parsed =
-      new URL(
-        url,
-        window.location.href
-      );
 
+    <!-- DASHBOARD -->
 
-    if (
-      parsed.protocol === "http:" ||
-      parsed.protocol === "https:"
-    ) {
+    <section id="dashboard" class="page active">
 
-      return parsed.href;
+      <div class="card">
 
-    }
+        <h2>
+          مرحبًا بك في لوحة التحكم 👋
+        </h2>
 
+        <p style="color:#91a4b3;line-height:2">
+          من هنا تقدر تضيف المطاعم والمنتجات،
+          وكل البيانات يتم حفظها تلقائيًا في Firebase.
+        </p>
 
-    return "";
+      </div>
 
-  } catch {
+    </section>
 
-    return "";
 
-  }
 
-}
+    <!-- RESTAURANTS -->
 
+    <section id="restaurants" class="page">
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+      <div class="card">
 
-window.showPage =
-function(page, button) {
+        <h2>
+          إضافة مطعم جديد 🍔
+        </h2>
 
-  document
-    .querySelectorAll(".page")
-    .forEach(item => {
+        <div class="form-grid">
 
-      item.classList.remove(
-        "active"
-      );
 
-    });
+          <div class="field">
+            <label>اسم المطعم</label>
+            <input id="restaurantName" type="text">
+          </div>
 
 
-  const target =
-    document.getElementById(
-      page
-    );
-
-
-  if (target) {
-
-    target.classList.add(
-      "active"
-    );
-
-  }
-
-
-  document
-    .querySelectorAll(".menu button")
-    .forEach(item => {
-
-      item.classList.remove(
-        "active"
-      );
-
-    });
-
-
-  if (button) {
-
-    button.classList.add(
-      "active"
-    );
-
-  }
-
-
-  const titles = {
-
-    dashboard:
-      "لوحة التحكم",
-
-    restaurants:
-      "إدارة المطاعم",
-
-    products:
-      "إدارة المنتجات",
-
-    offers:
-      "إدارة العروض",
-
-    orders:
-      "إدارة الطلبات",
-
-    drivers:
-      "إدارة الطيارين",
-
-    settings:
-      "إعدادات الموقع"
-
-  };
-
-
-  const title =
-    document.getElementById(
-      "pageTitle"
-    );
-
-
-  if (title) {
-
-    title.textContent =
-      titles[page] ||
-      "لوحة التحكم";
-
-  }
-
-
-  if (
-    page === "restaurants"
-  ) {
-
-    loadRestaurants();
-
-  }
-
-
-  if (
-    page === "products"
-  ) {
-
-    loadRestaurants()
-      .then(() => {
-
-        loadProducts();
-
-      });
-
-  }
-
-
-  if (
-    page === "offers"
-  ) {
-
-    loadRestaurants()
-      .then(() => {
-
-        loadOffers();
-
-      });
-
-  }
-
-
-  if (
-    page === "orders"
-  ) {
-
-    loadOrders();
-
-  }
-
-
-  if (
-    page === "drivers"
-  ) {
-
-    loadDrivers();
-
-  }
-
-
-  if (
-    page === "settings"
-  ) {
-
-    loadSettings();
-
-  }
-
-};
-
-
-/* =====================================================
-   RESTAURANT LOCATION
-===================================================== */
-
-window.getRestaurantLocation =
-function() {
-
-  const status =
-    document.getElementById(
-      "restaurantLocationStatus"
-    );
-
-
-  if (
-    !navigator.geolocation
-  ) {
-
-    if (status) {
-
-      status.textContent =
-        "المتصفح لا يدعم تحديد الموقع ❌";
-
-    }
-
-    message(
-      "المتصفح لا يدعم تحديد الموقع ❌"
-    );
-
-    return;
-
-  }
-
-
-  if (status) {
-
-    status.textContent =
-      "جاري تحديد موقعك... 📍";
-
-  }
-
-
-  navigator.geolocation.getCurrentPosition(
-
-    function(position) {
-
-      const lat =
-        position.coords.latitude;
-
-
-      const lng =
-        position.coords.longitude;
-
-
-      const latInput =
-        document.getElementById(
-          "restaurantLat"
-        );
-
-
-      const lngInput =
-        document.getElementById(
-          "restaurantLng"
-        );
-
-
-      if (latInput) {
-
-        latInput.value =
-          lat.toFixed(7);
-
-      }
-
-
-      if (lngInput) {
-
-        lngInput.value =
-          lng.toFixed(7);
-
-      }
-
-
-      if (status) {
-
-        status.textContent =
-          "تم تحديد موقع المطعم بنجاح ✅";
-
-
-      }
-
-
-      message(
-        "تم تحديد موقع المطعم 📍"
-      );
-
-    },
-
-
-    function(error) {
-
-      console.error(
-        "Geolocation Error:",
-        error
-      );
-
-
-      let text =
-        "تعذر تحديد الموقع ❌";
-
-
-      if (
-        error.code ===
-        1
-      ) {
-
-        text =
-          "اسمح للموقع بالوصول إلى موقعك من إعدادات المتصفح ❌";
-
-      }
-
-
-      if (
-        error.code ===
-        2
-      ) {
-
-        text =
-          "تعذر الحصول على الموقع الحالي ❌";
-
-      }
-
-
-      if (
-        error.code ===
-        3
-      ) {
-
-        text =
-          "انتهت مهلة تحديد الموقع ❌";
-
-      }
-
-
-      if (status) {
-
-        status.textContent =
-          text;
-
-      }
-
-
-      message(
-        text
-      );
-
-    },
-
-    {
-      enableHighAccuracy:
-        true,
-
-      timeout:
-        15000,
-
-      maximumAge:
-        0
-
-    }
-
-  );
-
-};
-
-
-/* =====================================================
-   OPEN RESTAURANT MAP
-===================================================== */
-
-window.openRestaurantMap =
-function() {
-
-  const lat =
-    document.getElementById(
-      "restaurantLat"
-    )?.value;
-
-
-  const lng =
-    document.getElementById(
-      "restaurantLng"
-    )?.value;
-
-
-  if (!lat || !lng) {
-
-    message(
-      "حدد موقع المطعم أولاً 📍"
-    );
-
-    return;
-
-  }
-
-
-  const url =
-    "https://www.google.com/maps?q=" +
-    encodeURIComponent(
-      lat + "," + lng
-    );
-
-
-  window.open(
-    url,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-};
-
-
-/* =====================================================
-   RESTAURANTS
-===================================================== */
-
-window.addRestaurant =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document
-      .getElementById(
-        "restaurantName"
-      )
-      ?.value
-      .trim();
-
-
-  const category =
-    document
-      .getElementById(
-        "restaurantCategory"
-      )
-      ?.value
-      .trim();
-
-
-  const rating =
-    document
-      .getElementById(
-        "restaurantRating"
-      )
-      ?.value;
-
-
-  const delivery =
-    document
-      .getElementById(
-        "restaurantDelivery"
-      )
-      ?.value;
-
-
-  const description =
-    document
-      .getElementById(
-        "restaurantDescription"
-      )
-      ?.value
-      .trim();
-
-
-  const image =
-    document
-      .getElementById(
-        "restaurantImage"
-      )
-      ?.value
-      .trim();
-
-
-  const latitude =
-    document
-      .getElementById(
-        "restaurantLat"
-      )
-      ?.value;
-
-
-  const longitude =
-    document
-      .getElementById(
-        "restaurantLng"
-      )
-      ?.value;
-
-
-  if (!name) {
-
-    message(
-      "اكتب اسم المطعم أولاً"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    latitude === "" ||
-    longitude === ""
-  ) {
-
-    message(
-      "حدد موقع المطعم أولاً 📍"
-    );
-
-    return;
-
-  }
-
-
-  const lat =
-    Number(latitude);
-
-
-  const lng =
-    Number(longitude);
-
-
-  if (
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lng)
-  ) {
-
-    message(
-      "إحداثيات الموقع غير صحيحة ❌"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    lat < -90 ||
-    lat > 90
-  ) {
-
-    message(
-      "خط العرض غير صحيح ❌"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    lng < -180 ||
-    lng > 180
-  ) {
-
-    message(
-      "خط الطول غير صحيح ❌"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    await addDoc(
-
-      collection(
-        db,
-        "restaurants"
-      ),
-
-      {
-
-        name:
-          name,
-
-        category:
-          category,
-
-        rating:
-          Number(
-            rating || 0
-          ),
-
-        delivery:
-          Number(
-            delivery || 0
-          ),
-
-        description:
-          description,
-
-        image:
-          image,
-
-        latitude:
-          lat,
-
-        longitude:
-          lng,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    clearRestaurantForm();
-
-
-    message(
-      "تم إضافة المطعم مع الموقع ✅"
-    );
-
-
-    await loadRestaurants();
-
-
-  } catch (error) {
-
-    console.error(
-      "Add Restaurant Error:",
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة المطعم ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   CLEAR RESTAURANT FORM
-===================================================== */
-
-function clearRestaurantForm() {
-
-  const ids = [
-
-    "restaurantName",
-
-    "restaurantCategory",
-
-    "restaurantImage",
-
-    "restaurantRating",
-
-    "restaurantDelivery",
-
-    "restaurantLat",
-
-    "restaurantLng",
-
-    "restaurantDescription"
-
-  ];
-
-
-  ids.forEach(
-    id => {
-
-      const input =
-        document.getElementById(
-          id
-        );
-
-
-      if (input) {
-
-        input.value =
-          "";
-
-      }
-
-    }
-  );
-
-
-  const rating =
-    document.getElementById(
-      "restaurantRating"
-    );
-
-
-  if (rating) {
-
-    rating.value =
-      "4.5";
-
-  }
-
-
-  const delivery =
-    document.getElementById(
-      "restaurantDelivery"
-    );
-
-
-  if (delivery) {
-
-    delivery.value =
-      "25";
-
-  }
-
-
-  const status =
-    document.getElementById(
-      "restaurantLocationStatus"
-    );
-
-
-  if (status) {
-
-    status.textContent =
-      "لم يتم تحديد موقع المطعم بعد.";
-
-  }
-
-}
-
-
-/* =====================================================
-   LOAD RESTAURANTS
-===================================================== */
-
-async function loadRestaurants() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "restaurantsList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل المطاعم...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "restaurants"
-        )
-
-      );
-
-
-    restaurants =
-      snapshot.docs.map(
-        item => ({
-
-          id:
-            item.id,
-
-          ...item.data()
-
-        })
-      );
-
-
-    const count =
-      document.getElementById(
-        "restaurantsCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        restaurants.length;
-
-    }
-
-
-    updateRestaurantSelects();
-
-
-    if (!list) return;
-
-
-    if (
-      restaurants.length ===
-      0
-    ) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد مطاعم حتى الآن.
+          <div class="field">
+            <label>التصنيف</label>
+            <input id="restaurantCategory" type="text"
+                   placeholder="مشويات، بيتزا، برجر...">
+          </div>
+
+
+          <div class="field">
+            <label>التقييم</label>
+            <input id="restaurantRating"
+                   type="number"
+                   min="0"
+                   max="5"
+                   step="0.1"
+                   value="0">
+          </div>
+
+
+          <div class="field">
+            <label>رسوم التوصيل</label>
+            <input id="restaurantDelivery"
+                   type="number"
+                   min="0"
+                   step="1"
+                   value="0">
+          </div>
+
+
+          <div class="field">
+            <label>رابط صورة المطعم</label>
+            <input id="restaurantImage"
+                   type="url"
+                   placeholder="https://...">
+          </div>
+
+
+          <div class="field">
+            <label>وصف المطعم</label>
+            <input id="restaurantDescription"
+                   type="text"
+                   placeholder="وصف مختصر للمطعم">
+          </div>
+
+
+          <div class="field">
+            <label>خط العرض Latitude</label>
+            <input id="restaurantLatitude"
+                   type="number"
+                   step="any"
+                   placeholder="30.0444">
+          </div>
+
+
+          <div class="field">
+            <label>خط الطول Longitude</label>
+            <input id="restaurantLongitude"
+                   type="number"
+                   step="any"
+                   placeholder="31.2357">
+          </div>
 
         </div>
 
-      `;
 
-      return;
+        <div class="location-box">
 
-    }
+          <button
+            class="secondary"
+            type="button"
+            onclick="getRestaurantLocation()">
 
+            📍 استخدام موقعي الحالي
 
-    list.innerHTML =
-      restaurants
-        .map(
-          restaurant => {
+          </button>
 
-            const image =
-              safeURL(
-                restaurant.image
-              );
+          <div
+            id="locationStatus"
+            class="location-status">
 
+            يمكنك إدخال الإحداثيات يدويًا أو استخدام موقعك الحالي.
 
-            const hasLocation =
-              Number.isFinite(
-                Number(
-                  restaurant.latitude
-                )
-              ) &&
-              Number.isFinite(
-                Number(
-                  restaurant.longitude
-                )
-              );
+          </div>
 
+        </div>
 
-            return `
 
-              <div class="item">
+        <br>
 
-                <div class="item-info">
+        <button
+          class="primary"
+          type="button"
+          onclick="addRestaurant()">
 
-                  <strong>
+          ➕ إضافة المطعم
 
-                    ${escapeHTML(
-                      restaurant.name
-                    )}
+        </button>
 
-                  </strong>
+      </div>
 
 
-                  <small>
+      <div class="card">
 
-                    ${escapeHTML(
-                      restaurant.category ||
-                      "بدون تصنيف"
-                    )}
+        <h2>
+          المطاعم الحالية
+        </h2>
 
-                    • التقييم:
+        <div id="restaurantsList">
+          جاري التحميل...
+        </div>
 
-                    ${Number(
-                      restaurant.rating || 0
-                    )}
+      </div>
 
-                    ⭐
+    </section>
 
-                    • التوصيل:
 
-                    ${Number(
-                      restaurant.delivery || 0
-                    )}
 
-                    جنيه
+    <!-- PRODUCTS -->
 
-                    <br>
+    <section id="products" class="page">
 
-                    ${
-                      hasLocation
+      <div class="card">
 
-                      ? "📍 الموقع محدد"
+        <h2>
+          إضافة منتج 🍟
+        </h2>
 
-                      : "⚠️ الموقع غير محدد"
-                    }
+        <div class="form-grid">
 
-                  </small>
 
-                </div>
+          <div class="field">
 
+            <label>المطعم</label>
 
-                <div class="item-actions">
+            <select id="productRestaurant">
 
-
-                  ${
-                    hasLocation
-
-                    ? `
-
-                      <button
-                        type="button"
-                        class="secondary"
-                        onclick="openRestaurantSavedLocation(
-                          ${Number(restaurant.latitude)},
-                          ${Number(restaurant.longitude)}
-                        )">
-
-                        🗺️ الموقع
-
-                      </button>
-
-                    `
-
-                    : ""
-
-                  }
-
-
-                  ${
-                    image
-
-                    ? `
-
-                      <button
-                        type="button"
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-
-                    `
-
-                    : ""
-
-                  }
-
-
-                  <button
-                    type="button"
-                    class="danger"
-                    onclick="deleteRestaurant('${restaurant.id}')">
-
-                    حذف
-
-                  </button>
-
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Load Restaurants Error:",
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل المطاعم ❌";
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   OPEN SAVED RESTAURANT LOCATION
-===================================================== */
-
-window.openRestaurantSavedLocation =
-function(
-  latitude,
-  longitude
-) {
-
-  const url =
-    "https://www.google.com/maps?q=" +
-    encodeURIComponent(
-      latitude + "," + longitude
-    );
-
-
-  window.open(
-    url,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-};
-
-
-/* =====================================================
-   DELETE RESTAURANT
-===================================================== */
-
-window.deleteRestaurant =
-async function(id) {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  if (
-    !confirm(
-      "هل تريد حذف المطعم نهائيًا؟"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "restaurants",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف المطعم ✅"
-    );
-
-
-    await loadRestaurants();
-
-
-    await loadProducts();
-
-
-  } catch (error) {
-
-    console.error(
-      "Delete Restaurant Error:",
-      error
-    );
-
-
-    message(
-      "تعذر حذف المطعم ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   RESTAURANT SELECTS
-===================================================== */
-
-function updateRestaurantSelects() {
-
-  const productSelect =
-    document.getElementById(
-      "productRestaurant"
-    );
-
-
-  const offerSelect =
-    document.getElementById(
-      "offerRestaurant"
-    );
-
-
-  if (productSelect) {
-
-    productSelect.innerHTML = `
-
-      <option value="">
-
-        اختر المطعم
-
-      </option>
-
-      ${
-        restaurants
-          .map(
-            restaurant => `
-
-              <option
-                value="${escapeHTML(
-                  restaurant.id
-                )}">
-
-                ${escapeHTML(
-                  restaurant.name
-                )}
-
+              <option value="">
+                اختر المطعم
               </option>
 
-            `
-          )
-          .join("")
-      }
+            </select>
 
-    `;
+          </div>
 
-  }
 
+          <div class="field">
 
-  if (offerSelect) {
+            <label>اسم المنتج</label>
 
-    offerSelect.innerHTML = `
+            <input id="productName" type="text">
 
-      <option value="">
+          </div>
 
-        كل المطاعم
 
-      </option>
+          <div class="field">
 
-      ${
-        restaurants
-          .map(
-            restaurant => `
+            <label>السعر</label>
 
-              <option
-                value="${escapeHTML(
-                  restaurant.id
-                )}">
+            <input id="productPrice"
+                   type="number"
+                   min="0"
+                   step="0.01">
 
-                ${escapeHTML(
-                  restaurant.name
-                )}
+          </div>
 
-              </option>
 
-            `
-          )
-          .join("")
-      }
+          <div class="field">
 
-    `;
+            <label>رابط صورة المنتج</label>
 
-  }
+            <input id="productImage"
+                   type="url"
+                   placeholder="https://...">
 
-}
-
-
-/* =====================================================
-   PRODUCTS
-   مهم:
-   المنتجات يتم حفظها داخل المطعم:
-
-   restaurants/{restaurantId}/products/{productId}
-
-   وهذا متوافق مع restaurant.html
-===================================================== */
-
-window.addProduct =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const restaurantId =
-    document
-      .getElementById(
-        "productRestaurant"
-      )
-      ?.value;
-
-
-  const name =
-    document
-      .getElementById(
-        "productName"
-      )
-      ?.value
-      .trim();
-
-
-  const price =
-    document
-      .getElementById(
-        "productPrice"
-      )
-      ?.value;
-
-
-  const image =
-    document
-      .getElementById(
-        "productImage"
-      )
-      ?.value
-      .trim();
-
-
-  const description =
-    document
-      .getElementById(
-        "productDescription"
-      )
-      ?.value
-      .trim();
-
-
-  if (
-    !restaurantId ||
-    !name ||
-    price === ""
-  ) {
-
-    message(
-      "اختر المطعم واكتب اسم المنتج والسعر"
-    );
-
-    return;
-
-  }
-
-
-  const numericPrice =
-    Number(price);
-
-
-  if (
-    !Number.isFinite(
-      numericPrice
-    ) ||
-    numericPrice < 0
-  ) {
-
-    message(
-      "السعر غير صحيح ❌"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    const productsRef =
-      collection(
-
-        db,
-        "restaurants",
-        restaurantId,
-        "products"
-
-      );
-
-
-    await addDoc(
-
-      productsRef,
-
-      {
-
-        restaurantId:
-          restaurantId,
-
-        name:
-          name,
-
-        price:
-          numericPrice,
-
-        image:
-          image,
-
-        description:
-          description,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    const productName =
-      document.getElementById(
-        "productName"
-      );
-
-
-    const productPrice =
-      document.getElementById(
-        "productPrice"
-      );
-
-
-    const productImage =
-      document.getElementById(
-        "productImage"
-      );
-
-
-    const productDescription =
-      document.getElementById(
-        "productDescription"
-      );
-
-
-    if (productName) {
-
-      productName.value =
-        "";
-
-    }
-
-
-    if (productPrice) {
-
-      productPrice.value =
-        "";
-
-    }
-
-
-    if (productImage) {
-
-      productImage.value =
-        "";
-
-    }
-
-
-    if (productDescription) {
-
-      productDescription.value =
-        "";
-
-    }
-
-
-    message(
-      "تم إضافة المنتج داخل المطعم ✅"
-    );
-
-
-    await loadProducts();
-
-
-  } catch (error) {
-
-    console.error(
-      "Add Product Error:",
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة المنتج ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD PRODUCTS
-===================================================== */
-
-async function loadProducts() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "productsList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل المنتجات...";
-
-  }
-
-
-  try {
-
-    const allProducts = [];
-
-
-    for (
-      const restaurant
-      of restaurants
-    ) {
-
-      const productsRef =
-        collection(
-
-          db,
-          "restaurants",
-          restaurant.id,
-          "products"
-
-        );
-
-
-      const snapshot =
-        await getDocs(
-          productsRef
-        );
-
-
-      snapshot.forEach(
-        item => {
-
-          allProducts.push({
-
-            id:
-              item.id,
-
-            restaurantId:
-              restaurant.id,
-
-            restaurantName:
-              restaurant.name,
-
-            ...item.data()
-
-          });
-
-        }
-      );
-
-    }
-
-
-    const count =
-      document.getElementById(
-        "productsCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        allProducts.length;
-
-    }
-
-
-    if (!list) return;
-
-
-    if (
-      allProducts.length ===
-      0
-    ) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد منتجات حتى الآن.
+          </div>
 
         </div>
 
-      `;
 
-      return;
+        <br>
 
-    }
 
+        <div class="field">
 
-    list.innerHTML =
-      allProducts
-        .map(
-          product => {
+          <label>وصف المنتج</label>
 
-            const image =
-              safeURL(
-                product.image
-              );
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-
-                    ${escapeHTML(
-                      product.name ||
-                      ""
-                    )}
-
-                  </strong>
-
-
-                  <small>
-
-                    ${escapeHTML(
-                      product.restaurantName ||
-                      "مطعم غير معروف"
-                    )}
-
-                    • السعر:
-
-                    ${Number(
-                      product.price || 0
-                    )}
-
-                    جنيه
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-
-                  ${
-                    image
-
-                    ? `
-
-                      <button
-                        type="button"
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-
-                    `
-
-                    : ""
-
-                  }
-
-
-                  <button
-                    type="button"
-                    class="danger"
-                    onclick="deleteProduct(
-                      '${product.restaurantId}',
-                      '${product.id}'
-                    )">
-
-                    حذف
-
-                  </button>
-
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Load Products Error:",
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل المنتجات ❌";
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   DELETE PRODUCT
-===================================================== */
-
-window.deleteProduct =
-async function(
-  restaurantId,
-  productId
-) {
-
-  if (!db) return;
-
-
-  if (
-    !confirm(
-      "هل تريد حذف المنتج؟"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await deleteDoc(
-
-      doc(
-
-        db,
-        "restaurants",
-        restaurantId,
-        "products",
-        productId
-
-      )
-
-    );
-
-
-    message(
-      "تم حذف المنتج ✅"
-    );
-
-
-    await loadProducts();
-
-
-  } catch (error) {
-
-    console.error(
-      "Delete Product Error:",
-      error
-    );
-
-
-    message(
-      "تعذر حذف المنتج ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   OFFERS
-===================================================== */
-
-window.addOffer =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const title =
-    document
-      .getElementById(
-        "offerTitle"
-      )
-      ?.value
-      .trim();
-
-
-  const restaurantId =
-    document
-      .getElementById(
-        "offerRestaurant"
-      )
-      ?.value;
-
-
-  const discount =
-    document
-      .getElementById(
-        "offerDiscount"
-      )
-      ?.value
-      .trim();
-
-
-  const image =
-    document
-      .getElementById(
-        "offerImage"
-      )
-      ?.value
-      .trim();
-
-
-  const start =
-    document
-      .getElementById(
-        "offerStart"
-      )
-      ?.value;
-
-
-  const end =
-    document
-      .getElementById(
-        "offerEnd"
-      )
-      ?.value;
-
-
-  const description =
-    document
-      .getElementById(
-        "offerDescription"
-      )
-      ?.value
-      .trim();
-
-
-  if (!title) {
-
-    message(
-      "اكتب عنوان العرض أولاً"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    await addDoc(
-
-      collection(
-        db,
-        "offers"
-      ),
-
-      {
-
-        title:
-          title,
-
-        restaurantId:
-          restaurantId ||
-          null,
-
-        discount:
-          discount,
-
-        image:
-          image,
-
-        start:
-          start,
-
-        end:
-          end,
-
-        description:
-          description,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    [
-      "offerTitle",
-      "offerDiscount",
-      "offerImage",
-      "offerDescription"
-    ]
-      .forEach(
-        id => {
-
-          const input =
-            document.getElementById(
-              id
-            );
-
-
-          if (input) {
-
-            input.value =
-              "";
-
-          }
-
-        }
-      );
-
-
-    message(
-      "تم إضافة العرض 🎁"
-    );
-
-
-    await loadOffers();
-
-
-  } catch (error) {
-
-    console.error(
-      "Add Offer Error:",
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة العرض ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD OFFERS
-===================================================== */
-
-async function loadOffers() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "offersList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل العروض...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "offers"
-        )
-
-      );
-
-
-    if (!list) return;
-
-
-    if (
-      snapshot.empty
-    ) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد عروض حتى الآن.
+          <textarea id="productDescription"></textarea>
 
         </div>
 
-      `;
 
-      return;
+        <br>
 
-    }
 
+        <button
+          class="primary"
+          type="button"
+          onclick="addProduct()">
 
-    list.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
+          ➕ إضافة المنتج
 
-            const offer =
-              item.data();
+        </button>
 
+      </div>
 
-            const restaurant =
-              restaurants.find(
-                restaurant =>
-                  restaurant.id ===
-                  offer.restaurantId
-              );
 
+      <div class="card">
 
-            return `
+        <h2>
+          المنتجات الحالية
+        </h2>
 
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-
-                    ${escapeHTML(
-                      offer.title ||
-                      ""
-                    )}
-
-                  </strong>
-
-
-                  <small>
-
-                    خصم:
-
-                    ${escapeHTML(
-                      offer.discount ||
-                      "-"
-                    )}
-
-                    ${
-                      restaurant
-                      ? `
-                        • ${escapeHTML(
-                          restaurant.name
-                        )}
-                      `
-                      : ""
-                    }
-
-                    ${
-                      offer.start ||
-                      offer.end
-                      ? `
-                        • ${escapeHTML(
-                          offer.start ||
-                          "-"
-                        )}
-
-                        إلى
-
-                        ${escapeHTML(
-                          offer.end ||
-                          "-"
-                        )}
-                      `
-                      : ""
-                    }
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-
-                  ${
-                    offer.image
-
-                    ? `
-
-                      <button
-                        type="button"
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          offer.image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-
-                    `
-
-                    : ""
-
-                  }
-
-
-                  <button
-                    type="button"
-                    class="danger"
-                    onclick="deleteOffer('${item.id}')">
-
-                    حذف
-
-                  </button>
-
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Load Offers Error:",
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل العروض ❌";
-
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   DELETE OFFER
-===================================================== */
-
-window.deleteOffer =
-async function(id) {
-
-  if (!db) return;
-
-
-  if (
-    !confirm(
-      "هل تريد حذف العرض؟"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "offers",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف العرض ✅"
-    );
-
-
-    await loadOffers();
-
-
-  } catch (error) {
-
-    console.error(
-      "Delete Offer Error:",
-      error
-    );
-
-
-    message(
-      "تعذر حذف العرض ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   DRIVERS
-===================================================== */
-
-window.addDriver =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const name =
-    document
-      .getElementById(
-        "driverName"
-      )
-      ?.value
-      .trim();
-
-
-  const phone =
-    document
-      .getElementById(
-        "driverPhone"
-      )
-      ?.value
-      .trim();
-
-
-  const status =
-    document
-      .getElementById(
-        "driverStatus"
-      )
-      ?.value;
-
-
-  if (
-    !name ||
-    !phone
-  ) {
-
-    message(
-      "اكتب اسم الطيار ورقم الهاتف"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    await addDoc(
-
-      collection(
-        db,
-        "drivers"
-      ),
-
-      {
-
-        name:
-          name,
-
-        phone:
-          phone,
-
-        status:
-          status,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-
-    );
-
-
-    const nameInput =
-      document.getElementById(
-        "driverName"
-      );
-
-
-    const phoneInput =
-      document.getElementById(
-        "driverPhone"
-      );
-
-
-    if (nameInput) {
-
-      nameInput.value =
-        "";
-
-    }
-
-
-    if (phoneInput) {
-
-      phoneInput.value =
-        "";
-
-    }
-
-
-    message(
-      "تم إضافة الطيار 🛵"
-    );
-
-
-    await loadDrivers();
-
-
-  } catch (error) {
-
-    console.error(
-      "Add Driver Error:",
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة الطيار ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD DRIVERS
-===================================================== */
-
-async function loadDrivers() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "driversList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل الطيارين...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "drivers"
-        )
-
-      );
-
-
-    const count =
-      document.getElementById(
-        "driversCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        snapshot.size;
-
-    }
-
-
-    if (!list) return;
-
-
-    if (
-      snapshot.empty
-    ) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا يوجد طيارين حتى الآن.
-
+        <div id="productsList">
+          جاري التحميل...
         </div>
 
-      `;
+      </div>
 
-      return;
+    </section>
 
-    }
 
 
-    list.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
+    <!-- ORDERS -->
 
-            const driver =
-              item.data();
+    <section id="orders" class="page">
 
+      <div class="card">
 
-            return `
+        <h2>
+          الطلبات 📦
+        </h2>
 
-              <div class="item">
+        <div style="overflow-x:auto">
 
-                <div class="item-info">
+          <table width="100%">
 
-                  <strong>
-
-                    ${escapeHTML(
-                      driver.name ||
-                      ""
-                    )}
-
-                  </strong>
-
-
-                  <small>
-
-                    ${escapeHTML(
-                      driver.phone ||
-                      ""
-                    )}
-
-                    • الحالة:
-
-                    ${escapeHTML(
-                      driver.status ||
-                      "غير محدد"
-                    )}
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-
-                  <button
-                    type="button"
-                    class="secondary"
-                    onclick="toggleDriverStatus(
-                      '${item.id}',
-                      '${escapeHTML(
-                        driver.status ||
-                        "غير متاح"
-                      )}'
-                    )">
-
-                    تغيير الحالة
-
-                  </button>
-
-
-                  <button
-                    type="button"
-                    class="danger"
-                    onclick="deleteDriver('${item.id}')">
-
-                    حذف
-
-                  </button>
-
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      "Load Drivers Error:",
-      error
-    );
-
-
-  }
-
-}
-
-
-/* =====================================================
-   TOGGLE DRIVER STATUS
-===================================================== */
-
-window.toggleDriverStatus =
-async function(
-  id,
-  currentStatus
-) {
-
-  if (!db) return;
-
-
-  const newStatus =
-    currentStatus === "متاح"
-      ? "غير متاح"
-      : "متاح";
-
-
-  try {
-
-    await updateDoc(
-
-      doc(
-        db,
-        "drivers",
-        id
-      ),
-
-      {
-
-        status:
-          newStatus
-
-      }
-
-    );
-
-
-    message(
-      "تم تغيير حالة الطيار ✅"
-    );
-
-
-    await loadDrivers();
-
-
-  } catch (error) {
-
-    console.error(
-      "Toggle Driver Error:",
-      error
-    );
-
-
-    message(
-      "تعذر تغيير الحالة ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   DELETE DRIVER
-===================================================== */
-
-window.deleteDriver =
-async function(id) {
-
-  if (!db) return;
-
-
-  if (
-    !confirm(
-      "هل تريد حذف الطيار؟"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await deleteDoc(
-
-      doc(
-        db,
-        "drivers",
-        id
-      )
-
-    );
-
-
-    message(
-      "تم حذف الطيار ✅"
-    );
-
-
-    await loadDrivers();
-
-
-  } catch (error) {
-
-    console.error(
-      "Delete Driver Error:",
-      error
-    );
-
-
-    message(
-      "تعذر حذف الطيار ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   ORDERS
-===================================================== */
-
-async function loadOrders() {
-
-  if (!db) return;
-
-
-  const table =
-    document.getElementById(
-      "ordersTable"
-    );
-
-
-  if (table) {
-
-    table.innerHTML = `
-
-      <tr>
-
-        <td colspan="6">
-
-          جاري تحميل الطلبات...
-
-        </td>
-
-      </tr>
-
-    `;
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-
-        collection(
-          db,
-          "orders"
-        )
-
-      );
-
-
-    const count =
-      document.getElementById(
-        "ordersCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        snapshot.size;
-
-    }
-
-
-    if (!table) return;
-
-
-    if (
-      snapshot.empty
-    ) {
-
-      table.innerHTML = `
-
-        <tr>
-
-          <td colspan="6">
-
-            لا توجد طلبات حتى الآن.
-
-          </td>
-
-        </tr>
-
-      `;
-
-      return;
-
-    }
-
-
-    table.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
-
-            const order =
-              item.data();
-
-
-            return `
+            <thead>
 
               <tr>
 
-                <td>
-
-                  ${escapeHTML(
-                    item.id
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    order.customerName ||
-                    order.name ||
-                    "غير محدد"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    order.location ||
-                    order.address ||
-                    "غير محدد"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  ${Number(
-                    order.total || 0
-                  )}
-
-                  جنيه
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    order.driverName ||
-                    "لم يتم التعيين"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  <span class="badge">
-
-                    ${escapeHTML(
-                      order.status ||
-                      "جديد"
-                    )}
-
-                  </span>
-
-                </td>
+                <th>رقم الطلب</th>
+                <th>العميل</th>
+                <th>المكان</th>
+                <th>الإجمالي</th>
+                <th>الحالة</th>
 
               </tr>
 
-            `;
+            </thead>
 
-          }
-        )
-        .join("");
+            <tbody id="ordersTable"></tbody>
 
+          </table>
 
-  } catch (error) {
+        </div>
 
-    console.error(
-      "Load Orders Error:",
-      error
-    );
+      </div>
 
+    </section>
 
-    if (table) {
 
-      table.innerHTML = `
+  </div>
 
-        <tr>
+</main>
 
-          <td colspan="6">
+</div>
 
-            حدث خطأ أثناء تحميل الطلبات ❌
 
-          </td>
+<div
+  id="message"
+  style="
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translateX(-50%);
+    display:none;
+    z-index:9999;
+    background:#00dfff;
+    color:#00131e;
+    padding:13px 20px;
+    border-radius:12px;
+    font-weight:bold;
+    max-width:90%;
+    text-align:center;
+  ">
+</div>
 
-        </tr>
 
-      `;
+<script type="module" src="admin.js"></script>
 
-    }
-
-  }
-
-}
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-window.saveSettings =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
-
-
-  const siteName =
-    document
-      .getElementById(
-        "siteName"
-      )
-      ?.value
-      .trim();
-
-
-  const sitePhone =
-    document
-      .getElementById(
-        "sitePhone"
-      )
-      ?.value
-      .trim();
-
-
-  const defaultDelivery =
-    Number(
-
-      document
-        .getElementById(
-          "defaultDelivery"
-        )
-        ?.value ||
-      0
-
-    );
-
-
-  const ordersEnabled =
-    document
-      .getElementById(
-        "ordersEnabled"
-      )
-      ?.value ===
-    "true";
-
-
-  try {
-
-    await setDoc(
-
-      doc(
-        db,
-        "settings",
-        "site"
-      ),
-
-      {
-
-        siteName:
-          siteName,
-
-        sitePhone:
-          sitePhone,
-
-        defaultDelivery:
-          defaultDelivery,
-
-        ordersEnabled:
-          ordersEnabled,
-
-        updatedAt:
-          serverTimestamp()
-
-      },
-
-      {
-        merge:
-          true
-      }
-
-    );
-
-
-    message(
-      "تم حفظ الإعدادات ✅"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Save Settings Error:",
-      error
-    );
-
-
-    message(
-      "تعذر حفظ الإعدادات ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD SETTINGS
-===================================================== */
-
-async function loadSettings() {
-
-  if (!db) return;
-
-
-  try {
-
-    const snapshot =
-      await getDoc(
-
-        doc(
-          db,
-          "settings",
-          "site"
-        )
-
-      );
-
-
-    if (
-      !snapshot.exists()
-    ) {
-
-      return;
-
-    }
-
-
-    const settings =
-      snapshot.data();
-
-
-    const siteName =
-      document.getElementById(
-        "siteName"
-      );
-
-
-    const sitePhone =
-      document.getElementById(
-        "sitePhone"
-      );
-
-
-    const defaultDelivery =
-      document.getElementById(
-        "defaultDelivery"
-      );
-
-
-    const ordersEnabled =
-      document.getElementById(
-        "ordersEnabled"
-      );
-
-
-    if (siteName) {
-
-      siteName.value =
-        settings.siteName ||
-        "مندوب";
-
-    }
-
-
-    if (sitePhone) {
-
-      sitePhone.value =
-        settings.sitePhone ||
-        "";
-
-    }
-
-
-    if (defaultDelivery) {
-
-      defaultDelivery.value =
-        settings.defaultDelivery ??
-        25;
-
-    }
-
-
-    if (ordersEnabled) {
-
-      ordersEnabled.value =
-        settings.ordersEnabled ===
-        false
-
-          ? "false"
-
-          : "true";
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      "Load Settings Error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   IMAGE PREVIEW
-===================================================== */
-
-window.previewImage =
-function(url) {
-
-  const safe =
-    safeURL(url);
-
-
-  if (!safe) return;
-
-
-  window.open(
-    safe,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-};
-
-
-/* =====================================================
-   DASHBOARD REFRESH
-===================================================== */
-
-async function loadDashboard() {
-
-  if (!db) return;
-
-
-  try {
-
-    await loadRestaurants();
-
-    await loadProducts();
-
-    await loadDrivers();
-
-    await loadOrders();
-
-  } catch (error) {
-
-    console.error(
-      "Dashboard Error:",
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   START ADMIN
-===================================================== */
-
-async function startAdmin() {
-
-  if (!db) {
-
-    return;
-
-  }
-
-
-  await loadRestaurants();
-
-  await loadProducts();
-
-  await loadOffers();
-
-  await loadDrivers();
-
-  await loadOrders();
-
-  await loadSettings();
-
-
-  console.log(
-    "Admin Panel Ready ✅"
-  );
-
-}
-
-
-startAdmin();
+</body>
+</html>
