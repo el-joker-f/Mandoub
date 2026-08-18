@@ -404,7 +404,9 @@ body{
     </div>
 
 
-    <!-- REGISTER -->
+    <!-- =========================
+         REGISTER
+    ========================== -->
 
     <div id="registerForm">
 
@@ -415,7 +417,7 @@ body{
       <p class="form-description">
 
         أنشئ حسابك الآن وابدأ استخدام مندوب فورًا.
-        تأكيد البريد الإلكتروني اختياري ويمكنك عمله لاحقًا.
+        تأكيد البريد الإلكتروني اختياري.
 
       </p>
 
@@ -586,7 +588,9 @@ body{
     </div>
 
 
-    <!-- LOGIN -->
+    <!-- =========================
+         LOGIN
+    ========================== -->
 
     <div
       id="loginForm"
@@ -671,7 +675,9 @@ body{
     </div>
 
 
-    <!-- VERIFY -->
+    <!-- =========================
+         VERIFICATION
+    ========================== -->
 
     <div
       id="verifyForm"
@@ -692,10 +698,12 @@ body{
 
       </p>
 
+
       <div
         id="verifyEmail"
         class="verify-email">
       </div>
+
 
       <div class="verify-note">
 
@@ -705,7 +713,7 @@ body{
         <br>
 
         <strong>
-          يمكنك أيضًا تخطي هذه الخطوة والدخول للموقع الآن.
+          يمكنك تخطي هذه الخطوة والدخول للموقع الآن.
         </strong>
 
       </div>
@@ -764,12 +772,17 @@ body{
 </div>
 
 
+<!-- =====================================================
+     FIREBASE AUTH + FIRESTORE
+===================================================== -->
+
 <script type="module">
 
 import {
   initializeApp
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
 
 import {
   getAuth,
@@ -782,6 +795,7 @@ import {
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
+
 import {
   getFirestore,
   doc,
@@ -791,10 +805,14 @@ import {
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
+
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+    "AIzaSyB6-RVH7-8NrN-AaOOv6Qj9APDeyj7oIU",
 
   authDomain:
     "mandoub-dv.firebaseapp.com",
@@ -817,6 +835,10 @@ const firebaseConfig = {
 };
 
 
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
+
 const app =
   initializeApp(firebaseConfig);
 
@@ -827,17 +849,14 @@ const db =
   getFirestore(app);
 
 
-/*
-  رابط تأكيد البريد.
-  مهم: الدومين لازم يكون موجود
-  في Firebase Authorized Domains.
-*/
+/* =====================================================
+   EMAIL VERIFICATION SETTINGS
+===================================================== */
 
 const actionCodeSettings = {
 
   url:
-    window.location.origin +
-    "/login.html",
+    "https://mandoub-dv.web.app/login.html",
 
   handleCodeInApp:
     false
@@ -855,7 +874,9 @@ function showMessage(
 ){
 
   const box =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   if(!box) return;
 
@@ -931,9 +952,13 @@ function(){
   let score = 0;
 
   if(hasLength) score++;
+
   if(hasUpper) score++;
+
   if(hasLower) score++;
+
   if(hasNumber) score++;
+
   if(hasSpecial) score++;
 
 
@@ -963,17 +988,22 @@ function setRule(
 
   if(!element) return;
 
+
   element.textContent =
-    (valid ? "✅ " : "❌ ") +
-    text;
+    (valid ? "✅ " : "❌ ") + text;
+
 
   if(valid){
 
-    element.classList.add("ok");
+    element.classList.add(
+      "ok"
+    );
 
   }else{
 
-    element.classList.remove("ok");
+    element.classList.remove(
+      "ok"
+    );
 
   }
 
@@ -1006,7 +1036,7 @@ function isStrongPassword(
 
 
 /* =====================================================
-   VERIFICATION
+   SEND VERIFICATION
 ===================================================== */
 
 async function sendVerification(
@@ -1029,28 +1059,38 @@ window.registerUser =
 async function(){
 
   const name =
-    document.getElementById(
-      "registerName"
-    ).value.trim();
+    document
+      .getElementById(
+        "registerName"
+      )
+      .value
+      .trim();
 
 
   const email =
-    document.getElementById(
-      "registerEmail"
-    ).value.trim()
+    document
+      .getElementById(
+        "registerEmail"
+      )
+      .value
+      .trim()
       .toLowerCase();
 
 
   const password =
-    document.getElementById(
-      "registerPassword"
-    ).value;
+    document
+      .getElementById(
+        "registerPassword"
+      )
+      .value;
 
 
   const confirmPassword =
-    document.getElementById(
-      "registerConfirm"
-    ).value;
+    document
+      .getElementById(
+        "registerConfirm"
+      )
+      .value;
 
 
   const button =
@@ -1114,6 +1154,8 @@ async function(){
 
   try{
 
+    /* إنشاء الحساب */
+
     const result =
       await createUserWithEmailAndPassword(
         auth,
@@ -1126,6 +1168,8 @@ async function(){
       result.user;
 
 
+    /* حفظ الاسم في Firebase Auth */
+
     await updateProfile(
       user,
       {
@@ -1135,9 +1179,7 @@ async function(){
     );
 
 
-    /*
-      إنشاء ملف العميل في Firestore
-    */
+    /* حفظ العميل في Firestore */
 
     await setDoc(
       doc(
@@ -1168,7 +1210,7 @@ async function(){
 
     /*
       إرسال التأكيد اختياري.
-      لو فشل لا يمنع إنشاء الحساب.
+      لو فشل الإرسال لا نفشل إنشاء الحساب.
     */
 
     try{
@@ -1211,6 +1253,7 @@ async function(){
       error
     );
 
+
     showMessage(
       firebaseError(error)
     );
@@ -1235,16 +1278,21 @@ window.loginUser =
 async function(){
 
   const email =
-    document.getElementById(
-      "loginEmail"
-    ).value.trim()
+    document
+      .getElementById(
+        "loginEmail"
+      )
+      .value
+      .trim()
       .toLowerCase();
 
 
   const password =
-    document.getElementById(
-      "loginPassword"
-    ).value;
+    document
+      .getElementById(
+        "loginPassword"
+      )
+      .value;
 
 
   const button =
@@ -1297,7 +1345,8 @@ async function(){
 
 
     /*
-      تحديث بيانات العميل
+      تحديث بيانات العميل.
+      تسجيل الدخول لا يحتاج لتأكيد البريد.
     */
 
     await setDoc(
@@ -1354,6 +1403,7 @@ async function(){
       error
     );
 
+
     showMessage(
       firebaseError(error)
     );
@@ -1389,24 +1439,45 @@ function(){
 
 
   document
-    .getElementById("registerForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("loginForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("tabs")
-    .classList.add("hidden");
-
-  document
-    .getElementById("verifyForm")
-    .classList.remove("hidden");
+    .getElementById(
+      "registerForm"
+    )
+    .classList.add(
+      "hidden"
+    );
 
 
   document
-    .getElementById("verifyEmail")
+    .getElementById(
+      "loginForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "tabs"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "verifyForm"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "verifyEmail"
+    )
     .textContent =
       user.email || "";
 
@@ -1493,6 +1564,7 @@ async function(){
       error
     );
 
+
     showMessage(
       firebaseError(error)
     );
@@ -1517,9 +1589,12 @@ window.forgotPassword =
 async function(){
 
   const email =
-    document.getElementById(
-      "loginEmail"
-    ).value.trim()
+    document
+      .getElementById(
+        "loginEmail"
+      )
+      .value
+      .trim()
       .toLowerCase();
 
 
@@ -1554,6 +1629,7 @@ async function(){
       "RESET ERROR:",
       error
     );
+
 
     showMessage(
       firebaseError(error)
@@ -1612,33 +1688,63 @@ window.showRegister =
 function(){
 
   document
-    .getElementById("registerForm")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("loginForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("verifyForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("tabs")
-    .classList.remove("hidden");
+    .getElementById(
+      "registerForm"
+    )
+    .classList.remove(
+      "hidden"
+    );
 
 
   document
-    .getElementById("registerTab")
-    .classList.add("active");
+    .getElementById(
+      "loginForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
 
   document
-    .getElementById("loginTab")
-    .classList.remove("active");
+    .getElementById(
+      "verifyForm"
+    )
+    .classList.add(
+      "hidden"
+    );
 
 
   document
-    .getElementById("message")
+    .getElementById(
+      "tabs"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "registerTab"
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "loginTab"
+    )
+    .classList.remove(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "message"
+    )
     .className =
       "message";
 
@@ -1653,33 +1759,63 @@ window.showLogin =
 function(){
 
   document
-    .getElementById("registerForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("loginForm")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("verifyForm")
-    .classList.add("hidden");
-
-  document
-    .getElementById("tabs")
-    .classList.remove("hidden");
+    .getElementById(
+      "registerForm"
+    )
+    .classList.add(
+      "hidden"
+    );
 
 
   document
-    .getElementById("registerTab")
-    .classList.remove("active");
+    .getElementById(
+      "loginForm"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
 
   document
-    .getElementById("loginTab")
-    .classList.add("active");
+    .getElementById(
+      "verifyForm"
+    )
+    .classList.add(
+      "hidden"
+    );
 
 
   document
-    .getElementById("message")
+    .getElementById(
+      "tabs"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "registerTab"
+    )
+    .classList.remove(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "loginTab"
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "message"
+    )
     .className =
       "message";
 
@@ -1697,10 +1833,9 @@ function(
 ){
 
   const input =
-    document.getElementById(id);
-
-
-  if(!input) return;
+    document.getElementById(
+      id
+    );
 
 
   if(input.type === "password"){
@@ -1739,40 +1874,56 @@ function firebaseError(
   switch(code){
 
     case "auth/email-already-in-use":
+
       return "❌ البريد الإلكتروني مستخدم بالفعل.";
 
     case "auth/invalid-email":
+
       return "❌ البريد الإلكتروني غير صحيح.";
 
     case "auth/weak-password":
+
       return "❌ كلمة المرور ضعيفة.";
 
     case "auth/invalid-credential":
+
       return "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة.";
 
     case "auth/user-not-found":
+
       return "❌ الحساب غير موجود.";
 
     case "auth/wrong-password":
+
       return "❌ كلمة المرور غير صحيحة.";
 
     case "auth/too-many-requests":
+
       return "❌ محاولات كثيرة، حاول بعد قليل.";
 
     case "auth/network-request-failed":
+
       return "❌ تحقق من اتصال الإنترنت.";
 
     case "auth/operation-not-allowed":
+
       return "❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase.";
 
     case "auth/invalid-api-key":
+
       return "❌ مفتاح Firebase غير صحيح.";
 
     case "auth/unauthorized-continue-uri":
+
       return "❌ رابط العودة غير مسموح به في Firebase Authorized Domains.";
 
     case "auth/invalid-continue-uri":
+
       return "❌ رابط العودة غير صحيح.";
+
+    case "auth/requires-recent-login":
+
+      return "❌ أعد تسجيل الدخول ثم حاول مرة أخرى.";
 
     default:
 
@@ -1799,6 +1950,15 @@ function firebaseError(
   }
 
 }
+
+
+/* =====================================================
+   START
+===================================================== */
+
+console.log(
+  "Mandoub Login Ready ✅"
+);
 
 </script>
 
