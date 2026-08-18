@@ -1,11 +1,12 @@
 /* =====================================================
    MANDOUB - ADMIN.JS
-   لوحة التحكم + Firebase Firestore
+   Firebase + Restaurants + Location + Rating
 ===================================================== */
 
 import {
   initializeApp
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
 
 import {
   getFirestore,
@@ -15,15 +16,14 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  serverTimestamp,
   getDoc,
-  setDoc,
-  serverTimestamp
+  setDoc
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+
+/* ================= FIREBASE CONFIG ================= */
 
 const firebaseConfig = {
 
@@ -43,2431 +43,1517 @@ const firebaseConfig = {
     "311140400335",
 
   appId:
-    "1:311140400335:web:db198b7c53259c53594bba",
-
-  measurementId:
-    "G-7V1LJQYYXD"
+    "1:311140400335:web:db198b7c53259c53594bba"
 
 };
 
 
-/* =====================================================
-   FIREBASE
-===================================================== */
 
-let db = null;
+/* ================= INIT ================= */
+
+const app =
+initializeApp(firebaseConfig);
+
+
+const db =
+getFirestore(app);
+
+
 
 let restaurants = [];
 
-let messageTimer = null;
 
 
-try {
+/* ================= MESSAGE ================= */
 
-  const app =
-    initializeApp(firebaseConfig);
 
-  db =
-    getFirestore(app);
+function message(text){
 
-  const status =
-    document.getElementById("firebaseStatus");
+ const box =
+ document.getElementById("message");
 
-  if (status) {
 
-    status.textContent =
-      "Firebase متصل ✅";
+ if(!box) return;
 
-    status.style.background =
-      "#082f26";
 
-    status.style.color =
-      "#35e6a1";
+ box.innerHTML = text;
 
-  }
+ box.style.display="block";
 
-  console.log(
-    "Firebase Admin Connected ✅"
-  );
 
-} catch (error) {
+ setTimeout(()=>{
 
-  console.error(
-    "Firebase Error:",
-    error
-  );
+   box.style.display="none";
 
-  const status =
-    document.getElementById("firebaseStatus");
-
-  if (status) {
-
-    status.textContent =
-      "Firebase غير متصل ❌";
-
-    status.style.background =
-      "#3a1220";
-
-    status.style.color =
-      "#ff6b91";
-
-  }
+ },2500);
 
 }
 
 
-/* =====================================================
-   MESSAGE
-===================================================== */
-
-function message(text) {
-
-  const box =
-    document.getElementById("message");
-
-  if (!box) return;
-
-  box.textContent =
-    text;
-
-  box.style.display =
-    "block";
-
-  clearTimeout(
-    messageTimer
-  );
-
-  messageTimer =
-    setTimeout(() => {
-
-      box.style.display =
-        "none";
-
-    }, 2800);
-
-}
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+/* ================= NAVIGATION ================= */
+
 
 window.showPage =
-function(page, button) {
-
-  document
-    .querySelectorAll(".page")
-    .forEach(item => {
-
-      item.classList.remove("active");
-
-    });
+function(page,button){
 
 
-  const target =
-    document.getElementById(page);
+ document
+ .querySelectorAll(".page")
+ .forEach(p=>{
+
+   p.classList.remove("active");
+
+ });
 
 
-  if (target) {
-
-    target.classList.add("active");
-
-  }
+ const target =
+ document.getElementById(page);
 
 
-  document
-    .querySelectorAll(".menu button")
-    .forEach(item => {
-
-      item.classList.remove("active");
-
-    });
+ if(target)
+ target.classList.add("active");
 
 
-  if (button) {
 
-    button.classList.add("active");
+ document
+ .querySelectorAll(".menu button")
+ .forEach(b=>{
 
-  }
+   b.classList.remove("active");
 
-
-  const titles = {
-
-    dashboard:
-      "لوحة التحكم",
-
-    restaurants:
-      "إدارة المطاعم",
-
-    products:
-      "إدارة المنتجات",
-
-    offers:
-      "إدارة العروض",
-
-    orders:
-      "إدارة الطلبات",
-
-    drivers:
-      "إدارة الطيارين",
-
-    customers:
-      "إدارة العملاء",
-
-    settings:
-      "إعدادات الموقع"
-
-  };
+ });
 
 
-  const title =
-    document.getElementById("pageTitle");
+ if(button)
+ button.classList.add("active");
 
 
-  if (title) {
 
-    title.textContent =
-      titles[page] ||
-      "لوحة التحكم";
-
-  }
+ if(page==="restaurants")
+ loadRestaurants();
 
 
-  if (page === "restaurants") {
 
-    loadRestaurants();
-
-  }
+ if(page==="products")
+ loadRestaurants();
 
 
-  if (page === "products") {
-
-    loadRestaurants()
-      .then(() => loadProducts());
-
-  }
-
-
-  if (page === "offers") {
-
-    loadRestaurants()
-      .then(() => loadOffers());
-
-  }
-
-
-  if (page === "orders") {
-
-    loadOrders();
-
-  }
-
-
-  if (page === "drivers") {
-
-    loadDrivers();
-
-  }
-
-
-  if (page === "settings") {
-
-    loadSettings();
-
-  }
 
 };
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
 
-function escapeHTML(value) {
-
-  return String(
-    value ?? ""
-  )
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
-}
 
 
 /* =====================================================
    RESTAURANTS
 ===================================================== */
 
-window.addRestaurant =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
 
 
-  const name =
-    document
-      .getElementById("restaurantName")
-      .value
-      .trim();
+window.getRestaurantLocation =
+function(){
 
 
-  const category =
-    document
-      .getElementById("restaurantCategory")
-      .value
-      .trim();
+ if(!navigator.geolocation){
+
+   message(
+   "المتصفح لا يدعم تحديد الموقع"
+   );
+
+   return;
+
+ }
 
 
-  const rating =
-    document
-      .getElementById("restaurantRating")
-      .value;
+
+ navigator.geolocation.getCurrentPosition(
+
+ function(position){
 
 
-  const delivery =
-    document
-      .getElementById("restaurantDelivery")
-      .value;
+   document.getElementById(
+   "restaurantLat"
+   ).value =
+   position.coords.latitude;
 
 
-  const description =
-    document
-      .getElementById("restaurantDescription")
-      .value
-      .trim();
+
+   document.getElementById(
+   "restaurantLng"
+   ).value =
+   position.coords.longitude;
 
 
-  const image =
-    document
-      .getElementById("restaurantImage")
-      .value
-      .trim();
+
+   message(
+   "تم تحديد موقع المطعم ✅"
+   );
 
 
-  if (!name) {
+ },
 
-    message(
-      "اكتب اسم المطعم أولاً"
-    );
+ function(){
 
-    return;
+   message(
+   "لم يتم السماح بالموقع ❌"
+   );
 
-  }
+ }
 
+ );
 
-  try {
-
-    await addDoc(
-      collection(
-        db,
-        "restaurants"
-      ),
-      {
-
-        name:
-          name,
-
-        category:
-          category,
-
-        rating:
-          Number(rating || 0),
-
-        delivery:
-          Number(delivery || 0),
-
-        description:
-          description,
-
-        image:
-          image,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    clearRestaurantForm();
-
-
-    message(
-      "تم إضافة المطعم ✅"
-    );
-
-
-    await loadRestaurants();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    message(
-      "حدث خطأ أثناء إضافة المطعم ❌"
-    );
-
-  }
 
 };
 
 
-/* =====================================================
-   CLEAR RESTAURANT
-===================================================== */
-
-function clearRestaurantForm() {
-
-  const ids = [
-
-    "restaurantName",
-    "restaurantCategory",
-    "restaurantRating",
-    "restaurantDelivery",
-    "restaurantDescription",
-    "restaurantImage"
-
-  ];
 
 
-  ids.forEach(id => {
 
-    const input =
-      document.getElementById(id);
+window.addRestaurant =
+async function(){
 
-    if (input) {
 
-      input.value =
-        "";
 
-    }
+const name =
+document
+.getElementById("restaurantName")
+.value
+.trim();
 
-  });
+
+
+const category =
+document
+.getElementById("restaurantCategory")
+.value
+.trim();
+
+
+
+const image =
+document
+.getElementById("restaurantImage")
+.value
+.trim();
+
+
+
+const description =
+document
+.getElementById("restaurantDescription")
+.value
+.trim();
+
+
+
+const lat =
+Number(
+document
+.getElementById("restaurantLat")
+.value
+);
+
+
+
+const lng =
+Number(
+document
+.getElementById("restaurantLng")
+.value
+);
+
+
+
+if(!name){
+
+ message(
+ "اكتب اسم المطعم"
+ );
+
+ return;
 
 }
 
 
+
+
+await addDoc(
+
+collection(
+db,
+"restaurants"
+),
+
+{
+
+
+name,
+
+category,
+
+image,
+
+description,
+
+
+location:{
+
+ lat,
+
+ lng
+
+},
+
+
+
+/* تقييم العملاء */
+
+ratingTotal:0,
+
+ratingCount:0,
+
+ratingAverage:0,
+
+
+
+active:true,
+
+
+createdAt:
+serverTimestamp()
+
+
+}
+
+
+
+);
+
+
+
+message(
+"تم إضافة المطعم ✅"
+);
+
+
+
+loadRestaurants();
+
+
+};
 /* =====================================================
    LOAD RESTAURANTS
 ===================================================== */
 
-async function loadRestaurants() {
 
-  if (!db) return;
+async function loadRestaurants(){
 
 
-  const list =
-    document.getElementById(
-      "restaurantsList"
-    );
+const list =
+document.getElementById(
+"restaurantsList"
+);
 
 
-  if (list) {
 
-    list.innerHTML =
-      "جاري تحميل المطاعم...";
+if(list){
 
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "restaurants"
-        )
-      );
-
-
-    restaurants =
-      snapshot.docs.map(
-        item => ({
-
-          id:
-            item.id,
-
-          ...item.data()
-
-        })
-      );
-
-
-    const count =
-      document.getElementById(
-        "restaurantsCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        restaurants.length;
-
-    }
-
-
-    updateRestaurantSelects();
-
-
-    if (!list) return;
-
-
-    if (restaurants.length === 0) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-          لا توجد مطاعم حتى الآن.
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-      restaurants
-        .map(
-          restaurant => {
-
-            const image =
-              restaurant.image ||
-              "";
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-                    ${escapeHTML(
-                      restaurant.name
-                    )}
-                  </strong>
-
-                  <small>
-
-                    ${escapeHTML(
-                      restaurant.category ||
-                      "بدون تصنيف"
-                    )}
-
-                    • التقييم:
-
-                    ${restaurant.rating || 0}
-
-                    ⭐
-
-                    • التوصيل:
-
-                    ${restaurant.delivery || 0}
-
-                    جنيه
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-                  ${
-                    image
-                    ? `
-                      <button
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-                    `
-                    : ""
-                  }
-
-
-                  <button
-                    class="danger"
-                    onclick="deleteRestaurant('${restaurant.id}')">
-
-                    حذف
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل المطاعم ❌";
-
-    }
-
-  }
+list.innerHTML =
+"جاري تحميل المطاعم...";
 
 }
 
 
-/* =====================================================
-   DELETE RESTAURANT
-===================================================== */
 
-window.deleteRestaurant =
-async function(id) {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
+const snapshot =
+await getDocs(
+collection(
+db,
+"restaurants"
+)
+);
 
 
-  if (
-    !confirm(
-      "هل تريد حذف المطعم نهائيًا؟"
-    )
-  ) {
 
-    return;
+restaurants =
+snapshot.docs.map(doc=>({
 
-  }
+id:doc.id,
+...doc.data()
 
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "restaurants",
-        id
-      )
-    );
+}));
 
 
-    message(
-      "تم حذف المطعم ✅"
-    );
+
+const count =
+document.getElementById(
+"restaurantsCount"
+);
 
 
-    await loadRestaurants();
+if(count){
+
+count.innerHTML =
+restaurants.length;
+
+}
 
 
-    await loadProducts();
 
 
-  } catch (error) {
+/* تحديث قائمة المطاعم للمنتجات */
 
-    console.error(
-      error
-    );
+const select =
+document.getElementById(
+"productRestaurant"
+);
 
 
-    message(
-      "تعذر حذف المطعم ❌"
-    );
 
-  }
+if(select){
+
+select.innerHTML =
+
+`
+<option value="">
+اختر المطعم
+</option>
+
+${
+restaurants.map(r=>`
+
+<option value="${r.id}">
+${r.name}
+</option>
+
+`).join("")
+}
+
+`;
+
+}
+
+
+
+
+if(!list) return;
+
+
+
+if(restaurants.length===0){
+
+list.innerHTML =
+"لا توجد مطاعم";
+
+return;
+
+}
+
+
+
+list.innerHTML =
+
+restaurants.map(r=>`
+
+
+<div class="item">
+
+
+<div class="item-info">
+
+
+<strong>
+
+${r.name}
+
+</strong>
+
+
+<small>
+
+${r.category || ""}
+
+<br>
+
+📍
+
+${
+r.location?.lat || "-"
+}
+
+,
+
+${
+r.location?.lng || "-"
+}
+
+
+<br>
+
+
+⭐ التقييم:
+
+${
+r.ratingAverage || 0
+}
+
+
+</small>
+
+
+</div>
+
+
+
+<div class="item-actions">
+
+
+<button
+
+class="secondary"
+
+onclick="openMap(
+${r.location?.lat || 0},
+${r.location?.lng || 0}
+)"
+
+>
+
+الخريطة 📍
+
+</button>
+
+
+
+<button
+
+class="danger"
+
+onclick="deleteRestaurant('${r.id}')"
+
+>
+
+حذف
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+`).join("");
+
+
+
+}
+
+
+
+
+
+/* ================= MAP ================= */
+
+
+window.openMap =
+function(lat,lng){
+
+
+if(!lat || !lng){
+
+message(
+"لا يوجد موقع للمطعم"
+);
+
+return;
+
+}
+
+
+
+window.open(
+
+`https://maps.google.com/?q=${lat},${lng}`
+
+);
 
 };
 
 
-/* =====================================================
-   RESTAURANT SELECTS
-===================================================== */
-
-function updateRestaurantSelects() {
-
-  const productSelect =
-    document.getElementById(
-      "productRestaurant"
-    );
 
 
-  const offerSelect =
-    document.getElementById(
-      "offerRestaurant"
-    );
 
 
-  if (productSelect) {
-
-    productSelect.innerHTML = `
-
-      <option value="">
-        اختر المطعم
-      </option>
-
-      ${
-        restaurants
-          .map(
-            restaurant => `
-
-              <option
-                value="${restaurant.id}">
-
-                ${escapeHTML(
-                  restaurant.name
-                )}
-
-              </option>
-
-            `
-          )
-          .join("")
-      }
-
-    `;
-
-  }
+/* ================= DELETE RESTAURANT ================= */
 
 
-  if (offerSelect) {
+window.deleteRestaurant =
+async function(id){
 
-    offerSelect.innerHTML = `
 
-      <option value="">
-        كل المطاعم
-      </option>
 
-      ${
-        restaurants
-          .map(
-            restaurant => `
+if(!confirm(
+"حذف المطعم؟"
+))
 
-              <option
-                value="${restaurant.id}">
+return;
 
-                ${escapeHTML(
-                  restaurant.name
-                )}
 
-              </option>
 
-            `
-          )
-          .join("")
-      }
+await deleteDoc(
 
-    `;
+doc(
+db,
+"restaurants",
+id
+)
 
-  }
+);
 
-}
+
+
+message(
+"تم حذف المطعم"
+);
+
+
+
+loadRestaurants();
+
+
+};
+
+
+
+
 
 
 /* =====================================================
    PRODUCTS
 ===================================================== */
 
+
 window.addProduct =
-async function() {
+async function(){
 
-  if (!db) {
 
-    message(
-      "Firebase غير متصل ❌"
-    );
 
-    return;
+const restaurantId =
 
-  }
+document
+.getElementById(
+"productRestaurant"
+)
+.value;
 
 
-  const restaurantId =
-    document
-      .getElementById(
-        "productRestaurant"
-      )
-      .value;
 
+const name =
 
-  const name =
-    document
-      .getElementById(
-        "productName"
-      )
-      .value
-      .trim();
+document
+.getElementById(
+"productName"
+)
+.value
+.trim();
 
 
-  const price =
-    document
-      .getElementById(
-        "productPrice"
-      )
-      .value;
 
+const price =
 
-  const image =
-    document
-      .getElementById(
-        "productImage"
-      )
-      .value
-      .trim();
+Number(
 
+document
+.getElementById(
+"productPrice"
+)
+.value
 
-  const description =
-    document
-      .getElementById(
-        "productDescription"
-      )
-      .value
-      .trim();
+);
 
 
-  if (
-    !restaurantId ||
-    !name ||
-    !price
-  ) {
 
-    message(
-      "اختر المطعم واكتب اسم المنتج والسعر"
-    );
+const image =
 
-    return;
+document
+.getElementById(
+"productImage"
+)
+.value
+.trim();
 
-  }
 
 
-  try {
 
-    await addDoc(
-      collection(
-        db,
-        "products"
-      ),
-      {
 
-        restaurantId:
-          restaurantId,
+if(!restaurantId || !name || !price){
 
-        name:
-          name,
 
-        price:
-          Number(price),
+message(
+"أكمل بيانات المنتج"
+);
 
-        image:
-          image,
 
-        description:
-          description,
+return;
 
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    document.getElementById(
-      "productName"
-    ).value = "";
-
-
-    document.getElementById(
-      "productPrice"
-    ).value = "";
-
-
-    document.getElementById(
-      "productImage"
-    ).value = "";
-
-
-    document.getElementById(
-      "productDescription"
-    ).value = "";
-
-
-    message(
-      "تم إضافة المنتج ✅"
-    );
-
-
-    await loadProducts();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة المنتج ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD PRODUCTS
-===================================================== */
-
-async function loadProducts() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "productsList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل المنتجات...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "products"
-        )
-      );
-
-
-    const count =
-      document.getElementById(
-        "productsCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        snapshot.size;
-
-    }
-
-
-    if (!list) return;
-
-
-    if (snapshot.empty) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد منتجات حتى الآن.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
-
-            const product =
-              item.data();
-
-
-            const restaurant =
-              restaurants.find(
-                restaurant =>
-                  restaurant.id ===
-                  product.restaurantId
-              );
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-                    ${escapeHTML(
-                      product.name || ""
-                    )}
-                  </strong>
-
-                  <small>
-
-                    ${
-                      escapeHTML(
-                        restaurant?.name ||
-                        "مطعم غير معروف"
-                      )
-                    }
-
-                    • السعر:
-
-                    ${product.price || 0}
-
-                    جنيه
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-                  ${
-                    product.image
-                    ? `
-                      <button
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          product.image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-                    `
-                    : ""
-                  }
-
-
-                  <button
-                    class="danger"
-                    onclick="deleteProduct('${item.id}')">
-
-                    حذف
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل المنتجات ❌";
-
-    }
-
-  }
 
 }
 
 
-/* =====================================================
-   DELETE PRODUCT
-===================================================== */
-
-window.deleteProduct =
-async function(id) {
-
-  if (!db) return;
 
 
-  if (
-    !confirm(
-      "هل تريد حذف المنتج؟"
-    )
-  ) {
 
-    return;
+await addDoc(
 
-  }
+collection(
+db,
+"products"
+),
 
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "products",
-        id
-      )
-    );
+{
 
 
-    message(
-      "تم حذف المنتج ✅"
-    );
+restaurantId,
+
+name,
+
+price,
+
+image,
 
 
-    await loadProducts();
+active:true,
 
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
+createdAt:
+serverTimestamp()
 
 
-    message(
-      "تعذر حذف المنتج ❌"
-    );
+}
 
-  }
+
+);
+
+
+
+
+message(
+"تم إضافة المنتج ✅"
+);
+
+
 
 };
+/* =====================================================
+   LOAD PRODUCTS
+===================================================== */
+
+
+async function loadProducts(){
+
+
+const list =
+document.getElementById(
+"productsList"
+);
+
+
+
+const snapshot =
+await getDocs(
+collection(
+db,
+"products"
+)
+);
+
+
+
+const count =
+document.getElementById(
+"productsCount"
+);
+
+
+
+if(count){
+
+count.innerHTML =
+snapshot.size;
+
+}
+
+
+
+if(!list)
+return;
+
+
+
+if(snapshot.empty){
+
+list.innerHTML =
+"لا توجد منتجات";
+
+return;
+
+}
+
+
+
+list.innerHTML =
+
+snapshot.docs.map(item=>{
+
+
+const p =
+item.data();
+
+
+
+const restaurant =
+restaurants.find(
+r=>r.id===p.restaurantId
+);
+
+
+
+return `
+
+<div class="item">
+
+
+<div class="item-info">
+
+
+<strong>
+
+${p.name}
+
+</strong>
+
+
+<small>
+
+المطعم:
+
+${restaurant?.name || "غير معروف"}
+
+<br>
+
+السعر:
+
+${p.price} جنيه
+
+
+</small>
+
+
+</div>
+
+
+
+<button
+
+class="danger"
+
+onclick="deleteProduct('${item.id}')"
+
+>
+
+حذف
+
+</button>
+
+
+
+</div>
+
+`;
+
+
+
+}).join("");
+
+
+
+}
+
+
+
+
+
+
+window.deleteProduct =
+async function(id){
+
+
+
+await deleteDoc(
+
+doc(
+db,
+"products",
+id
+)
+
+);
+
+
+
+message(
+"تم حذف المنتج"
+);
+
+
+
+loadProducts();
+
+
+};
+
+
+
+
+
+
+
+
+/* =====================================================
+   DELIVERY CALCULATION
+===================================================== */
+
+
+
+window.calculateDelivery =
+function(distance){
+
+
+distance =
+Number(distance);
+
+
+
+if(distance <= 2){
+
+return 25;
+
+}
+
+
+
+if(distance <= 5){
+
+return 30;
+
+}
+
+
+
+if(distance <= 7){
+
+return 35;
+
+}
+
+
+
+if(distance <= 10){
+
+return 45;
+
+}
+
+
+
+return 45;
+
+
+};
+
+
+
+
+
+
+
+/* =====================================================
+   CUSTOMER RATING
+===================================================== */
+
+
+
+window.addRestaurantRating =
+async function(
+restaurantId,
+rate
+){
+
+
+
+const ref =
+doc(
+db,
+"restaurants",
+restaurantId
+);
+
+
+
+const snap =
+await getDoc(ref);
+
+
+
+if(!snap.exists())
+return;
+
+
+
+const data =
+snap.data();
+
+
+
+const total =
+(data.ratingTotal || 0)
++
+Number(rate);
+
+
+
+const count =
+(data.ratingCount || 0)
++
+1;
+
+
+
+const average =
+total / count;
+
+
+
+await updateDoc(
+
+ref,
+
+{
+
+
+ratingTotal:
+total,
+
+
+ratingCount:
+count,
+
+
+ratingAverage:
+Number(
+average.toFixed(1)
+)
+
+
+}
+
+);
+
+
+
+};
+
+
+
+
+
 
 
 /* =====================================================
    OFFERS
 ===================================================== */
 
+
 window.addOffer =
-async function() {
+async function(){
 
-  if (!db) {
 
-    message(
-      "Firebase غير متصل ❌"
-    );
 
-    return;
+const title =
 
-  }
+document
+.getElementById(
+"offerTitle"
+)
+.value
+.trim();
 
 
-  const title =
-    document
-      .getElementById(
-        "offerTitle"
-      )
-      .value
-      .trim();
 
+if(!title){
 
-  const restaurantId =
-    document
-      .getElementById(
-        "offerRestaurant"
-      )
-      .value;
+message(
+"اكتب اسم العرض"
+);
 
-
-  const discount =
-    document
-      .getElementById(
-        "offerDiscount"
-      )
-      .value
-      .trim();
-
-
-  const image =
-    document
-      .getElementById(
-        "offerImage"
-      )
-      .value
-      .trim();
-
-
-  const start =
-    document
-      .getElementById(
-        "offerStart"
-      )
-      .value;
-
-
-  const end =
-    document
-      .getElementById(
-        "offerEnd"
-      )
-      .value;
-
-
-  const description =
-    document
-      .getElementById(
-        "offerDescription"
-      )
-      .value
-      .trim();
-
-
-  if (!title) {
-
-    message(
-      "اكتب عنوان العرض أولاً"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    await addDoc(
-      collection(
-        db,
-        "offers"
-      ),
-      {
-
-        title:
-          title,
-
-        restaurantId:
-          restaurantId || null,
-
-        discount:
-          discount,
-
-        image:
-          image,
-
-        start:
-          start,
-
-        end:
-          end,
-
-        description:
-          description,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    document.getElementById(
-      "offerTitle"
-    ).value = "";
-
-
-    document.getElementById(
-      "offerDiscount"
-    ).value = "";
-
-
-    document.getElementById(
-      "offerImage"
-    ).value = "";
-
-
-    document.getElementById(
-      "offerDescription"
-    ).value = "";
-
-
-    message(
-      "تم إضافة العرض 🎁"
-    );
-
-
-    await loadOffers();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة العرض ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD OFFERS
-===================================================== */
-
-async function loadOffers() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "offersList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل العروض...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "offers"
-        )
-      );
-
-
-    if (!list) return;
-
-
-    if (snapshot.empty) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا توجد عروض حتى الآن.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
-
-            const offer =
-              item.data();
-
-
-            const restaurant =
-              restaurants.find(
-                restaurant =>
-                  restaurant.id ===
-                  offer.restaurantId
-              );
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-
-                    ${escapeHTML(
-                      offer.title || ""
-                    )}
-
-                  </strong>
-
-                  <small>
-
-                    خصم:
-
-                    ${escapeHTML(
-                      offer.discount || "-"
-                    )}
-
-                    ${
-                      restaurant
-                      ? `
-                        • ${escapeHTML(
-                          restaurant.name
-                        )}
-                      `
-                      : ""
-                    }
-
-                    ${
-                      offer.start ||
-                      offer.end
-                      ? `
-                        • ${escapeHTML(
-                          offer.start || "-"
-                        )}
-
-                        إلى
-
-                        ${escapeHTML(
-                          offer.end || "-"
-                        )}
-                      `
-                      : ""
-                    }
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-                  ${
-                    offer.image
-                    ? `
-                      <button
-                        class="secondary"
-                        onclick="previewImage('${escapeHTML(
-                          offer.image
-                        )}')">
-
-                        الصورة
-
-                      </button>
-                    `
-                    : ""
-                  }
-
-
-                  <button
-                    class="danger"
-                    onclick="deleteOffer('${item.id}')">
-
-                    حذف
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    if (list) {
-
-      list.innerHTML =
-        "حدث خطأ أثناء تحميل العروض ❌";
-
-    }
-
-  }
+return;
 
 }
 
 
-/* =====================================================
-   DELETE OFFER
-===================================================== */
 
-window.deleteOffer =
-async function(id) {
+await addDoc(
 
-  if (!db) return;
+collection(
+db,
+"offers"
+),
 
-
-  if (
-    !confirm(
-      "هل تريد حذف العرض؟"
-    )
-  ) {
-
-    return;
-
-  }
+{
 
 
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "offers",
-        id
-      )
-    );
+title,
 
 
-    message(
-      "تم حذف العرض ✅"
-    );
+discount:
+document.getElementById(
+"offerDiscount"
+).value,
 
 
-    await loadOffers();
+image:
+document.getElementById(
+"offerImage"
+).value,
 
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
+active:true,
 
 
-    message(
-      "تعذر حذف العرض ❌"
-    );
+createdAt:
+serverTimestamp()
 
-  }
+
+}
+
+);
+
+
+
+message(
+"تم إضافة العرض"
+);
+
 
 };
-
 
 /* =====================================================
    DRIVERS
 ===================================================== */
 
+
 window.addDriver =
-async function() {
+async function(){
 
-  if (!db) {
 
-    message(
-      "Firebase غير متصل ❌"
-    );
+const name =
+document.getElementById(
+"driverName"
+).value.trim();
 
-    return;
 
-  }
+const phone =
+document.getElementById(
+"driverPhone"
+).value.trim();
 
 
-  const name =
-    document
-      .getElementById(
-        "driverName"
-      )
-      .value
-      .trim();
 
+if(!name || !phone){
 
-  const phone =
-    document
-      .getElementById(
-        "driverPhone"
-      )
-      .value
-      .trim();
+message(
+"اكتب بيانات الطيار"
+);
 
-
-  const status =
-    document
-      .getElementById(
-        "driverStatus"
-      )
-      .value;
-
-
-  if (!name || !phone) {
-
-    message(
-      "اكتب اسم الطيار ورقم الهاتف"
-    );
-
-    return;
-
-  }
-
-
-  try {
-
-    await addDoc(
-      collection(
-        db,
-        "drivers"
-      ),
-      {
-
-        name:
-          name,
-
-        phone:
-          phone,
-
-        status:
-          status,
-
-        active:
-          true,
-
-        createdAt:
-          serverTimestamp()
-
-      }
-    );
-
-
-    document.getElementById(
-      "driverName"
-    ).value = "";
-
-
-    document.getElementById(
-      "driverPhone"
-    ).value = "";
-
-
-    message(
-      "تم إضافة الطيار 🛵"
-    );
-
-
-    await loadDrivers();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    message(
-      "حدث خطأ أثناء إضافة الطيار ❌"
-    );
-
-  }
-
-};
-
-
-/* =====================================================
-   LOAD DRIVERS
-===================================================== */
-
-async function loadDrivers() {
-
-  if (!db) return;
-
-
-  const list =
-    document.getElementById(
-      "driversList"
-    );
-
-
-  if (list) {
-
-    list.innerHTML =
-      "جاري تحميل الطيارين...";
-
-  }
-
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "drivers"
-        )
-      );
-
-
-    const count =
-      document.getElementById(
-        "driversCount"
-      );
-
-
-    if (count) {
-
-      count.textContent =
-        snapshot.size;
-
-    }
-
-
-    if (!list) return;
-
-
-    if (snapshot.empty) {
-
-      list.innerHTML = `
-
-        <div style="color:#899aaa">
-
-          لا يوجد طيارين حتى الآن.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    list.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
-
-            const driver =
-              item.data();
-
-
-            return `
-
-              <div class="item">
-
-                <div class="item-info">
-
-                  <strong>
-
-                    ${escapeHTML(
-                      driver.name || ""
-                    )}
-
-                  </strong>
-
-                  <small>
-
-                    ${escapeHTML(
-                      driver.phone || ""
-                    )}
-
-                    • الحالة:
-
-                    ${escapeHTML(
-                      driver.status ||
-                      "غير محدد"
-                    )}
-
-                  </small>
-
-                </div>
-
-
-                <div class="item-actions">
-
-                  <button
-                    class="secondary"
-                    onclick="toggleDriverStatus('${item.id}','${escapeHTML(
-                      driver.status ||
-                      "غير متاح"
-                    )}')">
-
-                    تغيير الحالة
-
-                  </button>
-
-
-                  <button
-                    class="danger"
-                    onclick="deleteDriver('${item.id}')">
-
-                    حذف
-
-                  </button>
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
+return;
 
 }
 
 
-/* =====================================================
-   TOGGLE DRIVER STATUS
-===================================================== */
 
-window.toggleDriverStatus =
-async function(id, currentStatus) {
+await addDoc(
 
-  if (!db) return;
+collection(
+db,
+"drivers"
+),
 
+{
 
-  const newStatus =
-    currentStatus === "متاح"
-      ? "غير متاح"
-      : "متاح";
+name,
 
-
-  try {
-
-    await updateDoc(
-      doc(
-        db,
-        "drivers",
-        id
-      ),
-      {
-
-        status:
-          newStatus
-
-      }
-    );
+phone,
 
 
-    message(
-      "تم تغيير حالة الطيار ✅"
-    );
+status:"متاح",
 
 
-    await loadDrivers();
+active:true,
 
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
+createdAt:
+serverTimestamp()
 
 
-    message(
-      "تعذر تغيير الحالة ❌"
-    );
+}
 
-  }
+);
+
+
+
+message(
+"تم إضافة الطيار 🛵"
+);
+
+
+loadDrivers();
+
 
 };
 
 
-/* =====================================================
-   DELETE DRIVER
-===================================================== */
+
+
+
+async function loadDrivers(){
+
+
+const list =
+document.getElementById(
+"driversList"
+);
+
+
+
+if(!list)
+return;
+
+
+
+const snapshot =
+await getDocs(
+collection(
+db,
+"drivers"
+)
+);
+
+
+
+list.innerHTML =
+
+
+snapshot.docs.map(d=>{
+
+
+const x=d.data();
+
+
+return `
+
+<div class="item">
+
+
+<div>
+
+<strong>
+${x.name}
+</strong>
+
+<br>
+
+<small>
+
+${x.phone}
+
+-
+
+${x.status}
+
+</small>
+
+
+</div>
+
+
+<button
+
+class="danger"
+
+onclick="deleteDriver('${d.id}')"
+
+>
+
+حذف
+
+</button>
+
+
+</div>
+
+`;
+
+
+}).join("");
+
+
+
+}
+
+
+
+
 
 window.deleteDriver =
-async function(id) {
-
-  if (!db) return;
+async function(id){
 
 
-  if (
-    !confirm(
-      "هل تريد حذف الطيار؟"
-    )
-  ) {
+await deleteDoc(
 
-    return;
+doc(
+db,
+"drivers",
+id
+)
 
-  }
-
-
-  try {
-
-    await deleteDoc(
-      doc(
-        db,
-        "drivers",
-        id
-      )
-    );
+);
 
 
-    message(
-      "تم حذف الطيار ✅"
-    );
+message(
+"تم حذف الطيار"
+);
 
 
-    await loadDrivers();
+loadDrivers();
 
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    message(
-      "تعذر حذف الطيار ❌"
-    );
-
-  }
 
 };
+
+
+
+
+
 
 
 /* =====================================================
    ORDERS
 ===================================================== */
 
-async function loadOrders() {
 
-  if (!db) return;
+async function loadOrders(){
 
 
-  const table =
-    document.getElementById(
-      "ordersTable"
-    );
+const table =
+document.getElementById(
+"ordersTable"
+);
 
 
-  if (table) {
 
-    table.innerHTML = `
+if(!table)
+return;
 
-      <tr>
 
-        <td colspan="6">
 
-          جاري تحميل الطلبات...
+const snapshot =
+await getDocs(
+collection(
+db,
+"orders"
+)
+);
 
-        </td>
 
-      </tr>
 
-    `;
+table.innerHTML =
 
-  }
 
+snapshot.docs.map(o=>{
 
-  try {
 
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "orders"
-        )
-      );
+const order =
+o.data();
 
 
-    const count =
-      document.getElementById(
-        "ordersCount"
-      );
 
+return `
 
-    if (count) {
+<tr>
 
-      count.textContent =
-        snapshot.size;
 
-    }
+<td>
 
+${o.id}
 
-    if (!table) return;
+</td>
 
 
-    if (snapshot.empty) {
 
-      table.innerHTML = `
+<td>
 
-        <tr>
+${order.customerName || "-"}
 
-          <td colspan="6">
+</td>
 
-            لا توجد طلبات حتى الآن.
 
-          </td>
 
-        </tr>
+<td>
 
-      `;
+${order.total || 0}
 
-      return;
+جنيه
 
-    }
+</td>
 
 
-    table.innerHTML =
-      snapshot.docs
-        .map(
-          item => {
 
-            const order =
-              item.data();
+<td>
 
+${order.status || "جديد"}
 
-            return `
+</td>
 
-              <tr>
 
-                <td>
+</tr>
 
-                  ${escapeHTML(
-                    item.id
-                  )}
+`;
 
-                </td>
 
+}).join("");
 
-                <td>
 
-                  ${escapeHTML(
-                    order.customerName ||
-                    order.name ||
-                    "غير محدد"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    order.location ||
-                    order.address ||
-                    "غير محدد"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  ${order.total || 0}
-
-                  جنيه
-
-                </td>
-
-
-                <td>
-
-                  ${escapeHTML(
-                    order.driverName ||
-                    "لم يتم التعيين"
-                  )}
-
-                </td>
-
-
-                <td>
-
-                  <span class="badge">
-
-                    ${escapeHTML(
-                      order.status ||
-                      "جديد"
-                    )}
-
-                  </span>
-
-                </td>
-
-              </tr>
-
-            `;
-
-          }
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    if (table) {
-
-      table.innerHTML = `
-
-        <tr>
-
-          <td colspan="6">
-
-            حدث خطأ أثناء تحميل الطلبات ❌
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }
-
-  }
 
 }
+
+
+
+
+
 
 
 /* =====================================================
    SETTINGS
 ===================================================== */
 
+
 window.saveSettings =
-async function() {
-
-  if (!db) {
-
-    message(
-      "Firebase غير متصل ❌"
-    );
-
-    return;
-
-  }
+async function(){
 
 
-  const siteName =
-    document
-      .getElementById(
-        "siteName"
-      )
-      .value
-      .trim();
+await setDoc(
+
+doc(
+db,
+"settings",
+"site"
+),
+
+{
 
 
-  const sitePhone =
-    document
-      .getElementById(
-        "sitePhone"
-      )
-      .value
-      .trim();
+siteName:
+document.getElementById(
+"siteName"
+).value,
 
 
-  const defaultDelivery =
-    Number(
-      document
-        .getElementById(
-          "defaultDelivery"
-        )
-        .value ||
-        0
-    );
+phone:
+document.getElementById(
+"sitePhone"
+).value,
 
 
-  const ordersEnabled =
-    document
-      .getElementById(
-        "ordersEnabled"
-      )
-      .value ===
-      "true";
+deliverySystem:true,
 
 
-  try {
-
-    await setDoc(
-      doc(
-        db,
-        "settings",
-        "site"
-      ),
-      {
-
-        siteName:
-          siteName,
-
-        sitePhone:
-          sitePhone,
-
-        defaultDelivery:
-          defaultDelivery,
-
-        ordersEnabled:
-          ordersEnabled,
-
-        updatedAt:
-          serverTimestamp()
-
-      },
-      {
-        merge: true
-      }
-    );
+updatedAt:
+serverTimestamp()
 
 
-    message(
-      "تم حفظ الإعدادات ✅"
-    );
+},
+
+{
+
+merge:true
+
+}
 
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
+);
 
 
-    message(
-      "تعذر حفظ الإعدادات ❌"
-    );
 
-  }
+message(
+"تم حفظ الإعدادات ✅"
+);
+
+
 
 };
 
 
+
+
+
+
+
 /* =====================================================
-   LOAD SETTINGS
+   START ADMIN
 ===================================================== */
 
-async function loadSettings() {
 
-  if (!db) return;
-
-
-  try {
-
-    const snapshot =
-      await getDoc(
-        doc(
-          db,
-          "settings",
-          "site"
-        )
-      );
+async function startAdmin(){
 
 
-    if (!snapshot.exists()) {
-
-      return;
-
-    }
+await loadRestaurants();
 
 
-    const settings =
-      snapshot.data();
+await loadProducts();
 
 
-    const siteName =
-      document.getElementById(
-        "siteName"
-      );
+await loadDrivers();
 
 
-    const sitePhone =
-      document.getElementById(
-        "sitePhone"
-      );
+await loadOrders();
 
 
-    const defaultDelivery =
-      document.getElementById(
-        "defaultDelivery"
-      );
+
+const status =
+document.getElementById(
+"firebaseStatus"
+);
 
 
-    const ordersEnabled =
-      document.getElementById(
-        "ordersEnabled"
-      );
 
+if(status){
 
-    if (siteName) {
-
-      siteName.value =
-        settings.siteName ||
-        "مندوب";
-
-    }
-
-
-    if (sitePhone) {
-
-      sitePhone.value =
-        settings.sitePhone ||
-        "";
-
-    }
-
-
-    if (defaultDelivery) {
-
-      defaultDelivery.value =
-        settings.defaultDelivery ??
-        25;
-
-    }
-
-
-    if (ordersEnabled) {
-
-      ordersEnabled.value =
-        settings.ordersEnabled === false
-          ? "false"
-          : "true";
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
+status.innerHTML =
+"Firebase متصل ✅";
 
 }
 
 
-/* =====================================================
-   IMAGE PREVIEW
-===================================================== */
-
-window.previewImage =
-function(url) {
-
-  if (!url) return;
-
-
-  window.open(
-    url,
-    "_blank",
-    "noopener,noreferrer"
-  );
-
-};
-
-
-/* =====================================================
-   DASHBOARD REFRESH
-===================================================== */
-
-async function loadDashboard() {
-
-  if (!db) return;
-
-
-  try {
-
-    await loadRestaurants();
-
-    await loadProducts();
-
-    await loadDrivers();
-
-    await loadOrders();
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
 
 }
 
-
-/* =====================================================
-   START
-===================================================== */
-
-async function startAdmin() {
-
-  if (!db) {
-
-    return;
-
-  }
-
-
-  await loadRestaurants();
-
-  await loadProducts();
-
-  await loadOffers();
-
-  await loadDrivers();
-
-  await loadOrders();
-
-  await loadSettings();
-
-
-  console.log(
-    "Admin Panel Ready ✅"
-  );
-
-}
 
 
 startAdmin();
+
+
