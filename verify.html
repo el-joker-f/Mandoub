@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0">
+
+  <title>مندوب | تأكيد البريد</title>
+
+  <style>
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial,Tahoma,sans-serif;
+      background:#020d18;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .box{
+      width:100%;
+      max-width:500px;
+      background:#061a2d;
+      border:1px solid #16415e;
+      border-radius:28px;
+      padding:35px 25px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .logo{
+      width:85px;
+      height:85px;
+      object-fit:contain;
+      margin-bottom:15px;
+    }
+
+    h1{
+      color:#00dfff;
+      font-size:28px;
+      margin-bottom:15px;
+    }
+
+    p{
+      color:#aab9c7;
+      line-height:1.9;
+      font-size:17px;
+      margin-bottom:25px;
+    }
+
+    .icon{
+      font-size:65px;
+      margin-bottom:15px;
+    }
+
+    .success{
+      color:#5df0bb;
+    }
+
+    .error{
+      color:#ff8eae;
+    }
+
+    .button{
+      display:block;
+      width:100%;
+      height:58px;
+      line-height:58px;
+      border-radius:16px;
+      background:#00dfff;
+      color:#00131e;
+      text-decoration:none;
+      font-size:18px;
+      font-weight:900;
+      margin-top:15px;
+    }
+
+    .secondary{
+      background:#12344d;
+      color:#fff;
+    }
+
+    .loading{
+      color:#00dfff;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <img
+    class="logo"
+    src="assets/logo.png"
+    alt="مندوب">
+
+  <div id="content">
+
+    <div class="icon">⏳</div>
+
+    <h1 class="loading">
+      جاري تأكيد البريد...
+    </h1>
+
+    <p>
+      لحظات ونخلص تأكيد حسابك.
+    </p>
+
+  </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+  initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+import {
+  getAuth,
+  applyActionCode
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+
+  authDomain:
+    "mandoub-dv.firebaseapp.com",
+
+  projectId:
+    "mandoub-dv",
+
+  storageBucket:
+    "mandoub-dv.firebasestorage.app",
+
+  messagingSenderId:
+    "311140400335",
+
+  appId:
+    "1:311140400335:web:db198b7c53259c53594bba",
+
+  measurementId:
+    "G-7V1LJQYYXD"
+
+};
+
+
+const app =
+  initializeApp(firebaseConfig);
+
+const auth =
+  getAuth(app);
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const mode =
+  params.get("mode");
+
+const oobCode =
+  params.get("oobCode");
+
+
+const content =
+  document.getElementById("content");
+
+
+function successPage(){
+
+  content.innerHTML = `
+
+    <div class="icon">✅</div>
+
+    <h1 class="success">
+      تم تأكيد بريدك بنجاح
+    </h1>
+
+    <p>
+      مبروك 🎉<br>
+      تم تأكيد البريد الإلكتروني
+      لحسابك في مندوب بنجاح.
+    </p>
+
+    <a
+      class="button"
+      href="login.html">
+      تسجيل الدخول
+    </a>
+
+    <a
+      class="button secondary"
+      href="index.html">
+      العودة للرئيسية
+    </a>
+
+  `;
+
+}
+
+
+function errorPage(){
+
+  content.innerHTML = `
+
+    <div class="icon">❌</div>
+
+    <h1 class="error">
+      تعذر تأكيد البريد
+    </h1>
+
+    <p>
+      رابط التأكيد غير صالح أو انتهت صلاحيته.
+      <br>
+      ارجع لتسجيل الدخول وأرسل رسالة تأكيد جديدة.
+    </p>
+
+    <a
+      class="button"
+      href="login.html">
+      العودة لتسجيل الدخول
+    </a>
+
+  `;
+
+}
+
+
+if(
+  mode !== "verifyEmail" ||
+  !oobCode
+){
+
+  errorPage();
+
+}else{
+
+  applyActionCode(
+    auth,
+    oobCode
+  )
+  .then(()=>{
+
+    successPage();
+
+  })
+  .catch((error)=>{
+
+    console.error(
+      "VERIFY ERROR:",
+      error
+    );
+
+    errorPage();
+
+  });
+
+}
+
+</script>
+
+</body>
+
+</html>
