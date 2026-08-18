@@ -352,8 +352,6 @@ body{
 
 <div class="container">
 
-  <!-- LOGO -->
-
   <div class="logo">
 
     <img
@@ -369,12 +367,8 @@ body{
   </div>
 
 
-  <!-- AUTH BOX -->
-
   <div class="auth-box">
 
-
-    <!-- TABS -->
 
     <div
       id="tabs"
@@ -404,8 +398,6 @@ body{
     </div>
 
 
-    <!-- MESSAGE -->
-
     <div
       id="message"
       class="message">
@@ -428,8 +420,6 @@ body{
       </p>
 
 
-      <!-- NAME -->
-
       <div class="field">
 
         <label>
@@ -445,8 +435,6 @@ body{
       </div>
 
 
-      <!-- EMAIL -->
-
       <div class="field">
 
         <label>
@@ -461,8 +449,6 @@ body{
 
       </div>
 
-
-      <!-- PASSWORD -->
 
       <div class="field">
 
@@ -491,8 +477,6 @@ body{
 
         </div>
 
-
-        <!-- PASSWORD RULES -->
 
         <div class="password-rules">
 
@@ -560,14 +544,11 @@ body{
       </div>
 
 
-      <!-- CONFIRM PASSWORD -->
-
       <div class="field">
 
         <label>
           تأكيد كلمة المرور
         </label>
-
 
         <div class="input-box">
 
@@ -577,7 +558,6 @@ body{
             type="password"
             placeholder="أعد كتابة كلمة المرور"
             autocomplete="new-password">
-
 
           <button
             type="button"
@@ -593,8 +573,6 @@ body{
       </div>
 
 
-      <!-- REGISTER -->
-
       <button
         id="registerButton"
         class="primary"
@@ -605,7 +583,6 @@ body{
 
       </button>
 
-
     </div>
 
 
@@ -615,11 +592,9 @@ body{
       id="loginForm"
       class="hidden">
 
-
       <h2 class="form-title">
         تسجيل الدخول 👋
       </h2>
-
 
       <p class="form-description">
 
@@ -628,8 +603,6 @@ body{
 
       </p>
 
-
-      <!-- EMAIL -->
 
       <div class="field">
 
@@ -646,14 +619,11 @@ body{
       </div>
 
 
-      <!-- PASSWORD -->
-
       <div class="field">
 
         <label>
           كلمة المرور
         </label>
-
 
         <div class="input-box">
 
@@ -663,7 +633,6 @@ body{
             type="password"
             placeholder="كلمة المرور"
             autocomplete="current-password">
-
 
           <button
             type="button"
@@ -679,8 +648,6 @@ body{
       </div>
 
 
-      <!-- LOGIN -->
-
       <button
         id="loginButton"
         class="primary"
@@ -692,8 +659,6 @@ body{
       </button>
 
 
-      <!-- RESET -->
-
       <a
         href="#"
         class="back"
@@ -703,26 +668,22 @@ body{
 
       </a>
 
-
     </div>
 
 
-    <!-- OPTIONAL EMAIL VERIFICATION -->
+    <!-- VERIFY -->
 
     <div
       id="verifyForm"
       class="hidden verify-box">
 
-
       <div class="email-icon">
         📧
       </div>
 
-
       <h2 class="form-title">
         تأكيد البريد الإلكتروني
       </h2>
-
 
       <p class="form-description">
 
@@ -731,12 +692,10 @@ body{
 
       </p>
 
-
       <div
         id="verifyEmail"
         class="verify-email">
       </div>
-
 
       <div class="verify-note">
 
@@ -762,8 +721,6 @@ body{
 
       </button>
 
-
-      <!-- SKIP -->
 
       <button
         class="skip-button"
@@ -794,8 +751,6 @@ body{
     </div>
 
 
-    <!-- HOME -->
-
     <a
       href="index.html"
       class="back">
@@ -804,71 +759,42 @@ body{
 
     </a>
 
-
   </div>
 
 </div>
 
 
-<!-- =====================================================
-     FIREBASE
-===================================================== -->
-
 <script type="module">
 
 import {
-
   initializeApp
-
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
-
 import {
-
   getAuth,
-
   createUserWithEmailAndPassword,
-
   signInWithEmailAndPassword,
-
   updateProfile,
-
   sendEmailVerification,
-
   sendPasswordResetEmail,
-
   signOut
-
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
-
 import {
-
   getFirestore,
-
   doc,
-
   setDoc,
-
   serverTimestamp
-
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
-
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
 
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6Qj9APDeyj7oIU",
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
 
   authDomain:
     "mandoub-dv.firebaseapp.com",
@@ -891,30 +817,27 @@ const firebaseConfig = {
 };
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
 const app =
   initializeApp(firebaseConfig);
 
-
 const auth =
   getAuth(app);
-
 
 const db =
   getFirestore(app);
 
 
-/* =====================================================
-   OPTIONAL VERIFICATION
-===================================================== */
+/*
+  رابط تأكيد البريد.
+  مهم: الدومين لازم يكون موجود
+  في Firebase Authorized Domains.
+*/
 
 const actionCodeSettings = {
 
   url:
-    "https://mandoub-dv.web.app/login.html",
+    window.location.origin +
+    "/login.html",
 
   handleCodeInApp:
     false
@@ -928,13 +851,13 @@ const actionCodeSettings = {
 
 function showMessage(
   text,
-  type="error"
+  type = "error"
 ){
 
   const box =
-    document.getElementById(
-      "message"
-    );
+    document.getElementById("message");
+
+  if(!box) return;
 
   box.textContent =
     text;
@@ -980,13 +903,11 @@ function(){
     "8 أحرف على الأقل"
   );
 
-
   setRule(
     "ruleUpper",
     hasUpper,
     "حرف إنجليزي كبير A-Z"
   );
-
 
   setRule(
     "ruleLower",
@@ -994,13 +915,11 @@ function(){
     "حرف إنجليزي صغير a-z"
   );
 
-
   setRule(
     "ruleNumber",
     hasNumber,
     "رقم 0-9"
   );
-
 
   setRule(
     "ruleSpecial",
@@ -1011,22 +930,24 @@ function(){
 
   let score = 0;
 
-
   if(hasLength) score++;
-
   if(hasUpper) score++;
-
   if(hasLower) score++;
-
   if(hasNumber) score++;
-
   if(hasSpecial) score++;
 
 
-  document.getElementById(
-    "strengthBar"
-  ).style.width =
-    (score * 20) + "%";
+  const bar =
+    document.getElementById(
+      "strengthBar"
+    );
+
+  if(bar){
+
+    bar.style.width =
+      (score * 20) + "%";
+
+  }
 
 };
 
@@ -1040,10 +961,11 @@ function setRule(
   const element =
     document.getElementById(id);
 
+  if(!element) return;
 
   element.textContent =
-    (valid ? "✅ " : "❌ ") + text;
-
+    (valid ? "✅ " : "❌ ") +
+    text;
 
   if(valid){
 
@@ -1084,7 +1006,7 @@ function isStrongPassword(
 
 
 /* =====================================================
-   SEND OPTIONAL VERIFICATION
+   VERIFICATION
 ===================================================== */
 
 async function sendVerification(
@@ -1192,9 +1114,6 @@ async function(){
 
   try{
 
-
-    /* CREATE ACCOUNT */
-
     const result =
       await createUserWithEmailAndPassword(
         auth,
@@ -1207,8 +1126,6 @@ async function(){
       result.user;
 
 
-    /* SAVE NAME */
-
     await updateProfile(
       user,
       {
@@ -1218,7 +1135,9 @@ async function(){
     );
 
 
-    /* SAVE CUSTOMER */
+    /*
+      إنشاء ملف العميل في Firestore
+    */
 
     await setDoc(
       doc(
@@ -1248,13 +1167,8 @@ async function(){
 
 
     /*
-      مهم:
-      لا نرسل العميل لصفحة إجبارية.
-
-      نحاول إرسال رسالة التأكيد،
-      ولو نجحت فهي اختيارية.
-
-      ولو فشلت، الحساب يظل شغال.
+      إرسال التأكيد اختياري.
+      لو فشل لا يمنع إنشاء الحساب.
     */
 
     try{
@@ -1296,7 +1210,6 @@ async function(){
       "REGISTER ERROR:",
       error
     );
-
 
     showMessage(
       firebaseError(error)
@@ -1371,7 +1284,6 @@ async function(){
 
   try{
 
-
     const result =
       await signInWithEmailAndPassword(
         auth,
@@ -1385,10 +1297,8 @@ async function(){
 
 
     /*
-      تسجيل الدخول مسموح
-      سواء البريد مؤكد أو لا.
+      تحديث بيانات العميل
     */
-
 
     await setDoc(
       doc(
@@ -1405,7 +1315,7 @@ async function(){
           user.displayName || "",
 
         email:
-          user.email,
+          user.email || email,
 
         emailVerified:
           user.emailVerified,
@@ -1444,7 +1354,6 @@ async function(){
       error
     );
 
-
     showMessage(
       firebaseError(error)
     );
@@ -1462,7 +1371,7 @@ async function(){
 
 
 /* =====================================================
-   OPTIONAL VERIFY PAGE
+   OPTIONAL VERIFICATION PAGE
 ===================================================== */
 
 window.showOptionalVerification =
@@ -1483,16 +1392,13 @@ function(){
     .getElementById("registerForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("loginForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("tabs")
     .classList.add("hidden");
-
 
   document
     .getElementById("verifyForm")
@@ -1502,8 +1408,7 @@ function(){
   document
     .getElementById("verifyEmail")
     .textContent =
-      user.email;
-
+      user.email || "";
 
 };
 
@@ -1522,7 +1427,7 @@ function(){
 
 
 /* =====================================================
-   RESEND OPTIONAL VERIFICATION
+   RESEND VERIFICATION
 ===================================================== */
 
 window.resendVerificationEmail =
@@ -1576,7 +1481,7 @@ async function(){
 
 
     showMessage(
-      "✅ تم إرسال رابط تأكيد البريد. يمكنك استخدام الموقع الآن بدون تأكيد.",
+      "✅ تم إرسال رابط تأكيد البريد.",
       "success"
     );
 
@@ -1587,7 +1492,6 @@ async function(){
       "RESEND ERROR:",
       error
     );
-
 
     showMessage(
       firebaseError(error)
@@ -1651,7 +1555,6 @@ async function(){
       error
     );
 
-
     showMessage(
       firebaseError(error)
     );
@@ -1712,16 +1615,13 @@ function(){
     .getElementById("registerForm")
     .classList.remove("hidden");
 
-
   document
     .getElementById("loginForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("verifyForm")
     .classList.add("hidden");
-
 
   document
     .getElementById("tabs")
@@ -1731,7 +1631,6 @@ function(){
   document
     .getElementById("registerTab")
     .classList.add("active");
-
 
   document
     .getElementById("loginTab")
@@ -1757,16 +1656,13 @@ function(){
     .getElementById("registerForm")
     .classList.add("hidden");
 
-
   document
     .getElementById("loginForm")
     .classList.remove("hidden");
 
-
   document
     .getElementById("verifyForm")
     .classList.add("hidden");
-
 
   document
     .getElementById("tabs")
@@ -1776,7 +1672,6 @@ function(){
   document
     .getElementById("registerTab")
     .classList.remove("active");
-
 
   document
     .getElementById("loginTab")
@@ -1805,13 +1700,13 @@ function(
     document.getElementById(id);
 
 
-  if(
-    input.type === "password"
-  ){
+  if(!input) return;
+
+
+  if(input.type === "password"){
 
     input.type =
       "text";
-
 
     button.textContent =
       "🙈";
@@ -1820,7 +1715,6 @@ function(
 
     input.type =
       "password";
-
 
     button.textContent =
       "👁️";
