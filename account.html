@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -89,6 +90,7 @@
       color:#9db0bf;
       margin-top:7px;
       direction:ltr;
+      word-break:break-word;
     }
 
     .verified{
@@ -100,6 +102,12 @@
       border:1px solid #16a879;
       color:#5df0bb;
       font-weight:bold;
+    }
+
+    .unverified{
+      background:#493b08 !important;
+      border-color:#a88b12 !important;
+      color:#ffe26b !important;
     }
 
     .section-title{
@@ -163,6 +171,11 @@
       font-weight:bold;
     }
 
+    button:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+    }
+
     .primary{
       width:100%;
       height:54px;
@@ -216,6 +229,13 @@
       color:#ff8eae;
     }
 
+    .message.info{
+      display:block;
+      background:#102f45;
+      border:1px solid #21658b;
+      color:#8edfff;
+    }
+
     .orders-empty{
       text-align:center;
       color:#91a5b5;
@@ -231,11 +251,16 @@
       margin-bottom:12px;
     }
 
+    .order:last-child{
+      margin-bottom:0;
+    }
+
     .order-head{
       display:flex;
       justify-content:space-between;
       gap:10px;
       margin-bottom:10px;
+      flex-wrap:wrap;
     }
 
     .order-status{
@@ -253,6 +278,12 @@
       font-weight:bold;
     }
 
+    .order-location{
+      color:#91a5b5;
+      margin-top:8px;
+      line-height:1.7;
+    }
+
     .back{
       display:block;
       text-align:center;
@@ -268,7 +299,45 @@
     }
 
     .hidden{
-      display:none;
+      display:none !important;
+    }
+
+    .verification-note{
+      margin-top:14px;
+      color:#91a5b5;
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    .verify-button{
+      width:100%;
+      height:50px;
+      border-radius:14px;
+      background:#12344d;
+      color:#fff;
+      font-size:15px;
+      margin-top:12px;
+    }
+
+    @media(max-width:500px){
+
+      body{
+        padding:15px 10px 40px;
+      }
+
+      .card{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .info-row{
+        align-items:flex-start;
+      }
+
+      .info-value{
+        max-width:60%;
+      }
+
     }
 
   </style>
@@ -315,7 +384,8 @@
     id="accountContent"
     class="hidden">
 
-    <!-- PROFILE -->
+
+    <!-- ================= PROFILE ================= -->
 
     <div class="card profile">
 
@@ -340,14 +410,29 @@
         id="verificationStatus"
         class="verified">
 
-        ✅ الحساب متحقق
+        جاري التحقق...
 
       </span>
+
+      <p
+        id="verificationNote"
+        class="verification-note">
+      </p>
+
+      <button
+        id="verifyButton"
+        class="verify-button hidden"
+        type="button"
+        onclick="sendVerificationEmail()">
+
+        📧 إرسال رابط تأكيد البريد
+
+      </button>
 
     </div>
 
 
-    <!-- MESSAGE -->
+    <!-- ================= MESSAGE ================= -->
 
     <div
       id="message"
@@ -355,13 +440,14 @@
     </div>
 
 
-    <!-- ACCOUNT INFO -->
+    <!-- ================= ACCOUNT INFO ================= -->
 
     <div class="card">
 
       <h3 class="section-title">
         👤 بيانات الحساب
       </h3>
+
 
       <div class="info-row">
 
@@ -376,6 +462,7 @@
 
       </div>
 
+
       <div class="info-row">
 
         <span class="info-label">
@@ -389,6 +476,7 @@
 
       </div>
 
+
       <div class="info-row">
 
         <span class="info-label">
@@ -399,7 +487,7 @@
           id="infoVerified"
           class="info-value">
 
-          متحقق ✅
+          جاري التحقق...
 
         </strong>
 
@@ -408,13 +496,14 @@
     </div>
 
 
-    <!-- EDIT NAME -->
+    <!-- ================= EDIT NAME ================= -->
 
     <div class="card">
 
       <h3 class="section-title">
         ✏️ تعديل الاسم
       </h3>
+
 
       <div class="field">
 
@@ -425,9 +514,12 @@
         <input
           id="newName"
           type="text"
-          placeholder="اكتب اسمك">
+          maxlength="80"
+          placeholder="اكتب اسمك"
+          autocomplete="name">
 
       </div>
+
 
       <button
         id="saveNameButton"
@@ -442,13 +534,14 @@
     </div>
 
 
-    <!-- PASSWORD -->
+    <!-- ================= PASSWORD ================= -->
 
     <div class="card">
 
       <h3 class="section-title">
         🔐 كلمة المرور
       </h3>
+
 
       <p
         style="
@@ -461,6 +554,7 @@
         لتغيير كلمة المرور بأمان.
 
       </p>
+
 
       <button
         id="passwordButton"
@@ -475,13 +569,14 @@
     </div>
 
 
-    <!-- ORDERS -->
+    <!-- ================= ORDERS ================= -->
 
     <div class="card">
 
       <h3 class="section-title">
         📦 طلباتي
       </h3>
+
 
       <div id="orders">
 
@@ -496,7 +591,7 @@
     </div>
 
 
-    <!-- LOGOUT -->
+    <!-- ================= LOGOUT ================= -->
 
     <div class="card">
 
@@ -512,6 +607,8 @@
 
     </div>
 
+
+    <!-- ================= HOME ================= -->
 
     <a
       href="index.html"
@@ -543,6 +640,7 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
+  sendEmailVerification,
   signOut
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
@@ -556,17 +654,20 @@ import {
   collection,
   query,
   where,
-  getDocs
+  getDocs,
+  serverTimestamp
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
-/* ================= CONFIG ================= */
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
   apiKey:
-    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+    "AIzaSyB6-RVH7-8NrN-AaOOv6Qj9APDeyj7oIU",
 
   authDomain:
     "mandoub-dv.firebaseapp.com",
@@ -589,27 +690,45 @@ const firebaseConfig = {
 };
 
 
-/* ================= INIT ================= */
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 const app =
   initializeApp(firebaseConfig);
 
+
 const auth =
   getAuth(app);
+
 
 const db =
   getFirestore(app);
 
 
-/* ================= MESSAGE ================= */
+/* =====================================================
+   MESSAGE
+===================================================== */
 
-function showMessage(text,type="error"){
+function showMessage(
+  text,
+  type="error"
+){
 
   const box =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
+
+
+  if(!box){
+    return;
+  }
+
 
   box.textContent =
     text;
+
 
   box.className =
     "message " + type;
@@ -617,141 +736,46 @@ function showMessage(text,type="error"){
 }
 
 
-/* ================= AUTH ================= */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-onAuthStateChanged(
-  auth,
-  async function(user){
+function escapeHTML(value){
 
-    const loading =
-      document.getElementById("loading");
+  return String(
+    value ?? ""
+  )
 
-    const content =
-      document.getElementById(
-        "accountContent"
-      );
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
 
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
 
-    if(!user){
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
 
-      window.location.href =
-        "login.html";
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
 
-      return;
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
 
-    }
-
-
-    /* ================= USER ================= */
-
-    loading.classList.add(
-      "hidden"
-    );
-
-    content.classList.remove(
-      "hidden"
-    );
-
-
-    document.getElementById(
-      "userName"
-    ).textContent =
-      user.displayName ||
-      "العميل";
-
-
-    document.getElementById(
-      "userEmail"
-    ).textContent =
-      user.email || "";
-
-
-    document.getElementById(
-      "infoName"
-    ).textContent =
-      user.displayName ||
-      "العميل";
-
-
-    document.getElementById(
-      "infoEmail"
-    ).textContent =
-      user.email || "";
-
-
-    document.getElementById(
-      "newName"
-    ).value =
-      user.displayName || "";
-
-
-    /* ================= VERIFICATION ================= */
-
-    const verificationStatus =
-      document.getElementById(
-        "verificationStatus"
-      );
-
-    const infoVerified =
-      document.getElementById(
-        "infoVerified"
-      );
-
-
-    if(user.emailVerified){
-
-      verificationStatus.textContent =
-        "✅ الحساب متحقق";
-
-      infoVerified.textContent =
-        "متحقق ✅";
-
-    }else{
-
-      verificationStatus.textContent =
-        "⚠️ البريد غير متحقق";
-
-      infoVerified.textContent =
-        "غير متحقق ⚠️";
-
-      verificationStatus.style.background =
-        "#493b08";
-
-      verificationStatus.style.borderColor =
-        "#a88b12";
-
-      verificationStatus.style.color =
-        "#ffe26b";
-
-    }
-
-
-    /* ================= AVATAR ================= */
-
-    const firstLetter =
-      (user.displayName ||
-       user.email ||
-       "م")
-      .charAt(0)
-      .toUpperCase();
-
-
-    document.getElementById(
-      "avatar"
-    ).textContent =
-      firstLetter;
-
-
-    /* ================= LOAD ORDERS ================= */
-
-    loadOrders(user);
-
-  }
-);
+}
 
 
 /* =====================================================
-   LOAD CUSTOMER
+   GET CUSTOMER DATA
 ===================================================== */
 
 async function loadCustomer(user){
@@ -772,36 +796,373 @@ async function loadCustomer(user){
       );
 
 
-    if(snapshot.exists()){
+    if(!snapshot.exists()){
 
-      const data =
-        snapshot.data();
-
-
-      if(
-        data.name &&
-        !user.displayName
-      ){
-
-        document.getElementById(
-          "userName"
-        ).textContent =
-          data.name;
-
-      }
+      return null;
 
     }
 
+
+    return snapshot.data();
+
+
   }catch(error){
 
-    console.log(
-      "Customer load error:",
+    console.error(
+      "CUSTOMER LOAD ERROR:",
       error
+    );
+
+
+    return null;
+
+  }
+
+}
+
+
+/* =====================================================
+   UPDATE CUSTOMER DATA
+===================================================== */
+
+async function syncCustomer(
+  user,
+  extraData={}
+){
+
+  await setDoc(
+    doc(
+      db,
+      "customers",
+      user.uid
+    ),
+    {
+
+      uid:
+        user.uid,
+
+      name:
+        user.displayName ||
+        "",
+
+      email:
+        user.email ||
+        "",
+
+      emailVerified:
+        user.emailVerified,
+
+      updatedAt:
+        serverTimestamp(),
+
+      ...extraData
+
+    },
+    {
+      merge:true
+    }
+  );
+
+}
+
+
+/* =====================================================
+   AUTH STATE
+===================================================== */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+
+    const content =
+      document.getElementById(
+        "accountContent"
+      );
+
+
+    if(!user){
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /*
+      تحميل بيانات customers
+      أولاً، ثم بيانات Firebase Auth.
+    */
+
+    const customer =
+      await loadCustomer(user);
+
+
+    const customerName =
+      customer?.name ||
+      user.displayName ||
+      "العميل";
+
+
+    /* ================= SHOW PAGE ================= */
+
+    if(loading){
+
+      loading.classList.add(
+        "hidden"
+      );
+
+    }
+
+
+    if(content){
+
+      content.classList.remove(
+        "hidden"
+      );
+
+    }
+
+
+    /* ================= PROFILE ================= */
+
+    document.getElementById(
+      "userName"
+    ).textContent =
+      customerName;
+
+
+    document.getElementById(
+      "userEmail"
+    ).textContent =
+      user.email || "";
+
+
+    document.getElementById(
+      "infoName"
+    ).textContent =
+      customerName;
+
+
+    document.getElementById(
+      "infoEmail"
+    ).textContent =
+      user.email || "";
+
+
+    document.getElementById(
+      "newName"
+    ).value =
+      customerName === "العميل"
+        ? ""
+        : customerName;
+
+
+    /* ================= VERIFICATION ================= */
+
+    updateVerificationUI(
+      user
+    );
+
+
+    /* ================= AVATAR ================= */
+
+    const firstLetter =
+      customerName
+        .charAt(0)
+        .toUpperCase();
+
+
+    document.getElementById(
+      "avatar"
+    ).textContent =
+      firstLetter || "م";
+
+
+    /* ================= ORDERS ================= */
+
+    await loadOrders(
+      user
+    );
+
+  }
+);
+
+
+/* =====================================================
+   VERIFICATION UI
+===================================================== */
+
+function updateVerificationUI(
+  user
+){
+
+  const verificationStatus =
+    document.getElementById(
+      "verificationStatus"
+    );
+
+
+  const infoVerified =
+    document.getElementById(
+      "infoVerified"
+    );
+
+
+  const note =
+    document.getElementById(
+      "verificationNote"
+    );
+
+
+  const verifyButton =
+    document.getElementById(
+      "verifyButton"
+    );
+
+
+  if(user.emailVerified){
+
+    verificationStatus.textContent =
+      "✅ الحساب متحقق";
+
+
+    verificationStatus.classList.remove(
+      "unverified"
+    );
+
+
+    infoVerified.textContent =
+      "متحقق ✅";
+
+
+    note.textContent =
+      "تم تأكيد البريد الإلكتروني بنجاح.";
+
+
+    verifyButton.classList.add(
+      "hidden"
+    );
+
+  }else{
+
+    verificationStatus.textContent =
+      "⚠️ البريد غير متحقق";
+
+
+    verificationStatus.classList.add(
+      "unverified"
+    );
+
+
+    infoVerified.textContent =
+      "غير متحقق ⚠️";
+
+
+    note.textContent =
+      "تأكيد البريد اختياري ويمكنك استخدام حسابك بشكل طبيعي.";
+
+
+    verifyButton.classList.remove(
+      "hidden"
     );
 
   }
 
 }
+
+
+/* =====================================================
+   SEND VERIFICATION
+===================================================== */
+
+window.sendVerificationEmail =
+async function(){
+
+  const user =
+    auth.currentUser;
+
+
+  if(!user){
+
+    showMessage(
+      "❌ لا يوجد حساب مسجل حاليًا."
+    );
+
+    return;
+
+  }
+
+
+  if(user.emailVerified){
+
+    showMessage(
+      "✅ البريد الإلكتروني مؤكد بالفعل.",
+      "success"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "verifyButton"
+    );
+
+
+  button.disabled =
+    true;
+
+
+  button.textContent =
+    "⏳ جاري إرسال الرابط...";
+
+
+  try{
+
+    await sendEmailVerification(
+      user
+    );
+
+
+    showMessage(
+      "✅ تم إرسال رابط تأكيد البريد إلى بريدك الإلكتروني.",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "VERIFY ERROR:",
+      error
+    );
+
+
+    showMessage(
+      firebaseError(error)
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+
+  button.textContent =
+    "📧 إرسال رابط تأكيد البريد";
+
+};
 
 
 /* =====================================================
@@ -844,7 +1205,7 @@ async function(){
   if(!name){
 
     showMessage(
-      "❌ اكتب الاسم أولاً"
+      "❌ اكتب الاسم أولاً."
     );
 
     return;
@@ -855,7 +1216,7 @@ async function(){
   if(name.length < 2){
 
     showMessage(
-      "❌ الاسم قصير جدًا"
+      "❌ الاسم قصير جدًا."
     );
 
     return;
@@ -866,40 +1227,36 @@ async function(){
   button.disabled =
     true;
 
+
   button.textContent =
     "⏳ جاري الحفظ...";
 
 
   try{
 
+    /* UPDATE FIREBASE AUTH */
+
     await updateProfile(
       user,
       {
-        displayName:name
+        displayName:
+          name
       }
     );
 
 
-    await setDoc(
-      doc(
-        db,
-        "customers",
-        user.uid
-      ),
+    /* UPDATE FIRESTORE */
+
+    await syncCustomer(
+      user,
       {
-
-        uid:user.uid,
-
-        name:name,
-
-        email:user.email || null
-
-      },
-      {
-        merge:true
+        name:
+          name
       }
     );
 
+
+    /* UPDATE PAGE */
 
     document.getElementById(
       "userName"
@@ -916,11 +1273,13 @@ async function(){
     document.getElementById(
       "avatar"
     ).textContent =
-      name.charAt(0).toUpperCase();
+      name
+        .charAt(0)
+        .toUpperCase();
 
 
     showMessage(
-      "✅ تم تحديث الاسم بنجاح",
+      "✅ تم تحديث الاسم بنجاح.",
       "success"
     );
 
@@ -934,7 +1293,7 @@ async function(){
 
 
     showMessage(
-      "❌ تعذر تحديث الاسم"
+      firebaseError(error)
     );
 
   }
@@ -942,6 +1301,7 @@ async function(){
 
   button.disabled =
     false;
+
 
   button.textContent =
     "حفظ الاسم";
@@ -963,7 +1323,7 @@ async function(){
   if(!user || !user.email){
 
     showMessage(
-      "❌ لا يوجد بريد إلكتروني للحساب"
+      "❌ لا يوجد بريد إلكتروني للحساب."
     );
 
     return;
@@ -980,6 +1340,7 @@ async function(){
   button.disabled =
     true;
 
+
   button.textContent =
     "⏳ جاري الإرسال...";
 
@@ -993,7 +1354,7 @@ async function(){
 
 
     showMessage(
-      "✅ تم إرسال رابط تغيير كلمة المرور إلى بريدك",
+      "✅ تم إرسال رابط تغيير كلمة المرور إلى بريدك الإلكتروني.",
       "success"
     );
 
@@ -1007,7 +1368,7 @@ async function(){
 
 
     showMessage(
-      "❌ تعذر إرسال رابط تغيير كلمة المرور"
+      firebaseError(error)
     );
 
   }
@@ -1015,6 +1376,7 @@ async function(){
 
   button.disabled =
     false;
+
 
   button.textContent =
     "🔐 تغيير كلمة المرور";
@@ -1026,7 +1388,9 @@ async function(){
    LOAD ORDERS
 ===================================================== */
 
-async function loadOrders(user){
+async function loadOrders(
+  user
+){
 
   const container =
     document.getElementById(
@@ -1034,13 +1398,23 @@ async function loadOrders(user){
     );
 
 
-  try{
+  if(!container){
+    return;
+  }
 
-    /*
-      البحث باستخدام uid.
-      لذلك لازم الطلبات الجديدة
-      يتم حفظ uid الخاص بالعميل.
-    */
+
+  container.innerHTML = `
+
+    <div class="orders-empty">
+
+      ⏳ جاري تحميل الطلبات...
+
+    </div>
+
+  `;
+
+
+  try{
 
     const ordersRef =
       collection(
@@ -1072,7 +1446,7 @@ async function loadOrders(user){
 
         <div class="orders-empty">
 
-          📦 لا توجد طلبات حتى الآن
+          📦 لا توجد طلبات حتى الآن.
 
           <br>
 
@@ -1109,8 +1483,24 @@ async function loadOrders(user){
         const itemsText =
           items
             .map(
-              item =>
-                `${item.name || "طلب"} × ${item.quantity || 1}`
+              item => {
+
+                const name =
+                  item?.name ||
+                  "طلب";
+
+
+                const quantity =
+                  Number(
+                    item?.quantity || 1
+                  );
+
+
+                return (
+                  `${name} × ${quantity}`
+                );
+
+              }
             )
             .join("، ");
 
@@ -1124,6 +1514,12 @@ async function loadOrders(user){
           Number(
             order.total || 0
           );
+
+
+        const location =
+          order.location ||
+          order.address ||
+          "";
 
 
         const element =
@@ -1141,14 +1537,25 @@ async function loadOrders(user){
           <div class="order-head">
 
             <strong>
-              📦 طلب #${escapeHTML(orderDoc.id.slice(-6))}
+
+              📦 طلب #
+
+              ${escapeHTML(
+                orderDoc.id.slice(-6)
+              )}
+
             </strong>
 
             <span class="order-status">
-              ${escapeHTML(status)}
+
+              ${escapeHTML(
+                status
+              )}
+
             </span>
 
           </div>
+
 
           <div class="order-items">
 
@@ -1159,10 +1566,29 @@ async function loadOrders(user){
 
           </div>
 
+
+          ${
+            location
+            ? `
+              <div class="order-location">
+
+                📍 ${escapeHTML(
+                  location
+                )}
+
+              </div>
+            `
+            : ""
+          }
+
+
           <div class="order-total">
 
             الإجمالي:
-            ${total} جنيه
+
+            ${total}
+
+            جنيه
 
           </div>
 
@@ -1185,11 +1611,37 @@ async function loadOrders(user){
     );
 
 
+    if(
+      error?.message &&
+      error.message.includes(
+        "Missing or insufficient permissions"
+      )
+    ){
+
+      container.innerHTML = `
+
+        <div class="orders-empty">
+
+          ⚠️ صلاحيات Firestore تمنع قراءة الطلبات.
+
+          <br>
+
+          راجع Firestore Rules.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
     container.innerHTML = `
 
       <div class="orders-empty">
 
-        ❌ تعذر تحميل الطلبات
+        ❌ تعذر تحميل الطلبات.
 
         <br>
 
@@ -1220,6 +1672,7 @@ async function(){
   button.disabled =
     true;
 
+
   button.textContent =
     "⏳ جاري تسجيل الخروج...";
 
@@ -1244,12 +1697,13 @@ async function(){
 
 
     showMessage(
-      "❌ تعذر تسجيل الخروج"
+      "❌ تعذر تسجيل الخروج."
     );
 
 
     button.disabled =
       false;
+
 
     button.textContent =
       "🚪 تسجيل الخروج";
@@ -1260,43 +1714,82 @@ async function(){
 
 
 /* =====================================================
-   ESCAPE
+   FIREBASE ERRORS
 ===================================================== */
 
-function escapeHTML(value){
+function firebaseError(
+  error
+){
 
-  return String(
-    value ?? ""
-  )
+  const code =
+    error?.code || "";
 
-  .replaceAll(
-    "&",
-    "&amp;"
-  )
 
-  .replaceAll(
-    "<",
-    "&lt;"
-  )
+  switch(code){
 
-  .replaceAll(
-    ">",
-    "&gt;"
-  )
+    case "auth/invalid-email":
 
-  .replaceAll(
-    '"',
-    "&quot;"
-  )
+      return "❌ البريد الإلكتروني غير صحيح.";
 
-  .replaceAll(
-    "'",
-    "&#039;"
-  );
+
+    case "auth/user-not-found":
+
+      return "❌ الحساب غير موجود.";
+
+
+    case "auth/too-many-requests":
+
+      return "❌ محاولات كثيرة، حاول بعد قليل.";
+
+
+    case "auth/network-request-failed":
+
+      return "❌ تحقق من اتصال الإنترنت.";
+
+
+    case "auth/requires-recent-login":
+
+      return "❌ يجب تسجيل الدخول مرة أخرى لتنفيذ هذا الإجراء.";
+
+
+    case "auth/email-already-in-use":
+
+      return "❌ البريد الإلكتروني مستخدم بالفعل.";
+
+
+    case "auth/unauthorized-continue-uri":
+
+      return "❌ رابط Firebase غير مسموح به.";
+
+
+    default:
+
+      if(
+        error?.message &&
+        error.message.includes(
+          "Missing or insufficient permissions"
+        )
+      ){
+
+        return "❌ صلاحيات Firestore غير صحيحة. راجع Firestore Rules.";
+
+      }
+
+
+      return (
+        "❌ " +
+        (
+          error?.message ||
+          "حدث خطأ، حاول مرة أخرى."
+        )
+      );
+
+  }
 
 }
 
 </script>
 
 </body>
+
 </html>
