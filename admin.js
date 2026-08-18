@@ -1,7 +1,6 @@
 /* =====================================================
    MANDOUB - ADMIN.JS
-   لوحة التحكم الجديدة
-   المنتجات داخل كل مطعم
+   لوحة التحكم + Firebase Firestore
 ===================================================== */
 
 import {
@@ -60,8 +59,6 @@ let db = null;
 
 let restaurants = [];
 
-let selectedRestaurantId = null;
-
 let messageTimer = null;
 
 
@@ -74,9 +71,7 @@ try {
     getFirestore(app);
 
   const status =
-    document.getElementById(
-      "firebaseStatus"
-    );
+    document.getElementById("firebaseStatus");
 
   if (status) {
 
@@ -103,9 +98,7 @@ try {
   );
 
   const status =
-    document.getElementById(
-      "firebaseStatus"
-    );
+    document.getElementById("firebaseStatus");
 
   if (status) {
 
@@ -130,9 +123,7 @@ try {
 function message(text) {
 
   const box =
-    document.getElementById(
-      "message"
-    );
+    document.getElementById("message");
 
   if (!box) return;
 
@@ -158,58 +149,6 @@ function message(text) {
 
 
 /* =====================================================
-   MENU
-===================================================== */
-
-window.toggleMenu =
-function() {
-
-  const menu =
-    document.getElementById(
-      "sideMenu"
-    );
-
-  const overlay =
-    document.getElementById(
-      "overlay"
-    );
-
-  menu.classList.toggle(
-    "open"
-  );
-
-  overlay.classList.toggle(
-    "active"
-  );
-
-};
-
-
-window.closeMenu =
-function() {
-
-  const menu =
-    document.getElementById(
-      "sideMenu"
-    );
-
-  const overlay =
-    document.getElementById(
-      "overlay"
-    );
-
-  menu.classList.remove(
-    "open"
-  );
-
-  overlay.classList.remove(
-    "active"
-  );
-
-};
-
-
-/* =====================================================
    NAVIGATION
 ===================================================== */
 
@@ -220,42 +159,37 @@ function(page, button) {
     .querySelectorAll(".page")
     .forEach(item => {
 
-      item.classList.remove(
-        "active"
-      );
+      item.classList.remove("active");
 
     });
 
+
   const target =
-    document.getElementById(
-      page
-    );
+    document.getElementById(page);
+
 
   if (target) {
 
-    target.classList.add(
-      "active"
-    );
+    target.classList.add("active");
 
   }
+
 
   document
     .querySelectorAll(".menu button")
     .forEach(item => {
 
-      item.classList.remove(
-        "active"
-      );
+      item.classList.remove("active");
 
     });
 
+
   if (button) {
 
-    button.classList.add(
-      "active"
-    );
+    button.classList.add("active");
 
   }
+
 
   const titles = {
 
@@ -264,6 +198,9 @@ function(page, button) {
 
     restaurants:
       "إدارة المطاعم",
+
+    products:
+      "إدارة المنتجات",
 
     offers:
       "إدارة العروض",
@@ -282,10 +219,10 @@ function(page, button) {
 
   };
 
+
   const title =
-    document.getElementById(
-      "pageTitle"
-    );
+    document.getElementById("pageTitle");
+
 
   if (title) {
 
@@ -295,21 +232,21 @@ function(page, button) {
 
   }
 
-  closeMenu();
-
-  if (page === "dashboard") {
-
-    loadDashboard();
-
-  }
 
   if (page === "restaurants") {
-
-    backToRestaurants();
 
     loadRestaurants();
 
   }
+
+
+  if (page === "products") {
+
+    loadRestaurants()
+      .then(() => loadProducts());
+
+  }
+
 
   if (page === "offers") {
 
@@ -318,17 +255,20 @@ function(page, button) {
 
   }
 
+
   if (page === "orders") {
 
     loadOrders();
 
   }
 
+
   if (page === "drivers") {
 
     loadDrivers();
 
   }
+
 
   if (page === "settings") {
 
@@ -348,26 +288,11 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
@@ -389,51 +314,46 @@ async function() {
 
   }
 
+
   const name =
     document
-      .getElementById(
-        "restaurantName"
-      )
+      .getElementById("restaurantName")
       .value
       .trim();
+
 
   const category =
     document
-      .getElementById(
-        "restaurantCategory"
-      )
+      .getElementById("restaurantCategory")
       .value
       .trim();
+
 
   const rating =
     document
-      .getElementById(
-        "restaurantRating"
-      )
+      .getElementById("restaurantRating")
       .value;
+
 
   const delivery =
     document
-      .getElementById(
-        "restaurantDelivery"
-      )
+      .getElementById("restaurantDelivery")
       .value;
+
 
   const description =
     document
-      .getElementById(
-        "restaurantDescription"
-      )
+      .getElementById("restaurantDescription")
       .value
       .trim();
 
+
   const image =
     document
-      .getElementById(
-        "restaurantImage"
-      )
+      .getElementById("restaurantImage")
       .value
       .trim();
+
 
   if (!name) {
 
@@ -444,6 +364,7 @@ async function() {
     return;
 
   }
+
 
   try {
 
@@ -461,14 +382,10 @@ async function() {
           category,
 
         rating:
-          Number(
-            rating || 0
-          ),
+          Number(rating || 0),
 
         delivery:
-          Number(
-            delivery || 0
-          ),
+          Number(delivery || 0),
 
         description:
           description,
@@ -485,13 +402,17 @@ async function() {
       }
     );
 
+
     clearRestaurantForm();
+
 
     message(
       "تم إضافة المطعم ✅"
     );
 
+
     await loadRestaurants();
+
 
   } catch (error) {
 
@@ -525,12 +446,11 @@ function clearRestaurantForm() {
 
   ];
 
+
   ids.forEach(id => {
 
     const input =
-      document.getElementById(
-        id
-      );
+      document.getElementById(id);
 
     if (input) {
 
@@ -552,10 +472,12 @@ async function loadRestaurants() {
 
   if (!db) return;
 
+
   const list =
     document.getElementById(
       "restaurantsList"
     );
+
 
   if (list) {
 
@@ -563,6 +485,7 @@ async function loadRestaurants() {
       "جاري تحميل المطاعم...";
 
   }
+
 
   try {
 
@@ -573,6 +496,7 @@ async function loadRestaurants() {
           "restaurants"
         )
       );
+
 
     restaurants =
       snapshot.docs.map(
@@ -586,10 +510,12 @@ async function loadRestaurants() {
         })
       );
 
+
     const count =
       document.getElementById(
         "restaurantsCount"
       );
+
 
     if (count) {
 
@@ -598,18 +524,19 @@ async function loadRestaurants() {
 
     }
 
-    updateOfferRestaurantSelect();
+
+    updateRestaurantSelects();
+
 
     if (!list) return;
+
 
     if (restaurants.length === 0) {
 
       list.innerHTML = `
 
         <div style="color:#899aaa">
-
           لا توجد مطاعم حتى الآن.
-
         </div>
 
       `;
@@ -618,74 +545,97 @@ async function loadRestaurants() {
 
     }
 
+
     list.innerHTML =
       restaurants
         .map(
-          restaurant => `
+          restaurant => {
 
-            <div
-              class="restaurant-card"
-              onclick="openRestaurant('${restaurant.id}')">
+            const image =
+              restaurant.image ||
+              "";
 
-              <h3>
-                🍔 ${escapeHTML(
-                  restaurant.name
-                )}
-              </h3>
 
-              <p>
+            return `
 
-                ${escapeHTML(
-                  restaurant.category ||
-                  "بدون تصنيف"
-                )}
+              <div class="item">
 
-                • التقييم:
+                <div class="item-info">
 
-                ${restaurant.rating || 0}
-                ⭐
+                  <strong>
+                    ${escapeHTML(
+                      restaurant.name
+                    )}
+                  </strong>
 
-                • التوصيل:
+                  <small>
 
-                ${restaurant.delivery || 0}
-                جنيه
+                    ${escapeHTML(
+                      restaurant.category ||
+                      "بدون تصنيف"
+                    )}
 
-              </p>
+                    • التقييم:
 
-              <div
-                class="restaurant-card-actions">
+                    ${restaurant.rating || 0}
 
-                <button
-                  class="secondary"
-                  onclick="event.stopPropagation();previewImage('${escapeHTML(
-                    restaurant.image || ""
-                  )}')">
+                    ⭐
 
-                  الصورة
+                    • التوصيل:
 
-                </button>
+                    ${restaurant.delivery || 0}
 
-                <button
-                  class="danger"
-                  onclick="event.stopPropagation();deleteRestaurant('${restaurant.id}')">
+                    جنيه
 
-                  حذف
+                  </small>
 
-                </button>
+                </div>
+
+
+                <div class="item-actions">
+
+                  ${
+                    image
+                    ? `
+                      <button
+                        class="secondary"
+                        onclick="previewImage('${escapeHTML(
+                          image
+                        )}')">
+
+                        الصورة
+
+                      </button>
+                    `
+                    : ""
+                  }
+
+
+                  <button
+                    class="danger"
+                    onclick="deleteRestaurant('${restaurant.id}')">
+
+                    حذف
+
+                  </button>
+
+                </div>
 
               </div>
 
-            </div>
+            `;
 
-          `
+          }
         )
         .join("");
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     if (list) {
 
@@ -700,151 +650,33 @@ async function loadRestaurants() {
 
 
 /* =====================================================
-   OPEN RESTAURANT
-===================================================== */
-
-window.openRestaurant =
-async function(id) {
-
-  const restaurant =
-    restaurants.find(
-      item =>
-        item.id === id
-    );
-
-  if (!restaurant) {
-
-    message(
-      "المطعم غير موجود ❌"
-    );
-
-    return;
-
-  }
-
-  selectedRestaurantId =
-    id;
-
-  document.getElementById(
-    "restaurantsHome"
-  ).style.display =
-    "none";
-
-  document.getElementById(
-    "restaurantDetails"
-  ).style.display =
-    "block";
-
-  document.getElementById(
-    "pageTitle"
-  ).textContent =
-    restaurant.name;
-
-  document.getElementById(
-    "selectedRestaurantTitle"
-  ).textContent =
-    "🍔 " + restaurant.name;
-
-  document.getElementById(
-    "selectedRestaurantInfo"
-  ).innerHTML = `
-
-    التصنيف:
-    ${escapeHTML(
-      restaurant.category ||
-      "بدون تصنيف"
-    )}
-
-    <br>
-
-    التقييم:
-    ${restaurant.rating || 0} ⭐
-
-    <br>
-
-    رسوم التوصيل:
-    ${restaurant.delivery || 0}
-    جنيه
-
-    <br>
-
-    ${escapeHTML(
-      restaurant.description ||
-      ""
-    )}
-
-  `;
-
-  await loadRestaurantProducts();
-
-};
-
-
-/* =====================================================
-   BACK TO RESTAURANTS
-===================================================== */
-
-window.backToRestaurants =
-function() {
-
-  selectedRestaurantId =
-    null;
-
-  const home =
-    document.getElementById(
-      "restaurantsHome"
-    );
-
-  const details =
-    document.getElementById(
-      "restaurantDetails"
-    );
-
-  if (home) {
-
-    home.style.display =
-      "block";
-
-  }
-
-  if (details) {
-
-    details.style.display =
-      "none";
-
-  }
-
-  const title =
-    document.getElementById(
-      "pageTitle"
-    );
-
-  if (title) {
-
-    title.textContent =
-      "إدارة المطاعم";
-
-  }
-
-};
-
-
-/* =====================================================
    DELETE RESTAURANT
 ===================================================== */
 
 window.deleteRestaurant =
 async function(id) {
 
-  if (!db) return;
+  if (!db) {
 
-  if (!confirm(
-    "هل تريد حذف المطعم؟ المنتجات الخاصة به ستظل موجودة في قاعدة البيانات."
-  )) {
+    message(
+      "Firebase غير متصل ❌"
+    );
 
     return;
 
   }
+
+
+  if (
+    !confirm(
+      "هل تريد حذف المطعم نهائيًا؟"
+    )
+  ) {
+
+    return;
+
+  }
+
 
   try {
 
@@ -856,17 +688,24 @@ async function(id) {
       )
     );
 
+
     message(
       "تم حذف المطعم ✅"
     );
 
+
     await loadRestaurants();
+
+
+    await loadProducts();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر حذف المطعم ❌"
@@ -878,10 +717,94 @@ async function(id) {
 
 
 /* =====================================================
-   ADD PRODUCT INSIDE RESTAURANT
+   RESTAURANT SELECTS
 ===================================================== */
 
-window.addRestaurantProduct =
+function updateRestaurantSelects() {
+
+  const productSelect =
+    document.getElementById(
+      "productRestaurant"
+    );
+
+
+  const offerSelect =
+    document.getElementById(
+      "offerRestaurant"
+    );
+
+
+  if (productSelect) {
+
+    productSelect.innerHTML = `
+
+      <option value="">
+        اختر المطعم
+      </option>
+
+      ${
+        restaurants
+          .map(
+            restaurant => `
+
+              <option
+                value="${restaurant.id}">
+
+                ${escapeHTML(
+                  restaurant.name
+                )}
+
+              </option>
+
+            `
+          )
+          .join("")
+      }
+
+    `;
+
+  }
+
+
+  if (offerSelect) {
+
+    offerSelect.innerHTML = `
+
+      <option value="">
+        كل المطاعم
+      </option>
+
+      ${
+        restaurants
+          .map(
+            restaurant => `
+
+              <option
+                value="${restaurant.id}">
+
+                ${escapeHTML(
+                  restaurant.name
+                )}
+
+              </option>
+
+            `
+          )
+          .join("")
+      }
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   PRODUCTS
+===================================================== */
+
+window.addProduct =
 async function() {
 
   if (!db) {
@@ -894,56 +817,64 @@ async function() {
 
   }
 
-  if (!selectedRestaurantId) {
 
-    message(
-      "اختر مطعم أولاً ❌"
-    );
+  const restaurantId =
+    document
+      .getElementById(
+        "productRestaurant"
+      )
+      .value;
 
-    return;
-
-  }
 
   const name =
     document
       .getElementById(
-        "restaurantProductName"
+        "productName"
       )
       .value
       .trim();
+
 
   const price =
     document
       .getElementById(
-        "restaurantProductPrice"
+        "productPrice"
       )
       .value;
+
 
   const image =
     document
       .getElementById(
-        "restaurantProductImage"
+        "productImage"
       )
       .value
       .trim();
+
 
   const description =
     document
       .getElementById(
-        "restaurantProductDescription"
+        "productDescription"
       )
       .value
       .trim();
 
-  if (!name || !price) {
+
+  if (
+    !restaurantId ||
+    !name ||
+    !price
+  ) {
 
     message(
-      "اكتب اسم المنتج والسعر"
+      "اختر المطعم واكتب اسم المنتج والسعر"
     );
 
     return;
 
   }
+
 
   try {
 
@@ -955,7 +886,7 @@ async function() {
       {
 
         restaurantId:
-          selectedRestaurantId,
+          restaurantId,
 
         name:
           name,
@@ -978,35 +909,41 @@ async function() {
       }
     );
 
-    document.getElementById(
-      "restaurantProductName"
-    ).value = "";
 
     document.getElementById(
-      "restaurantProductPrice"
+      "productName"
     ).value = "";
 
-    document.getElementById(
-      "restaurantProductImage"
-    ).value = "";
 
     document.getElementById(
-      "restaurantProductDescription"
+      "productPrice"
     ).value = "";
+
+
+    document.getElementById(
+      "productImage"
+    ).value = "";
+
+
+    document.getElementById(
+      "productDescription"
+    ).value = "";
+
 
     message(
-      "تم إضافة المنتج للمطعم ✅"
+      "تم إضافة المنتج ✅"
     );
 
-    await loadRestaurantProducts();
 
-    await updateProductsCount();
+    await loadProducts();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "حدث خطأ أثناء إضافة المنتج ❌"
@@ -1018,22 +955,27 @@ async function() {
 
 
 /* =====================================================
-   LOAD RESTAURANT PRODUCTS
+   LOAD PRODUCTS
 ===================================================== */
 
-async function loadRestaurantProducts() {
+async function loadProducts() {
 
-  if (!db || !selectedRestaurantId) return;
+  if (!db) return;
+
 
   const list =
     document.getElementById(
-      "restaurantProductsList"
+      "productsList"
     );
 
-  if (!list) return;
 
-  list.innerHTML =
-    "جاري تحميل المنتجات...";
+  if (list) {
+
+    list.innerHTML =
+      "جاري تحميل المنتجات...";
+
+  }
+
 
   try {
 
@@ -1045,31 +987,31 @@ async function loadRestaurantProducts() {
         )
       );
 
-    const products =
-      snapshot.docs
-        .map(
-          item => ({
 
-            id:
-              item.id,
+    const count =
+      document.getElementById(
+        "productsCount"
+      );
 
-            ...item.data()
 
-          })
-        )
-        .filter(
-          product =>
-            product.restaurantId ===
-            selectedRestaurantId
-        );
+    if (count) {
 
-    if (products.length === 0) {
+      count.textContent =
+        snapshot.size;
+
+    }
+
+
+    if (!list) return;
+
+
+    if (snapshot.empty) {
 
       list.innerHTML = `
 
         <div style="color:#899aaa">
 
-          لا توجد منتجات لهذا المطعم حتى الآن.
+          لا توجد منتجات حتى الآن.
 
         </div>
 
@@ -1079,73 +1021,93 @@ async function loadRestaurantProducts() {
 
     }
 
+
     list.innerHTML =
-      products
+      snapshot.docs
         .map(
-          product => `
+          item => {
 
-            <div class="item">
+            const product =
+              item.data();
 
-              <div class="item-info">
 
-                <strong>
+            const restaurant =
+              restaurants.find(
+                restaurant =>
+                  restaurant.id ===
+                  product.restaurantId
+              );
 
-                  ${escapeHTML(
-                    product.name || ""
-                  )}
 
-                </strong>
+            return `
 
-                <small>
+              <div class="item">
 
-                  السعر:
-                  ${product.price || 0}
-                  جنيه
+                <div class="item-info">
 
-                  <br>
+                  <strong>
+                    ${escapeHTML(
+                      product.name || ""
+                    )}
+                  </strong>
 
-                  ${escapeHTML(
-                    product.description ||
-                    ""
-                  )}
+                  <small>
 
-                </small>
+                    ${
+                      escapeHTML(
+                        restaurant?.name ||
+                        "مطعم غير معروف"
+                      )
+                    }
+
+                    • السعر:
+
+                    ${product.price || 0}
+
+                    جنيه
+
+                  </small>
+
+                </div>
+
+
+                <div class="item-actions">
+
+                  ${
+                    product.image
+                    ? `
+                      <button
+                        class="secondary"
+                        onclick="previewImage('${escapeHTML(
+                          product.image
+                        )}')">
+
+                        الصورة
+
+                      </button>
+                    `
+                    : ""
+                  }
+
+
+                  <button
+                    class="danger"
+                    onclick="deleteProduct('${item.id}')">
+
+                    حذف
+
+                  </button>
+
+                </div>
 
               </div>
 
-              <div class="item-actions">
+            `;
 
-                ${
-                  product.image
-                  ? `
-                    <button
-                      class="secondary"
-                      onclick="previewImage('${escapeHTML(
-                        product.image
-                      )}')">
-
-                      الصورة
-
-                    </button>
-                  `
-                  : ""
-                }
-
-                <button
-                  class="danger"
-                  onclick="deleteRestaurantProduct('${product.id}')">
-
-                  حذف
-
-                </button>
-
-              </div>
-
-            </div>
-
-          `
+          }
         )
         .join("");
+
 
   } catch (error) {
 
@@ -1153,8 +1115,13 @@ async function loadRestaurantProducts() {
       error
     );
 
-    list.innerHTML =
-      "حدث خطأ أثناء تحميل المنتجات ❌";
+
+    if (list) {
+
+      list.innerHTML =
+        "حدث خطأ أثناء تحميل المنتجات ❌";
+
+    }
 
   }
 
@@ -1162,21 +1129,25 @@ async function loadRestaurantProducts() {
 
 
 /* =====================================================
-   DELETE RESTAURANT PRODUCT
+   DELETE PRODUCT
 ===================================================== */
 
-window.deleteRestaurantProduct =
+window.deleteProduct =
 async function(id) {
 
   if (!db) return;
 
-  if (!confirm(
-    "هل تريد حذف المنتج؟"
-  )) {
+
+  if (
+    !confirm(
+      "هل تريد حذف المنتج؟"
+    )
+  ) {
 
     return;
 
   }
+
 
   try {
 
@@ -1188,19 +1159,21 @@ async function(id) {
       )
     );
 
+
     message(
       "تم حذف المنتج ✅"
     );
 
-    await loadRestaurantProducts();
 
-    await updateProductsCount();
+    await loadProducts();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر حذف المنتج ❌"
@@ -1209,90 +1182,6 @@ async function(id) {
   }
 
 };
-
-
-/* =====================================================
-   PRODUCTS COUNT
-===================================================== */
-
-async function updateProductsCount() {
-
-  if (!db) return;
-
-  try {
-
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "products"
-        )
-      );
-
-    const count =
-      document.getElementById(
-        "productsCount"
-      );
-
-    if (count) {
-
-      count.textContent =
-        snapshot.size;
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   OFFERS RESTAURANT SELECT
-===================================================== */
-
-function updateOfferRestaurantSelect() {
-
-  const select =
-    document.getElementById(
-      "offerRestaurant"
-    );
-
-  if (!select) return;
-
-  select.innerHTML = `
-
-    <option value="">
-      كل المطاعم
-    </option>
-
-    ${
-      restaurants
-        .map(
-          restaurant => `
-
-            <option
-              value="${restaurant.id}">
-
-              ${escapeHTML(
-                restaurant.name
-              )}
-
-            </option>
-
-          `
-        )
-        .join("")
-    }
-
-  `;
-
-}
 
 
 /* =====================================================
@@ -1312,6 +1201,7 @@ async function() {
 
   }
 
+
   const title =
     document
       .getElementById(
@@ -1320,12 +1210,14 @@ async function() {
       .value
       .trim();
 
+
   const restaurantId =
     document
       .getElementById(
         "offerRestaurant"
       )
       .value;
+
 
   const discount =
     document
@@ -1335,6 +1227,7 @@ async function() {
       .value
       .trim();
 
+
   const image =
     document
       .getElementById(
@@ -1343,12 +1236,14 @@ async function() {
       .value
       .trim();
 
+
   const start =
     document
       .getElementById(
         "offerStart"
       )
       .value;
+
 
   const end =
     document
@@ -1357,6 +1252,7 @@ async function() {
       )
       .value;
 
+
   const description =
     document
       .getElementById(
@@ -1364,6 +1260,7 @@ async function() {
       )
       .value
       .trim();
+
 
   if (!title) {
 
@@ -1374,6 +1271,7 @@ async function() {
     return;
 
   }
+
 
   try {
 
@@ -1414,33 +1312,41 @@ async function() {
       }
     );
 
+
     document.getElementById(
       "offerTitle"
     ).value = "";
+
 
     document.getElementById(
       "offerDiscount"
     ).value = "";
 
+
     document.getElementById(
       "offerImage"
     ).value = "";
+
 
     document.getElementById(
       "offerDescription"
     ).value = "";
 
+
     message(
       "تم إضافة العرض 🎁"
     );
 
+
     await loadOffers();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "حدث خطأ أثناء إضافة العرض ❌"
@@ -1459,15 +1365,20 @@ async function loadOffers() {
 
   if (!db) return;
 
+
   const list =
     document.getElementById(
       "offersList"
     );
 
-  if (!list) return;
 
-  list.innerHTML =
-    "جاري تحميل العروض...";
+  if (list) {
+
+    list.innerHTML =
+      "جاري تحميل العروض...";
+
+  }
+
 
   try {
 
@@ -1478,6 +1389,10 @@ async function loadOffers() {
           "offers"
         )
       );
+
+
+    if (!list) return;
+
 
     if (snapshot.empty) {
 
@@ -1495,6 +1410,7 @@ async function loadOffers() {
 
     }
 
+
     list.innerHTML =
       snapshot.docs
         .map(
@@ -1503,12 +1419,14 @@ async function loadOffers() {
             const offer =
               item.data();
 
+
             const restaurant =
               restaurants.find(
                 restaurant =>
                   restaurant.id ===
                   offer.restaurantId
               );
+
 
             return `
 
@@ -1527,6 +1445,7 @@ async function loadOffers() {
                   <small>
 
                     خصم:
+
                     ${escapeHTML(
                       offer.discount || "-"
                     )}
@@ -1545,11 +1464,12 @@ async function loadOffers() {
                       offer.start ||
                       offer.end
                       ? `
-                        <br>
-                        ${escapeHTML(
+                        • ${escapeHTML(
                           offer.start || "-"
                         )}
+
                         إلى
+
                         ${escapeHTML(
                           offer.end || "-"
                         )}
@@ -1560,6 +1480,7 @@ async function loadOffers() {
                   </small>
 
                 </div>
+
 
                 <div class="item-actions">
 
@@ -1579,6 +1500,7 @@ async function loadOffers() {
                     : ""
                   }
 
+
                   <button
                     class="danger"
                     onclick="deleteOffer('${item.id}')">
@@ -1597,14 +1519,20 @@ async function loadOffers() {
         )
         .join("");
 
+
   } catch (error) {
 
     console.error(
       error
     );
 
-    list.innerHTML =
-      "حدث خطأ أثناء تحميل العروض ❌";
+
+    if (list) {
+
+      list.innerHTML =
+        "حدث خطأ أثناء تحميل العروض ❌";
+
+    }
 
   }
 
@@ -1620,13 +1548,17 @@ async function(id) {
 
   if (!db) return;
 
-  if (!confirm(
-    "هل تريد حذف العرض؟"
-  )) {
+
+  if (
+    !confirm(
+      "هل تريد حذف العرض؟"
+    )
+  ) {
 
     return;
 
   }
+
 
   try {
 
@@ -1638,17 +1570,21 @@ async function(id) {
       )
     );
 
+
     message(
       "تم حذف العرض ✅"
     );
 
+
     await loadOffers();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر حذف العرض ❌"
@@ -1676,6 +1612,7 @@ async function() {
 
   }
 
+
   const name =
     document
       .getElementById(
@@ -1683,6 +1620,7 @@ async function() {
       )
       .value
       .trim();
+
 
   const phone =
     document
@@ -1692,12 +1630,14 @@ async function() {
       .value
       .trim();
 
+
   const status =
     document
       .getElementById(
         "driverStatus"
       )
       .value;
+
 
   if (!name || !phone) {
 
@@ -1708,6 +1648,7 @@ async function() {
     return;
 
   }
+
 
   try {
 
@@ -1736,25 +1677,31 @@ async function() {
       }
     );
 
+
     document.getElementById(
       "driverName"
     ).value = "";
+
 
     document.getElementById(
       "driverPhone"
     ).value = "";
 
+
     message(
       "تم إضافة الطيار 🛵"
     );
 
+
     await loadDrivers();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "حدث خطأ أثناء إضافة الطيار ❌"
@@ -1773,15 +1720,20 @@ async function loadDrivers() {
 
   if (!db) return;
 
+
   const list =
     document.getElementById(
       "driversList"
     );
 
-  if (!list) return;
 
-  list.innerHTML =
-    "جاري تحميل الطيارين...";
+  if (list) {
+
+    list.innerHTML =
+      "جاري تحميل الطيارين...";
+
+  }
+
 
   try {
 
@@ -1793,10 +1745,12 @@ async function loadDrivers() {
         )
       );
 
+
     const count =
       document.getElementById(
         "driversCount"
       );
+
 
     if (count) {
 
@@ -1804,6 +1758,10 @@ async function loadDrivers() {
         snapshot.size;
 
     }
+
+
+    if (!list) return;
+
 
     if (snapshot.empty) {
 
@@ -1821,6 +1779,7 @@ async function loadDrivers() {
 
     }
 
+
     list.innerHTML =
       snapshot.docs
         .map(
@@ -1828,6 +1787,7 @@ async function loadDrivers() {
 
             const driver =
               item.data();
+
 
             return `
 
@@ -1860,6 +1820,7 @@ async function loadDrivers() {
 
                 </div>
 
+
                 <div class="item-actions">
 
                   <button
@@ -1872,6 +1833,7 @@ async function loadDrivers() {
                     تغيير الحالة
 
                   </button>
+
 
                   <button
                     class="danger"
@@ -1891,6 +1853,7 @@ async function loadDrivers() {
         )
         .join("");
 
+
   } catch (error) {
 
     console.error(
@@ -1903,21 +1866,20 @@ async function loadDrivers() {
 
 
 /* =====================================================
-   DRIVER STATUS
+   TOGGLE DRIVER STATUS
 ===================================================== */
 
 window.toggleDriverStatus =
-async function(
-  id,
-  currentStatus
-) {
+async function(id, currentStatus) {
 
   if (!db) return;
+
 
   const newStatus =
     currentStatus === "متاح"
       ? "غير متاح"
       : "متاح";
+
 
   try {
 
@@ -1935,17 +1897,21 @@ async function(
       }
     );
 
+
     message(
       "تم تغيير حالة الطيار ✅"
     );
 
+
     await loadDrivers();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر تغيير الحالة ❌"
@@ -1965,13 +1931,17 @@ async function(id) {
 
   if (!db) return;
 
-  if (!confirm(
-    "هل تريد حذف الطيار؟"
-  )) {
+
+  if (
+    !confirm(
+      "هل تريد حذف الطيار؟"
+    )
+  ) {
 
     return;
 
   }
+
 
   try {
 
@@ -1983,17 +1953,21 @@ async function(id) {
       )
     );
 
+
     message(
       "تم حذف الطيار ✅"
     );
 
+
     await loadDrivers();
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر حذف الطيار ❌"
@@ -2012,26 +1986,31 @@ async function loadOrders() {
 
   if (!db) return;
 
+
   const table =
     document.getElementById(
       "ordersTable"
     );
 
-  if (!table) return;
 
-  table.innerHTML = `
+  if (table) {
 
-    <tr>
+    table.innerHTML = `
 
-      <td colspan="6">
+      <tr>
 
-        جاري تحميل الطلبات...
+        <td colspan="6">
 
-      </td>
+          جاري تحميل الطلبات...
 
-    </tr>
+        </td>
 
-  `;
+      </tr>
+
+    `;
+
+  }
+
 
   try {
 
@@ -2043,10 +2022,12 @@ async function loadOrders() {
         )
       );
 
+
     const count =
       document.getElementById(
         "ordersCount"
       );
+
 
     if (count) {
 
@@ -2054,6 +2035,10 @@ async function loadOrders() {
         snapshot.size;
 
     }
+
+
+    if (!table) return;
+
 
     if (snapshot.empty) {
 
@@ -2075,6 +2060,7 @@ async function loadOrders() {
 
     }
 
+
     table.innerHTML =
       snapshot.docs
         .map(
@@ -2082,6 +2068,7 @@ async function loadOrders() {
 
             const order =
               item.data();
+
 
             return `
 
@@ -2095,6 +2082,7 @@ async function loadOrders() {
 
                 </td>
 
+
                 <td>
 
                   ${escapeHTML(
@@ -2104,6 +2092,7 @@ async function loadOrders() {
                   )}
 
                 </td>
+
 
                 <td>
 
@@ -2115,12 +2104,15 @@ async function loadOrders() {
 
                 </td>
 
+
                 <td>
 
                   ${order.total || 0}
+
                   جنيه
 
                 </td>
+
 
                 <td>
 
@@ -2130,6 +2122,7 @@ async function loadOrders() {
                   )}
 
                 </td>
+
 
                 <td>
 
@@ -2152,25 +2145,31 @@ async function loadOrders() {
         )
         .join("");
 
+
   } catch (error) {
 
     console.error(
       error
     );
 
-    table.innerHTML = `
 
-      <tr>
+    if (table) {
 
-        <td colspan="6">
+      table.innerHTML = `
 
-          حدث خطأ أثناء تحميل الطلبات ❌
+        <tr>
 
-        </td>
+          <td colspan="6">
 
-      </tr>
+            حدث خطأ أثناء تحميل الطلبات ❌
 
-    `;
+          </td>
+
+        </tr>
+
+      `;
+
+    }
 
   }
 
@@ -2194,6 +2193,7 @@ async function() {
 
   }
 
+
   const siteName =
     document
       .getElementById(
@@ -2202,6 +2202,7 @@ async function() {
       .value
       .trim();
 
+
   const sitePhone =
     document
       .getElementById(
@@ -2209,6 +2210,7 @@ async function() {
       )
       .value
       .trim();
+
 
   const defaultDelivery =
     Number(
@@ -2220,6 +2222,7 @@ async function() {
         0
     );
 
+
   const ordersEnabled =
     document
       .getElementById(
@@ -2227,6 +2230,7 @@ async function() {
       )
       .value ===
       "true";
+
 
   try {
 
@@ -2255,19 +2259,22 @@ async function() {
 
       },
       {
-        merge:true
+        merge: true
       }
     );
+
 
     message(
       "تم حفظ الإعدادات ✅"
     );
+
 
   } catch (error) {
 
     console.error(
       error
     );
+
 
     message(
       "تعذر حفظ الإعدادات ❌"
@@ -2286,6 +2293,7 @@ async function loadSettings() {
 
   if (!db) return;
 
+
   try {
 
     const snapshot =
@@ -2297,32 +2305,41 @@ async function loadSettings() {
         )
       );
 
+
     if (!snapshot.exists()) {
+
       return;
+
     }
+
 
     const settings =
       snapshot.data();
+
 
     const siteName =
       document.getElementById(
         "siteName"
       );
 
+
     const sitePhone =
       document.getElementById(
         "sitePhone"
       );
+
 
     const defaultDelivery =
       document.getElementById(
         "defaultDelivery"
       );
 
+
     const ordersEnabled =
       document.getElementById(
         "ordersEnabled"
       );
+
 
     if (siteName) {
 
@@ -2332,6 +2349,7 @@ async function loadSettings() {
 
     }
 
+
     if (sitePhone) {
 
       sitePhone.value =
@@ -2340,6 +2358,7 @@ async function loadSettings() {
 
     }
 
+
     if (defaultDelivery) {
 
       defaultDelivery.value =
@@ -2347,6 +2366,7 @@ async function loadSettings() {
         25;
 
     }
+
 
     if (ordersEnabled) {
 
@@ -2375,37 +2395,32 @@ async function loadSettings() {
 window.previewImage =
 function(url) {
 
-  if (!url) {
+  if (!url) return;
 
-    message(
-      "لا توجد صورة لهذا العنصر"
-    );
-
-    return;
-
-  }
 
   window.open(
     url,
-    "_blank"
+    "_blank",
+    "noopener,noreferrer"
   );
 
 };
 
 
 /* =====================================================
-   DASHBOARD
+   DASHBOARD REFRESH
 ===================================================== */
 
 async function loadDashboard() {
 
   if (!db) return;
 
+
   try {
 
     await loadRestaurants();
 
-    await updateProductsCount();
+    await loadProducts();
 
     await loadDrivers();
 
@@ -2428,11 +2443,16 @@ async function loadDashboard() {
 
 async function startAdmin() {
 
-  if (!db) return;
+  if (!db) {
+
+    return;
+
+  }
+
 
   await loadRestaurants();
 
-  await updateProductsCount();
+  await loadProducts();
 
   await loadOffers();
 
@@ -2441,6 +2461,7 @@ async function startAdmin() {
   await loadOrders();
 
   await loadSettings();
+
 
   console.log(
     "Admin Panel Ready ✅"
