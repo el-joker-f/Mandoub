@@ -11,6 +11,21 @@
   <title>مندوب | توصيل سريع وآمن</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ================= ACCOUNT BUTTON ================= */
+
+    .login.account-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .login.account-button.logged-in {
+      color: #00dfff;
+    }
+  </style>
 </head>
 
 <body>
@@ -39,12 +54,20 @@
 
   <div class="nav-actions">
 
+    <!-- ================= ACCOUNT / LOGIN ================= -->
+
     <button
       type="button"
-      class="login"
+      class="login account-button"
+      id="accountButton"
       onclick="openLogin()">
-      تسجيل الدخول
+
+      👤 تسجيل الدخول
+
     </button>
+
+
+    <!-- ================= CART ================= -->
 
     <button
       type="button"
@@ -100,7 +123,9 @@
         <button
           type="button"
           onclick="setLocation()">
+
           تحديد موقعي
+
         </button>
 
       </div>
@@ -274,7 +299,9 @@
 </footer>
 
 
-<!-- ================= FIREBASE ================= -->
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
 
 <script type="module">
 
@@ -282,6 +309,13 @@ import {
   initializeApp
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
 
 import {
@@ -294,6 +328,8 @@ import {
 } from
 "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
+
+/* ================= FIREBASE CONFIG ================= */
 
 const firebaseConfig = {
 
@@ -321,13 +357,30 @@ const firebaseConfig = {
 };
 
 
+/* ================= INITIALIZE ================= */
+
 try {
 
   const app =
     initializeApp(firebaseConfig);
 
+
+  const auth =
+    getAuth(app);
+
+
   const db =
     getFirestore(app);
+
+
+  /* ================= GLOBAL FIREBASE ================= */
+
+  window.firebaseApp =
+    app;
+
+
+  window.firebaseAuth =
+    auth;
 
 
   window.firebaseDB =
@@ -363,6 +416,87 @@ try {
   );
 
 
+  /* =====================================================
+     AUTH STATE
+  ===================================================== */
+
+  onAuthStateChanged(
+    auth,
+    function(user) {
+
+      const button =
+        document.getElementById(
+          "accountButton"
+        );
+
+
+      if (!button) {
+        return;
+      }
+
+
+      /* ================= LOGGED IN ================= */
+
+      if (user) {
+
+        button.innerHTML =
+          "👤 حسابي";
+
+
+        button.classList.add(
+          "logged-in"
+        );
+
+
+        button.onclick =
+          function() {
+
+            window.location.href =
+              "account.html";
+
+          };
+
+
+        console.log(
+          "المستخدم مسجل دخول:",
+          user.email
+        );
+
+      }
+
+
+      /* ================= LOGGED OUT ================= */
+
+      else {
+
+        button.innerHTML =
+          "👤 تسجيل الدخول";
+
+
+        button.classList.remove(
+          "logged-in"
+        );
+
+
+        button.onclick =
+          function() {
+
+            window.location.href =
+              "login.html";
+
+          };
+
+
+        console.log(
+          "لا يوجد مستخدم مسجل دخول"
+        );
+
+      }
+
+    }
+  );
+
+
 } catch (error) {
 
   window.firebaseReady =
@@ -379,7 +513,55 @@ try {
 </script>
 
 
+<!-- =====================================================
+     MAIN SCRIPT
+===================================================== -->
+
 <script src="script.js"></script>
+
+
+<script>
+
+/* =====================================================
+   LOGIN BUTTON FALLBACK
+===================================================== */
+
+function openLogin() {
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+/* =====================================================
+   CHECK ACCOUNT BUTTON
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    const button =
+      document.getElementById(
+        "accountButton"
+      );
+
+
+    if (!button) {
+      return;
+    }
+
+
+    /*
+      Firebase سيغير الزر تلقائيًا
+      عند معرفة حالة تسجيل الدخول.
+    */
+
+  }
+);
+
+</script>
 
 </body>
 </html>
