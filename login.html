@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
@@ -111,6 +112,13 @@ body{
   color:#5df0bb;
 }
 
+.message.info{
+  display:block;
+  background:#102f45;
+  border:1px solid #21658b;
+  color:#8edfff;
+}
+
 .form-title{
   font-size:27px;
   margin-bottom:8px;
@@ -171,6 +179,46 @@ body{
   cursor:pointer;
 }
 
+.password-rules{
+  background:#031321;
+  border:1px solid #173b55;
+  border-radius:15px;
+  padding:13px;
+  margin-top:10px;
+  margin-bottom:18px;
+}
+
+.password-rules-title{
+  color:#aab9c7;
+  margin-bottom:9px;
+  font-weight:bold;
+}
+
+.rule{
+  font-size:13px;
+  margin:6px 0;
+  color:#ff8eae;
+}
+
+.rule.ok{
+  color:#5df0bb;
+}
+
+.strength{
+  height:7px;
+  background:#173b55;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.strength-bar{
+  width:0%;
+  height:100%;
+  background:#00dfff;
+  transition:.25s;
+}
+
 .primary{
   width:100%;
   height:60px;
@@ -189,6 +237,23 @@ body{
   cursor:not-allowed;
 }
 
+.secondary{
+  width:100%;
+  height:52px;
+  border:0;
+  border-radius:15px;
+  background:#12344d;
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:12px;
+}
+
+.secondary:disabled{
+  opacity:.6;
+}
+
 .back{
   display:block;
   text-align:center;
@@ -199,6 +264,22 @@ body{
 
 .hidden{
   display:none;
+}
+
+.verify-box{
+  text-align:center;
+}
+
+.verify-icon{
+  font-size:60px;
+  margin-bottom:15px;
+}
+
+.verify-email{
+  color:#00dfff;
+  direction:ltr;
+  margin:12px 0;
+  word-break:break-word;
 }
 
 @media(max-width:500px){
@@ -243,13 +324,16 @@ body{
 
   <div class="auth-box">
 
-    <!-- TABS -->
+    <!-- ================= TABS ================= -->
 
-    <div class="tabs">
+    <div
+      id="tabs"
+      class="tabs">
 
       <button
         class="tab active"
         id="registerTab"
+        type="button"
         onclick="showRegister()">
 
         إنشاء حساب
@@ -260,6 +344,7 @@ body{
       <button
         class="tab"
         id="loginTab"
+        type="button"
         onclick="showLogin()">
 
         تسجيل الدخول
@@ -269,7 +354,7 @@ body{
     </div>
 
 
-    <!-- MESSAGE -->
+    <!-- ================= MESSAGE ================= -->
 
     <div
       id="message"
@@ -332,8 +417,9 @@ body{
             id="registerPassword"
             class="password-input"
             type="password"
-            placeholder="6 أحرف على الأقل"
-            autocomplete="new-password">
+            placeholder="مثال: Mandoub2@0"
+            autocomplete="new-password"
+            oninput="checkPassword()">
 
           <button
             type="button"
@@ -343,6 +429,66 @@ body{
             👁️
 
           </button>
+
+        </div>
+
+
+        <!-- PASSWORD RULES -->
+
+        <div class="password-rules">
+
+          <div class="password-rules-title">
+            🔐 شروط كلمة المرور
+          </div>
+
+          <div
+            id="ruleLength"
+            class="rule">
+
+            ❌ 8 أحرف على الأقل
+
+          </div>
+
+          <div
+            id="ruleUpper"
+            class="rule">
+
+            ❌ حرف إنجليزي كبير A-Z
+
+          </div>
+
+          <div
+            id="ruleLower"
+            class="rule">
+
+            ❌ حرف إنجليزي صغير a-z
+
+          </div>
+
+          <div
+            id="ruleNumber"
+            class="rule">
+
+            ❌ رقم 0-9
+
+          </div>
+
+          <div
+            id="ruleSpecial"
+            class="rule">
+
+            ❌ علامة خاصة مثل @ أو & أو #
+
+          </div>
+
+          <div class="strength">
+
+            <div
+              id="strengthBar"
+              class="strength-bar">
+            </div>
+
+          </div>
 
         </div>
 
@@ -381,6 +527,7 @@ body{
       <button
         id="registerButton"
         class="primary"
+        type="button"
         onclick="registerUser()">
 
         إنشاء الحساب
@@ -452,6 +599,7 @@ body{
       <button
         id="loginButton"
         class="primary"
+        type="button"
         onclick="loginUser()">
 
         تسجيل الدخول
@@ -467,6 +615,62 @@ body{
         نسيت كلمة المرور؟
 
       </a>
+
+    </div>
+
+
+    <!-- ================= VERIFY ================= -->
+
+    <div
+      id="verifyForm"
+      class="hidden verify-box">
+
+      <div class="verify-icon">
+        📧
+      </div>
+
+      <h2 class="form-title">
+        تأكيد البريد الإلكتروني
+      </h2>
+
+      <p class="form-description">
+
+        أرسلنا رسالة تأكيد إلى:
+
+      </p>
+
+      <div
+        id="verifyEmail"
+        class="verify-email">
+      </div>
+
+      <p class="form-description">
+
+        افتح الرسالة واضغط على رابط التأكيد،
+        ثم ارجع وسجل الدخول.
+
+      </p>
+
+
+      <button
+        id="resendButton"
+        class="primary"
+        type="button"
+        onclick="resendVerification()">
+
+        📧 إعادة إرسال رسالة التحقق
+
+      </button>
+
+
+      <button
+        class="secondary"
+        type="button"
+        onclick="showLogin()">
+
+        العودة لتسجيل الدخول
+
+      </button>
 
     </div>
 
@@ -492,7 +696,8 @@ body{
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 
 
 import {
@@ -500,8 +705,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signOut
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
 
 import {
@@ -509,7 +717,8 @@ import {
   doc,
   setDoc,
   serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 
 /* ================= FIREBASE CONFIG ================= */
@@ -545,21 +754,29 @@ const firebaseConfig = {
 const app =
   initializeApp(firebaseConfig);
 
-
 const auth =
   getAuth(app);
-
 
 const db =
   getFirestore(app);
 
 
+/* ================= GLOBAL ================= */
+
+let verificationUser = null;
+
+
 /* ================= MESSAGE ================= */
 
-function showMessage(text,type="error"){
+function showMessage(
+  text,
+  type="error"
+){
 
   const box =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   box.textContent =
     text;
@@ -570,7 +787,141 @@ function showMessage(text,type="error"){
 }
 
 
-/* ================= REGISTER ================= */
+/* =====================================================
+   PASSWORD CHECK
+===================================================== */
+
+window.checkPassword =
+function(){
+
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
+
+
+  const hasLength =
+    password.length >= 8;
+
+  const hasUpper =
+    /[A-Z]/.test(password);
+
+  const hasLower =
+    /[a-z]/.test(password);
+
+  const hasNumber =
+    /[0-9]/.test(password);
+
+  const hasSpecial =
+    /[^A-Za-z0-9]/.test(password);
+
+
+  setRule(
+    "ruleLength",
+    hasLength,
+    "8 أحرف على الأقل"
+  );
+
+  setRule(
+    "ruleUpper",
+    hasUpper,
+    "حرف إنجليزي كبير A-Z"
+  );
+
+  setRule(
+    "ruleLower",
+    hasLower,
+    "حرف إنجليزي صغير a-z"
+  );
+
+  setRule(
+    "ruleNumber",
+    hasNumber,
+    "رقم 0-9"
+  );
+
+  setRule(
+    "ruleSpecial",
+    hasSpecial,
+    "علامة خاصة مثل @ أو & أو #"
+  );
+
+
+  let score = 0;
+
+  if(hasLength) score++;
+  if(hasUpper) score++;
+  if(hasLower) score++;
+  if(hasNumber) score++;
+  if(hasSpecial) score++;
+
+
+  const bar =
+    document.getElementById(
+      "strengthBar"
+    );
+
+
+  bar.style.width =
+    (score * 20) + "%";
+
+};
+
+
+function setRule(
+  id,
+  valid,
+  text
+){
+
+  const element =
+    document.getElementById(id);
+
+
+  element.textContent =
+    (valid ? "✅ " : "❌ ") +
+    text;
+
+
+  if(valid){
+
+    element.classList.add(
+      "ok"
+    );
+
+  }else{
+
+    element.classList.remove(
+      "ok"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   PASSWORD VALIDATION
+===================================================== */
+
+function isStrongPassword(
+  password
+){
+
+  return (
+    password.length >= 8 &&
+    /[A-Z]/.test(password) &&
+    /[a-z]/.test(password) &&
+    /[0-9]/.test(password) &&
+    /[^A-Za-z0-9]/.test(password)
+  );
+
+}
+
+
+/* =====================================================
+   REGISTER
+===================================================== */
 
 window.registerUser =
 async function(){
@@ -605,7 +956,7 @@ async function(){
     );
 
 
-  /* VALIDATION */
+  /* ================= VALIDATION ================= */
 
   if(!name){
 
@@ -629,11 +980,13 @@ async function(){
   }
 
 
-  if(password.length < 6){
+  if(!isStrongPassword(password)){
 
     showMessage(
-      "❌ كلمة المرور يجب أن تكون 6 أحرف على الأقل"
+      "❌ كلمة المرور لا تستوفي شروط الأمان"
     );
+
+    checkPassword();
 
     return;
 
@@ -660,7 +1013,7 @@ async function(){
 
   try{
 
-    /* CREATE FIREBASE ACCOUNT */
+    /* ================= CREATE USER ================= */
 
     const result =
       await createUserWithEmailAndPassword(
@@ -674,7 +1027,7 @@ async function(){
       result.user;
 
 
-    /* SAVE NAME */
+    /* ================= SAVE NAME ================= */
 
     await updateProfile(
       user,
@@ -684,7 +1037,14 @@ async function(){
     );
 
 
-    /* SAVE CUSTOMER DATA */
+    /* ================= SEND VERIFICATION ================= */
+
+    await sendEmailVerification(
+      user
+    );
+
+
+    /* ================= FIRESTORE ================= */
 
     try{
 
@@ -696,11 +1056,17 @@ async function(){
         ),
         {
 
-          uid:user.uid,
+          uid:
+            user.uid,
 
-          name:name,
+          name:
+            name,
 
-          email:email,
+          email:
+            email,
+
+          emailVerified:
+            false,
 
           createdAt:
             serverTimestamp()
@@ -710,26 +1076,56 @@ async function(){
 
     }catch(error){
 
-      console.log(
-        "Customer profile save error:",
+      console.error(
+        "CUSTOMER SAVE ERROR:",
         error
       );
 
     }
 
 
-    showMessage(
-      "✅ تم إنشاء الحساب بنجاح، جاري الدخول...",
-      "success"
+    verificationUser =
+      user;
+
+
+    document.getElementById(
+      "registerForm"
+    ).classList.add(
+      "hidden"
     );
 
 
-    setTimeout(()=>{
+    document.getElementById(
+      "loginForm"
+    ).classList.add(
+      "hidden"
+    );
 
-      window.location.href =
-        "index.html";
 
-    },1200);
+    document.getElementById(
+      "tabs"
+    ).classList.add(
+      "hidden"
+    );
+
+
+    document.getElementById(
+      "verifyForm"
+    ).classList.remove(
+      "hidden"
+    );
+
+
+    document.getElementById(
+      "verifyEmail"
+    ).textContent =
+      email;
+
+
+    showMessage(
+      "✅ تم إنشاء الحساب وإرسال رسالة التحقق إلى بريدك",
+      "success"
+    );
 
 
   }catch(error){
@@ -744,19 +1140,89 @@ async function(){
       firebaseError(error)
     );
 
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "إنشاء الحساب";
-
   }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "إنشاء الحساب";
 
 };
 
 
-/* ================= LOGIN ================= */
+/* =====================================================
+   RESEND VERIFICATION
+===================================================== */
+
+window.resendVerification =
+async function(){
+
+  if(!verificationUser){
+
+    showMessage(
+      "❌ لا يوجد حساب يحتاج إلى التحقق"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "resendButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ جاري الإرسال...";
+
+
+  try{
+
+    await sendEmailVerification(
+      verificationUser
+    );
+
+
+    showMessage(
+      "✅ تم إرسال رسالة التحقق مرة أخرى",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "RESEND ERROR:",
+      error
+    );
+
+
+    showMessage(
+      firebaseError(error)
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "📧 إعادة إرسال رسالة التحقق";
+
+};
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
 
 window.loginUser =
 async function(){
@@ -810,12 +1276,82 @@ async function(){
 
   try{
 
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const result =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
+
+    const user =
+      result.user;
+
+
+    /* ================= REFRESH USER ================= */
+
+    await user.reload();
+
+
+    const currentUser =
+      auth.currentUser;
+
+
+    /* ================= CHECK EMAIL ================= */
+
+    if(
+      !currentUser.emailVerified
+    ){
+
+      verificationUser =
+        currentUser;
+
+
+      document.getElementById(
+        "loginForm"
+      ).classList.add(
+        "hidden"
+      );
+
+
+      document.getElementById(
+        "tabs"
+      ).classList.add(
+        "hidden"
+      );
+
+
+      document.getElementById(
+        "verifyForm"
+      ).classList.remove(
+        "hidden"
+      );
+
+
+      document.getElementById(
+        "verifyEmail"
+      ).textContent =
+        currentUser.email;
+
+
+      showMessage(
+        "⚠️ لازم تؤكد بريدك الإلكتروني أولاً",
+        "info"
+      );
+
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "تسجيل الدخول";
+
+      return;
+
+    }
+
+
+    /* ================= SUCCESS ================= */
 
     showMessage(
       "✅ تم تسجيل الدخول بنجاح",
@@ -823,12 +1359,15 @@ async function(){
     );
 
 
-    setTimeout(()=>{
+    setTimeout(
+      function(){
 
-      window.location.href =
-        "index.html";
+        window.location.href =
+          "index.html";
 
-    },800);
+      },
+      800
+    );
 
 
   }catch(error){
@@ -855,7 +1394,9 @@ async function(){
 };
 
 
-/* ================= FORGOT PASSWORD ================= */
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
 
 window.forgotPassword =
 async function(){
@@ -894,6 +1435,7 @@ async function(){
   }catch(error){
 
     console.error(
+      "RESET ERROR:",
       error
     );
 
@@ -907,9 +1449,187 @@ async function(){
 };
 
 
-/* ================= FIREBASE ERRORS ================= */
+/* =====================================================
+   TABS
+===================================================== */
 
-function firebaseError(error){
+window.showRegister =
+function(){
+
+  document
+    .getElementById(
+      "registerForm"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "loginForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "verifyForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "tabs"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "registerTab"
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "loginTab"
+    )
+    .classList.remove(
+      "active"
+    );
+
+
+  document.getElementById(
+    "message"
+  ).className =
+    "message";
+
+};
+
+
+window.showLogin =
+function(){
+
+  document
+    .getElementById(
+      "registerForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "loginForm"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "verifyForm"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "tabs"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "registerTab"
+    )
+    .classList.remove(
+      "active"
+    );
+
+
+  document
+    .getElementById(
+      "loginTab"
+    )
+    .classList.add(
+      "active"
+    );
+
+
+  document.getElementById(
+    "message"
+  ).className =
+    "message";
+
+};
+
+
+/* =====================================================
+   PASSWORD VISIBILITY
+===================================================== */
+
+window.togglePassword =
+function(
+  id,
+  button
+){
+
+  const input =
+    document.getElementById(
+      id
+    );
+
+
+  if(
+    input.type ===
+    "password"
+  ){
+
+    input.type =
+      "text";
+
+    button.textContent =
+      "🙈";
+
+  }else{
+
+    input.type =
+      "password";
+
+    button.textContent =
+      "👁️";
+
+  }
+
+};
+
+
+/* =====================================================
+   FIREBASE ERRORS
+===================================================== */
+
+function firebaseError(
+  error
+){
 
   const code =
     error?.code || "";
@@ -924,7 +1644,7 @@ function firebaseError(error){
       return "❌ البريد الإلكتروني غير صحيح";
 
     case "auth/weak-password":
-      return "❌ كلمة المرور ضعيفة، استخدم 6 أحرف أو أكثر";
+      return "❌ كلمة المرور ضعيفة";
 
     case "auth/invalid-credential":
       return "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
@@ -944,99 +1664,11 @@ function firebaseError(error){
     case "auth/operation-not-allowed":
       return "❌ تسجيل الدخول بالبريد الإلكتروني غير مفعّل في Firebase";
 
+    case "auth/email-already-exists":
+      return "❌ البريد الإلكتروني مستخدم بالفعل";
+
     default:
-      return "❌ حدث خطأ: " + (error?.message || "حاول مرة أخرى");
-
-  }
-
-}
-
-</script>
-
-
-<script>
-
-/* ================= TABS ================= */
-
-function showRegister(){
-
-  document
-    .getElementById("registerForm")
-    .classList.remove("hidden");
-
-
-  document
-    .getElementById("loginForm")
-    .classList.add("hidden");
-
-
-  document
-    .getElementById("registerTab")
-    .classList.add("active");
-
-
-  document
-    .getElementById("loginTab")
-    .classList.remove("active");
-
-
-  document
-    .getElementById("message")
-    .className="message";
-
-}
-
-
-function showLogin(){
-
-  document
-    .getElementById("registerForm")
-    .classList.add("hidden");
-
-
-  document
-    .getElementById("loginForm")
-    .classList.remove("hidden");
-
-
-  document
-    .getElementById("registerTab")
-    .classList.remove("active");
-
-
-  document
-    .getElementById("loginTab")
-    .classList.add("active");
-
-
-  document
-    .getElementById("message")
-    .className="message";
-
-}
-
-
-function togglePassword(id,button){
-
-  const input =
-    document.getElementById(id);
-
-
-  if(input.type === "password"){
-
-    input.type =
-      "text";
-
-    button.textContent =
-      "🙈";
-
-  }else{
-
-    input.type =
-      "password";
-
-    button.textContent =
-      "👁️";
+      return "❌ حدث خطأ، حاول مرة أخرى";
 
   }
 
