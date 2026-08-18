@@ -3,1634 +3,1867 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-  <title>مندوب | لوحة التحكم</title>
+<title>مندوب | لوحة التحكم</title>
 
-  <style>
+<style>
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    body{
-      font-family:Arial,Tahoma,sans-serif;
-      background:#020b16;
-      color:#fff;
-      min-height:100vh;
-    }
+body{
+  font-family:Arial,Tahoma,sans-serif;
+  background:#020b16;
+  color:#fff;
+  min-height:100vh;
+}
 
-    button,
-    input,
-    select,
-    textarea{
-      font-family:inherit;
-    }
+button,
+input,
+select,
+textarea{
+  font-family:inherit;
+}
 
-    button{
-      cursor:pointer;
-      border:0;
-      -webkit-tap-highlight-color:transparent;
-    }
+button{
+  cursor:pointer;
+  border:0;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    .app{
-      display:flex;
-      min-height:100vh;
-    }
+/* ================= HEADER ================= */
 
+.topbar{
 
-    /* ================= SIDEBAR ================= */
+  height:70px;
 
-    .sidebar{
-      width:250px;
+  background:#061827;
 
-      background:#061827;
+  border-bottom:1px solid #17344e;
 
-      border-left:1px solid #17344e;
+  display:flex;
 
-      padding:20px 15px;
+  align-items:center;
 
-      position:fixed;
+  justify-content:space-between;
 
-      right:0;
-      top:0;
-      bottom:0;
+  padding:0 20px;
 
-      z-index:1000;
-    }
+  position:fixed;
 
+  top:0;
+  right:0;
+  left:0;
 
-    .logo{
-      text-align:center;
+  z-index:2000;
+}
 
-      padding-bottom:20px;
+.topbar-right{
 
-      border-bottom:1px solid #17344e;
+  display:flex;
 
-      margin-bottom:20px;
-    }
+  align-items:center;
 
+  gap:14px;
+}
 
-    .logo img{
-      width:70px;
-      height:70px;
+.menu-btn{
 
-      object-fit:contain;
+  width:45px;
+  height:45px;
 
-      margin:auto;
-    }
+  border-radius:12px;
 
+  background:#0a3049;
 
-    .logo h2{
-      margin-top:8px;
+  color:#00dfff;
 
-      color:#00dfff;
+  font-size:25px;
 
-      font-size:20px;
-    }
+  display:flex;
 
+  align-items:center;
 
-    .menu{
-      display:flex;
+  justify-content:center;
+}
 
-      flex-direction:column;
+.menu-btn:hover{
+  background:#104362;
+}
 
-      gap:7px;
-    }
+.logo-title{
 
+  font-size:21px;
 
-    .menu button{
-      width:100%;
+  color:#00dfff;
 
-      padding:14px;
+  font-weight:bold;
+}
 
-      border-radius:12px;
+.status{
 
-      background:transparent;
+  padding:8px 13px;
 
-      color:#b7c7d5;
+  border-radius:20px;
 
-      text-align:right;
+  background:#082f26;
 
-      font-size:14px;
-    }
+  color:#35e6a1;
 
+  font-size:12px;
+}
 
-    .menu button:hover,
-    .menu button.active{
-      background:#0a3049;
+/* ================= SIDE MENU ================= */
 
-      color:#00dfff;
-    }
+.sidebar{
 
+  position:fixed;
 
-    /* ================= MAIN ================= */
+  top:0;
+  right:-280px;
 
-    .main{
-      width:calc(100% - 250px);
+  width:270px;
 
-      margin-right:250px;
+  height:100vh;
 
-      padding:25px;
-    }
+  background:#061827;
 
+  border-left:1px solid #17344e;
 
-    .topbar{
-      display:flex;
+  z-index:3000;
 
-      align-items:center;
+  padding:20px 15px;
 
-      justify-content:space-between;
+  transition:.3s ease;
 
-      gap:15px;
+  overflow-y:auto;
+}
 
-      margin-bottom:25px;
-    }
+.sidebar.open{
+  right:0;
+}
 
+.logo{
 
-    .topbar h1{
-      font-size:27px;
-    }
+  text-align:center;
 
+  padding-bottom:20px;
 
-    .status{
-      padding:9px 14px;
+  border-bottom:1px solid #17344e;
 
-      border-radius:20px;
+  margin-bottom:20px;
+}
 
-      background:#082f26;
+.logo img{
 
-      color:#35e6a1;
+  width:70px;
+  height:70px;
 
-      font-size:12px;
-    }
+  object-fit:contain;
 
+  margin:auto;
 
-    /* ================= PAGES ================= */
+  display:block;
+}
 
-    .page{
-      display:none;
-    }
+.logo h2{
 
+  margin-top:8px;
 
-    .page.active{
-      display:block;
-    }
+  color:#00dfff;
 
+  font-size:20px;
+}
 
-    /* ================= STATS ================= */
+.close-menu{
 
-    .stats{
-      display:grid;
+  position:absolute;
 
-      grid-template-columns:
-        repeat(4,1fr);
+  left:15px;
+  top:15px;
 
-      gap:15px;
+  width:35px;
+  height:35px;
 
-      margin-bottom:25px;
-    }
+  border-radius:10px;
 
+  background:#102b40;
 
-    .stat{
-      background:#061a2d;
+  color:#fff;
 
-      border:1px solid #173854;
+  font-size:18px;
+}
 
-      border-radius:17px;
+.menu{
 
-      padding:20px;
-    }
+  display:flex;
 
+  flex-direction:column;
 
-    .stat span{
-      color:#899aaa;
+  gap:8px;
+}
 
-      font-size:13px;
-    }
+.menu button{
 
+  width:100%;
 
-    .stat strong{
-      display:block;
+  padding:14px;
 
-      margin-top:10px;
+  border-radius:12px;
 
-      color:#00dfff;
+  background:transparent;
 
-      font-size:28px;
-    }
+  color:#b7c7d5;
 
+  text-align:right;
 
-    /* ================= BOX ================= */
+  font-size:14px;
+}
 
-    .box{
-      background:#061a2d;
+.menu button:hover,
+.menu button.active{
 
-      border:1px solid #173854;
+  background:#0a3049;
 
-      border-radius:18px;
+  color:#00dfff;
+}
 
-      padding:20px;
+.overlay{
 
-      margin-bottom:20px;
-    }
+  position:fixed;
 
+  inset:0;
 
-    .box h2{
-      font-size:20px;
+  background:rgba(0,0,0,.55);
 
-      margin-bottom:18px;
-    }
+  z-index:2500;
 
+  display:none;
+}
 
-    /* ================= FORM ================= */
+.overlay.show{
+  display:block;
+}
 
-    .form-grid{
-      display:grid;
+/* ================= MAIN ================= */
 
-      grid-template-columns:
-        repeat(2,1fr);
+.main{
 
-      gap:12px;
-    }
+  width:100%;
 
+  padding:95px 25px 30px;
 
-    .field{
-      display:flex;
+  min-height:100vh;
+}
 
-      flex-direction:column;
+/* ================= PAGES ================= */
 
-      gap:7px;
-    }
+.page{
+  display:none;
+}
 
+.page.active{
+  display:block;
+}
 
-    .field.full{
-      grid-column:1/-1;
-    }
+/* ================= STATS ================= */
 
+.stats{
 
-    .field label{
-      color:#9dafbe;
+  display:grid;
 
-      font-size:13px;
-    }
+  grid-template-columns:
+  repeat(4,1fr);
 
+  gap:15px;
 
-    .field input,
-    .field select,
-    .field textarea{
+  margin-bottom:25px;
+}
 
-      width:100%;
+.stat{
 
-      background:#031321;
+  background:#061a2d;
 
-      color:#fff;
+  border:1px solid #173854;
 
-      border:1px solid #23425d;
+  border-radius:17px;
 
-      border-radius:11px;
+  padding:20px;
+}
 
-      padding:13px;
+.stat span{
 
-      outline:none;
+  color:#899aaa;
 
-    }
+  font-size:13px;
+}
 
+.stat strong{
 
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus{
+  display:block;
 
-      border-color:#00dfff;
+  margin-top:10px;
 
-      box-shadow:
-        0 0 0 2px
-        rgba(0,223,255,.08);
+  color:#00dfff;
 
-    }
+  font-size:28px;
+}
 
+/* ================= BOX ================= */
 
-    .field textarea{
-      min-height:90px;
+.box{
 
-      resize:vertical;
-    }
+  background:#061a2d;
 
+  border:1px solid #173854;
 
-    .primary{
+  border-radius:18px;
 
-      background:#00dfff;
+  padding:20px;
 
-      color:#00131e;
+  margin-bottom:20px;
+}
 
-      font-weight:bold;
+.box h2{
 
-      padding:13px 20px;
+  font-size:20px;
 
-      border-radius:11px;
-    }
+  margin-bottom:18px;
+}
 
+/* ================= FORM ================= */
 
-    .primary:hover{
-      opacity:.9;
-    }
+.form-grid{
 
+  display:grid;
 
-    .danger{
+  grid-template-columns:
+  repeat(2,1fr);
 
-      background:#ff2868;
+  gap:12px;
+}
 
-      color:#fff;
+.field{
 
-      padding:9px 13px;
+  display:flex;
 
-      border-radius:9px;
-    }
+  flex-direction:column;
 
+  gap:7px;
+}
 
-    .secondary{
+.field.full{
+  grid-column:1/-1;
+}
 
-      background:#12324b;
+.field label{
 
-      color:#fff;
+  color:#9dafbe;
 
-      padding:9px 13px;
+  font-size:13px;
+}
 
-      border-radius:9px;
-    }
+.field input,
+.field select,
+.field textarea{
 
+  width:100%;
 
-    /* ================= LIST ================= */
+  background:#031321;
 
-    .list{
+  color:#fff;
 
-      display:flex;
+  border:1px solid #23425d;
 
-      flex-direction:column;
+  border-radius:11px;
 
-      gap:10px;
-    }
+  padding:13px;
 
+  outline:none;
+}
 
-    .item{
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
 
-      background:#081f35;
+  border-color:#00dfff;
 
-      border:1px solid #173854;
+  box-shadow:
+  0 0 0 2px
+  rgba(0,223,255,.08);
+}
 
-      border-radius:14px;
+.field textarea{
 
-      padding:15px;
+  min-height:90px;
 
-      display:flex;
+  resize:vertical;
+}
 
-      align-items:center;
+.primary{
 
-      justify-content:space-between;
+  background:#00dfff;
 
-      gap:12px;
-    }
+  color:#00131e;
 
+  font-weight:bold;
 
-    .item-info{
-      flex:1;
+  padding:13px 20px;
 
-      min-width:0;
-    }
+  border-radius:11px;
+}
 
+.primary:hover{
+  opacity:.9;
+}
 
-    .item-info strong{
+.danger{
 
-      display:block;
+  background:#ff2868;
 
-      margin-bottom:6px;
+  color:#fff;
 
-      word-break:break-word;
-    }
+  padding:9px 13px;
 
+  border-radius:9px;
+}
 
-    .item-info small{
+.secondary{
 
-      color:#899aaa;
+  background:#12324b;
 
-      line-height:1.7;
-    }
+  color:#fff;
 
+  padding:9px 13px;
 
-    .item-actions{
+  border-radius:9px;
+}
 
-      display:flex;
+/* ================= LIST ================= */
 
-      gap:7px;
+.list{
 
-      flex-wrap:wrap;
+  display:flex;
 
-      flex-shrink:0;
-    }
+  flex-direction:column;
 
+  gap:10px;
+}
 
-    /* ================= TABLE ================= */
+.item{
 
-    .table-wrap{
-      overflow-x:auto;
-    }
+  background:#081f35;
 
+  border:1px solid #173854;
 
-    table{
+  border-radius:14px;
 
-      width:100%;
+  padding:15px;
 
-      border-collapse:collapse;
+  display:flex;
 
-      min-width:700px;
-    }
+  align-items:center;
 
+  justify-content:space-between;
 
-    th,
-    td{
+  gap:12px;
+}
 
-      padding:13px;
+.item-info{
 
-      border-bottom:1px solid #173854;
+  flex:1;
 
-      text-align:right;
+  min-width:0;
+}
 
-      font-size:13px;
-    }
+.item-info strong{
 
+  display:block;
 
-    th{
-      color:#00dfff;
-    }
+  margin-bottom:6px;
 
+  word-break:break-word;
+}
 
-    td{
-      color:#d7e0e8;
-    }
+.item-info small{
 
+  color:#899aaa;
 
-    .badge{
+  line-height:1.7;
+}
 
-      display:inline-block;
+.item-actions{
 
-      padding:5px 9px;
+  display:flex;
 
-      border-radius:20px;
+  gap:7px;
 
-      background:#12334a;
+  flex-wrap:wrap;
 
-      color:#00dfff;
+  flex-shrink:0;
+}
 
-      font-size:11px;
-    }
+/* ================= RESTAURANT PRODUCT AREA ================= */
 
+.restaurant-products{
 
-    /* ================= MESSAGE ================= */
+  margin-top:20px;
 
-    #message{
+  padding-top:20px;
 
-      position:fixed;
+  border-top:1px solid #173854;
+}
 
-      bottom:20px;
+.restaurant-products h3{
 
-      left:50%;
+  color:#00dfff;
 
-      transform:translateX(-50%);
+  margin-bottom:15px;
+}
 
-      z-index:99999;
+.selected-restaurant{
 
-      background:#00dfff;
+  background:#082b40;
 
-      color:#00131e;
+  border:1px solid #00dfff;
 
-      padding:13px 20px;
+  color:#00dfff;
 
-      border-radius:12px;
+  padding:12px;
 
-      font-weight:bold;
+  border-radius:12px;
 
-      display:none;
+  margin-bottom:15px;
 
-      max-width:90%;
+  display:none;
+}
 
-      text-align:center;
-    }
+/* ================= TABLE ================= */
 
+.table-wrap{
+  overflow-x:auto;
+}
 
-    /* ================= MOBILE ================= */
+table{
 
-    @media(max-width:800px){
+  width:100%;
 
-      .sidebar{
+  border-collapse:collapse;
 
-        width:100%;
+  min-width:700px;
+}
 
-        height:auto;
+th,
+td{
 
-        bottom:auto;
+  padding:13px;
 
-        position:fixed;
+  border-bottom:1px solid #173854;
 
-        padding:10px;
+  text-align:right;
 
-        right:0;
-      }
+  font-size:13px;
+}
 
+th{
+  color:#00dfff;
+}
 
-      .logo{
-        display:none;
-      }
+td{
+  color:#d7e0e8;
+}
 
+.badge{
 
-      .menu{
+  display:inline-block;
 
-        flex-direction:row;
+  padding:5px 9px;
 
-        overflow-x:auto;
+  border-radius:20px;
 
-        scrollbar-width:none;
-      }
+  background:#12334a;
 
+  color:#00dfff;
 
-      .menu::-webkit-scrollbar{
-        display:none;
-      }
+  font-size:11px;
+}
 
+/* ================= MESSAGE ================= */
 
-      .menu button{
+#message{
 
-        width:auto;
+  position:fixed;
 
-        min-width:max-content;
+  bottom:20px;
 
-        white-space:nowrap;
+  left:50%;
 
-        padding:10px 12px;
+  transform:translateX(-50%);
 
-        font-size:12px;
-      }
+  z-index:99999;
 
+  background:#00dfff;
 
-      .main{
+  color:#00131e;
 
-        width:100%;
+  padding:13px 20px;
 
-        margin-right:0;
+  border-radius:12px;
 
-        padding:15px;
+  font-weight:bold;
 
-        padding-top:80px;
-      }
+  display:none;
 
+  max-width:90%;
 
-      .topbar h1{
-        font-size:21px;
-      }
+  text-align:center;
+}
 
+/* ================= MOBILE ================= */
 
-      .stats{
+@media(max-width:800px){
 
-        grid-template-columns:
-          repeat(2,1fr);
-      }
+  .topbar{
+    padding:0 12px;
+  }
 
+  .logo-title{
+    font-size:18px;
+  }
 
-      .stat strong{
-        font-size:23px;
-      }
+  .status{
+    font-size:10px;
+    padding:7px 10px;
+  }
 
+  .main{
+    padding:90px 15px 25px;
+  }
 
-      .form-grid{
-        grid-template-columns:1fr;
-      }
+  .stats{
 
+    grid-template-columns:
+    repeat(2,1fr);
 
-      .field.full{
-        grid-column:auto;
-      }
+    gap:8px;
+  }
 
+  .stat{
+    padding:14px;
+  }
 
-      .item{
+  .stat strong{
+    font-size:22px;
+  }
 
-        align-items:flex-start;
+  .form-grid{
+    grid-template-columns:1fr;
+  }
 
-        flex-direction:column;
-      }
+  .field.full{
+    grid-column:auto;
+  }
 
+  .item{
 
-      .item-actions{
-        width:100%;
-      }
+    align-items:flex-start;
 
+    flex-direction:column;
+  }
 
-      .item-actions button{
-        flex:1;
-      }
+  .item-actions{
+    width:100%;
+  }
 
-    }
+  .item-actions button{
+    flex:1;
+  }
 
+}
 
-    @media(max-width:400px){
+@media(max-width:400px){
 
-      .stats{
-        gap:8px;
-      }
+  .logo-title{
+    font-size:16px;
+  }
 
+  .status{
+    display:none;
+  }
 
-      .stat{
-        padding:14px;
-      }
+  .box{
+    padding:15px;
+  }
 
+}
 
-      .stat strong{
-        font-size:20px;
-      }
-
-
-      .box{
-        padding:15px;
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
-
 
 <body>
 
 
-<div class="app">
+<!-- ================= TOPBAR ================= -->
 
+<header class="topbar">
 
-  <!-- ================= SIDEBAR ================= -->
+  <div class="topbar-right">
 
-  <aside class="sidebar">
+    <button
+      class="menu-btn"
+      onclick="toggleMenu()"
+      aria-label="فتح القائمة">
 
+      ☰
 
-    <div class="logo">
+    </button>
 
-      <img
-        src="assets/logo.png"
-        alt="مندوب">
-
-      <h2>
-        لوحة مندوب
-      </h2>
-
+    <div class="logo-title">
+      لوحة مندوب
     </div>
 
-
-    <div class="menu">
-
-
-      <button
-        class="active"
-        onclick="showPage('dashboard',this)">
-
-        📊 الرئيسية
-
-      </button>
+  </div>
 
 
-      <button
-        onclick="showPage('restaurants',this)">
+  <span
+    class="status"
+    id="firebaseStatus">
 
-        🍔 المطاعم
+    جاري الاتصال...
 
-      </button>
+  </span>
 
-
-      <button
-        onclick="showPage('products',this)">
-
-        🍟 المنتجات
-
-      </button>
+</header>
 
 
-      <button
-        onclick="showPage('offers',this)">
+<!-- ================= OVERLAY ================= -->
 
-        🎁 العروض
-
-      </button>
-
-
-      <button
-        onclick="showPage('orders',this)">
-
-        📦 الطلبات
-
-      </button>
+<div
+  id="menuOverlay"
+  class="overlay"
+  onclick="closeMenu()">
+</div>
 
 
-      <button
-        onclick="showPage('drivers',this)">
+<!-- ================= SIDE MENU ================= -->
 
-        🛵 الطيارين
-
-      </button>
-
-
-      <button
-        onclick="showPage('customers',this)">
-
-        👥 العملاء
-
-      </button>
+<aside
+  id="sidebar"
+  class="sidebar">
 
 
-      <button
-        onclick="showPage('settings',this)">
+  <button
+    class="close-menu"
+    onclick="closeMenu()">
 
-        ⚙️ الإعدادات
+    ✕
 
-      </button>
-
-
-    </div>
-
-  </aside>
+  </button>
 
 
-  <!-- ================= MAIN ================= -->
+  <div class="logo">
 
-  <main class="main">
+    <img
+      src="assets/logo.png"
+      alt="مندوب">
+
+    <h2>
+      لوحة مندوب
+    </h2>
+
+  </div>
 
 
-    <header class="topbar">
+  <div class="menu">
 
 
-      <h1 id="pageTitle">
-        لوحة التحكم
-      </h1>
+    <button
+      class="active"
+      onclick="showPage('dashboard',this)">
+
+      📊 الرئيسية
+
+    </button>
 
 
-      <span
-        class="status"
-        id="firebaseStatus">
+    <button
+      onclick="showPage('restaurants',this)">
 
-        جاري الاتصال...
+      🍔 المطاعم
 
+    </button>
+
+
+    <button
+      onclick="showPage('offers',this)">
+
+      🎁 العروض
+
+    </button>
+
+
+    <button
+      onclick="showPage('orders',this)">
+
+      📦 الطلبات
+
+    </button>
+
+
+    <button
+      onclick="showPage('drivers',this)">
+
+      🛵 الطيارين
+
+    </button>
+
+
+    <button
+      onclick="showPage('customers',this)">
+
+      👥 العملاء
+
+    </button>
+
+
+    <button
+      onclick="showPage('settings',this)">
+
+      ⚙️ الإعدادات
+
+    </button>
+
+
+  </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section
+  id="dashboard"
+  class="page active">
+
+
+  <div class="stats">
+
+
+    <div class="stat">
+
+      <span>
+        المطاعم
       </span>
 
+      <strong id="restaurantsCount">
+        0
+      </strong>
 
-    </header>
-
-
-    <!-- ================= DASHBOARD ================= -->
-
-    <section
-      id="dashboard"
-      class="page active">
+    </div>
 
 
-      <div class="stats">
+    <div class="stat">
+
+      <span>
+        المنتجات
+      </span>
+
+      <strong id="productsCount">
+        0
+      </strong>
+
+    </div>
 
 
-        <div class="stat">
+    <div class="stat">
 
-          <span>
-            المطاعم
-          </span>
+      <span>
+        الطلبات
+      </span>
 
-          <strong id="restaurantsCount">
-            0
-          </strong>
+      <strong id="ordersCount">
+        0
+      </strong>
 
-        </div>
-
-
-        <div class="stat">
-
-          <span>
-            المنتجات
-          </span>
-
-          <strong id="productsCount">
-            0
-          </strong>
-
-        </div>
+    </div>
 
 
-        <div class="stat">
+    <div class="stat">
 
-          <span>
-            الطلبات
-          </span>
+      <span>
+        الطيارين
+      </span>
 
-          <strong id="ordersCount">
-            0
-          </strong>
+      <strong id="driversCount">
+        0
+      </strong>
 
-        </div>
+    </div>
 
 
-        <div class="stat">
+  </div>
 
-          <span>
-            الطيارين
-          </span>
 
-          <strong id="driversCount">
-            0
-          </strong>
+  <div class="box">
 
-        </div>
+    <h2>
+      مرحبًا بك في لوحة التحكم 👋
+    </h2>
 
+    <p style="color:#91a4b4;line-height:2">
+
+      من هنا تقدر تدير المطاعم والمنتجات
+      والعروض والطلبات والطيارين والعملاء.
+
+      اضغط على ☰ لفتح أقسام لوحة التحكم.
+
+    </p>
+
+  </div>
+
+
+</section>
+
+
+<!-- ================= RESTAURANTS ================= -->
+
+<section
+  id="restaurants"
+  class="page">
+
+
+  <div class="box">
+
+    <h2>
+      إضافة مطعم
+    </h2>
+
+
+    <div class="form-grid">
+
+
+      <div class="field">
+
+        <label>
+          اسم المطعم
+        </label>
+
+        <input
+          id="restaurantName"
+          placeholder="مثال: مطعم النيل">
 
       </div>
 
 
-      <div class="box">
+      <div class="field">
 
-        <h2>
-          مرحبًا بك في لوحة التحكم 👋
-        </h2>
+        <label>
+          التصنيف
+        </label>
 
-
-        <p
-          style="
-            color:#91a4b4;
-            line-height:2
-          ">
-
-          من هنا تقدر تدير المطاعم
-          والمنتجات والعروض
-          والطلبات والطيارين والعملاء.
-
-        </p>
+        <input
+          id="restaurantCategory"
+          placeholder="مثال: برجر">
 
       </div>
 
 
-    </section>
+      <div class="field">
 
+        <label>
+          التقييم
+        </label>
 
-    <!-- ================= RESTAURANTS ================= -->
-
-    <section
-      id="restaurants"
-      class="page">
-
-
-      <div class="box">
-
-
-        <h2>
-          إضافة مطعم
-        </h2>
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              اسم المطعم
-            </label>
-
-            <input
-              id="restaurantName"
-              placeholder="مثال: مطعم النيل">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              التصنيف
-            </label>
-
-            <input
-              id="restaurantCategory"
-              placeholder="مثال: برجر">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              التقييم
-            </label>
-
-            <input
-              id="restaurantRating"
-              type="number"
-              step="0.1"
-              placeholder="4.5">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رسوم التوصيل
-            </label>
-
-            <input
-              id="restaurantDelivery"
-              type="number"
-              placeholder="25">
-
-          </div>
-
-
-          <div class="field full">
-
-            <label>
-              وصف المطعم
-            </label>
-
-            <textarea
-              id="restaurantDescription"
-              placeholder="وصف مختصر للمطعم"></textarea>
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رابط صورة المطعم
-            </label>
-
-            <input
-              id="restaurantImage"
-              placeholder="https://...">
-
-          </div>
-
-
-        </div>
-
-
-        <br>
-
-
-        <button
-          class="primary"
-          onclick="addRestaurant()">
-
-          + إضافة المطعم
-
-        </button>
-
+        <input
+          id="restaurantRating"
+          type="number"
+          step="0.1"
+          placeholder="4.5">
 
       </div>
 
 
-      <div class="box">
+      <div class="field">
 
+        <label>
+          رسوم التوصيل
+        </label>
 
-        <h2>
-          المطاعم الموجودة
-        </h2>
-
-
-        <div
-          id="restaurantsList"
-          class="list">
-
-          جاري التحميل...
-
-        </div>
-
+        <input
+          id="restaurantDelivery"
+          type="number"
+          placeholder="25">
 
       </div>
 
 
-    </section>
+      <div class="field full">
 
+        <label>
+          وصف المطعم
+        </label>
 
-    <!-- ================= PRODUCTS ================= -->
-
-    <section
-      id="products"
-      class="page">
-
-
-      <div class="box">
-
-
-        <h2>
-          إضافة منتج
-        </h2>
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              المطعم
-            </label>
-
-            <select id="productRestaurant">
-
-              <option value="">
-                اختر المطعم
-              </option>
-
-            </select>
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              اسم المنتج
-            </label>
-
-            <input
-              id="productName"
-              placeholder="مثال: برجر لحم">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              السعر
-            </label>
-
-            <input
-              id="productPrice"
-              type="number"
-              placeholder="100">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              الصورة
-            </label>
-
-            <input
-              id="productImage"
-              placeholder="https://...">
-
-          </div>
-
-
-          <div class="field full">
-
-            <label>
-              الوصف
-            </label>
-
-            <textarea
-              id="productDescription"
-              placeholder="وصف المنتج"></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <br>
-
-
-        <button
-          class="primary"
-          onclick="addProduct()">
-
-          + إضافة المنتج
-
-        </button>
-
+        <textarea
+          id="restaurantDescription"
+          placeholder="وصف مختصر للمطعم"></textarea>
 
       </div>
 
 
-      <div class="box">
+      <div class="field full">
 
+        <label>
+          رابط صورة المطعم
+        </label>
 
-        <h2>
-          المنتجات
-        </h2>
-
-
-        <div
-          id="productsList"
-          class="list">
-
-          جاري التحميل...
-
-        </div>
-
+        <input
+          id="restaurantImage"
+          placeholder="https://...">
 
       </div>
 
 
-    </section>
+    </div>
 
 
-    <!-- ================= OFFERS ================= -->
-
-    <section
-      id="offers"
-      class="page">
+    <br>
 
 
-      <div class="box">
+    <button
+      class="primary"
+      onclick="addRestaurant()">
+
+      + إضافة المطعم
+
+    </button>
+
+  </div>
 
 
-        <h2>
-          إضافة عرض
-        </h2>
+  <!-- ================= RESTAURANTS LIST ================= -->
+
+  <div class="box">
+
+    <h2>
+      المطاعم الموجودة
+    </h2>
 
 
-        <div class="form-grid">
+    <p
+      style="
+        color:#899aaa;
+        margin-bottom:15px;
+        line-height:1.8
+      ">
+
+      بعد إضافة المطعم، اضغط على
+      «إضافة منتجات» لإضافة منتجات خاصة بهذا المطعم.
+
+    </p>
 
 
-          <div class="field">
+    <div
+      id="restaurantsList"
+      class="list">
 
-            <label>
-              عنوان العرض
-            </label>
+      جاري التحميل...
 
-            <input
-              id="offerTitle"
-              placeholder="خصم 20%">
+    </div>
 
-          </div>
+  </div>
 
 
-          <div class="field">
+  <!-- ================= PRODUCTS INSIDE RESTAURANTS ================= -->
 
-            <label>
-              المطعم
-            </label>
-
-            <select id="offerRestaurant">
-
-              <option value="">
-                كل المطاعم
-              </option>
-
-            </select>
-
-          </div>
+  <div
+    class="box"
+    id="restaurantProductsBox">
 
 
-          <div class="field">
-
-            <label>
-              قيمة الخصم
-            </label>
-
-            <input
-              id="offerDiscount"
-              placeholder="20%">
-
-          </div>
+    <h2>
+      منتجات المطعم
+    </h2>
 
 
-          <div class="field">
+    <div
+      id="selectedRestaurant"
+      class="selected-restaurant">
 
-            <label>
-              رابط صورة العرض
-            </label>
+      لم يتم اختيار مطعم
 
-            <input
-              id="offerImage"
-              placeholder="https://...">
-
-          </div>
+    </div>
 
 
-          <div class="field">
-
-            <label>
-              تاريخ البداية
-            </label>
-
-            <input
-              id="offerStart"
-              type="date">
-
-          </div>
+    <div class="form-grid">
 
 
-          <div class="field">
+      <div class="field full">
 
-            <label>
-              تاريخ النهاية
-            </label>
+        <label>
+          اختر المطعم لإضافة المنتج
+        </label>
 
-            <input
-              id="offerEnd"
-              type="date">
+        <select id="productRestaurant">
 
-          </div>
+          <option value="">
+            اختر المطعم
+          </option>
 
-
-          <div class="field full">
-
-            <label>
-              وصف العرض
-            </label>
-
-            <textarea
-              id="offerDescription"></textarea>
-
-          </div>
-
-
-        </div>
-
-
-        <br>
-
-
-        <button
-          class="primary"
-          onclick="addOffer()">
-
-          + إضافة العرض
-
-        </button>
-
+        </select>
 
       </div>
 
 
-      <div class="box">
+      <div class="field">
 
+        <label>
+          اسم المنتج
+        </label>
 
-        <h2>
-          العروض
-        </h2>
-
-
-        <div
-          id="offersList"
-          class="list">
-
-          جاري التحميل...
-
-        </div>
-
+        <input
+          id="productName"
+          placeholder="مثال: برجر لحم">
 
       </div>
 
 
-    </section>
+      <div class="field">
 
+        <label>
+          السعر
+        </label>
 
-    <!-- ================= ORDERS ================= -->
-
-    <section
-      id="orders"
-      class="page">
-
-
-      <div class="box">
-
-
-        <h2>
-          الطلبات
-        </h2>
-
-
-        <div class="table-wrap">
-
-
-          <table>
-
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  رقم الطلب
-                </th>
-
-                <th>
-                  العميل
-                </th>
-
-                <th>
-                  العنوان
-                </th>
-
-                <th>
-                  الإجمالي
-                </th>
-
-                <th>
-                  الطيار
-                </th>
-
-                <th>
-                  الحالة
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody id="ordersTable">
-
-              <tr>
-
-                <td colspan="6">
-
-                  جاري تحميل الطلبات...
-
-                </td>
-
-              </tr>
-
-            </tbody>
-
-
-          </table>
-
-
-        </div>
-
+        <input
+          id="productPrice"
+          type="number"
+          placeholder="100">
 
       </div>
 
 
-    </section>
+      <div class="field full">
+
+        <label>
+          صورة المنتج
+        </label>
+
+        <input
+          id="productImage"
+          placeholder="https://...">
+
+      </div>
 
 
-    <!-- ================= DRIVERS ================= -->
+      <div class="field full">
 
-    <section
-      id="drivers"
-      class="page">
+        <label>
+          وصف المنتج
+        </label>
 
+        <textarea
+          id="productDescription"
+          placeholder="وصف المنتج"></textarea>
 
-      <div class="box">
-
-
-        <h2>
-          إضافة طيار
-        </h2>
+      </div>
 
 
-        <div class="form-grid">
+    </div>
 
 
-          <div class="field">
-
-            <label>
-              اسم الطيار
-            </label>
-
-            <input
-              id="driverName"
-              placeholder="اسم الطيار">
-
-          </div>
+    <br>
 
 
-          <div class="field">
+    <button
+      class="primary"
+      onclick="addProduct()">
 
-            <label>
-              رقم الهاتف
-            </label>
+      + إضافة المنتج
 
-            <input
-              id="driverPhone"
-              placeholder="01xxxxxxxxx">
-
-          </div>
+    </button>
 
 
-          <div class="field">
+    <div
+      class="restaurant-products">
 
-            <label>
+
+      <h3>
+        المنتجات الموجودة
+      </h3>
+
+
+      <div
+        id="productsList"
+        class="list">
+
+        اختر مطعمًا لعرض منتجاته
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+</section>
+
+
+<!-- ================= OFFERS ================= -->
+
+<section
+  id="offers"
+  class="page">
+
+
+  <div class="box">
+
+    <h2>
+      إضافة عرض
+    </h2>
+
+
+    <div class="form-grid">
+
+
+      <div class="field">
+
+        <label>
+          عنوان العرض
+        </label>
+
+        <input
+          id="offerTitle"
+          placeholder="خصم 20%">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          المطعم
+        </label>
+
+        <select id="offerRestaurant">
+
+          <option value="">
+            كل المطاعم
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          قيمة الخصم
+        </label>
+
+        <input
+          id="offerDiscount"
+          placeholder="20%">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رابط صورة العرض
+        </label>
+
+        <input
+          id="offerImage"
+          placeholder="https://...">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          تاريخ البداية
+        </label>
+
+        <input
+          id="offerStart"
+          type="date">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          تاريخ النهاية
+        </label>
+
+        <input
+          id="offerEnd"
+          type="date">
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          وصف العرض
+        </label>
+
+        <textarea
+          id="offerDescription"></textarea>
+
+      </div>
+
+
+    </div>
+
+
+    <br>
+
+
+    <button
+      class="primary"
+      onclick="addOffer()">
+
+      + إضافة العرض
+
+    </button>
+
+  </div>
+
+
+  <div class="box">
+
+    <h2>
+      العروض
+    </h2>
+
+    <div
+      id="offersList"
+      class="list">
+
+      جاري التحميل...
+
+    </div>
+
+  </div>
+
+
+</section>
+
+
+<!-- ================= ORDERS ================= -->
+
+<section
+  id="orders"
+  class="page">
+
+
+  <div class="box">
+
+    <h2>
+      الطلبات
+    </h2>
+
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              رقم الطلب
+            </th>
+
+            <th>
+              العميل
+            </th>
+
+            <th>
+              العنوان
+            </th>
+
+            <th>
+              الإجمالي
+            </th>
+
+            <th>
+              الطيار
+            </th>
+
+            <th>
               الحالة
-            </label>
+            </th>
 
-            <select id="driverStatus">
+          </tr>
 
-              <option value="متاح">
-                متاح
-              </option>
-
-              <option value="غير متاح">
-                غير متاح
-              </option>
-
-            </select>
-
-          </div>
+        </thead>
 
 
-        </div>
+        <tbody id="ordersTable">
+
+          <tr>
+
+            <td colspan="6">
+
+              جاري تحميل الطلبات...
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
 
 
-        <br>
+</section>
 
 
-        <button
-          class="primary"
-          onclick="addDriver()">
+<!-- ================= DRIVERS ================= -->
 
-          + إضافة الطيار
-
-        </button>
+<section
+  id="drivers"
+  class="page">
 
 
-      </div>
+  <div class="box">
+
+    <h2>
+      إضافة طيار
+    </h2>
 
 
-      <div class="box">
+    <div class="form-grid">
 
 
-        <h2>
-          الطيارين
-        </h2>
+      <div class="field">
 
+        <label>
+          اسم الطيار
+        </label>
 
-        <div
-          id="driversList"
-          class="list">
-
-          جاري التحميل...
-
-        </div>
-
-
-      </div>
-
-
-    </section>
-
-
-    <!-- ================= CUSTOMERS ================= -->
-
-    <section
-      id="customers"
-      class="page">
-
-
-      <div class="box">
-
-
-        <h2>
-          العملاء
-        </h2>
-
-
-        <div
-          id="customersList"
-          class="list">
-
-
-          <div style="color:#899aaa">
-
-            العملاء سيظهرون هنا عند ربط تسجيل الدخول.
-
-          </div>
-
-
-        </div>
-
+        <input
+          id="driverName"
+          placeholder="اسم الطيار">
 
       </div>
 
 
-    </section>
+      <div class="field">
 
+        <label>
+          رقم الهاتف
+        </label>
 
-    <!-- ================= SETTINGS ================= -->
-
-    <section
-      id="settings"
-      class="page">
-
-
-      <div class="box">
-
-
-        <h2>
-          إعدادات الموقع
-        </h2>
-
-
-        <div class="form-grid">
-
-
-          <div class="field">
-
-            <label>
-              اسم الموقع
-            </label>
-
-            <input
-              id="siteName"
-              value="مندوب">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رقم التواصل
-            </label>
-
-            <input
-              id="sitePhone"
-              placeholder="01xxxxxxxxx">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              رسوم التوصيل الافتراضية
-            </label>
-
-            <input
-              id="defaultDelivery"
-              type="number"
-              value="25">
-
-          </div>
-
-
-          <div class="field">
-
-            <label>
-              حالة استقبال الطلبات
-            </label>
-
-            <select id="ordersEnabled">
-
-              <option value="true">
-                استقبال الطلبات
-              </option>
-
-              <option value="false">
-                إيقاف الطلبات
-              </option>
-
-            </select>
-
-          </div>
-
-
-        </div>
-
-
-        <br>
-
-
-        <button
-          class="primary"
-          onclick="saveSettings()">
-
-          حفظ الإعدادات
-
-        </button>
-
+        <input
+          id="driverPhone"
+          placeholder="01xxxxxxxxx">
 
       </div>
 
 
-    </section>
+      <div class="field">
+
+        <label>
+          الحالة
+        </label>
+
+        <select id="driverStatus">
+
+          <option value="متاح">
+            متاح
+          </option>
+
+          <option value="غير متاح">
+            غير متاح
+          </option>
+
+        </select>
+
+      </div>
 
 
-  </main>
+    </div>
 
 
-</div>
+    <br>
+
+
+    <button
+      class="primary"
+      onclick="addDriver()">
+
+      + إضافة الطيار
+
+    </button>
+
+  </div>
+
+
+  <div class="box">
+
+    <h2>
+      الطيارين
+    </h2>
+
+
+    <div
+      id="driversList"
+      class="list">
+
+      جاري التحميل...
+
+    </div>
+
+  </div>
+
+
+</section>
+
+
+<!-- ================= CUSTOMERS ================= -->
+
+<section
+  id="customers"
+  class="page">
+
+
+  <div class="box">
+
+    <h2>
+      العملاء
+    </h2>
+
+
+    <div
+      id="customersList"
+      class="list">
+
+      <div style="color:#899aaa">
+
+        العملاء سيظهرون هنا عند ربط تسجيل الدخول.
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+</section>
+
+
+<!-- ================= SETTINGS ================= -->
+
+<section
+  id="settings"
+  class="page">
+
+
+  <div class="box">
+
+    <h2>
+      إعدادات الموقع
+    </h2>
+
+
+    <div class="form-grid">
+
+
+      <div class="field">
+
+        <label>
+          اسم الموقع
+        </label>
+
+        <input
+          id="siteName"
+          value="مندوب">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رقم التواصل
+        </label>
+
+        <input
+          id="sitePhone"
+          placeholder="01xxxxxxxxx">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          رسوم التوصيل الافتراضية
+        </label>
+
+        <input
+          id="defaultDelivery"
+          type="number"
+          value="25">
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          حالة استقبال الطلبات
+        </label>
+
+        <select id="ordersEnabled">
+
+          <option value="true">
+            استقبال الطلبات
+          </option>
+
+          <option value="false">
+            إيقاف الطلبات
+          </option>
+
+        </select>
+
+      </div>
+
+
+    </div>
+
+
+    <br>
+
+
+    <button
+      class="primary"
+      onclick="saveSettings()">
+
+      حفظ الإعدادات
+
+    </button>
+
+  </div>
+
+
+</section>
+
+
+</main>
 
 
 <div id="message"></div>
 
 
-<!-- ================= ADMIN JS ================= -->
+<script type="module">
+
+/* ================= MENU ================= */
+
+function toggleMenu(){
+
+  document
+    .getElementById("sidebar")
+    .classList.toggle("open");
+
+  document
+    .getElementById("menuOverlay")
+    .classList.toggle("show");
+
+}
+
+
+function closeMenu(){
+
+  document
+    .getElementById("sidebar")
+    .classList.remove("open");
+
+  document
+    .getElementById("menuOverlay")
+    .classList.remove("show");
+
+}
+
+
+/* ================= PAGE SYSTEM ================= */
+
+window.showPage = function(pageId,button){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page => {
+
+      page.classList.remove("active");
+
+    });
+
+
+  const page =
+    document.getElementById(pageId);
+
+  if(page){
+
+    page.classList.add("active");
+
+  }
+
+
+  document
+    .querySelectorAll(".menu button")
+    .forEach(btn => {
+
+      btn.classList.remove("active");
+
+    });
+
+
+  if(button){
+
+    button.classList.add("active");
+
+  }
+
+
+  const titles = {
+
+    dashboard:"لوحة التحكم",
+
+    restaurants:"المطاعم والمنتجات",
+
+    offers:"العروض",
+
+    orders:"الطلبات",
+
+    drivers:"الطيارين",
+
+    customers:"العملاء",
+
+    settings:"الإعدادات"
+
+  };
+
+
+  const title =
+    document.getElementById("pageTitle");
+
+  if(title){
+
+    title.textContent =
+      titles[pageId] || "لوحة التحكم";
+
+  }
+
+
+  closeMenu();
+
+};
+
+
+/* ================= RESTAURANT SELECT ================= */
+
+/*
+  لما تضغط إضافة منتجات لأي مطعم،
+  نختار المطعم تلقائيًا داخل نموذج المنتج.
+*/
+
+window.selectRestaurantForProducts =
+function(id,name){
+
+  const select =
+    document.getElementById("productRestaurant");
+
+  const selected =
+    document.getElementById("selectedRestaurant");
+
+  if(select){
+
+    select.value = id;
+
+  }
+
+  if(selected){
+
+    selected.style.display = "block";
+
+    selected.textContent =
+      "🍔 إضافة منتجات إلى: " + name;
+
+  }
+
+  document
+    .getElementById("restaurantProductsBox")
+    ?.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+};
+
+
+/* ================= PRODUCT RESTAURANT CHANGE ================= */
+
+document
+  .getElementById("productRestaurant")
+  ?.addEventListener("change",function(){
+
+    const selected =
+      document.getElementById("selectedRestaurant");
+
+    if(!selected) return;
+
+    const option =
+      this.options[this.selectedIndex];
+
+    if(this.value){
+
+      selected.style.display = "block";
+
+      selected.textContent =
+        "🍔 إضافة منتجات إلى: " +
+        option.textContent;
+
+    }else{
+
+      selected.style.display = "none";
+
+    }
+
+  });
+
+
+/* ================= EXISTING ADMIN JS ================= */
+
+</script>
+
 
 <script
   type="module"
