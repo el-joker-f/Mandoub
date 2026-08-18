@@ -1,7 +1,8 @@
 /* =====================================================
    MANDOUB - ADMIN.JS
    لوحة التحكم + Firebase Firestore
-   + موقع المطاعم
+   + تحديد موقع المطاعم
+   + منتجات مرتبطة بالمطعم
 ===================================================== */
 
 import {
@@ -53,7 +54,7 @@ const firebaseConfig = {
 
 
 /* =====================================================
-   FIREBASE
+   VARIABLES
 ===================================================== */
 
 let db = null;
@@ -63,21 +64,22 @@ let restaurants = [];
 let messageTimer = null;
 
 
+/* =====================================================
+   FIREBASE INIT
+===================================================== */
+
 try {
 
   const app =
     initializeApp(firebaseConfig);
 
-
   db =
     getFirestore(app);
-
 
   const status =
     document.getElementById(
       "firebaseStatus"
     );
-
 
   if (status) {
 
@@ -92,11 +94,9 @@ try {
 
   }
 
-
   console.log(
     "Firebase Admin Connected ✅"
   );
-
 
 } catch (error) {
 
@@ -105,12 +105,10 @@ try {
     error
   );
 
-
   const status =
     document.getElementById(
       "firebaseStatus"
     );
-
 
   if (status) {
 
@@ -139,22 +137,17 @@ function message(text) {
       "message"
     );
 
-
   if (!box) return;
-
 
   box.textContent =
     text;
 
-
   box.style.display =
     "block";
-
 
   clearTimeout(
     messageTimer
   );
-
 
   messageTimer =
     setTimeout(() => {
@@ -163,6 +156,24 @@ function message(text) {
         "none";
 
     }, 2800);
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
@@ -311,52 +322,46 @@ function(page, button) {
 
 
 /* =====================================================
-   ESCAPE HTML
+   RESTAURANT LOCATION
+   يدعم:
+   restaurantLat / restaurantLng
+   أو
+   restaurantLatitude / restaurantLongitude
 ===================================================== */
 
-function escapeHTML(value) {
+function getLocationInput(id1, id2) {
 
-  return String(
-    value ?? ""
-  )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+  const first =
+    document.getElementById(id1);
+
+  if (first) {
+
+    return first;
+
+  }
+
+
+  return document.getElementById(id2);
 
 }
 
 
 /* =====================================================
-   RESTAURANT LOCATION
+   GET RESTAURANT LOCATION FROM INPUTS
 ===================================================== */
 
-function getRestaurantLocation() {
+function readRestaurantLocation() {
 
   const latitudeInput =
-    document.getElementById(
+    getLocationInput(
+      "restaurantLat",
       "restaurantLatitude"
     );
 
 
   const longitudeInput =
-    document.getElementById(
+    getLocationInput(
+      "restaurantLng",
       "restaurantLongitude"
     );
 
@@ -447,19 +452,18 @@ function getRestaurantLocation() {
 
 
 /* =====================================================
-   OPEN RESTAURANT LOCATION
+   تحديد موقع المطعم تلقائياً من GPS
 ===================================================== */
 
-window.openRestaurantLocation =
-function(latitude, longitude) {
+window.getRestaurantLocation =
+function() {
 
   if (
-    latitude === undefined ||
-    longitude === undefined
+    !navigator.geolocation
   ) {
 
     message(
-      "موقع المطعم غير محدد"
+      "المتصفح لا يدعم تحديد الموقع ❌"
     );
 
     return;
@@ -467,9 +471,119 @@ function(latitude, longitude) {
   }
 
 
+  message(
+    "جاري تحديد موقعك... 📍"
+  );
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+      const latitude =
+        position.coords.latitude;
+
+      const longitude =
+        position.coords.longitude;
+
+
+      const latitudeInput =
+        getLocationInput(
+          "restaurantLat",
+          "restaurantLatitude"
+        );
+
+
+      const longitudeInput =
+        getLocationInput(
+          "restaurantLng",
+          "restaurantLongitude"
+        );
+
+
+      if (latitudeInput) {
+
+        latitudeInput.value =
+          latitude.toFixed(6);
+
+      }
+
+
+      if (longitudeInput) {
+
+        longitudeInput.value =
+          longitude.toFixed(6);
+
+      }
+
+
+      message(
+        "تم تحديد موقع المطعم 📍✅"
+      );
+
+    },
+
+    function(error) {
+
+      console.error(
+        "Geolocation Error:",
+        error
+      );
+
+
+      if (
+        error.code === 1
+      ) {
+
+        message(
+          "اسمح للموقع من إعدادات المتصفح أولاً ❌"
+        );
+
+      } else if (
+        error.code === 2
+      ) {
+
+        message(
+          "تعذر تحديد موقعك حاليًا ❌"
+        );
+
+      } else {
+
+        message(
+          "انتهت مهلة تحديد الموقع ❌"
+        );
+
+      }
+
+    },
+
+    {
+
+      enableHighAccuracy:
+        true,
+
+      timeout:
+        15000,
+
+      maximumAge:
+        0
+
+    }
+
+  );
+
+};
+
+
+/* =====================================================
+   OPEN RESTAURANT LOCATION
+===================================================== */
+
+window.openRestaurantLocation =
+function(latitude, longitude) {
+
   const lat =
     Number(latitude);
-
 
   const lng =
     Number(longitude);
@@ -481,7 +595,7 @@ function(latitude, longitude) {
   ) {
 
     message(
-      "بيانات الموقع غير صحيحة"
+      "بيانات الموقع غير صحيحة ❌"
     );
 
     return;
@@ -506,7 +620,7 @@ function(latitude, longitude) {
 
 
 /* =====================================================
-   CLEAR RESTAURANT
+   CLEAR RESTAURANT FORM
 ===================================================== */
 
 function clearRestaurantForm() {
@@ -525,6 +639,10 @@ function clearRestaurantForm() {
 
     "restaurantImage",
 
+    "restaurantLat",
+
+    "restaurantLng",
+
     "restaurantLatitude",
 
     "restaurantLongitude"
@@ -535,9 +653,7 @@ function clearRestaurantForm() {
   ids.forEach(id => {
 
     const input =
-      document.getElementById(
-        id
-      );
+      document.getElementById(id);
 
 
     if (input) {
@@ -634,7 +750,7 @@ async function() {
 
 
   const location =
-    getRestaurantLocation();
+    readRestaurantLocation();
 
 
   if (location === false) {
@@ -694,12 +810,11 @@ async function() {
     message(
       location
         ? "تم إضافة المطعم وموقعه ✅"
-        : "تم إضافة المطعم بدون موقع 📍"
+        : "تم إضافة المطعم بدون موقع"
     );
 
 
     await loadRestaurants();
-
 
   } catch (error) {
 
@@ -868,7 +983,12 @@ async function loadRestaurants() {
                   ${
                     hasLocation
                     ? `
-                      <small style="display:block;margin-top:6px;color:#00dfff">
+                      <small
+                        style="
+                          display:block;
+                          margin-top:6px;
+                          color:#00dfff;
+                        ">
 
                         📍
 
@@ -885,7 +1005,12 @@ async function loadRestaurants() {
                       </small>
                     `
                     : `
-                      <small style="display:block;margin-top:6px;color:#ffb84d">
+                      <small
+                        style="
+                          display:block;
+                          margin-top:6px;
+                          color:#ffb84d;
+                        ">
 
                         📍 الموقع غير محدد
 
@@ -921,8 +1046,12 @@ async function loadRestaurants() {
                       <button
                         class="secondary"
                         onclick="openRestaurantLocation(
-                          ${Number(location.latitude)},
-                          ${Number(location.longitude)}
+                          ${Number(
+                            location.latitude
+                          )},
+                          ${Number(
+                            location.longitude
+                          )}
                         )">
 
                         📍 الخريطة
@@ -1026,6 +1155,7 @@ async function(id) {
   } catch (error) {
 
     console.error(
+      "Delete Restaurant Error:",
       error
     );
 
@@ -1124,7 +1254,9 @@ function updateRestaurantSelects() {
 
 
 /* =====================================================
-   PRODUCTS
+   ADD PRODUCT
+   يتم حفظ المنتج داخل المطعم:
+   restaurants/{restaurantId}/products
 ===================================================== */
 
 window.addProduct =
@@ -1199,11 +1331,33 @@ async function() {
   }
 
 
+  const numericPrice =
+    Number(price);
+
+
+  if (
+    !Number.isFinite(
+      numericPrice
+    ) ||
+    numericPrice < 0
+  ) {
+
+    message(
+      "اكتب سعرًا صحيحًا ❌"
+    );
+
+    return;
+
+  }
+
+
   try {
 
     await addDoc(
       collection(
         db,
+        "restaurants",
+        restaurantId,
         "products"
       ),
       {
@@ -1215,13 +1369,13 @@ async function() {
           name,
 
         price:
-          Number(price),
+          numericPrice,
 
         image:
-          image,
+          image || "",
 
         description:
-          description,
+          description || "",
 
         active:
           true,
@@ -1233,37 +1387,73 @@ async function() {
     );
 
 
-    document.getElementById(
-      "productName"
-    ).value = "";
+    const productName =
+      document.getElementById(
+        "productName"
+      );
 
 
-    document.getElementById(
-      "productPrice"
-    ).value = "";
+    const productPrice =
+      document.getElementById(
+        "productPrice"
+      );
 
 
-    document.getElementById(
-      "productImage"
-    ).value = "";
+    const productImage =
+      document.getElementById(
+        "productImage"
+      );
 
 
-    document.getElementById(
-      "productDescription"
-    ).value = "";
+    const productDescription =
+      document.getElementById(
+        "productDescription"
+      );
+
+
+    if (productName) {
+
+      productName.value =
+        "";
+
+    }
+
+
+    if (productPrice) {
+
+      productPrice.value =
+        "";
+
+    }
+
+
+    if (productImage) {
+
+      productImage.value =
+        "";
+
+    }
+
+
+    if (productDescription) {
+
+      productDescription.value =
+        "";
+
+    }
 
 
     message(
-      "تم إضافة المنتج ✅"
+      "تم إضافة المنتج للمطعم ✅"
     );
 
 
     await loadProducts();
 
-
   } catch (error) {
 
     console.error(
+      "Add Product Error:",
       error
     );
 
@@ -1302,13 +1492,53 @@ async function loadProducts() {
 
   try {
 
-    const snapshot =
-      await getDocs(
-        collection(
-          db,
-          "products"
-        )
+    /*
+      نقرأ منتجات كل مطعم
+      من:
+      restaurants/{restaurantId}/products
+    */
+
+    const allProducts = [];
+
+
+    for (
+      const restaurant
+      of restaurants
+    ) {
+
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "restaurants",
+            restaurant.id,
+            "products"
+          )
+        );
+
+
+      snapshot.forEach(
+        item => {
+
+          allProducts.push({
+
+            id:
+              item.id,
+
+            restaurantId:
+              restaurant.id,
+
+            restaurantName:
+              restaurant.name,
+
+            ...item.data()
+
+          });
+
+        }
       );
+
+    }
 
 
     const count =
@@ -1320,7 +1550,7 @@ async function loadProducts() {
     if (count) {
 
       count.textContent =
-        snapshot.size;
+        allProducts.length;
 
     }
 
@@ -1328,7 +1558,9 @@ async function loadProducts() {
     if (!list) return;
 
 
-    if (snapshot.empty) {
+    if (
+      allProducts.length === 0
+    ) {
 
       list.innerHTML = `
 
@@ -1346,21 +1578,9 @@ async function loadProducts() {
 
 
     list.innerHTML =
-      snapshot.docs
+      allProducts
         .map(
-          item => {
-
-            const product =
-              item.data();
-
-
-            const restaurant =
-              restaurants.find(
-                restaurant =>
-                  restaurant.id ===
-                  product.restaurantId
-              );
-
+          product => {
 
             return `
 
@@ -1369,21 +1589,26 @@ async function loadProducts() {
                 <div class="item-info">
 
                   <strong>
+
                     ${escapeHTML(
                       product.name || ""
                     )}
+
                   </strong>
+
 
                   <small>
 
                     ${escapeHTML(
-                      restaurant?.name ||
+                      product.restaurantName ||
                       "مطعم غير معروف"
                     )}
 
                     • السعر:
 
-                    ${product.price || 0}
+                    ${Number(
+                      product.price || 0
+                    )}
 
                     جنيه
 
@@ -1413,7 +1638,10 @@ async function loadProducts() {
 
                   <button
                     class="danger"
-                    onclick="deleteProduct('${item.id}')">
+                    onclick="deleteProduct(
+                      '${product.restaurantId}',
+                      '${product.id}'
+                    )">
 
                     حذف
 
@@ -1433,6 +1661,7 @@ async function loadProducts() {
   } catch (error) {
 
     console.error(
+      "Load Products Error:",
       error
     );
 
@@ -1454,7 +1683,10 @@ async function loadProducts() {
 ===================================================== */
 
 window.deleteProduct =
-async function(id) {
+async function(
+  restaurantId,
+  productId
+) {
 
   if (!db) return;
 
@@ -1475,8 +1707,10 @@ async function(id) {
     await deleteDoc(
       doc(
         db,
+        "restaurants",
+        restaurantId,
         "products",
-        id
+        productId
       )
     );
 
@@ -1488,10 +1722,10 @@ async function(id) {
 
     await loadProducts();
 
-
   } catch (error) {
 
     console.error(
+      "Delete Product Error:",
       error
     );
 
@@ -1610,19 +1844,19 @@ async function() {
           restaurantId || null,
 
         discount:
-          discount,
+          discount || "",
 
         image:
-          image,
+          image || "",
 
         start:
-          start,
+          start || "",
 
         end:
-          end,
+          end || "",
 
         description:
-          description,
+          description || "",
 
         active:
           true,
@@ -1634,24 +1868,25 @@ async function() {
     );
 
 
-    document.getElementById(
-      "offerTitle"
-    ).value = "";
-
-
-    document.getElementById(
-      "offerDiscount"
-    ).value = "";
-
-
-    document.getElementById(
-      "offerImage"
-    ).value = "";
-
-
-    document.getElementById(
+    [
+      "offerTitle",
+      "offerDiscount",
+      "offerImage",
       "offerDescription"
-    ).value = "";
+    ]
+      .forEach(id => {
+
+        const input =
+          document.getElementById(id);
+
+        if (input) {
+
+          input.value =
+            "";
+
+        }
+
+      });
 
 
     message(
@@ -1661,10 +1896,10 @@ async function() {
 
     await loadOffers();
 
-
   } catch (error) {
 
     console.error(
+      "Add Offer Error:",
       error
     );
 
@@ -1763,6 +1998,7 @@ async function loadOffers() {
 
                   </strong>
 
+
                   <small>
 
                     خصم:
@@ -1844,6 +2080,7 @@ async function loadOffers() {
   } catch (error) {
 
     console.error(
+      "Load Offers Error:",
       error
     );
 
@@ -1899,10 +2136,10 @@ async function(id) {
 
     await loadOffers();
 
-
   } catch (error) {
 
     console.error(
+      "Delete Offer Error:",
       error
     );
 
@@ -1987,7 +2224,7 @@ async function() {
           phone,
 
         status:
-          status,
+          status || "غير متاح",
 
         active:
           true,
@@ -1999,14 +2236,32 @@ async function() {
     );
 
 
-    document.getElementById(
-      "driverName"
-    ).value = "";
+    const driverName =
+      document.getElementById(
+        "driverName"
+      );
 
 
-    document.getElementById(
-      "driverPhone"
-    ).value = "";
+    const driverPhone =
+      document.getElementById(
+        "driverPhone"
+      );
+
+
+    if (driverName) {
+
+      driverName.value =
+        "";
+
+    }
+
+
+    if (driverPhone) {
+
+      driverPhone.value =
+        "";
+
+    }
 
 
     message(
@@ -2016,10 +2271,10 @@ async function() {
 
     await loadDrivers();
 
-
   } catch (error) {
 
     console.error(
+      "Add Driver Error:",
       error
     );
 
@@ -2124,6 +2379,7 @@ async function loadDrivers() {
 
                   </strong>
 
+
                   <small>
 
                     ${escapeHTML(
@@ -2181,6 +2437,7 @@ async function loadDrivers() {
   } catch (error) {
 
     console.error(
+      "Load Drivers Error:",
       error
     );
 
@@ -2232,10 +2489,10 @@ async function(
 
     await loadDrivers();
 
-
   } catch (error) {
 
     console.error(
+      "Toggle Driver Error:",
       error
     );
 
@@ -2288,10 +2545,10 @@ async function(id) {
 
     await loadDrivers();
 
-
   } catch (error) {
 
     console.error(
+      "Delete Driver Error:",
       error
     );
 
@@ -2434,7 +2691,9 @@ async function loadOrders() {
 
                 <td>
 
-                  ${order.total || 0}
+                  ${Number(
+                    order.total || 0
+                  )}
 
                   جنيه
 
@@ -2476,6 +2735,7 @@ async function loadOrders() {
   } catch (error) {
 
     console.error(
+      "Load Orders Error:",
       error
     );
 
@@ -2586,7 +2846,8 @@ async function() {
 
       },
       {
-        merge: true
+        merge:
+          true
       }
     );
 
@@ -2595,10 +2856,10 @@ async function() {
       "تم حفظ الإعدادات ✅"
     );
 
-
   } catch (error) {
 
     console.error(
+      "Save Settings Error:",
       error
     );
 
@@ -2707,6 +2968,7 @@ async function loadSettings() {
   } catch (error) {
 
     console.error(
+      "Load Settings Error:",
       error
     );
 
@@ -2756,6 +3018,7 @@ async function loadDashboard() {
   } catch (error) {
 
     console.error(
+      "Dashboard Error:",
       error
     );
 
