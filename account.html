@@ -1,1 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0">
+
+  <title>مندوب | حسابي</title>
+
+  <style>
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:Arial,Tahoma,sans-serif;
+      background:#020d18;
+      color:#fff;
+      min-height:100vh;
+      padding:20px 15px 50px;
+    }
+
+    .container{
+      width:100%;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .top{
+      text-align:center;
+      margin:10px 0 25px;
+    }
+
+    .top img{
+      width:70px;
+      height:70px;
+      object-fit:contain;
+    }
+
+    .top h1{
+      color:#00dfff;
+      margin-top:8px;
+    }
+
+    .top p{
+      color:#91a5b5;
+      margin-top:7px;
+    }
+
+    .card{
+      background:#061a2d;
+      border:1px solid #16415e;
+      border-radius:24px;
+      padding:22px;
+      margin-bottom:18px;
+      box-shadow:0 15px 45px rgba(0,0,0,.25);
+    }
+
+    .profile{
+      text-align:center;
+    }
+
+    .avatar{
+      width:85px;
+      height:85px;
+      margin:auto;
+      border-radius:50%;
+      background:#00dfff;
+      color:#00131e;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:38px;
+      font-weight:900;
+    }
+
+    .profile h2{
+      margin-top:15px;
+      font-size:24px;
+    }
+
+    .email{
+      color:#9db0bf;
+      margin-top:7px;
+      direction:ltr;
+    }
+
+    .verified{
+      display:inline-block;
+      margin-top:13px;
+      padding:8px 13px;
+      border-radius:20px;
+      background:#073d30;
+      border:1px solid #16a879;
+      color:#5df0bb;
+      font-weight:bold;
+    }
+
+    .section-title{
+      font-size:20px;
+      margin-bottom:17px;
+      color:#00dfff;
+    }
+
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:14px 0;
+      border-bottom:1px solid #15364d;
+    }
+
+    .info-row:last-child{
+      border-bottom:0;
+    }
+
+    .info-label{
+      color:#8fa4b5;
+    }
+
+    .info-value{
+      font-weight:bold;
+      text-align:left;
+      word-break:break-word;
+    }
+
+    .field{
+      margin-bottom:15px;
+    }
+
+    .field label{
+      display:block;
+      color:#aab9c7;
+      margin-bottom:8px;
+    }
+
+    .field input{
+      width:100%;
+      height:54px;
+      border:2px solid #21445f;
+      border-radius:15px;
+      background:#031321;
+      color:#fff;
+      padding:0 15px;
+      font-size:16px;
+      outline:none;
+    }
+
+    .field input:focus{
+      border-color:#00dfff;
+    }
+
+    button{
+      border:0;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .primary{
+      width:100%;
+      height:54px;
+      border-radius:15px;
+      background:#00dfff;
+      color:#00131e;
+      font-size:17px;
+    }
+
+    .secondary{
+      width:100%;
+      height:52px;
+      border-radius:15px;
+      background:#12344d;
+      color:#fff;
+      font-size:16px;
+      margin-top:10px;
+    }
+
+    .logout{
+      width:100%;
+      height:55px;
+      border-radius:16px;
+      background:#481527;
+      border:1px solid #b92859;
+      color:#ff8eae;
+      font-size:17px;
+    }
+
+    .message{
+      display:none;
+      padding:14px;
+      border-radius:14px;
+      margin-bottom:15px;
+      text-align:center;
+      font-weight:bold;
+      line-height:1.7;
+    }
+
+    .message.success{
+      display:block;
+      background:#073d30;
+      border:1px solid #16a879;
+      color:#5df0bb;
+    }
+
+    .message.error{
+      display:block;
+      background:#481527;
+      border:1px solid #b92859;
+      color:#ff8eae;
+    }
+
+    .orders-empty{
+      text-align:center;
+      color:#91a5b5;
+      padding:20px 5px;
+      line-height:2;
+    }
+
+    .order{
+      background:#031321;
+      border:1px solid #173b55;
+      border-radius:17px;
+      padding:15px;
+      margin-bottom:12px;
+    }
+
+    .order-head{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .order-status{
+      color:#00dfff;
+      font-weight:bold;
+    }
+
+    .order-items{
+      color:#b2c0cb;
+      line-height:1.8;
+    }
+
+    .order-total{
+      margin-top:10px;
+      font-weight:bold;
+    }
+
+    .back{
+      display:block;
+      text-align:center;
+      color:#00dfff;
+      text-decoration:none;
+      margin-top:18px;
+    }
+
+    .loading{
+      text-align:center;
+      padding:40px 10px;
+      color:#9db0bf;
+    }
+
+    .hidden{
+      display:none;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="top">
+
+    <img
+      src="assets/logo.png"
+      alt="مندوب">
+
+    <h1>
+      حسابي 👤
+    </h1>
+
+    <p>
+      إدارة حسابك وطلباتك
+    </p>
+
+  </div>
+
+
+  <!-- ================= LOADING ================= -->
+
+  <div
+    id="loading"
+    class="card loading">
+
+    ⏳ جاري تحميل الحساب...
+
+  </div>
+
+
+  <!-- ================= ACCOUNT ================= -->
+
+  <div
+    id="accountContent"
+    class="hidden">
+
+    <!-- PROFILE -->
+
+    <div class="card profile">
+
+      <div
+        id="avatar"
+        class="avatar">
+
+        👤
+
+      </div>
+
+      <h2 id="userName">
+        العميل
+      </h2>
+
+      <p
+        id="userEmail"
+        class="email">
+      </p>
+
+      <span
+        id="verificationStatus"
+        class="verified">
+
+        ✅ الحساب متحقق
+
+      </span>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+      id="message"
+      class="message">
+    </div>
+
+
+    <!-- ACCOUNT INFO -->
+
+    <div class="card">
+
+      <h3 class="section-title">
+        👤 بيانات الحساب
+      </h3>
+
+      <div class="info-row">
+
+        <span class="info-label">
+          الاسم
+        </span>
+
+        <strong
+          id="infoName"
+          class="info-value">
+        </strong>
+
+      </div>
+
+      <div class="info-row">
+
+        <span class="info-label">
+          البريد
+        </span>
+
+        <strong
+          id="infoEmail"
+          class="info-value">
+        </strong>
+
+      </div>
+
+      <div class="info-row">
+
+        <span class="info-label">
+          حالة الحساب
+        </span>
+
+        <strong
+          id="infoVerified"
+          class="info-value">
+
+          متحقق ✅
+
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- EDIT NAME -->
+
+    <div class="card">
+
+      <h3 class="section-title">
+        ✏️ تعديل الاسم
+      </h3>
+
+      <div class="field">
+
+        <label>
+          الاسم الجديد
+        </label>
+
+        <input
+          id="newName"
+          type="text"
+          placeholder="اكتب اسمك">
+
+      </div>
+
+      <button
+        id="saveNameButton"
+        class="primary"
+        type="button"
+        onclick="saveName()">
+
+        حفظ الاسم
+
+      </button>
+
+    </div>
+
+
+    <!-- PASSWORD -->
+
+    <div class="card">
+
+      <h3 class="section-title">
+        🔐 كلمة المرور
+      </h3>
+
+      <p
+        style="
+          color:#91a5b5;
+          line-height:1.8;
+          margin-bottom:12px;
+        ">
+
+        سيتم إرسال رابط إلى بريدك الإلكتروني
+        لتغيير كلمة المرور بأمان.
+
+      </p>
+
+      <button
+        id="passwordButton"
+        class="secondary"
+        type="button"
+        onclick="changePassword()">
+
+        🔐 تغيير كلمة المرور
+
+      </button>
+
+    </div>
+
+
+    <!-- ORDERS -->
+
+    <div class="card">
+
+      <h3 class="section-title">
+        📦 طلباتي
+      </h3>
+
+      <div id="orders">
+
+        <div class="orders-empty">
+
+          ⏳ جاري تحميل الطلبات...
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+
+    <div class="card">
+
+      <button
+        id="logoutButton"
+        class="logout"
+        type="button"
+        onclick="logoutUser()">
+
+        🚪 تسجيل الخروج
+
+      </button>
+
+    </div>
+
+
+    <a
+      href="index.html"
+      class="back">
+
+      ← العودة للرئيسية
+
+    </a>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script type="module">
+
+import {
+  initializeApp
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  updateProfile,
+  sendPasswordResetEmail,
+  signOut
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from
+"https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+
+/* ================= CONFIG ================= */
+
+const firebaseConfig = {
+
+  apiKey:
+    "AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",
+
+  authDomain:
+    "mandoub-dv.firebaseapp.com",
+
+  projectId:
+    "mandoub-dv",
+
+  storageBucket:
+    "mandoub-dv.firebasestorage.app",
+
+  messagingSenderId:
+    "311140400335",
+
+  appId:
+    "1:311140400335:web:db198b7c53259c53594bba",
+
+  measurementId:
+    "G-7V1LJQYYXD"
+
+};
+
+
+/* ================= INIT ================= */
+
+const app =
+  initializeApp(firebaseConfig);
+
+const auth =
+  getAuth(app);
+
+const db =
+  getFirestore(app);
+
+
+/* ================= MESSAGE ================= */
+
+function showMessage(text,type="error"){
+
+  const box =
+    document.getElementById("message");
+
+  box.textContent =
+    text;
+
+  box.className =
+    "message " + type;
+
+}
+
+
+/* ================= AUTH ================= */
+
+onAuthStateChanged(
+  auth,
+  async function(user){
+
+    const loading =
+      document.getElementById("loading");
+
+    const content =
+      document.getElementById(
+        "accountContent"
+      );
+
+
+    if(!user){
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    /* ================= USER ================= */
+
+    loading.classList.add(
+      "hidden"
+    );
+
+    content.classList.remove(
+      "hidden"
+    );
+
+
+    document.getElementById(
+      "userName"
+    ).textContent =
+      user.displayName ||
+      "العميل";
+
+
+    document.getElementById(
+      "userEmail"
+    ).textContent =
+      user.email || "";
+
+
+    document.getElementById(
+      "infoName"
+    ).textContent =
+      user.displayName ||
+      "العميل";
+
+
+    document.getElementById(
+      "infoEmail"
+    ).textContent =
+      user.email || "";
+
+
+    document.getElementById(
+      "newName"
+    ).value =
+      user.displayName || "";
+
+
+    /* ================= VERIFICATION ================= */
+
+    const verificationStatus =
+      document.getElementById(
+        "verificationStatus"
+      );
+
+    const infoVerified =
+      document.getElementById(
+        "infoVerified"
+      );
+
+
+    if(user.emailVerified){
+
+      verificationStatus.textContent =
+        "✅ الحساب متحقق";
+
+      infoVerified.textContent =
+        "متحقق ✅";
+
+    }else{
+
+      verificationStatus.textContent =
+        "⚠️ البريد غير متحقق";
+
+      infoVerified.textContent =
+        "غير متحقق ⚠️";
+
+      verificationStatus.style.background =
+        "#493b08";
+
+      verificationStatus.style.borderColor =
+        "#a88b12";
+
+      verificationStatus.style.color =
+        "#ffe26b";
+
+    }
+
+
+    /* ================= AVATAR ================= */
+
+    const firstLetter =
+      (user.displayName ||
+       user.email ||
+       "م")
+      .charAt(0)
+      .toUpperCase();
+
+
+    document.getElementById(
+      "avatar"
+    ).textContent =
+      firstLetter;
+
+
+    /* ================= LOAD ORDERS ================= */
+
+    loadOrders(user);
+
+  }
+);
+
+
+/* =====================================================
+   LOAD CUSTOMER
+===================================================== */
+
+async function loadCustomer(user){
+
+  try{
+
+    const customerRef =
+      doc(
+        db,
+        "customers",
+        user.uid
+      );
+
+
+    const snapshot =
+      await getDoc(
+        customerRef
+      );
+
+
+    if(snapshot.exists()){
+
+      const data =
+        snapshot.data();
+
+
+      if(
+        data.name &&
+        !user.displayName
+      ){
+
+        document.getElementById(
+          "userName"
+        ).textContent =
+          data.name;
+
+      }
+
+    }
+
+  }catch(error){
+
+    console.log(
+      "Customer load error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   SAVE NAME
+===================================================== */
+
+window.saveName =
+async function(){
+
+  const user =
+    auth.currentUser;
+
+
+  if(!user){
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  const input =
+    document.getElementById(
+      "newName"
+    );
+
+
+  const button =
+    document.getElementById(
+      "saveNameButton"
+    );
+
+
+  const name =
+    input.value.trim();
+
+
+  if(!name){
+
+    showMessage(
+      "❌ اكتب الاسم أولاً"
+    );
+
+    return;
+
+  }
+
+
+  if(name.length < 2){
+
+    showMessage(
+      "❌ الاسم قصير جدًا"
+    );
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ جاري الحفظ...";
+
+
+  try{
+
+    await updateProfile(
+      user,
+      {
+        displayName:name
+      }
+    );
+
+
+    await setDoc(
+      doc(
+        db,
+        "customers",
+        user.uid
+      ),
+      {
+
+        uid:user.uid,
+
+        name:name,
+
+        email:user.email || null
+
+      },
+      {
+        merge:true
+      }
+    );
+
+
+    document.getElementById(
+      "userName"
+    ).textContent =
+      name;
+
+
+    document.getElementById(
+      "infoName"
+    ).textContent =
+      name;
+
+
+    document.getElementById(
+      "avatar"
+    ).textContent =
+      name.charAt(0).toUpperCase();
+
+
+    showMessage(
+      "✅ تم تحديث الاسم بنجاح",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "SAVE NAME ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "❌ تعذر تحديث الاسم"
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "حفظ الاسم";
+
+};
+
+
+/* =====================================================
+   CHANGE PASSWORD
+===================================================== */
+
+window.changePassword =
+async function(){
+
+  const user =
+    auth.currentUser;
+
+
+  if(!user || !user.email){
+
+    showMessage(
+      "❌ لا يوجد بريد إلكتروني للحساب"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "passwordButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ جاري الإرسال...";
+
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      user.email
+    );
+
+
+    showMessage(
+      "✅ تم إرسال رابط تغيير كلمة المرور إلى بريدك",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "PASSWORD ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "❌ تعذر إرسال رابط تغيير كلمة المرور"
+    );
+
+  }
+
+
+  button.disabled =
+    false;
+
+  button.textContent =
+    "🔐 تغيير كلمة المرور";
+
+};
+
+
+/* =====================================================
+   LOAD ORDERS
+===================================================== */
+
+async function loadOrders(user){
+
+  const container =
+    document.getElementById(
+      "orders"
+    );
+
+
+  try{
+
+    /*
+      البحث باستخدام uid.
+      لذلك لازم الطلبات الجديدة
+      يتم حفظ uid الخاص بالعميل.
+    */
+
+    const ordersRef =
+      collection(
+        db,
+        "orders"
+      );
+
+
+    const ordersQuery =
+      query(
+        ordersRef,
+        where(
+          "userId",
+          "==",
+          user.uid
+        )
+      );
+
+
+    const snapshot =
+      await getDocs(
+        ordersQuery
+      );
+
+
+    if(snapshot.empty){
+
+      container.innerHTML = `
+
+        <div class="orders-empty">
+
+          📦 لا توجد طلبات حتى الآن
+
+          <br>
+
+          ابدأ طلبك من المطاعم.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      "";
+
+
+    snapshot.forEach(
+      function(orderDoc){
+
+        const order =
+          orderDoc.data();
+
+
+        const items =
+          Array.isArray(
+            order.items
+          )
+          ? order.items
+          : [];
+
+
+        const itemsText =
+          items
+            .map(
+              item =>
+                `${item.name || "طلب"} × ${item.quantity || 1}`
+            )
+            .join("، ");
+
+
+        const status =
+          order.status ||
+          "جديد";
+
+
+        const total =
+          Number(
+            order.total || 0
+          );
+
+
+        const element =
+          document.createElement(
+            "div"
+          );
+
+
+        element.className =
+          "order";
+
+
+        element.innerHTML = `
+
+          <div class="order-head">
+
+            <strong>
+              📦 طلب #${escapeHTML(orderDoc.id.slice(-6))}
+            </strong>
+
+            <span class="order-status">
+              ${escapeHTML(status)}
+            </span>
+
+          </div>
+
+          <div class="order-items">
+
+            ${escapeHTML(
+              itemsText ||
+              "تفاصيل الطلب غير متاحة"
+            )}
+
+          </div>
+
+          <div class="order-total">
+
+            الإجمالي:
+            ${total} جنيه
+
+          </div>
+
+        `;
+
+
+        container.appendChild(
+          element
+        );
+
+      }
+    );
+
+
+  }catch(error){
+
+    console.error(
+      "ORDERS ERROR:",
+      error
+    );
+
+
+    container.innerHTML = `
+
+      <div class="orders-empty">
+
+        ❌ تعذر تحميل الطلبات
+
+        <br>
+
+        حاول مرة أخرى لاحقًا.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+window.logoutUser =
+async function(){
+
+  const button =
+    document.getElementById(
+      "logoutButton"
+    );
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "⏳ جاري تسجيل الخروج...";
+
+
+  try{
+
+    await signOut(
+      auth
+    );
+
+
+    window.location.href =
+      "index.html";
+
+
+  }catch(error){
+
+    console.error(
+      "LOGOUT ERROR:",
+      error
+    );
+
+
+    showMessage(
+      "❌ تعذر تسجيل الخروج"
+    );
+
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "🚪 تسجيل الخروج";
+
+  }
+
+};
+
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
+function escapeHTML(value){
+
+  return String(
+    value ?? ""
+  )
+
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+
+  .replaceAll(
+    '"',
+    "&quot;"
+  )
+
+  .replaceAll(
+    "'",
+    "&#039;"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
