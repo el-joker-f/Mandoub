@@ -1,0 +1,1 @@
+window.trackOrder=function(){const input=document.getElementById('orderNumber'),msg=document.getElementById('trackMsg'),id=input?.value.trim();if(!id){if(msg)msg.textContent='❌ اكتب رقم الطلب أولاً';return}window.location.href='track.html?order='+encodeURIComponent(id)};
