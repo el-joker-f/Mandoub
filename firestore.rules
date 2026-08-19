@@ -1,109 +1,58 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn(){return request.auth != null;}
+    function isRoot(){return signedIn() && request.auth.token.email != null && request.auth.token.email.lower() == 'fmdyh6636@gmail.com';}
+    function isAdmin(){return signedIn() && (isRoot() || (exists(/databases/$(database)/documents/roles/$(request.auth.uid)) && get(/databases/$(database)/documents/roles/$(request.auth.uid)).data.role in ['admin','superadmin']));}
+    function isSuperAdmin(){return isRoot();}
 
-    function signedIn() {
-      return request.auth != null;
-    }
-
-    function isRoot() {
-      return signedIn()
-        && request.auth.token.email != null
-        && request.auth.token.email.lower() == 'fmdyh6636@gmail.com';
-    }
-
-    function isAdmin() {
-      return signedIn()
-        && (
-          isRoot()
-          || (
-            exists(/databases/$(database)/documents/roles/$(request.auth.uid))
-            && get(/databases/$(database)/documents/roles/$(request.auth.uid)).data.role == 'admin'
-          )
-        );
-    }
-
-    function isSuperAdmin() {
-      return isRoot();
-    }
-
-    /* -----------------------------------------------------
-       Roles
-       - Users can read their own role.
-       - Only the super admin can promote/demote admins.
-       - An admin may not grant themselves or anyone else a role.
-    ----------------------------------------------------- */
     match /roles/{uid} {
-      allow get: if signedIn() && request.auth.uid == uid || isAdmin();
+      allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
       allow list: if isSuperAdmin();
-
-      allow create: if isSuperAdmin()
-        && request.resource.data.uid == uid
-        && request.resource.data.role == 'admin'
-        && request.resource.data.email.lower() != 'fmdyh6636@gmail.com';
-
+      allow create: if (isSuperAdmin() && request.resource.data.uid == uid && request.resource.data.role in ['admin','superadmin'] && request.resource.data.email.lower() != 'fmdyh6636@gmail.com')
+        || (signedIn() && request.auth.uid == uid && request.resource.data.uid == uid && request.resource.data.role == 'customer');
       allow update: if isSuperAdmin()
         && resource.data.email.lower() != 'fmdyh6636@gmail.com'
         && request.resource.data.email.lower() != 'fmdyh6636@gmail.com'
         && request.resource.data.uid == uid
-        && request.resource.data.role in ['admin', 'customer'];
-
-      allow delete: if isSuperAdmin()
-        && resource.data.email.lower() != 'fmdyh6636@gmail.com';
+        && request.resource.data.role in ['admin','customer']
+        || (signedIn() && request.auth.uid == uid && resource.data.role == 'customer' && request.resource.data.role == 'customer');
+      allow delete: if isSuperAdmin() && resource.data.email.lower() != 'fmdyh6636@gmail.com';
     }
 
-    /* -----------------------------------------------------
-       Customer profiles
-    ----------------------------------------------------- */
     match /customers/{uid} {
       allow get, create, update: if signedIn() && request.auth.uid == uid;
-      allow list, delete: if false;
+      allow list: if isAdmin();
+      allow delete: if false;
     }
 
-    /* -----------------------------------------------------
-       Restaurants / products / admin-managed content
-    ----------------------------------------------------- */
+    match /drivers/{uid} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
     match /restaurants/{restaurantId} {
       allow read: if true;
       allow write: if isAdmin();
-
       match /products/{productId} {
         allow read: if true;
         allow write: if isAdmin();
       }
     }
 
-    /* -----------------------------------------------------
-       Orders
-       Customers may create/read their own orders.
-       Admins may manage orders.
-       Existing documents must contain customerId for customer access.
-    ----------------------------------------------------- */
+    match /offers/{offerId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
     match /orders/{orderId} {
-      allow create: if signedIn()
-        && request.resource.data.customerId == request.auth.uid;
-
-      allow get: if isAdmin()
-        || (signedIn() && resource.data.customerId == request.auth.uid);
-
+      allow create: if signedIn() && request.resource.data.customerId == request.auth.uid;
+      allow get: if isAdmin() || (signedIn() && resource.data.customerId == request.auth.uid);
       allow list: if isAdmin();
-
-      allow update: if isAdmin()
-        || (
-          signedIn()
-          && resource.data.customerId == request.auth.uid
-          && request.resource.data.customerId == resource.data.customerId
-        );
-
+      allow update: if isAdmin() || (signedIn() && resource.data.customerId == request.auth.uid && request.resource.data.customerId == resource.data.customerId);
       allow delete: if isAdmin();
     }
 
-    /* -----------------------------------------------------
-       Deny every unspecified collection by default.
-    ----------------------------------------------------- */
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    match /{document=**} { allow read, write: if false; }
   }
 }
