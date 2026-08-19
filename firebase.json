@@ -1,4 +1,3 @@
-cat > firebase.json <<'EOF'
 {
   "firestore": {
     "rules": "firestore.rules"
@@ -14,4 +13,3 @@ cat > firebase.json <<'EOF'
     "cleanUrls": true
   }
 }
-EOF
