@@ -496,6 +496,7 @@
   ===================================================== -->
 
   <script type="module">
+    import { routeAfterLogin } from "./auth.js";
 
     import {
       initializeApp
@@ -697,11 +698,8 @@
         );
 
 
-        setTimeout(() => {
-
-          window.location.href =
-            "index.html";
-
+        setTimeout(async () => {
+          await routeAfterLogin(result.user);
         }, 800);
 
 
