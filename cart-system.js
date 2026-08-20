@@ -16,14 +16,51 @@
   if(document.getElementById('locationInput'))window.setLocation=window.setMandoubLocation;
   window.getMandoubCart=()=>cart;
   window.getMandoubDelivery=restaurant=>{if(!customerCoords||!Number(restaurant?.latitude)||!Number(restaurant?.longitude))return{distance:null,fee:null};const km=distance(customerCoords,{lat:Number(restaurant.latitude),lng:Number(restaurant.longitude)});return{distance:km,fee:fee(km)}};
-  window.addToCart=function(product,restaurant){if(!product||!restaurant)return;if(cart.length&&cart[0].restaurantId!==restaurant.id){alert(`⚠️ السلة تحتوي منتجات من «${cart[0].restaurantName}».\nلا يمكن خلط طلبين من مطعمين مختلفين.\nافرغ السلة أولاً ثم اختر من «${restaurant.name}».`);return}const old=cart.find(x=>x.productId===product.id);if(old)old.quantity++;else cart.push({productId:product.id,restaurantId:restaurant.id,restaurantName:restaurant.name,name:product.name,price:Number(product.price)||0,image:product.image||'',quantity:1});save();window.dispatchEvent(new CustomEvent('mandoubCartChanged'));if(document.getElementById('restaurantCart')){renderEmbedded();document.getElementById('restaurantCart').scrollIntoView({behavior:'smooth',block:'center'})}}
+  window.addToCart=function(product,restaurant){
+    if(!product||!restaurant)return;
+    if(cart.length&&cart[0].restaurantId!==restaurant.id){
+      alert(`⚠️ السلة تحتوي منتجات من «${cart[0].restaurantName}».\nلا يمكن خلط طلبين من مطعمين مختلفين.\nافرغ السلة أولاً ثم اختر من «${restaurant.name}».`);
+      return;
+    }
+    const old=cart.find(x=>x.productId===product.id);
+    if(old)old.quantity++;
+    else cart.push({productId:product.id,restaurantId:restaurant.id,restaurantName:restaurant.name,name:product.name,price:Number(product.price)||0,image:product.image||'',quantity:1});
+    save();
+    window.dispatchEvent(new CustomEvent('mandoubCartChanged'));
+    /* لا نخرج من صفحة المطعم ولا ننزل للسلة تلقائياً؛ يمكن للمستخدم اختيار منتجات أخرى. */
+  };
   window.clearMandoubCart=function(){cart=[];save();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))};
   window.changeMandoubQty=function(id,delta){const x=cart.find(i=>i.productId===id);if(!x)return;x.quantity+=delta;if(x.quantity<=0)cart=cart.filter(i=>i.productId!==id);save();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))};
   window.removeMandoubItem=function(id){cart=cart.filter(i=>i.productId!==id);save();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))};
   function embeddedCart(){return document.getElementById('restaurantCart')}
-  function renderEmbedded(){const box=embeddedCart();if(!box)return;updateCount();if(!cart.length){box.innerHTML='';return}const restaurant=window.__selectedRestaurant;const d=restaurant?window.getMandoubDelivery(restaurant):{distance:null,fee:null};const subtotal=cart.reduce((s,x)=>s+x.price*x.quantity,0);let feeText=d.fee===-1?'غير متاح لأكثر من 15 كم':d.fee==null?'حدد موقعك لمعرفة الرسوم':`${d.fee} جنيه`;let total=d.fee>0?subtotal+d.fee:subtotal;box.innerHTML=`<div class="restaurant-cart-head"><div><h3>🛒 سلة الطلب</h3><small>${esc(cart[0].restaurantName)}</small></div><button type="button" class="clear-cart-button" onclick="clearMandoubCart()">🗑️ تفريغ السلة</button></div><div>${cart.map(x=>`<div class="restaurant-cart-item"><div>${x.image?`<img src="${esc(x.image)}">`:''}<div><strong>${esc(x.name)}</strong><small>${x.price} ج × ${x.quantity}</small></div></div><div class="qty"><button class="qty-plus" onclick="changeMandoubQty('${x.productId}',1)">+</button><b>${x.quantity}</b><button class="qty-minus" onclick="changeMandoubQty('${x.productId}',-1)">−</button><button class="item-delete" onclick="removeMandoubItem('${x.productId}')">حذف</button></div></div>`).join('')}</div><div class="restaurant-cart-summary"><div>المنتجات <b>${subtotal.toLocaleString('ar-EG')} ج</b></div><div>المسافة <b>${d.distance==null?'—':d.distance.toFixed(2)+' كم'}</b></div><div>رسوم التوصيل <b>${feeText}</b></div><div class="grand">الإجمالي <b>${total.toLocaleString('ar-EG')} ج</b></div></div><button class="checkout-button" onclick="submitMandoubOrder()">إتمام الطلب</button><p id="restaurantCartMsg"></p>`}
-  window.openCart=function(){if(embeddedCart()){renderEmbedded();document.getElementById('restaurantCart').scrollIntoView({behavior:'smooth',block:'center'});return}location.href='restaurants.html#cart'};
+  function renderEmbedded(){
+    const box=embeddedCart();if(!box)return;
+    updateCount();
+    if(!cart.length){box.innerHTML='';return}
+    const restaurant=window.__selectedRestaurant;
+    const d=restaurant?window.getMandoubDelivery(restaurant):{distance:null,fee:null};
+    const subtotal=cart.reduce((s,x)=>s+x.price*x.quantity,0);
+    let feeText=d.fee===-1?'غير متاح لأكثر من 15 كم':d.fee==null?'حدد موقعك لمعرفة الرسوم':`${d.fee} جنيه`;
+    let total=d.fee>0?subtotal+d.fee:subtotal;
+    box.innerHTML=`<div class="restaurant-cart-head"><div><h3>🛒 سلة الطلب</h3><small>${esc(cart[0].restaurantName)}</small></div><button type="button" class="clear-cart-button" onclick="clearMandoubCart()">🗑️ تفريغ السلة</button></div><div>${cart.map(x=>`<div class="restaurant-cart-item"><div>${x.image?`<img src="${esc(x.image)}">`:''}<div><strong>${esc(x.name)}</strong><small>${x.price} ج × ${x.quantity}</small></div></div><div class="qty"><button class="qty-plus" onclick="changeMandoubQty('${x.productId}',1)">+</button><b>${x.quantity}</b><button class="qty-minus" onclick="changeMandoubQty('${x.productId}',-1)">−</button><button class="item-delete" onclick="removeMandoubItem('${x.productId}')">حذف</button></div></div>`).join('')}</div><div class="restaurant-cart-summary"><div>المنتجات <b>${subtotal.toLocaleString('ar-EG')} ج</b></div><div>المسافة <b>${d.distance==null?'—':d.distance.toFixed(2)+' كم'}</b></div><div>رسوم التوصيل <b>${feeText}</b></div><div class="grand">الإجمالي <b>${total.toLocaleString('ar-EG')} ج</b></div></div><button class="checkout-button" onclick="openCheckout()">إتمام الطلب</button><p id="restaurantCartMsg"></p>`;
+  }
+  window.openCart=function(){
+    if(embeddedCart()){
+      renderEmbedded();
+      const box=document.getElementById('restaurantCart');
+      box.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    if(cart.length){location.href='checkout.html';return}
+    location.href='restaurants.html';
+  };
+  window.openCheckout=function(){
+    if(!cart.length)return;
+    location.href='checkout.html';
+  };
   window.renderMandoubCart=renderEmbedded;
-  window.submitMandoubOrder=async function(){const msg=document.getElementById('restaurantCartMsg');if(!cart.length)return;const r=window.__selectedRestaurant;if(!r){if(msg)msg.textContent='اختر المطعم أولاً';return}const d=window.getMandoubDelivery(r);if(!customerCoords){if(msg)msg.textContent='📍 حدد موقعك أولاً';window.setMandoubLocation();return}if(d.fee===-1){if(msg)msg.textContent='❌ المطعم خارج نطاق التوصيل (أكثر من 15 كم)';return}const ready=await new Promise(resolve=>{if(window.firebaseReady)return resolve(true);let n=0;const t=setInterval(()=>{if(window.firebaseReady){clearInterval(t);resolve(true)}else if(++n>50){clearInterval(t);resolve(false)}},100)});if(!ready){if(msg)msg.textContent='❌ Firebase غير متصل';return}try{const subtotal=cart.reduce((s,x)=>s+x.price*x.quantity,0),total=subtotal+d.fee;const data={restaurantId:r.id,restaurantName:r.name,items:cart.map(x=>({productId:x.productId,name:x.name,price:x.price,quantity:x.quantity})),subtotal,deliveryFee:d.fee,deliveryDistanceKm:Number(d.distance.toFixed(3)),total,location:localStorage.getItem('mandoub_location')||`${customerCoords.lat}, ${customerCoords.lng}`,latitude:customerCoords.lat,longitude:customerCoords.lng,status:'جديد',createdAt:window.firebaseServerTimestamp()};const ref=await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB,'orders'),data);if(msg)msg.textContent=`✅ تم إرسال الطلب #${ref.id}`;clearMandoubCart()}catch(e){console.error(e);if(msg)msg.textContent='❌ تعذر إرسال الطلب'}};
-  window.addEventListener('mandoubCartChanged',renderEmbedded);window.addEventListener('mandoubLocationChanged',renderEmbedded);document.addEventListener('DOMContentLoaded',()=>{updateCount();renderEmbedded()});
+  window.submitMandoubOrder=window.openCheckout;
+  window.addEventListener('mandoubCartChanged',renderEmbedded);
+  window.addEventListener('mandoubLocationChanged',renderEmbedded);
+  document.addEventListener('DOMContentLoaded',()=>{updateCount();renderEmbedded()});
 })();
