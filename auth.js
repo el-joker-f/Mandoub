@@ -31,7 +31,18 @@ export async function isAdmin(user=auth.currentUser){const r=await getUserRole(u
 export async function isHighAdmin(user=auth.currentUser){const r=await getUserRole(user);return r==="highadmin"||r==="superadmin";}
 export async function isSuperAdmin(user=auth.currentUser){return (await getUserRole(user))==="superadmin";}
 export async function requireAdmin({redirect="login.html"}={}){return new Promise(resolve=>{const unsub=onAuthStateChanged(auth,async user=>{unsub();if(!user){location.replace(redirect);return resolve(false);}try{if(!(await isAdmin(user))){await signOut(auth);location.replace(redirect);return resolve(false);}resolve(true);}catch(e){console.error(e);await signOut(auth).catch(()=>{});location.replace(redirect);resolve(false);}});});}
-export async function routeAfterLogin(user){await authReady;await ensureCustomerRole(user);const r=await getUserRole(user);location.replace(["admin","highadmin","superadmin"].includes(r)?"admin.html":"index.html");}
+export async function routeAfterLogin(user){
+  await authReady;
+  await ensureCustomerRole(user);
+  const r=await getUserRole(user);
+  const params=new URLSearchParams(location.search);
+  const requested=params.get("return");
+  if(requested && /^(checkout|payment-new|payment|cart|track)(\.html)?$/.test(requested)){
+    location.replace(requested.includes(".")?requested:`${requested}.html`);
+    return;
+  }
+  location.replace(["admin","highadmin","superadmin"].includes(r)?"admin.html":"index.html");
+}
 
 export async function setAdminRole(targetEmail,role){
   if(!(await isSuperAdmin()))throw new Error("SUPER_ADMIN_REQUIRED");
@@ -55,24 +66,35 @@ export async function removeAdmin(targetUid,targetEmail){
 export async function addAdmin(targetUid,targetEmail){return addAdminByEmail(targetEmail,"admin");}
 export async function emailForPhone(phone){const p=normalizePhone(phone);if(!p)throw new Error("INVALID_PHONE");const s=await getDoc(doc(db,"phoneIndex",p));if(!s.exists())throw new Error("PHONE_NOT_FOUND");return s.data()?.email||null;}
 
-// العنتيل فقط يدير الصلاحيات. إعدادات الدفع متاحة للعنتيل وإدارة عالية فقط.
 if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.html")){
   window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(async()=>{
-      const high=await isHighAdmin();
-      const root=await isSuperAdmin();
+      const high=await isHighAdmin(),root=await isSuperAdmin();
       const paymentButton=document.getElementById("paymentSettingsButton");
       if(paymentButton&&!high)paymentButton.remove();
       if(!root)return;
-      const input=document.getElementById("adminEmail");
-      const oldButton=document.querySelector("#admins button.primary");
-      if(input&&oldButton&&!document.getElementById("adminRole")){
-        const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px;margin-top:10px";
-        select.innerHTML='<option value="admin">Admin</option><option value="highadmin">إدارة عالية</option>';
-        input.insertAdjacentElement("afterend",select);
-        oldButton.textContent="➕ حفظ الصلاحية";
-        oldButton.onclick=async()=>{try{await setAdminRole(input.value.trim(),select.value);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
+      const input=document.getElementById("adminEmail"),oldButton=document.querySelector("#admins button.primary");
+      const title=document.querySelector("#admins h2");
+      if(title)title.textContent="👑 إدارة الصلاحيات";
+      if(input&&!document.getElementById("adminRole")){
+        const label=document.createElement("label");label.textContent="الرتبة";label.style.cssText="display:block;margin-top:12px;margin-bottom:7px;color:#b9c5ce";
+        const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px";
+        select.innerHTML='<option value="admin">Admin — أدمن عادي</option><option value="highadmin">إدارة عالية — تعديل أرقام الدفع</option>';
+        input.insertAdjacentElement("afterend",label);label.insertAdjacentElement("afterend",select);
       }
-    },500);
+      if(input&&oldButton){
+        oldButton.textContent="➕ حفظ الصلاحية";
+        oldButton.onclick=async()=>{try{const role=document.getElementById("adminRole")?.value||"admin";await setAdminRole(input.value.trim(),role);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
+      }
+      const list=document.getElementById("adminsList");
+      if(list){
+        try{
+          const s=await getDocs(collection(db,"roles"));
+          const rows=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>["admin","highadmin","superadmin"].includes(x.role));
+          list.innerHTML=rows.map(x=>{const role=x.role==="superadmin"?"👑 العنتيل — Super Admin":x.role==="highadmin"?"🛡️ إدارة عالية":"👤 Admin";const remove=x.role==="superadmin"?"":"<button class=\"danger\" data-remove-admin=\""+x.id+"\">إزالة</button>";return `<div class=\"item\"><div class=\"item-info\"><strong>${role}</strong><small>${String(x.email||x.id).replace(/[&<>\"']/g,'')}</small></div>${remove}</div>`}).join('')||'لا يوجد مشرفون.';
+          list.querySelectorAll('[data-remove-admin]').forEach(b=>b.addEventListener('click',async()=>{if(!confirm('إزالة هذه الصلاحية؟'))return;try{await removeAdmin(b.dataset.removeAdmin,'');location.reload()}catch(e){alert('تعذر إزالة الصلاحية ❌')}}));
+        }catch(e){console.error(e)}
+      }
+    },700);
   });
 }
