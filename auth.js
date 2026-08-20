@@ -45,9 +45,7 @@ export async function setAdminRole(targetEmail,role){
   await setDoc(doc(db,"roles",target.uid),{uid:target.uid,email:target.email||targetEmail.trim(),role,updatedAt:serverTimestamp()},{merge:true});
   return target;
 }
-export async function addAdminByEmail(targetEmail,role="admin"){
-  return setAdminRole(targetEmail,role);
-}
+export async function addAdminByEmail(targetEmail,role="admin"){return setAdminRole(targetEmail,role);}
 export async function removeAdmin(targetUid,targetEmail){
   if(!(await isSuperAdmin()))throw new Error("SUPER_ADMIN_REQUIRED");
   if(!targetUid)throw new Error("INVALID_ADMIN");
@@ -57,33 +55,23 @@ export async function removeAdmin(targetUid,targetEmail){
 export async function addAdmin(targetUid,targetEmail){return addAdminByEmail(targetEmail,"admin");}
 export async function emailForPhone(phone){const p=normalizePhone(phone);if(!p)throw new Error("INVALID_PHONE");const s=await getDoc(doc(db,"phoneIndex",p));if(!s.exists())throw new Error("PHONE_NOT_FOUND");return s.data()?.email||null;}
 
-// لوحة الصلاحيات: العنتيل فقط يستطيع اختيار Admin أو إدارة عالية أو إزالة الصلاحية.
+// العنتيل فقط يدير الصلاحيات. إعدادات الدفع متاحة للعنتيل وإدارة عالية فقط.
 if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.html")){
   window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(async()=>{
-      if(!(await isSuperAdmin()))return;
-      const card=document.getElementById("admins");
+      const high=await isHighAdmin();
+      const root=await isSuperAdmin();
+      const paymentButton=document.getElementById("paymentSettingsButton");
+      if(paymentButton&&!high)paymentButton.remove();
+      if(!root)return;
       const input=document.getElementById("adminEmail");
       const oldButton=document.querySelector("#admins button.primary");
-      if(input&&oldButton){
+      if(input&&oldButton&&!document.getElementById("adminRole")){
         const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px;margin-top:10px";
         select.innerHTML='<option value="admin">Admin</option><option value="highadmin">إدارة عالية</option>';
         input.insertAdjacentElement("afterend",select);
         oldButton.textContent="➕ حفظ الصلاحية";
         oldButton.onclick=async()=>{try{await setAdminRole(input.value.trim(),select.value);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
-      }
-      const list=document.getElementById("adminsList");
-      if(list){
-        try{
-          const s=await getDocs(collection(db,"roles"));
-          const a=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>["admin","highadmin","superadmin"].includes(x.role));
-          list.innerHTML=a.map(x=>{
-            const isRoot=norm(x.email)===norm(SUPER_ADMIN_EMAIL)||x.role==="superadmin";
-            const label=isRoot?"👑 العنتيل":"🛡️ "+(x.role==="highadmin"?"إدارة عالية":"Admin");
-            return `<div class="item"><div class="item-info"><strong>${label} — ${String(x.email||x.id).replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[m]))}</strong><small>${isRoot?'Super Admin — محمي ولا يمكن حذفه':'الصلاحية: '+(x.role==='highadmin'?'إدارة عالية':'Admin')}</small></div>${isRoot?'':'<button class="danger" data-role-uid="'+x.id+'" data-role-email="'+String(x.email||'').replace(/"/g,'&quot;')+'">إزالة</button>'}</div>`;
-          }).join("")||"لا يوجد مشرفون.";
-          list.querySelectorAll("button[data-role-uid]").forEach(b=>b.onclick=async()=>{if(!confirm("إزالة الصلاحية؟"))return;try{await removeAdmin(b.dataset.roleUid,b.dataset.roleEmail);location.reload()}catch(e){alert("تعذر إزالة الصلاحية ❌")}});
-        }catch(e){console.error(e)}
       }
     },500);
   });
