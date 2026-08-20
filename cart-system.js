@@ -3,14 +3,33 @@
   const KEY='mandoub_cart_v2';
   let cart=load();
   let customerCoords=loadCoords();
+  let lastCartSnapshot=JSON.stringify(cart);
 
   function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return []}}
-  function save(){localStorage.setItem(KEY,JSON.stringify(cart));updateCount();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))}
+  function save(){
+    localStorage.setItem(KEY,JSON.stringify(cart));
+    lastCartSnapshot=JSON.stringify(cart);
+    updateCount();
+    window.dispatchEvent(new CustomEvent('mandoubCartChanged'));
+  }
+  function syncFromStorage(){
+    const fresh=load();
+    const snapshot=JSON.stringify(fresh);
+    if(snapshot!==lastCartSnapshot){
+      cart=fresh;
+      lastCartSnapshot=snapshot;
+      updateCount();
+      window.dispatchEvent(new CustomEvent('mandoubCartChanged'));
+    }
+  }
   function loadCoords(){try{return JSON.parse(localStorage.getItem('mandoub_location_coords')||'null')}catch{return null}}
-  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function esc(v){return String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
   function count(){return cart.reduce((s,x)=>s+Number(x.quantity||0),0)}
   function subtotal(){return cart.reduce((s,x)=>s+(Number(x.price)||0)*Number(x.quantity||0),0)}
-  function updateCount(){const e=document.getElementById('cartCount');if(e)e.textContent=count();const t=document.getElementById('cartSystemTotal');if(t)t.textContent=subtotal().toLocaleString('ar-EG')+' جنيه'}
+  function updateCount(){
+    const e=document.getElementById('cartCount');if(e)e.textContent=count();
+    const t=document.getElementById('cartSystemTotal');if(t)t.textContent=subtotal().toLocaleString('ar-EG')+' جنيه'
+  }
   function fee(km){if(km==null)return null;if(km<=3)return 25;if(km<=5)return 30;if(km<=7)return 35;if(km<=9)return 45;if(km<=15)return 55;return -1}
   function distance(a,b){const R=6371,rad=Math.PI/180;const dLat=(b.lat-a.lat)*rad,dLon=(b.lng-a.lng)*rad;const x=Math.sin(dLat/2)**2+Math.cos(a.lat*rad)*Math.cos(b.lat*rad)*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
   function setCustomerCoords(lat,lng){customerCoords={lat:Number(lat),lng:Number(lng)};localStorage.setItem('mandoub_location_coords',JSON.stringify(customerCoords));window.dispatchEvent(new CustomEvent('mandoubLocationChanged'))}
@@ -51,12 +70,10 @@
   window.changeMandoubQty=function(id,delta){const x=cart.find(i=>i.productId===id);if(!x)return;x.quantity+=delta;if(x.quantity<=0)cart=cart.filter(i=>i.productId!==id);save()};
   window.removeMandoubItem=function(id){cart=cart.filter(i=>i.productId!==id);save()};
 
-  // السلة أصبحت صفحة مستقلة. لا Bottom Sheet ولا انتقال مباشر لصفحة الدفع.
   window.openMandoubCart=function(){location.href='cart.html'};
   window.closeMandoubCart=function(){};
   window.openCart=function(){location.href='cart.html'};
 
-  // إتمام الطلب فقط هو الذي ينقل المستخدم لصفحة الدفع.
   window.openCheckout=function(){
     if(!cart.length){location.href='cart.html';return}
     location.href='checkout.html'
@@ -65,12 +82,20 @@
   window.renderMandoubCart=function(){updateCount()};
   window.addEventListener('mandoubCartChanged',updateCount);
   window.addEventListener('mandoubLocationChanged',updateCount);
+  window.addEventListener('storage',syncFromStorage);
+
   document.addEventListener('DOMContentLoaded',function(){
-    cart=load();customerCoords=loadCoords();updateCount();
+    cart=load();
+    lastCartSnapshot=JSON.stringify(cart);
+    customerCoords=loadCoords();
+    updateCount();
     document.querySelectorAll('#cartButton,.cart-bar,[data-open-cart]').forEach(el=>{
       el.addEventListener('click',function(e){
         e.preventDefault();e.stopPropagation();window.openMandoubCart()
       })
-    })
+    });
   });
+
+  // Keeps every page synchronized immediately, even when another script changes localStorage directly.
+  setInterval(syncFromStorage,200);
 })();
