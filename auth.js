@@ -98,3 +98,37 @@ if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.
     },700);
   });
 }
+
+/* زر تغيير الرتبة للعنتيل فقط. */
+if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.html")){
+  window.addEventListener("DOMContentLoaded",()=>{
+    setTimeout(()=>{
+      const list=document.getElementById("adminsList");
+      if(!list)return;
+      const decorate=async()=>{
+        if(!(await isSuperAdmin()))return;
+        const s=await getDocs(collection(db,"roles"));
+        const rows=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>["admin","highadmin","superadmin"].includes(x.role));
+        [...list.children].forEach((row,i)=>{
+          const x=rows[i];
+          if(!x||x.role==="superadmin"||row.querySelector('[data-change-admin]'))return;
+          const actions=document.createElement("div");actions.className="actions";
+          const change=document.createElement("button");change.className="secondary";change.dataset.changeAdmin=x.id;change.textContent="🔄 تغيير الرتبة";
+          change.onclick=async()=>{
+            const next=x.role==="admin"?"highadmin":"admin";
+            const label=next==="highadmin"?"إدارة عالية":"Admin";
+            if(!confirm(`تغيير رتبة ${x.email||x.id} إلى ${label}؟`))return;
+            try{await setAdminRole(x.email||"",next);alert(`تم تغيير الرتبة إلى ${label} ✅`);location.reload();}
+            catch(e){alert(({USER_NOT_FOUND:"الحساب غير موجود ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الرتبة ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير رتبة العنتيل ❌"}[e.message]||"تعذر تغيير الرتبة ❌"));}
+          };
+          const remove=row.querySelector('[data-remove-admin]')||row.querySelector('.danger');
+          if(remove){remove.parentNode.insertBefore(change,remove);remove.parentNode.insertBefore(document.createTextNode(" "),remove);}
+          else row.appendChild(actions).appendChild(change);
+        });
+      };
+      decorate();
+      const observer=new MutationObserver(()=>decorate());
+      observer.observe(list,{childList:true,subtree:true});
+    },1200);
+  });
+}
