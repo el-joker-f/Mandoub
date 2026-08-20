@@ -3,7 +3,7 @@ import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersi
 import { getFirestore, doc, getDoc, getDocs, collection, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 export const SUPER_ADMIN_EMAIL = "fmdyh6636@gmail.com";
-export const firebaseConfig = {apiKey:"AIzaSyB6-RVH7-8NrN-AaOOv6Qj9APDeyj7oIU",authDomain:"mandoub-dv.firebaseapp.com",projectId:"mandoub-dv",storageBucket:"mandoub-dv.firebasestorage.app",messagingSenderId:"311140400335",appId:"1:311140400335:web:db198b7c53259c53594bba",measurementId:"G-7V1LJQYYXD"};
+export const firebaseConfig = {apiKey:"AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",authDomain:"mandoub-dv.firebaseapp.com",projectId:"mandoub-dv",storageBucket:"mandoub-dv.firebasestorage.app",messagingSenderId:"311140400335",appId:"1:311140400335:web:db198b7c53259c53594bba",measurementId:"G-7V1LJQYYXD"};
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
 export const auth=getAuth(app);
 export const authReady=setPersistence(auth,browserLocalPersistence).catch(e=>{console.error("Auth persistence error:",e);return null;});
