@@ -66,23 +66,18 @@ export async function removeAdmin(targetUid,targetEmail){
 export async function addAdmin(targetUid,targetEmail){return addAdminByEmail(targetEmail,"admin");}
 export async function emailForPhone(phone){const p=normalizePhone(phone);if(!p)throw new Error("INVALID_PHONE");const s=await getDoc(doc(db,"phoneIndex",p));if(!s.exists())throw new Error("PHONE_NOT_FOUND");return s.data()?.email||null;}
 
-// العنتيل فقط يدير الصلاحيات. إعدادات الدفع متاحة للعنتيل وإدارة عالية فقط.
 if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.html")){
   window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(async()=>{
-      const high=await isHighAdmin();
-      const root=await isSuperAdmin();
+      const high=await isHighAdmin(),root=await isSuperAdmin();
       const paymentButton=document.getElementById("paymentSettingsButton");
       if(paymentButton&&!high)paymentButton.remove();
       if(!root)return;
-      const input=document.getElementById("adminEmail");
-      const oldButton=document.querySelector("#admins button.primary");
+      const input=document.getElementById("adminEmail"),oldButton=document.querySelector("#admins button.primary");
       const title=document.querySelector("#admins h2");
       if(title)title.textContent="👑 إدارة الصلاحيات";
       if(input&&!document.getElementById("adminRole")){
-        const label=document.createElement("label");
-        label.textContent="الرتبة";
-        label.style.cssText="display:block;margin-top:12px;margin-bottom:7px;color:#b9c5ce";
+        const label=document.createElement("label");label.textContent="الرتبة";label.style.cssText="display:block;margin-top:12px;margin-bottom:7px;color:#b9c5ce";
         const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px";
         select.innerHTML='<option value="admin">Admin — أدمن عادي</option><option value="highadmin">إدارة عالية — تعديل أرقام الدفع</option>';
         input.insertAdjacentElement("afterend",label);label.insertAdjacentElement("afterend",select);
@@ -91,8 +86,15 @@ if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.
         oldButton.textContent="➕ حفظ الصلاحية";
         oldButton.onclick=async()=>{try{const role=document.getElementById("adminRole")?.value||"admin";await setAdminRole(input.value.trim(),role);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
       }
-      const rootInfo=document.querySelector("#admins .card:nth-child(2)");
-      if(rootInfo){const h=rootInfo.querySelector("h2");if(h)h.textContent="المشرفون والرتب";}
+      const list=document.getElementById("adminsList");
+      if(list){
+        try{
+          const s=await getDocs(collection(db,"roles"));
+          const rows=s.docs.map(d=>({id:d.id,...d.data()})).filter(x=>["admin","highadmin","superadmin"].includes(x.role));
+          list.innerHTML=rows.map(x=>{const role=x.role==="superadmin"?"👑 العنتيل — Super Admin":x.role==="highadmin"?"🛡️ إدارة عالية":"👤 Admin";const remove=x.role==="superadmin"?"":"<button class=\"danger\" data-remove-admin=\""+x.id+"\">إزالة</button>";return `<div class=\"item\"><div class=\"item-info\"><strong>${role}</strong><small>${String(x.email||x.id).replace(/[&<>\"']/g,'')}</small></div>${remove}</div>`}).join('')||'لا يوجد مشرفون.';
+          list.querySelectorAll('[data-remove-admin]').forEach(b=>b.addEventListener('click',async()=>{if(!confirm('إزالة هذه الصلاحية؟'))return;try{await removeAdmin(b.dataset.removeAdmin,'');location.reload()}catch(e){alert('تعذر إزالة الصلاحية ❌')}}));
+        }catch(e){console.error(e)}
+      }
     },700);
   });
 }
