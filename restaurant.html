@@ -7,8 +7,8 @@
 <header><a href="index.html"><img src="assets/logo.png" class="logo" alt="مندوب"></a><a href="restaurants.html" class="back">← المطاعم</a></header>
 <main><section id="restaurantHead" class="restaurant-head"><div class="empty">⏳ جاري تحميل المطعم...</div></section><h2 class="title">🍔 المنتجات</h2><section id="products" class="products"><div class="empty">⏳ جاري تحميل المنتجات...</div></section><section id="restaurantCart" class="restaurant-cart"></section></main>
 <div class="cart-bar"><strong>🛒 السلة: <span id="cartCount">0</span></strong><button type="button" id="openCartButton">عرض السلة</button></div><div id="toast" class="toast"></div>
-<script src="cart-system.js?v=20260820-3"></script>
-<script>window.openCart=function(){const box=document.getElementById('restaurantCart');if(box){box.scrollIntoView({behavior:'smooth',block:'center'});return false}return false};document.getElementById('openCartButton').onclick=window.openCart;</script>
+<script src="cart-system.js?v=20260820-4"></script>
+<script>document.getElementById('openCartButton').onclick=()=>window.openCart?.();</script>
 <script type="module">
 import{db,authReady}from'./auth.js';import{doc,getDoc,collection,getDocs}from'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
 const $=id=>document.getElementById(id),id=new URLSearchParams(location.search).get('id');
