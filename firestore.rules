@@ -20,6 +20,12 @@ service cloud.firestore {
     match /restaurants/{restaurantId} { allow read: if true; allow write: if isAdmin(); match /products/{productId} { allow read: if true; allow write: if isAdmin(); } }
     match /offers/{offerId} { allow read: if true; allow create,update,delete: if isAdmin(); }
     match /orders/{orderId} { allow create: if signedIn() && request.resource.data.customerId == request.auth.uid; allow get: if isAdmin() || (signedIn() && resource.data.customerId == request.auth.uid); allow list: if isAdmin(); allow update: if isAdmin() || (signedIn() && request.auth.uid == resource.data.customerId && request.resource.data.customerId == resource.data.customerId); allow delete: if isAdmin(); }
+    match /publicOrders/{trackingCode} {
+      allow get: if resource.data.public == true;
+      allow list: if false;
+      allow create: if signedIn() && request.resource.data.public == true && request.resource.data.trackingCode == trackingCode && getAfter(/databases/$(database)/documents/orders/$(request.resource.data.orderId)).data.customerId == request.auth.uid;
+      allow update,delete: if isAdmin();
+    }
     match /paymentSettings/{id} { allow read: if true; allow create,update: if isHighAdmin(); allow delete: if isSuperAdmin(); }
     match /{document=**} { allow read,write: if false; }
   }
