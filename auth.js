@@ -3,10 +3,16 @@ import { getAuth, onAuthStateChanged, signOut, setPersistence, browserLocalPersi
 import { getFirestore, doc, getDoc, getDocs, collection, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 export const SUPER_ADMIN_EMAIL = "fmdyh6636@gmail.com";
-export const firebaseConfig = {apiKey:"AIzaSyB6-RVH7-8NrN-AaOOv6QjL9APDeyj7oIU",authDomain:"mandoub-dv.firebaseapp.com",projectId:"mandoub-dv",storageBucket:"mandoub-dv.firebasestorage.app",messagingSenderId:"311140400335",appId:"1:311140400335:web:db198b7c53259c53594bba",measurementId:"G-7V1LJQYYXD"};
+export const firebaseConfig = {apiKey:"AIzaSyBN-MtgWLi0lwBPTzEPYrpwxNe6BCn_3KQ",authDomain:"mandoub-dv.firebaseapp.com",projectId:"mandoub-dv",storageBucket:"mandoub-dv.firebasestorage.app",messagingSenderId:"311140400335",appId:"1:311140400335:web:db198b7c53259c53594bba",measurementId:"G-7V1LJQYYXD"};
 const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
 export const auth=getAuth(app);
-export const authReady=setPersistence(auth,browserLocalPersistence).catch(e=>{console.error("Auth persistence error:",e);return null;});
+
+// نضمن أن جلسة العميل تُحفظ في المتصفح وتستمر بين كل صفحات الموقع.
+export const authReady=setPersistence(auth,browserLocalPersistence).catch(e=>{
+  console.error("Auth persistence error:",e);
+  return null;
+});
+
 export const db=getFirestore(app);
 const norm=e=>(e||"").trim().toLowerCase();
 export const normalizePhone=p=>{let s=(p||"").replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).replace(/[^0-9+]/g,"");if(s.startsWith("+20"))s="0"+s.slice(3);else if(s.startsWith("20"))s="0"+s.slice(2);return s;};
