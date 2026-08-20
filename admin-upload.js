@@ -1,0 +1,69 @@
+import { db } from './auth.js';
+import { collection, addDoc, serverTimestamp, Timestamp } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/12.17.1/firebase-storage.js';
+
+const storage = getStorage();
+const $ = id => document.getElementById(id);
+const money = n => `${Number(n || 0).toLocaleString('ar-EG')} ج`;
+const msg = t => window.message ? window.message(t) : alert(t);
+
+async function uploadImage(file, folder) {
+  if (!file) return '';
+  if (!file.type.startsWith('image/')) throw new Error('IMAGE_ONLY');
+  if (file.size > 5 * 1024 * 1024) throw new Error('IMAGE_TOO_LARGE');
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+  const name = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
+  const r = ref(storage, `admin-media/${folder}/${name}`);
+  await uploadBytes(r, file, { contentType: file.type, customMetadata: { uploadedBy: 'admin' } });
+  return await getDownloadURL(r);
+}
+
+function preview(input, previewId) {
+  const file = input?.files?.[0];
+  const img = $(previewId);
+  if (!img) return;
+  if (!file) { img.style.display = 'none'; img.removeAttribute('src'); return; }
+  img.src = URL.createObjectURL(file);
+  img.style.display = 'block';
+}
+window.previewAdminImage = preview;
+
+window.addRestaurant = async () => {
+  const n = $('restaurantName')?.value.trim();
+  if (!n) return msg('اكتب اسم المطعم ❌');
+  const file = $('restaurantImage')?.files?.[0];
+  try {
+    msg('جاري رفع صورة المطعم... ⏳');
+    const image = await uploadImage(file, 'restaurants');
+    await addDoc(collection(db, 'restaurants'), {
+      name:n, category:$('restaurantCategory')?.value.trim() || '', rating:Number($('restaurantRating')?.value || 0),
+      deliveryFee:Number($('restaurantDelivery')?.value || 0), image, description:$('restaurantDescription')?.value.trim() || '',
+      latitude:Number($('restaurantLatitude')?.value || 0), longitude:Number($('restaurantLongitude')?.value || 0), active:true, createdAt:serverTimestamp()
+    });
+    document.querySelectorAll('#restaurantForm input,#restaurantForm textarea').forEach(x => { if(x.type !== 'file') x.value=''; else x.value=''; });
+    const p=$('restaurantImagePreview'); if(p){p.style.display='none';p.removeAttribute('src');}
+    msg('تم إضافة المطعم بالصورة ✅'); setTimeout(()=>location.reload(),700);
+  } catch(e) { console.error(e); msg(e.message==='IMAGE_ONLY'?'اختار صورة فقط ❌':e.message==='IMAGE_TOO_LARGE'?'حجم الصورة يجب ألا يتجاوز 5MB ❌':'تعذر إضافة المطعم ❌'); }
+};
+
+window.addProduct = async () => {
+  const rid=$('productRestaurant')?.value, n=$('productName')?.value.trim(), p=Number($('productPrice')?.value);
+  if(!rid||!n||!Number.isFinite(p)||p<0) return msg('أكمل بيانات المنتج ❌');
+  try {
+    msg('جاري رفع صورة المنتج... ⏳');
+    const image=await uploadImage($('productImage')?.files?.[0], `restaurants/${rid}/products`);
+    await addDoc(collection(db,'restaurants',rid,'products'),{name:n,price:p,image,description:$('productDescription')?.value.trim()||'',active:true,createdAt:serverTimestamp()});
+    msg('تم إضافة المنتج بالصورة ✅'); setTimeout(()=>location.reload(),700);
+  } catch(e){console.error(e);msg(e.message==='IMAGE_ONLY'?'اختار صورة فقط ❌':e.message==='IMAGE_TOO_LARGE'?'حجم الصورة يجب ألا يتجاوز 5MB ❌':'تعذر إضافة المنتج ❌');}
+};
+
+window.addOffer = async () => {
+  const t=$('offerTitle')?.value.trim(), p=Number($('offerPrice')?.value), op=Number($('offerOldPrice')?.value||0);
+  if(!t||!Number.isFinite(p)||p<0) return msg('أكمل بيانات العرض ❌');
+  try {
+    msg('جاري رفع صورة العرض... ⏳');
+    const image=await uploadImage($('offerImage')?.files?.[0],'offers');
+    await addDoc(collection(db,'offers'),{title:t,description:$('offerDescription')?.value.trim()||'',image,oldPrice:op,price:p,discount:op>0?Math.max(0,Math.round((1-p/op)*100)):0,restaurantId:$('offerRestaurant')?.value||null,showOnHome:$('offerShowHome')?.checked!==false,active:true,startAt:$('offerStart')?.value?Timestamp.fromDate(new Date($('offerStart').value)):null,endAt:$('offerEnd')?.value?Timestamp.fromDate(new Date($('offerEnd').value)):null,createdAt:serverTimestamp()});
+    msg('تم إضافة العرض بالصورة ✅'); setTimeout(()=>location.reload(),700);
+  } catch(e){console.error(e);msg(e.message==='IMAGE_ONLY'?'اختار صورة فقط ❌':e.message==='IMAGE_TOO_LARGE'?'حجم الصورة يجب ألا يتجاوز 5MB ❌':'تعذر إضافة العرض ❌');}
+};
