@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>مندوب | السلة</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#020d1b;color:#fff;font-family:Tahoma,Arial,sans-serif}.wrap{max-width:900px;margin:auto;padding:18px 14px 100px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.top a,.back{color:#fff;text-decoration:none;background:#061a2d;border:1px solid #16415e;border-radius:13px;padding:10px 14px;font-weight:800}.logo{width:48px;height:48px;object-fit:contain}.hero{background:linear-gradient(145deg,#08253b,#031321);border:1px solid #16415e;border-radius:24px;padding:22px;margin-bottom:16px}.hero h1{margin:0 0 7px;font-size:28px}.hero p{margin:0;color:#91a4b3}.cart-card{background:#061a2d;border:1px solid #16415e;border-radius:24px;padding:18px}.restaurant{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:15px;border-bottom:1px solid #16415e}.restaurant small{display:block;color:#91a4b3;margin-top:5px}.clear{border:1px solid #7e2846;background:#481527;color:#ffb1c4;border-radius:11px;padding:9px 12px;font-weight:800;cursor:pointer}.item{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid #15364d}.info{display:flex;align-items:center;gap:12px;min-width:0}.info img{width:70px;height:70px;border-radius:15px;object-fit:cover;background:#09243a}.name{font-weight:900;font-size:17px}.price{color:#00dfff;font-weight:900;margin-top:6px}.controls{display:flex;align-items:center;gap:7px}.controls button{border:0;border-radius:10px;width:36px;height:36px;font-size:19px;font-weight:900;cursor:pointer}.plus{background:#00dfff;color:#00131e}.minus{background:#173b55;color:#fff}.delete{background:#481527!important;color:#ffb1c4!important;width:auto!important;padding:0 10px}.qty{min-width:28px;text-align:center;font-weight:900}.summary{margin-top:18px;background:#031321;border:1px solid #16415e;border-radius:18px;padding:15px}.row{display:flex;justify-content:space-between;padding:8px 0;color:#c8d5dd}.grand{border-top:1px solid #16415e;margin-top:7px;padding-top:14px;font-size:22px;color:#fff}.grand b{color:#00dfff}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.btn{border:0;border-radius:13px;padding:14px;font-weight:900;font-size:15px;cursor:pointer;text-align:center;text-decoration:none}.continue{background:#123650;color:#fff}.checkout{background:#00dfff;color:#00131e}.empty{text-align:center;padding:55px 20px;color:#91a4b3}.empty strong{display:block;color:#fff;font-size:22px;margin-bottom:8px}@media(max-width:600px){.item{align-items:flex-start;flex-direction:column}.controls{width:100%;justify-content:flex-end}.actions{grid-template-columns:1fr}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a href="javascript:history.back()">← رجوع</a><img src="assets/logo.png" class="logo" alt="مندوب"><a href="index.html">الرئيسية</a></header>
+<section class="hero"><h1>🛒 سلة المشتريات</h1><p>راجع منتجاتك وعدّل الكمية أو احذف أي منتج قبل إتمام الطلب.</p></section>
+<section id="cartCard" class="cart-card"></section>
+</div>
+<script src="cart-system.js?v=20260820-5"></script>
+<script>
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('ar-EG');
+function render(){
+ const c=window.getMandoubCart?.()||[],box=document.getElementById('cartCard');
+ if(!c.length){box.innerHTML='<div class="empty"><strong>السلة فارغة 🛒</strong><span>اختار منتجاتك من المطاعم وسيتم عرضها هنا.</span><div class="actions"><a class="btn checkout" href="restaurants.html">تصفح المطاعم</a></div></div>';return}
+ const subtotal=c.reduce((s,x)=>s+x.price*x.quantity,0);
+ box.innerHTML=`<div class="restaurant"><div><strong>🍽️ ${esc(c[0].restaurantName)}</strong><small>${c.length} منتج في السلة</small></div><button class="clear" onclick="clearMandoubCart();render()">🗑️ تفريغ السلة</button></div>${c.map(x=>`<div class="item"><div class="info">${x.image?`<img src="${esc(x.image)}" alt="">`:''}<div><div class="name">${esc(x.name)}</div><div class="price">${money(x.price)} ج للقطعة</div></div></div><div class="controls"><button class="plus" onclick="changeMandoubQty('${esc(x.productId)}',1);render()">+</button><b class="qty">${x.quantity}</b><button class="minus" onclick="changeMandoubQty('${esc(x.productId)}',-1);render()">−</button><button class="delete" onclick="removeMandoubItem('${esc(x.productId)}');render()">حذف</button></div></div>`).join('')}<div class="summary"><div class="row"><span>عدد المنتجات</span><b>${c.reduce((s,x)=>s+x.quantity,0)}</b></div><div class="row"><span>الإجمالي الفرعي</span><b>${money(subtotal)} ج</b></div><div class="row grand"><span>الإجمالي</span><b>${money(subtotal)} ج</b></div></div><div class="actions"><a class="btn continue" href="restaurant-menu.html?id=${encodeURIComponent(c[0].restaurantId)}">← متابعة التسوق</a><button class="btn checkout" onclick="openCheckout()">إتمام الطلب →</button></div>`;
+}
+window.addEventListener('mandoubCartChanged',render);document.addEventListener('DOMContentLoaded',render);
+</script>
+</body></html>
