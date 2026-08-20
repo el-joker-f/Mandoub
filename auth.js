@@ -31,7 +31,18 @@ export async function isAdmin(user=auth.currentUser){const r=await getUserRole(u
 export async function isHighAdmin(user=auth.currentUser){const r=await getUserRole(user);return r==="highadmin"||r==="superadmin";}
 export async function isSuperAdmin(user=auth.currentUser){return (await getUserRole(user))==="superadmin";}
 export async function requireAdmin({redirect="login.html"}={}){return new Promise(resolve=>{const unsub=onAuthStateChanged(auth,async user=>{unsub();if(!user){location.replace(redirect);return resolve(false);}try{if(!(await isAdmin(user))){await signOut(auth);location.replace(redirect);return resolve(false);}resolve(true);}catch(e){console.error(e);await signOut(auth).catch(()=>{});location.replace(redirect);resolve(false);}});});}
-export async function routeAfterLogin(user){await authReady;await ensureCustomerRole(user);const r=await getUserRole(user);location.replace(["admin","highadmin","superadmin"].includes(r)?"admin.html":"index.html");}
+export async function routeAfterLogin(user){
+  await authReady;
+  await ensureCustomerRole(user);
+  const r=await getUserRole(user);
+  const params=new URLSearchParams(location.search);
+  const requested=params.get("return");
+  if(requested && /^(checkout|payment-new|payment|cart|track)(\.html)?$/.test(requested)){
+    location.replace(requested.includes(".")?requested:`${requested}.html`);
+    return;
+  }
+  location.replace(["admin","highadmin","superadmin"].includes(r)?"admin.html":"index.html");
+}
 
 export async function setAdminRole(targetEmail,role){
   if(!(await isSuperAdmin()))throw new Error("SUPER_ADMIN_REQUIRED");
@@ -66,13 +77,22 @@ if(location.pathname.endsWith("/admin.html")||location.pathname.endsWith("admin.
       if(!root)return;
       const input=document.getElementById("adminEmail");
       const oldButton=document.querySelector("#admins button.primary");
-      if(input&&oldButton&&!document.getElementById("adminRole")){
-        const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px;margin-top:10px";
-        select.innerHTML='<option value="admin">Admin</option><option value="highadmin">إدارة عالية</option>';
-        input.insertAdjacentElement("afterend",select);
-        oldButton.textContent="➕ حفظ الصلاحية";
-        oldButton.onclick=async()=>{try{await setAdminRole(input.value.trim(),select.value);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
+      const title=document.querySelector("#admins h2");
+      if(title)title.textContent="👑 إدارة الصلاحيات";
+      if(input&&!document.getElementById("adminRole")){
+        const label=document.createElement("label");
+        label.textContent="الرتبة";
+        label.style.cssText="display:block;margin-top:12px;margin-bottom:7px;color:#b9c5ce";
+        const select=document.createElement("select");select.id="adminRole";select.style.cssText="width:100%;background:#031321;border:2px solid #21445f;color:#fff;padding:11px;border-radius:11px";
+        select.innerHTML='<option value="admin">Admin — أدمن عادي</option><option value="highadmin">إدارة عالية — تعديل أرقام الدفع</option>';
+        input.insertAdjacentElement("afterend",label);label.insertAdjacentElement("afterend",select);
       }
-    },500);
+      if(input&&oldButton){
+        oldButton.textContent="➕ حفظ الصلاحية";
+        oldButton.onclick=async()=>{try{const role=document.getElementById("adminRole")?.value||"admin";await setAdminRole(input.value.trim(),role);input.value="";alert("تم حفظ الصلاحية ✅");location.reload()}catch(e){alert(({USER_NOT_FOUND:"الإيميل غير مسجل في الموقع ❌",SUPER_ADMIN_REQUIRED:"العنتيل فقط يقدر يغير الصلاحيات ❌",CANNOT_CHANGE_SUPER_ADMIN:"لا يمكن تغيير صلاحيات العنتيل ❌",INVALID_EMAIL:"الإيميل غير صحيح ❌"}[e.message]||"تعذر حفظ الصلاحية ❌"))}};
+      }
+      const rootInfo=document.querySelector("#admins .card:nth-child(2)");
+      if(rootInfo){const h=rootInfo.querySelector("h2");if(h)h.textContent="المشرفون والرتب";}
+    },700);
   });
 }
