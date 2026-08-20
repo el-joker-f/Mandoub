@@ -3,22 +3,26 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn(){return request.auth != null;}
     function isRoot(){return signedIn() && request.auth.token.email != null && request.auth.token.email.lower() == 'fmdyh6636@gmail.com';}
-    function isAdmin(){return signedIn() && (isRoot() || (exists(/databases/$(database)/documents/roles/$(request.auth.uid)) && get(/databases/$(database)/documents/roles/$(request.auth.uid)).data.role in ['admin','superadmin']));}
+    function roleOf(uid){return get(/databases/$(database)/documents/roles/$(uid)).data.role;}
+    function isAdmin(){return signedIn() && (isRoot() || (exists(/databases/$(database)/documents/roles/$(request.auth.uid)) && roleOf(request.auth.uid) in ['admin','highadmin','superadmin']));}
+    function isHighAdmin(){return signedIn() && (isRoot() || (exists(/databases/$(database)/documents/roles/$(request.auth.uid)) && roleOf(request.auth.uid) in ['highadmin','superadmin']));}
     function isSuperAdmin(){return isRoot();}
+
     match /roles/{uid} {
       allow get: if signedIn() && (request.auth.uid == uid || isAdmin());
       allow list: if isSuperAdmin();
-      allow create: if (isSuperAdmin() && request.resource.data.uid == uid && ((request.resource.data.email.lower() == 'fmdyh6636@gmail.com' && request.resource.data.role == 'superadmin') || (request.resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.role == 'admin'))) || (signedIn() && request.auth.uid == uid && request.resource.data.uid == uid && request.resource.data.role == 'customer');
-      allow update: if (isSuperAdmin() && request.resource.data.uid == uid && ((resource.data.email.lower() == 'fmdyh6636@gmail.com' && request.resource.data.email.lower() == 'fmdyh6636@gmail.com' && request.resource.data.role == 'superadmin') || (resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.role in ['admin','customer']))) || (signedIn() && request.auth.uid == uid && resource.data.role == 'customer' && request.resource.data.role == 'customer');
+      allow create: if (isSuperAdmin() && request.resource.data.uid == uid && request.resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.role in ['admin','highadmin']) || (signedIn() && request.auth.uid == uid && request.resource.data.uid == uid && request.resource.data.role == 'customer');
+      allow update: if (isSuperAdmin() && request.resource.data.uid == uid && resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.email.lower() != 'fmdyh6636@gmail.com' && request.resource.data.role in ['admin','highadmin','customer']) || (signedIn() && request.auth.uid == uid && resource.data.role == 'customer' && request.resource.data.role == 'customer');
       allow delete: if isSuperAdmin() && resource.data.email.lower() != 'fmdyh6636@gmail.com';
     }
+
     match /customers/{uid} { allow get,create,update: if signedIn() && request.auth.uid == uid; allow list: if isAdmin(); allow delete: if false; }
     match /phoneIndex/{phone} { allow get: if true; allow create: if signedIn() && request.resource.data.uid == request.auth.uid; allow update: if signedIn() && resource.data.uid == request.auth.uid && request.resource.data.uid == request.auth.uid; allow delete: if isAdmin(); }
     match /drivers/{uid} { allow read,write: if isAdmin(); }
     match /restaurants/{restaurantId} { allow read: if true; allow write: if isAdmin(); match /products/{productId} { allow read: if true; allow write: if isAdmin(); } }
     match /offers/{offerId} { allow read: if true; allow create,update,delete: if isAdmin(); }
     match /orders/{orderId} { allow create: if signedIn() && request.resource.data.customerId == request.auth.uid; allow get: if isAdmin() || (signedIn() && resource.data.customerId == request.auth.uid); allow list: if isAdmin(); allow update: if isAdmin() || (signedIn() && request.auth.uid == resource.data.customerId && request.resource.data.customerId == resource.data.customerId); allow delete: if isAdmin(); }
-    match /paymentSettings/{id} { allow read: if true; allow create,update: if isAdmin(); allow delete: if isAdmin(); }
+    match /paymentSettings/{id} { allow read: if true; allow create,update: if isHighAdmin(); allow delete: if isSuperAdmin(); }
     match /{document=**} { allow read,write: if false; }
   }
 }
