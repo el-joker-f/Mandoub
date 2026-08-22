@@ -5,7 +5,7 @@
   function save(){localStorage.setItem(KEY,JSON.stringify(cart));lastCartSnapshot=JSON.stringify(cart);updateCount();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))}
   function syncFromStorage(){const fresh=load(),snapshot=JSON.stringify(fresh);if(snapshot!==lastCartSnapshot){cart=fresh;lastCartSnapshot=snapshot;updateCount();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))}}
   function loadCoords(){try{return JSON.parse(localStorage.getItem('mandoub_location_coords')||'null')}catch{return null}}
-  function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\'':'&#39;'}[c]))}
+  function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c])).replace(/'/g,'&#39;')}
   function count(){return cart.reduce((s,x)=>s+Number(x.quantity||0),0)}
   function subtotal(){return cart.reduce((s,x)=>s+(Number(x.price)||0)*Number(x.quantity||0),0)}
   function updateCount(){const e=document.getElementById('cartCount');if(e)e.textContent=count();const t=document.getElementById('cartSystemTotal');if(t)t.textContent=subtotal().toLocaleString('ar-EG')+' جنيه'}
