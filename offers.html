@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>العروض | مندوب</title>
+<link rel="stylesheet" href="style.css">
+<style>
+:root{--cyan:#00dfff;--navy:#061a2d;--deep:#020d1b;--line:#cfe2e9}
+html,body{margin:0;min-height:100%;background:#f7fbfd;color:var(--navy);font-family:inherit;overflow-x:hidden}
+.offers-page{max-width:920px;margin:auto;padding:16px 10px 45px}.offers-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 2px 16px}.offers-head h1{font-size:25px;margin:0}.back{background:var(--navy);color:#fff;text-decoration:none;border-radius:12px;padding:10px 14px;font-weight:900;font-size:13px}.offers-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.offer{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 5px 18px rgba(6,26,45,.07)}.offer img{width:100%;height:150px;object-fit:cover;background:#eaf4f7;display:block}.offer-body{padding:12px}.offer-badge{display:inline-flex;background:var(--cyan);color:var(--navy);border-radius:8px;padding:4px 8px;font-size:10px;font-weight:900;margin-bottom:7px}.offer h2{font-size:17px;margin:0 0 6px}.offer p{font-size:12px;line-height:1.7;color:#718792;margin:0;min-height:38px}.price{margin-top:8px;font-size:17px;font-weight:900}.price del{color:#9aaab2;font-size:12px;margin-right:5px;font-weight:500}.restaurant-link{display:block;margin-top:10px;text-align:center;text-decoration:none;background:var(--navy);color:#fff;border-radius:10px;padding:9px;font-size:12px;font-weight:900}.empty{text-align:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:50px 15px;color:#718792;grid-column:1/-1}@media(max-width:520px){.offers-head h1{font-size:21px}.offers-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.offer img{height:125px}.offer-body{padding:9px}.offer h2{font-size:15px}.offer p{font-size:11px}.price{font-size:15px}}
+</style>
+</head>
+<body>
+<header class="navbar">
+<a class="brand" href="index.html"><img src="assets/logo.png" alt="مندوب"></a>
+<nav><a href="index.html">الرئيسية</a><a href="restaurants.html">المطاعم</a><a href="orders.html">طلباتي</a><a class="active" href="offers.html">العروض</a><a href="support.html">دعم ومساعدة</a></nav>
+<div class="nav-actions"><button type="button" class="cart" onclick="location.href='cart.html'">🛒 <span id="cartCount">0</span></button></div>
+</header>
+<main class="offers-page"><div class="offers-head"><h1 id="title">🎁 العروض</h1><a class="back" href="restaurants.html">المطاعم ←</a></div><div id="offersGrid" class="offers-grid"><div class="empty">⏳ جاري تحميل العروض...</div></div></main>
+<script src="cart-system.js?v=20260822-2"></script>
+<script type="module">
+import{db}from'./auth.js';import{collection,getDocs}from'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';
+const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
+const active=o=>{if(o.active===false)return false;const now=Date.now(),s=o.startAt?.toDate?o.startAt.toDate().getTime():o.startAt?new Date(o.startAt).getTime():0,e=o.endAt?.toDate?o.endAt.toDate().getTime():o.endAt?new Date(o.endAt).getTime():0;return(!s||now>=s)&&(!e||now<=e)};
+const money=n=>Number(n||0).toLocaleString('ar-EG')+' ج.م';
+async function load(){const grid=document.getElementById('offersGrid'),rid=new URLSearchParams(location.search).get('restaurantId');try{const [os,rs]=await Promise.all([getDocs(collection(db,'offers')),getDocs(collection(db,'restaurants'))]);const restaurants=Object.fromEntries(rs.docs.map(d=>[d.id,{id:d.id,...d.data()}]));const list=os.docs.map(d=>({id:d.id,...d.data()})).filter(active).filter(o=>!rid||o.restaurantId===rid);document.getElementById('title').textContent=rid?(restaurants[rid]?.name?`🎁 عروض ${restaurants[rid].name}`:'🎁 عروض المطعم'):'🎁 العروض';grid.innerHTML=list.length?list.map(o=>{const r=restaurants[o.restaurantId];return `<article class="offer"><img src="${esc(o.image||'assets/logo.png')}" onerror="this.onerror=null;this.src='assets/logo.png'" alt="${esc(o.title||'عرض')}"><div class="offer-body"><span class="offer-badge">🎁 عرض متاح</span><h2>${esc(o.title||'عرض مميز')}</h2><p>${esc(o.description||'عرض خاص من مندوب')}</p><div class="price">${money(o.price)} ${o.oldPrice?`<del>${money(o.oldPrice)}</del>`:''}</div>${r?`<a class="restaurant-link" href="restaurant-menu.html?id=${encodeURIComponent(r.id)}">عرض منتجات المطعم</a>`:''}</div></article>`}).join(''):'<div class="empty">🎁 لا توجد عروض متاحة حاليًا.</div>'}catch(e){console.error(e);grid.innerHTML='<div class="empty">❌ تعذر تحميل العروض حاليًا.</div>'}}
+load();
+</script>
+</body></html>
