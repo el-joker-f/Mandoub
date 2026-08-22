@@ -13,7 +13,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden!important}body{background:
 <body>
 <header class="menu-top"><a href="restaurants.html" aria-label="رجوع">→</a><img class="logo" src="assets/logo.png" alt="مندوب"><button id="favRestaurant" type="button" aria-label="مفضلة">♡</button></header>
 <main class="menu-main"><section id="hero" class="restaurant-hero"><div class="empty">جاري تحميل المطعم...</div></section><div id="categoryPills" class="menu-pills"></div><div class="content-wrap"><h2 class="section-title">🔥 اختيارات على ذوقك</h2><div id="products" class="products"></div></div><section class="offers-section"><div class="content-wrap"><h2 class="section-title" style="margin-top:0">🎁 عروض المطعم</h2><div id="offers" class="offers-row"></div></div></section><div id="error" class="error" hidden></div></main>
-<script src="cart-system.js?v=20260822-2"></script><script src="delivery-fees.js?v=20260822-2"></script><script src="checkout-flow.js?v=20260822-2"></script>
+<script src="cart-system.js?v=20260822-2"></script><script src="delivery-fees.js?v=20260822-5"></script><script src="checkout-flow.js?v=20260822-2"></script>
 <script type="module">
 import{getFirestore,doc,getDoc,collection,getDocs}from'https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js';import{auth,authReady}from'./auth.js';import{onAuthStateChanged}from'https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js';
 const db=getFirestore(),id=new URLSearchParams(location.search).get('id');let restaurant=null,products=[],offers=[],category='all';

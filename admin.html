@@ -26,7 +26,7 @@
 <section id="admins" class="page"><div class="card"><h2>👑 إدارة المشرفين</h2><div class="field"><label>البريد الإلكتروني للحساب المسجل</label><input id="adminEmail" type="email"></div><button class="primary" onclick="promoteAdmin()">👑 إعطاء صلاحية Admin</button></div><div class="card"><h2>المشرفون الحاليون</h2><div id="adminsList">جاري التحميل...</div></div></section>
 </div></main></div><div id="message" class="msg"></div>
 <script type="module" src="admin.js"></script>
-<script type="module" src="admin-enhancements.js"></script>
+<script type="module" src="admin-enhancements.js?v=20260822-2"></script>
 <script type="module">import{addAdminByEmail}from'./auth.js';window.message=t=>{const x=document.getElementById('message');x.textContent=t;x.style.display='block';clearTimeout(window.__msg);window.__msg=setTimeout(()=>x.style.display='none',3500)};window.promoteAdmin=async()=>{const e=document.getElementById('adminEmail').value.trim();if(!e)return window.message('اكتب الإيميل ❌');try{await addAdminByEmail(e);document.getElementById('adminEmail').value='';window.message('تمت إضافة المشرف بنجاح ✅')}catch(x){console.error(x);window.message(({USER_NOT_FOUND:'الإيميل غير مسجل في الموقع ❌',SUPER_ADMIN_REQUIRED:'ليس لديك صلاحية كافية ❌',SUPER_ADMIN_ALREADY_EXISTS:'هذا الحساب Super Admin بالفعل ❌',INVALID_EMAIL:'الإيميل غير صحيح ❌'}[x.message]||'تعذر إضافة المشرف ❌'))}};</script>
 <script type="module">import'./admin-products.js';</script>
 </body></html>
