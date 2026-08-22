@@ -5,7 +5,7 @@
   function save(){localStorage.setItem(KEY,JSON.stringify(cart));lastCartSnapshot=JSON.stringify(cart);updateCount();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))}
   function syncFromStorage(){const fresh=load(),snapshot=JSON.stringify(fresh);if(snapshot!==lastCartSnapshot){cart=fresh;lastCartSnapshot=snapshot;updateCount();window.dispatchEvent(new CustomEvent('mandoubCartChanged'))}}
   function loadCoords(){try{return JSON.parse(localStorage.getItem('mandoub_location_coords')||'null')}catch{return null}}
-  function esc(v){return String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',\"'\":'&#39;','\\\"':'&quot;'}[c]))}
+  function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c])).replace(/'/g,'&#39;')}
   function count(){return cart.reduce((s,x)=>s+Number(x.quantity||0),0)}
   function subtotal(){return cart.reduce((s,x)=>s+(Number(x.price)||0)*Number(x.quantity||0),0)}
   function updateCount(){const e=document.getElementById('cartCount');if(e)e.textContent=count();const t=document.getElementById('cartSystemTotal');if(t)t.textContent=subtotal().toLocaleString('ar-EG')+' جنيه'}
@@ -20,32 +20,6 @@
   window.openMandoubCart=function(){location.href='cart.html'};window.closeMandoubCart=function(){};window.openCart=function(){location.href='cart.html'};window.openCheckout=function(){if(!cart.length){location.href='cart.html';return}location.href='checkout.html'};
   window.renderMandoubCart=function(){updateCount()};window.addEventListener('mandoubCartChanged',updateCount);window.addEventListener('mandoubLocationChanged',updateCount);window.addEventListener('storage',syncFromStorage);
   document.addEventListener('DOMContentLoaded',function(){cart=load();lastCartSnapshot=JSON.stringify(cart);customerCoords=loadCoords();updateCount();document.querySelectorAll('#cartButton,.cart-bar,[data-open-cart]').forEach(el=>{el.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();window.openMandoubCart()})})});setInterval(syncFromStorage,200);
-
-  /* Mobile UI layer: keeps the restaurant/menu pages visually close to the Talabat-style reference without changing cart logic. */
-  function injectMenuUI(){
-    if(!location.pathname.endsWith('/restaurant-menu.html')&&!location.pathname.endsWith('restaurant-menu.html'))return;
-    if(document.getElementById('mandoubMenuMobileUI'))return;
-    const s=document.createElement('style');s.id='mandoubMenuMobileUI';s.textContent=`
-      html,body{width:100%;max-width:100%;overflow-x:hidden!important}body{padding-bottom:92px!important}
-      .menu-main{width:100%;max-width:720px!important;margin:0 auto!important;background:#fff}
-      .menu-top{height:64px!important;padding:8px 12px!important;top:0!important}
-      .menu-top a,.menu-top button{width:42px!important;height:42px!important;flex:0 0 42px!important}
-      .hero-cover{height:185px!important}.hero-cover img{display:block;width:100%!important;height:100%!important;object-fit:cover!important}
-      .hero-info{padding:14px!important}.hero-info h1{font-size:24px!important}.hero-title-row{align-items:center!important}
-      .meta{gap:6px!important}.meta span{padding:6px 8px!important;font-size:12px!important}
-      .menu-pills{top:64px!important;padding:8px 10px!important;gap:4px!important;white-space:nowrap!important}
-      .menu-pill{padding:8px 10px!important;font-size:13px!important}
-      .content-wrap{padding:0 10px!important}.section-title{font-size:22px!important;margin:17px 0 11px!important}
-      .products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
-      .product{border-radius:16px!important;box-shadow:0 2px 10px rgba(0,0,0,.07)!important}
-      .product img{height:142px!important;display:block!important}
-      .add{width:44px!important;height:44px!important;right:10px!important;bottom:-14px!important;font-size:27px!important}
-      .body{padding:20px 9px 10px!important}.body h2{font-size:15px!important}.body p{font-size:11px!important;height:35px!important}.price{font-size:16px!important}
-      .controls{margin-top:7px!important}.controls button{width:29px!important;height:29px!important}
-      .offers-section{margin-top:18px!important;padding:14px 10px 18px!important}.offers-row{gap:9px!important}.offer-card{flex-basis:205px!important}
-      .cart-bar{left:8px!important;right:8px!important;bottom:8px!important;border-radius:17px!important}
-      @media(max-width:380px){.hero-cover{height:155px!important}.product img{height:120px!important}.body p{display:none!important}.body{padding-top:19px!important}}
-    `;document.head.appendChild(s);
-  }
+  function injectMenuUI(){if(!location.pathname.endsWith('/restaurant-menu.html')&&!location.pathname.endsWith('restaurant-menu.html'))return;if(document.getElementById('mandoubMenuMobileUI'))return;const s=document.createElement('style');s.id='mandoubMenuMobileUI';s.textContent=`html,body{width:100%;max-width:100%;overflow-x:hidden!important}body{padding-bottom:92px!important}.menu-main{width:100%;max-width:720px!important;margin:0 auto!important;background:#fff}.menu-top{height:64px!important;padding:8px 12px!important;top:0!important}.menu-top a,.menu-top button{width:42px!important;height:42px!important;flex:0 0 42px!important}.hero-cover{height:185px!important}.hero-cover img{display:block;width:100%!important;height:100%!important;object-fit:cover!important}.hero-info{padding:14px!important}.hero-info h1{font-size:24px!important}.hero-title-row{align-items:center!important}.meta{gap:6px!important}.meta span{padding:6px 8px!important;font-size:12px!important}.menu-pills{top:64px!important;padding:8px 10px!important;gap:4px!important;white-space:nowrap!important}.menu-pill{padding:8px 10px!important;font-size:13px!important}.content-wrap{padding:0 10px!important}.section-title{font-size:22px!important;margin:17px 0 11px!important}.products{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.product{border-radius:16px!important;box-shadow:0 2px 10px rgba(0,0,0,.07)!important}.product img{height:142px!important;display:block!important}.add{width:44px!important;height:44px!important;right:10px!important;bottom:-14px!important;font-size:27px!important}.body{padding:20px 9px 10px!important}.body h2{font-size:15px!important}.body p{font-size:11px!important;height:35px!important}.price{font-size:16px!important}.controls{margin-top:7px!important}.controls button{width:29px!important;height:29px!important}.offers-section{margin-top:18px!important;padding:14px 10px 18px!important}.offers-row{gap:9px!important}.offer-card{flex-basis:205px!important}.cart-bar{left:8px!important;right:8px!important;bottom:8px!important;border-radius:17px!important}@media(max-width:380px){.hero-cover{height:155px!important}.product img{height:120px!important}.body p{display:none!important}.body{padding-top:19px!important}}`;document.head.appendChild(s)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',injectMenuUI);else injectMenuUI();
 })();
