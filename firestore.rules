@@ -18,6 +18,7 @@ service cloud.firestore {
     match /ratings/{ratingId} { allow read: if true; allow create: if signedIn() && request.resource.data.customerId == request.auth.uid; allow update: if signedIn() && resource.data.customerId == request.auth.uid && request.resource.data.customerId == request.auth.uid; allow delete: if isAdmin() || (signedIn() && resource.data.customerId == request.auth.uid); }
     match /supportSettings/{id} { allow read: if true; allow create,update,delete: if isSuperAdmin(); }
     match /paymentSettings/{id} { allow read: if true; allow create,update: if isHighAdmin(); allow delete: if isSuperAdmin(); }
+    match /coupons/{couponId} { allow read: if signedIn(); allow create,update,delete: if isSuperAdmin(); }
     match /{document=**} { allow read,write: if false; }
   }
 }
